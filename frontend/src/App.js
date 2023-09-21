@@ -1,8 +1,10 @@
+import Header from './components/Header';
 
 function App() {
-  return (
+	return (
 		<div className='app'>
-			<h1>Athleisure Styles</h1>
+			<Header />
+			<h1 style={{marginTop: '100px'}}>Athleisure Styles</h1>
 		</div>
 	);
 }
