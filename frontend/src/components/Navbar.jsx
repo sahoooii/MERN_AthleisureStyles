@@ -19,11 +19,10 @@ import {
 	SearchOutlined,
 	Login,
 	Logout,
-	EditOutlined,
 	LocalFireDepartmentOutlined,
 	EditNoteOutlined,
 } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { shades } from '../theme';
 import storeLogo from '../assets/logo/athleisureLogoMini.png';
 import shokota from '../assets/shokota.JPG';
@@ -34,11 +33,10 @@ import Divider from '@mui/material/Divider';
 const Navbar = () => {
 	const [open, setOpen] = useState(false);
 	const anchorEl = useRef(null);
-	// Menu toggle
+	// Menu Open
 	const handleClick = () => {
 		setOpen(!open);
 	};
-
 	// Menu Close
 	const handleClose = () => {
 		setOpen(false);
@@ -83,7 +81,9 @@ const Navbar = () => {
 							'&:hover': { cursor: 'pointer' },
 						}}
 					>
-						<img src={storeLogo} alt='storeLogo' />
+						<Link to='/'>
+							<img src={storeLogo} alt='storeLogo' />
+						</Link>
 					</Box>
 
 					{/* Icons */}
@@ -110,15 +110,21 @@ const Navbar = () => {
 								),
 							}}
 						/>
-						<IconButton>
-							<ShoppingBagOutlined />
-						</IconButton>
-						{/* </Link> */}
-						{/* Link Login */}
-						<IconButton>
-							<Login />
-							{/* <PersonOutline /> */}
-						</IconButton>
+						<Box display='flex' alignItems='center'>
+							<Link to='/cart'>
+								<IconButton>
+									<ShoppingBagOutlined />
+								</IconButton>
+							</Link>
+						</Box>
+						<Box display='flex' alignItems='center'>
+							<Link to='/login'>
+								<IconButton>
+									<Login />
+									{/* <PersonOutline /> */}
+								</IconButton>
+							</Link>
+						</Box>
 					</Box>
 				</Box>
 			) : (
@@ -136,7 +142,9 @@ const Navbar = () => {
 								'&:hover': { cursor: 'pointer' },
 							}}
 						>
-							<img src={storeLogo} alt='storeLogo' />
+							<Link to='/'>
+								<img src={storeLogo} alt='storeLogo' />
+							</Link>
 						</Box>
 
 						<TextField
@@ -161,7 +169,7 @@ const Navbar = () => {
 						/>
 					</Box>
 
-					{/* Bottom */}
+					{/* Bottom Footer */}
 					<AppBar
 						position='fixed'
 						color='babyBlue'
@@ -169,16 +177,18 @@ const Navbar = () => {
 					>
 						<Toolbar>
 							{/* On popular */}
-							<IconButton aria-label='open drawer'>
-								<LocalFireDepartmentOutlined
-									fontSize='large'
-									sx={{ color: 'white' }}
-								/>
-							</IconButton>
+							<Link to='/toprated'>
+								<IconButton aria-label='onFire'>
+									<LocalFireDepartmentOutlined
+										fontSize='large'
+										sx={{ color: 'white' }}
+									/>
+								</IconButton>
+							</Link>
 
 							{/* When Not Login */}
 							{/* <PersonOutline fontSize='large' sx={{ color: 'white' }} /> */}
-							{/* <StyledFab color='green' aria-label='add'> */}
+							{/* <StyledFab color='green' aria-label='person'> */}
 							{/* </StyledFab> */}
 							<Avatar
 								ref={anchorEl}
@@ -232,32 +242,42 @@ const Navbar = () => {
 								transformOrigin={{ horizontal: 'right', vertical: 'top' }}
 								anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
 							>
-								<MenuItem sx={{ justifyContent: 'space-around' }}>
-									<PersonOutline /> See Profile
-								</MenuItem>
-								<MenuItem sx={{ justifyContent: 'space-around' }}>
-									<EditNoteOutlined /> My account
-								</MenuItem>
+								<Link to='/myprofile' style={{ textDecoration: 'none' }}>
+									<MenuItem sx={{ justifyContent: 'space-between' }}>
+										<ListItemIcon>
+											<PersonOutline /> See Profile
+										</ListItemIcon>
+									</MenuItem>
+								</Link>
+								<Link to='/myprofile/edit' style={{ textDecoration: 'none' }}>
+									<MenuItem sx={{ justifyContent: 'space-between' }}>
+										<ListItemIcon>
+											<EditNoteOutlined /> My account
+										</ListItemIcon>
+									</MenuItem>
+								</Link>
 
 								<Divider />
-								<MenuItem>
-									<ListItemIcon sx={{ justifyContent: 'space-around' }}>
-										<Logout fontSize='large' />
-									</ListItemIcon>
-									Logout
-								</MenuItem>
+								<Link to='/logout' style={{ textDecoration: 'none' }}>
+									<MenuItem sx={{ justifyContent: 'space-between' }}>
+										<ListItemIcon>
+											<Logout /> Logout
+										</ListItemIcon>
+									</MenuItem>
+								</Link>
 							</Menu>
 
 							<Box sx={{ flexGrow: 1 }} />
-							<IconButton color='inherit'>
-								<ShoppingBagOutlined fontSize='large' sx={{ color: 'white' }} />
-							</IconButton>
+							<Link to='/cart'>
+								<IconButton color='inherit'>
+									<ShoppingBagOutlined
+										fontSize='large'
+										sx={{ color: 'white' }}
+									/>
+								</IconButton>
+							</Link>
 						</Toolbar>
 					</AppBar>
-
-					{/* <IconButton>
-								<MenuOutlined />
-							</IconButton> */}
 				</>
 			)}
 		</Box>
