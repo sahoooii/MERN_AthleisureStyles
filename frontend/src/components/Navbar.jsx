@@ -10,49 +10,44 @@ import {
 	Toolbar,
 	Avatar,
 	Menu,
-	MenuItem,
-	ListItemIcon,
+	Tooltip,
 } from '@mui/material';
 import {
 	PersonOutline,
 	ShoppingBagOutlined,
 	SearchOutlined,
-	Login,
-	Logout,
 	LocalFireDepartmentOutlined,
-	EditNoteOutlined,
 } from '@mui/icons-material';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { shades } from '../theme';
 import storeLogo from '../assets/logo/athleisureLogoMini.png';
 import shokota from '../assets/shokota.JPG';
-import { styled } from '@mui/material/styles';
-import Fab from '@mui/material/Fab';
-import Divider from '@mui/material/Divider';
+import MenuLink from './MenuLink';
 
 const Navbar = () => {
+	const [isLogin, setLogin] = useState(true);
 	const [open, setOpen] = useState(false);
+
 	const anchorEl = useRef(null);
 	// Menu Open
-	const handleClick = () => {
+	const handleOpen = () => {
 		setOpen(!open);
 	};
 	// Menu Close
 	const handleClose = () => {
 		setOpen(false);
 	};
-
-	// const navigate = useNavigate();
-	const isNonMobile = useMediaQuery('(min-width:600px)');
 	// bottom of center icon
-	const StyledFab = styled(Fab)({
+	const avatarStyle = {
 		position: 'absolute',
 		zIndex: 1,
 		top: -30,
 		left: 0,
 		right: 0,
 		margin: '0 auto',
-	});
+	};
+
+	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	return (
 		<Box
@@ -76,7 +71,7 @@ const Navbar = () => {
 					alignItems='center'
 				>
 					<Box
-						onClick={() => {}}
+						// onClick={() => {}}
 						sx={{
 							'&:hover': { cursor: 'pointer' },
 						}}
@@ -93,6 +88,7 @@ const Navbar = () => {
 						columnGap='20px'
 						zIndex='2'
 					>
+						{/* search function at TextField */}
 						<TextField
 							id='search'
 							type='text'
@@ -117,13 +113,50 @@ const Navbar = () => {
 								</IconButton>
 							</Link>
 						</Box>
+
 						<Box display='flex' alignItems='center'>
-							<Link to='/login'>
-								<IconButton>
-									<Login />
-									{/* <PersonOutline /> */}
-								</IconButton>
-							</Link>
+							<Box sx={{ flexGrow: 0 }}>
+								{isLogin ? (
+									<>
+										<IconButton onClick={handleOpen} sx={{ p: 0 }}>
+											<Avatar
+												ref={anchorEl}
+												src={shokota}
+												alt='shokota'
+												// sx={{ width: 56, height: 56 }}
+											/>
+										</IconButton>
+										<Menu
+											sx={{ mt: '45px' }}
+											id='menu-appbar'
+											anchorEl={anchorEl.current}
+											anchorOrigin={{
+												vertical: 'top',
+												horizontal: 'left',
+											}}
+											keepMounted
+											transformOrigin={{
+												vertical: 'top',
+												horizontal: 'left',
+											}}
+											open={open}
+											onClose={handleClose}
+										>
+											<MenuLink />
+										</Menu>
+									</>
+								) : (
+									<Link to='/login'>
+										<Tooltip title='Login'>
+											<IconButton>
+												<Avatar sx={{ bgcolor: shades.blue[500] }}>
+													<PersonOutline />
+												</Avatar>
+											</IconButton>
+										</Tooltip>
+									</Link>
+								)}
+							</Box>
 						</Box>
 					</Box>
 				</Box>
@@ -137,7 +170,7 @@ const Navbar = () => {
 						alignItems='center'
 					>
 						<Box
-							onClick={() => {}}
+							// onClick={() => {}}
 							sx={{
 								'&:hover': { cursor: 'pointer' },
 							}}
@@ -149,7 +182,7 @@ const Navbar = () => {
 
 						<TextField
 							id='search'
-							type='search'
+							type='text'
 							label='Search'
 							color='blue'
 							sx={{
@@ -176,7 +209,7 @@ const Navbar = () => {
 						sx={{ top: 'auto', bottom: 0 }}
 					>
 						<Toolbar>
-							{/* On popular */}
+							{/* popular Items */}
 							<Link to='/toprated'>
 								<IconButton aria-label='onFire'>
 									<LocalFireDepartmentOutlined
@@ -186,86 +219,70 @@ const Navbar = () => {
 								</IconButton>
 							</Link>
 
-							{/* When Not Login */}
-							{/* <PersonOutline fontSize='large' sx={{ color: 'white' }} /> */}
-							{/* <StyledFab color='green' aria-label='person'> */}
-							{/* </StyledFab> */}
-							<Avatar
-								ref={anchorEl}
-								src={shokota}
-								alt='shokota'
-								sx={{
-									width: '50px',
-									height: '50px',
-									position: 'absolute',
-									zIndex: 1,
-									top: -30,
-									left: 0,
-									right: 0,
-									margin: '0 auto',
-									'&:hover': { cursor: 'pointer' },
-								}}
-								onClick={handleClick}
-							/>
-							<Menu
-								id='account-menu'
-								anchorEl={anchorEl.current}
-								open={open}
-								onClose={handleClose}
-								disableAutoFocusItem={false}
-								paper={{
-									elevation: 0,
-									sx: {
-										overflow: 'visible',
-										filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-										mt: 1.5,
-										'& .MuiAvatar-root': {
-											width: 32,
-											height: 32,
-											ml: -0.5,
-											mr: 1,
-										},
-										'&:before': {
-											content: '""',
-											display: 'block',
-											position: 'absolute',
-											top: 0,
-											right: 14,
-											width: 10,
-											height: 10,
-											bgcolor: 'background.paper',
-											transform: 'translateY(-50%) rotate(45deg)',
-											zIndex: 0,
-										},
-									},
-								}}
-								transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-								anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-							>
-								<Link to='/myprofile' style={{ textDecoration: 'none' }}>
-									<MenuItem sx={{ justifyContent: 'space-between' }}>
-										<ListItemIcon>
-											<PersonOutline /> See Profile
-										</ListItemIcon>
-									</MenuItem>
+							{isLogin ? (
+								<>
+									<Avatar
+										ref={anchorEl}
+										src={shokota}
+										alt='shokota'
+										style={avatarStyle}
+										sx={{
+											width: 56,
+											height: 56,
+											'&:hover': { cursor: 'pointer' },
+										}}
+										onClick={handleOpen}
+									/>
+									<Menu
+										id='account-menu'
+										anchorEl={anchorEl.current}
+										open={open}
+										onClose={handleClose}
+										disableAutoFocusItem={false}
+										paper={{
+											elevation: 0,
+											sx: {
+												overflow: 'visible',
+												filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+												mt: 1.5,
+												'& .MuiAvatar-root': {
+													width: 32,
+													height: 32,
+													ml: -0.5,
+													mr: 1,
+												},
+												'&:before': {
+													content: '""',
+													display: 'block',
+													position: 'absolute',
+													top: 0,
+													right: 14,
+													width: 10,
+													height: 10,
+													bgcolor: 'background.paper',
+													transform: 'translateY(-50%) rotate(45deg)',
+													zIndex: 0,
+												},
+											},
+										}}
+										transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+										anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+									>
+										<MenuLink />
+									</Menu>
+								</>
+							) : (
+								<Link to='/login'>
+									<Tooltip title='Login'>
+										<Avatar
+											style={avatarStyle}
+											sx={{ bgcolor: shades.blue[500], width: 56, height: 56 }}
+										>
+											<PersonOutline fontSize='large' />
+										</Avatar>
+									</Tooltip>
 								</Link>
-								<Link to='/myprofile/edit' style={{ textDecoration: 'none' }}>
-									<MenuItem sx={{ justifyContent: 'space-between' }}>
-										<ListItemIcon>
-											<EditNoteOutlined /> My account
-										</ListItemIcon>
-									</MenuItem>
-								</Link>
-
-								<Divider />
-								<Link to='/logout' style={{ textDecoration: 'none' }}>
-									<MenuItem sx={{ justifyContent: 'space-between' }}>
-										<ListItemIcon>
-											<Logout /> Logout
-										</ListItemIcon>
-									</MenuItem>
-								</Link>
-							</Menu>
+							)}
 
 							<Box sx={{ flexGrow: 1 }} />
 							<Link to='/cart'>
