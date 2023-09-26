@@ -97,19 +97,19 @@ export const theme = createTheme({
 		fontFamily: ['Ubuntu', 'sans-serif'].join(','),
 		fontSize: 11,
 		h1: {
-			fontFamily: ['Merriweather', 'sans-serif'].join(','),
+			fontFamily: ['Play', 'sans-serif'].join(','),
 			fontSize: 48,
 		},
 		h2: {
-			fontFamily: ['Merriweather', 'sans-serif'].join(','),
+			fontFamily: ['Play', 'sans-serif'].join(','),
 			fontSize: 36,
 		},
 		h3: {
-			fontFamily: ['Merriweather', 'sans-serif'].join(','),
+			fontFamily: ['Play', 'sans-serif'].join(','),
 			fontSize: 20,
 		},
 		h4: {
-			fontFamily: ['Merriweather', 'sans-serif'].join(','),
+			fontFamily: ['Play', 'sans-serif'].join(','),
 			fontSize: 14,
 		},
 	},
