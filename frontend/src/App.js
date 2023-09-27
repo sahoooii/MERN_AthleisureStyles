@@ -1,13 +1,14 @@
 import { Container, Typography } from '@mui/material';
 import Navbar from './components/Navbar';
+import HomeScreen from './screens/HomeScreen';
 
 function App() {
 	return (
 		<div className='app'>
 			<Navbar />
-			<main style={{ paddingTop: '110px' }}>
+			<main style={{ paddingTop: '80px' }}>
 				<Container>
-					<Typography variant='h2'>Athleisure Styles</Typography>
+					<HomeScreen />
 				</Container>
 			</main>
 		</div>
