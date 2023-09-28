@@ -9,24 +9,21 @@ const Footer = () => {
 		<AppBar
 			component='footer'
 			color='babyBlue'
-			sx={{ top: 'auto', bottom: 0, height: '70px' }}
+			sx={{ top: 'auto', bottom: 0, height: '50px' }}
 		>
-			<Container sx={{ textAlign: 'center', justifyContent: 'center' }}>
-				<Box
-					width='80%'
-					margin='auto'
-					display='flex'
-					justifyContent='center'
-					alignItems='center'
-					height='70px'
-				>
-					<Typography
-						variant='h4'
-						sx={{ textAlign: 'center', justifyContent: 'center' }}
-					>
-						Athleisure Styles &copy; {currentYear}
-					</Typography>
-				</Box>
+			<Container
+				sx={{
+					textAlign: 'center',
+					justifyContent: 'center',
+					width: '100%',
+					margin: 'auto',
+					display: 'flex',
+					alignItems: 'center',
+				}}
+			>
+				<Typography variant='subtitle1'>
+					Athleisure Styles &copy; {currentYear}
+				</Typography>
 			</Container>
 		</AppBar>
 	);

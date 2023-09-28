@@ -79,10 +79,10 @@ const products = [
 	},
 	{
 		_id: '7',
-		name: 'Adidas CLASSICS White TREFOIL TEE',
-		image: '/images/adidas/tee/adidas-wht-tee.jpg',
+		name: 'Adidas CLASSICS Red TREFOIL TEE',
+		image: '/images/adidas/tee/adidas-red-tee.jpg',
 		description:
-			"Refresh your casual look with a modern classic in comfortable single jersey fabric. Not too loose or too tight, it's perfect for day-to-day wear.",
+			'Refresh your casual look with a modern classic in comfortable this Tee.You can stand out with this red Tee.',
 		brand: 'adidas',
 		category: 'Tee',
 		price: 49.99,

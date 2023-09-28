@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, Tabs, useMediaQuery, Tab } from '@mui/material';
 
-const HomeShoppingList = () => {
+const HomeTabs = () => {
 	const [value, setValue] = useState('all');
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
@@ -41,4 +41,4 @@ const HomeShoppingList = () => {
 	);
 };
 
-export default HomeShoppingList;
+export default HomeTabs;

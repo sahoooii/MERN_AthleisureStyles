@@ -1,15 +1,17 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import products from '../product';
-import HomeShoppingList from '../components/HomeShoppingList';
+import HomeTabs from '../components/HomeTabs';
+import HomeItems from '../components/HomeItems';
 
 const HomeScreen = () => {
 	return (
-		<Box>
+		<Box margin='120px auto' width='100%'>
 			{/* Carousel */}
-			<HomeShoppingList />
+			<HomeTabs />
+			<HomeItems />
 		</Box>
-	);
+	)
 };
 
 export default HomeScreen;
