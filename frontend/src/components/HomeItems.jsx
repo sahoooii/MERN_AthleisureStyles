@@ -14,6 +14,8 @@ import {
 	Accordion,
 	AccordionSummary,
 	AccordionDetails,
+	ListItem,
+	useMediaQuery,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { FavoriteBorderOutlined } from '@mui/icons-material';
@@ -24,25 +26,9 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { shades } from '../theme';
 import products from '../product';
 
-// Open description effect
-const ExpandMore = styled((props) => {
-	const { expand, ...other } = props;
-	return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-	transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-	marginLeft: 'auto',
-	transition: theme.transitions.create('transform', {
-		duration: theme.transitions.duration.shortest,
-	}),
-}));
-
 const HomeItems = () => {
 	const navigate = useNavigate();
-	const [expanded, setExpanded] = useState(false);
-
-	const handleExpandClick = () => {
-		setExpanded(!expanded);
-	};
+	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	return (
 		<Box
@@ -60,7 +46,7 @@ const HomeItems = () => {
 						width: 300,
 						maxWidth: '100%',
 						boxShadow: 'md',
-						position: 'relative',
+						// position: 'relative',
 					}}
 				>
 					<CardMedia
@@ -84,43 +70,33 @@ const HomeItems = () => {
 						<Typography variant='subtitle1' marginBottom='5px'>
 							{product.numReviews} Reviews
 						</Typography>
-						<Typography variant='h3'>${product.price}</Typography>
+						<Box display='flex' justifyContent='space-between'>
+							<Typography variant='h3'>${product.price}</Typography>
+							<IconButton aria-label='add to favorites'>
+								<FavoriteBorderOutlined />
+							</IconButton>
+						</Box>
 					</CardContent>
-					<CardActions disableSpacing sx={{ paddingTop: '0' }}>
-						<IconButton aria-label='add to favorites'>
-							<FavoriteBorderOutlined />
-						</IconButton>
 
-						{/* <ExpandMore
-							expand={expanded}
-							onClick={handleExpandClick}
-							aria-expanded={expanded}
-							aria-label='show more'
-						>
-							<ExpandMoreIcon />
-						</ExpandMore> */}
-						<Accordion>
-							<AccordionSummary
-								// sx={{ display: 'flex', justifyContent: 'flex-end' }}
-								expandIcon={<ExpandMoreIcon />}
-								aria-controls='panel1a-content'
-								id={product._id}
-							>
-								<Typography paragraph>Description: </Typography>
-							</AccordionSummary>
-							<AccordionDetails>
-								<Typography>{product.description}</Typography>
-							</AccordionDetails>
-						</Accordion>
-					</CardActions>
-
-					{/* Description */}
-					{/* <Collapse in={expanded} timeout='auto' unmountOnExit>
-						<CardContent>
-							<Typography paragraph>Description: </Typography>
-							<Typography>{product.description}</Typography>
-						</CardContent>
-					</Collapse> */}
+					{/* Only Mobile Description show up */}
+					{!isNonMobile && (
+						<CardActions disableSpacing sx={{ paddingTop: '0' }}>
+							<Accordion>
+								<AccordionSummary
+									expandIcon={<ExpandMoreIcon />}
+									aria-controls='panel1a-content'
+									id={product._id}
+								>
+									<Typography paragraph sx={{ marginBottom: '0' }}>
+										Description:{' '}
+									</Typography>
+								</AccordionSummary>
+								<AccordionDetails sx={{ paddingTop: '0' }}>
+									<Typography>{product.description}</Typography>
+								</AccordionDetails>
+							</Accordion>
+						</CardActions>
+					)}
 				</Card>
 			))}
 		</Box>

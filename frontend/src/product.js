@@ -4,7 +4,7 @@ const products = [
 		name: 'adidas Classics Black Jacket',
 		image: '/images/adidas/jacket/adidas-blk-jkt.jpg',
 		description:
-			' Classic adidas energy abounds through considered details including 3-Stripes down the sleeves and an embroidered Trefoil logo on the chest. Made from a comfortable cotton-polyester blend, this fresh take on a well-loved design is the perfect addition to any wardrobe.',
+			'The classic Adidas TREFOIL jacket. You can wear it anywhere you want. Just fit and unisex style',
 		brand: 'adidas',
 		category: 'Jacket',
 		price: 89.99,
@@ -17,7 +17,7 @@ const products = [
 		name: 'ADICOLOR Classics Red TRACK JACKET',
 		image: '/images/adidas/jacket/adidas-red-jkt.jpg',
 		description:
-			'This signature track jacket nails a timeless look. An embroidered Trefoil logo adds a touch of pizzazz, and the supremely soft cotton blend makes it perfect for everyday wear. With a slim fit and full zip, it gives any outfit a dash of attitude',
+			'This signature track jacket and look at the this ADICOLOR! Supremely soft cotton blend makes it perfect for everyday wear. With a slim fit and full zip, it gives any outfit a dash of attitude',
 		brand: 'adidas',
 		category: 'Jacket',
 		price: 69.99,
@@ -30,7 +30,7 @@ const products = [
 		name: 'adidas TREFOIL Gray Sweat Pants',
 		image: '/images/adidas/bottom/adidas-pants.jpg',
 		description:
-			'Reimagine comfort and step up your loungewear game with the adidas Essentials+ Reverse Material sweat pants. Crafted from a soft fleece, these pants fit close to the body but still give you enough room to move freely.',
+			'Comfort and step up your loungewear. Crafted from a soft fleece, these pants fit close to the body but still give you enough room to move freely',
 		brand: 'adidas',
 		category: 'Pants',
 		price: 59.99,
@@ -56,7 +56,7 @@ const products = [
 		name: 'ADICOLOR CREW RED Sweatshirt',
 		image: '/images/adidas/sweatshirt/adidas-res-swt.jpg',
 		description:
-			'A MINIMALIST PULLOVER WITH CLEAN, STRAIGHTFORWARD ADIDAS DNA.',
+			'A classic pullover sweatshirt. It gives you a street look. You can wear oversized or slim-fit styles',
 		brand: 'adidas',
 		category: 'Sweat Shirt',
 		price: 69.99,
@@ -69,7 +69,7 @@ const products = [
 		name: 'Adidas CLASSICS White TREFOIL TEE',
 		image: '/images/adidas/tee/adidas-wht-tee.jpg',
 		description:
-			"Refresh your casual look with a modern classic in comfortable single jersey fabric. Not too loose or too tight, it's perfect for day-to-day wear.",
+			"Refresh your casual look with a modern classic in comfortable single jersey fabric. Not too loose or too tight, it's perfect for day-to-day wear",
 		brand: 'adidas',
 		category: 'Tee',
 		price: 49.99,
@@ -82,7 +82,7 @@ const products = [
 		name: 'Adidas CLASSICS Red TREFOIL TEE',
 		image: '/images/adidas/tee/adidas-red-tee.jpg',
 		description:
-			'Refresh your casual look with a modern classic in comfortable this Tee.You can stand out with this red Tee.',
+			'Refresh your casual look with a modern classic in comfortable this Tee.You can stand out with this red Tee',
 		brand: 'adidas',
 		category: 'Tee',
 		price: 49.99,
@@ -95,7 +95,7 @@ const products = [
 		name: 'Nike Oversized White Jacket',
 		image: '/images/nike/jacket/nike-wht-jkt.jpg',
 		description:
-			'Keep cozy in this oversized faux-fur puffer. Synthetic down helps keep you warm and cozy on cold days.',
+			'Keep cozy in this oversized faux-fur puffer. Synthetic down helps keep you warm and cozy on cold days',
 		brand: 'Nike',
 		category: 'Jacket',
 		price: 109.99,
@@ -108,7 +108,7 @@ const products = [
 		name: 'Nike Sportswear Windrunner',
 		image: '/images/nike/jacket/nike-red-jkt.jpg',
 		description:
-			'The Nike Sportswear Windrunner Jacket updates our first running windbreaker with lightweight fabric made from recycled materials.',
+			'The Nike Sportswear Windrunner Jacket updates our first running windbreaker with lightweight fabric made from recycled materials',
 		brand: 'Nike',
 		category: 'Jacket',
 		price: 59.99,
@@ -121,7 +121,7 @@ const products = [
 		name: 'Nike CLASSICS Black Sweat Pants',
 		image: '/images/nike/bottom/nike-blk-pants.jpg',
 		description:
-			"Your workouts don't stop when the cool weather begins. And Designed to keep you feeling warm and comfortable.",
+			"Your workouts don't stop when the cool weather begins. And Designed to keep you feeling warm and comfortable",
 		brand: 'Nike',
 		category: 'Pants',
 		price: 79.99,
@@ -147,7 +147,7 @@ const products = [
 		name: 'Nike CLASSICS MOS Sweatshirt',
 		image: '/images/nike/sweatshirt/nike-mos-sweat.jpg',
 		description:
-			'This Sweatshirt is a perfect match with any item.Pick your go-to color combo and pair it up with your favorite sneakers.',
+			'This Sweatshirt is a perfect match with any item.Pick your go-to color combo and pair it up with your favorite sneakers',
 		brand: 'Nike',
 		category: 'Sweat Shirt',
 		price: 79.99,
@@ -160,7 +160,7 @@ const products = [
 		name: 'adidas CLASSICS Black Knit Cap',
 		image: '/images/cap/adidas-blk-knit.jpg',
 		description:
-			"Whatever the reason is cold, style, questionable hair day, there's no wrong one with this adidas beanie.",
+			"Whatever the reason is cold, style, questionable hair day, there's no wrong one with this adidas beanie",
 		brand: 'adidas',
 		category: 'Cap',
 		price: 19.99,
@@ -170,10 +170,36 @@ const products = [
 	},
 	{
 		_id: '14',
+		name: 'Columbia Basic Daily Cap',
+		image: '/images/cap/columbia-cap.jpg',
+		description:
+			'This daily cap fits any occasion and unisex style. Made from 100 % cotton and washable',
+		brand: 'Columbia',
+		category: 'Cap',
+		price: 19.99,
+		countInStock: 25,
+		rating: 4.5,
+		numReviews: 5,
+	},
+	{
+		_id: '15',
+		name: 'Supreme Denim $ Cap',
+		image: '/images/cap/supreme-cap.jpg',
+		description:
+			'Exclusive denim cap. Limit only this time. This cap is made of denim. You can enjoy the color as much as you wear it!',
+		brand: 'Supreme',
+		category: 'Cap',
+		price: 129.99,
+		countInStock: 5,
+		rating: 5.0,
+		numReviews: 3,
+	},
+	{
+		_id: '16',
 		name: 'JANSPORT Back To School Black Backpack',
 		image: '/images/backpack/jansport-bp.jpg',
 		description:
-			" Yes! It's time to Back To School!! You need a Spacious BACKPACK WITH A CLASSIC DESIGN.",
+			" Yes! It's time to Back To School!! You need a Spacious BACKPACK WITH A CLASSIC DESIGN huh?",
 		brand: 'JANSPORT',
 		category: 'Backpack',
 		price: 49.99,
@@ -182,11 +208,11 @@ const products = [
 		numReviews: 10,
 	},
 	{
-		_id: '15',
+		_id: '17',
 		name: 'KANKEN Stylish Greenish Backpack',
 		image: '/images/backpack/kanken-grey-bp.jpg',
 		description:
-			'This Stylish backpack fit anywhere. It takes you all over the world.',
+			'This Stylish backpack fit anywhere. Pack anything, and it takes you all over the world.',
 		brand: 'KANKEN',
 		category: 'Backpack',
 		price: 129.99,
@@ -195,7 +221,7 @@ const products = [
 		numReviews: 3,
 	},
 	{
-		_id: '16',
+		_id: '18',
 		name: 'adidas red  Stadium Backpack',
 		image: '/images/backpack/adidas-red-bp.jpg',
 		description:
