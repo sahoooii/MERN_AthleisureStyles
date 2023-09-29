@@ -45,6 +45,17 @@ export const shades = {
 		800: '#624e4e',
 		900: '#312727',
 	},
+	green: {
+		100: '#e7fcf8',
+		200: '#d0f9f2',
+		300: '#b8f6eb',
+		400: '#a1f3e5',
+		500: '#89f0de',
+		600: '#6ec0b2',
+		700: '#529085',
+		800: '#376059',
+		900: '#1b302c',
+	},
 	neutral: {
 		100: '#f5f5f5',
 		200: '#ecebeb',
@@ -73,6 +84,9 @@ export const theme = createTheme({
 		babyPink: {
 			main: shades.babyPink[500],
 		},
+		green: {
+			main: shades.green[600],
+		},
 		neutral: {
 			dark: shades.neutral[700],
 			main: shades.neutral[500],
@@ -83,19 +97,19 @@ export const theme = createTheme({
 		fontFamily: ['Ubuntu', 'sans-serif'].join(','),
 		fontSize: 11,
 		h1: {
-			fontFamily: ['Cinzel', 'sans-serif'].join(','),
+			fontFamily: ['Play', 'sans-serif'].join(','),
 			fontSize: 48,
 		},
 		h2: {
-			fontFamily: ['Cinzel', 'sans-serif'].join(','),
+			fontFamily: ['Play', 'sans-serif'].join(','),
 			fontSize: 36,
 		},
 		h3: {
-			fontFamily: ['Cinzel', 'sans-serif'].join(','),
+			fontFamily: ['Play', 'sans-serif'].join(','),
 			fontSize: 20,
 		},
 		h4: {
-			fontFamily: ['Cinzel', 'sans-serif'].join(','),
+			fontFamily: ['Play', 'sans-serif'].join(','),
 			fontSize: 14,
 		},
 	},

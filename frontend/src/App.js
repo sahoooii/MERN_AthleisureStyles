@@ -1,8 +1,17 @@
+import { Container } from '@mui/material';
+import Navbar from './components/Nav/Navbar';
+import HomeScreen from './screens/HomeScreen';
+import { Outlet } from 'react-router-dom';
 
 function App() {
-  return (
+	return (
 		<div className='app'>
-			<h1>Athleisure Styles</h1>
+			<Navbar />
+			<main style={{ paddingTop: '80px' }}>
+				<Container>
+					<Outlet />
+				</Container>
+			</main>
 		</div>
 	);
 }
