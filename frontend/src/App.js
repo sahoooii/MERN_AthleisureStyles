@@ -1,6 +1,7 @@
-import { Container, Typography } from '@mui/material';
-import Navbar from './components/Navbar';
+import { Container } from '@mui/material';
+import Navbar from './components/Nav/Navbar';
 import HomeScreen from './screens/HomeScreen';
+import { Outlet } from 'react-router-dom';
 
 function App() {
 	return (
@@ -8,7 +9,7 @@ function App() {
 			<Navbar />
 			<main style={{ paddingTop: '80px' }}>
 				<Container>
-					<HomeScreen />
+					<Outlet />
 				</Container>
 			</main>
 		</div>

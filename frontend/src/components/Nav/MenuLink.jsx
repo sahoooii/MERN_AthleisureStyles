@@ -1,4 +1,3 @@
-import { useRef, useState } from 'react';
 import { MenuItem, ListItemIcon, Divider } from '@mui/material';
 import {
 	PersonOutline,

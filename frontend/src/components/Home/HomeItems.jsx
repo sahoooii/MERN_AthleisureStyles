@@ -4,31 +4,31 @@ import {
 	IconButton,
 	Typography,
 	Box,
-	useTheme,
-	Button,
 	Card,
 	CardMedia,
 	CardContent,
 	CardActions,
-	Collapse,
 	Accordion,
 	AccordionSummary,
 	AccordionDetails,
-	ListItem,
 	useMediaQuery,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { FavoriteBorderOutlined } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { styled } from '@mui/material/styles';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { shades } from '../theme';
-import products from '../product';
+import products from '../../product';
 
 const HomeItems = () => {
+	const [isLiked, setIsLiked] = useState(false);
+
 	const navigate = useNavigate();
 	const isNonMobile = useMediaQuery('(min-width:600px)');
+
+	const handleLike = () => {
+		setIsLiked(!isLiked);
+		// setIsLiked(isLiked ? isLiked - 1 : isLiked + 1);
+		// setIsLiked(!isLiked);
+	};
 
 	return (
 		<Box
@@ -46,7 +46,6 @@ const HomeItems = () => {
 						width: 300,
 						maxWidth: '100%',
 						boxShadow: 'md',
-						// position: 'relative',
 					}}
 				>
 					<CardMedia
@@ -58,6 +57,7 @@ const HomeItems = () => {
 						style={{ cursor: 'pointer' }}
 						onClick={() => navigate(`/item/${product._id}`)}
 					/>
+
 					<CardContent sx={{ paddingBottom: '8px' }}>
 						<Link
 							to={`/item/${product._id}`}
@@ -72,8 +72,14 @@ const HomeItems = () => {
 						</Typography>
 						<Box display='flex' justifyContent='space-between'>
 							<Typography variant='h3'>${product.price}</Typography>
-							<IconButton aria-label='add to favorites'>
-								<FavoriteBorderOutlined />
+
+							{/* Will edit later bugs */}
+							<IconButton aria-label='add to favorites' onClick={handleLike}>
+								{isLiked ? (
+									<FavoriteBorderOutlined sx={{ color: 'red' }} />
+								) : (
+									<FavoriteBorderOutlined />
+								)}
 							</IconButton>
 						</Box>
 					</CardContent>
@@ -88,7 +94,7 @@ const HomeItems = () => {
 									id={product._id}
 								>
 									<Typography paragraph sx={{ marginBottom: '0' }}>
-										Description:{' '}
+										Description:
 									</Typography>
 								</AccordionSummary>
 								<AccordionDetails sx={{ paddingTop: '0' }}>

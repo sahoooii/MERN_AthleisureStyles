@@ -19,11 +19,11 @@ import {
 	LocalFireDepartmentOutlined,
 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { shades } from '../theme';
-import storeLogo from '../assets/logo/athleisureLogoMini.png';
-import shokota from '../assets/shokota.JPG';
+import { shades } from '../../theme';
+import storeLogo from '../../assets/logo/athleisureLogoMini.png';
+import shokota from '../../assets/shokota.JPG';
 import MenuLink from './MenuLink';
-import Footer from './Footer';
+import Footer from '../Footer';
 
 const Navbar = () => {
 	const [isLogin, setLogin] = useState(true);

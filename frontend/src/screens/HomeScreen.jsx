@@ -1,8 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import products from '../product';
-import HomeTabs from '../components/HomeTabs';
-import HomeItems from '../components/HomeItems';
+import HomeTabs from '../components/Home/HomeTabs';
+import HomeItems from '../components/Home/HomeItems';
 
 const HomeScreen = () => {
 	return (
@@ -11,7 +10,7 @@ const HomeScreen = () => {
 			<HomeTabs />
 			<HomeItems />
 		</Box>
-	)
+	);
 };
 
 export default HomeScreen;
