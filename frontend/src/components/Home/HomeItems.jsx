@@ -12,6 +12,7 @@ import {
 	AccordionSummary,
 	AccordionDetails,
 	useMediaQuery,
+	Rating,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { FavoriteBorderOutlined } from '@mui/icons-material';
@@ -67,9 +68,20 @@ const HomeItems = () => {
 								{product.name}
 							</Typography>
 						</Link>
-						<Typography variant='subtitle1' marginBottom='5px'>
-							{product.numReviews} Reviews
-						</Typography>
+
+						{/* Rating */}
+						{/* <Box display='flex' justifyContent='space-between'> */}
+							<Typography variant='subtitle1' marginBottom='5px'>
+								<Rating
+									value={product.rating}
+									text={`${product.numReviews} reviews`}
+								/>
+							</Typography>
+							{/* <Typography variant='subtitle1' marginBottom='5px'>
+								{product.numReviews} Reviews
+							</Typography>
+						</Box> */}
+
 						<Box display='flex' justifyContent='space-between'>
 							<Typography variant='h3'>${product.price}</Typography>
 
