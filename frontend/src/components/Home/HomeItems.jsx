@@ -12,12 +12,12 @@ import {
 	AccordionSummary,
 	AccordionDetails,
 	useMediaQuery,
-	Rating,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { FavoriteBorderOutlined } from '@mui/icons-material';
+import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import products from '../../product';
+import RatingLogic from '../RatingLogic';
 
 const HomeItems = () => {
 	const [isLiked, setIsLiked] = useState(false);
@@ -25,8 +25,8 @@ const HomeItems = () => {
 	const navigate = useNavigate();
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
+	// Edit later
 	const handleLike = () => {
-		setIsLiked(!isLiked);
 		// setIsLiked(isLiked ? isLiked - 1 : isLiked + 1);
 		// setIsLiked(!isLiked);
 	};
@@ -70,27 +70,31 @@ const HomeItems = () => {
 						</Link>
 
 						{/* Rating */}
-						{/* <Box display='flex' justifyContent='space-between'> */}
-							<Typography variant='subtitle1' marginBottom='5px'>
-								<Rating
-									value={product.rating}
-									text={`${product.numReviews} reviews`}
-								/>
+						<Box
+							display='flex'
+							justifyContent='space-between'
+							alignItems='center'
+							marginBottom='5px'
+						>
+							<Typography variant='subtitle2'>
+								<RatingLogic rating={product.rating} />
 							</Typography>
-							{/* <Typography variant='subtitle1' marginBottom='5px'>
-								{product.numReviews} Reviews
-							</Typography>
-						</Box> */}
+							{product.numReviews > 0 && (
+								<Typography variant='subtitle2'>
+									{product.numReviews} Reviews
+								</Typography>
+							)}
+						</Box>
 
 						<Box display='flex' justifyContent='space-between'>
 							<Typography variant='h3'>${product.price}</Typography>
 
 							{/* Will edit later bugs */}
 							<IconButton aria-label='add to favorites' onClick={handleLike}>
-								{isLiked ? (
-									<FavoriteBorderOutlined sx={{ color: 'red' }} />
+								{product.likes > 0 ? (
+									<Favorite sx={{ color: 'red' }} />
 								) : (
-									<FavoriteBorderOutlined />
+									<FavoriteBorder />
 								)}
 							</IconButton>
 						</Box>

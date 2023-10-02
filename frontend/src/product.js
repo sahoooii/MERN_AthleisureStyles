@@ -9,8 +9,9 @@ const products = [
 		category: 'Jacket',
 		price: 89.99,
 		countInStock: 15,
-		rating: 4.0,
-		numReviews: 4,
+		rating: 0.5,
+		numReviews: 0,
+		likes: 2,
 	},
 	{
 		_id: '2',
@@ -22,8 +23,9 @@ const products = [
 		category: 'Jacket',
 		price: 69.99,
 		countInStock: 10,
-		rating: 4.0,
+		rating: 1.0,
 		numReviews: 6,
+		likes: 4,
 	},
 	{
 		_id: '3',
@@ -35,8 +37,9 @@ const products = [
 		category: 'Pants',
 		price: 59.99,
 		countInStock: 5,
-		rating: 3.5,
+		rating: 1.5,
 		numReviews: 3,
+		likes: 0,
 	},
 	{
 		_id: '4',
@@ -48,8 +51,9 @@ const products = [
 		category: 'Sweat Shirt',
 		price: 89.99,
 		countInStock: 10,
-		rating: 5.0,
+		rating: 2.0,
 		numReviews: 3,
+		likes: 0,
 	},
 	{
 		_id: '5',
@@ -61,8 +65,9 @@ const products = [
 		category: 'Sweat Shirt',
 		price: 69.99,
 		countInStock: 7,
-		rating: 3.5,
-		numReviews: 2,
+		rating: 2.5,
+		numReviews: 0,
+		likes: 7,
 	},
 	{
 		_id: '6',
@@ -74,8 +79,9 @@ const products = [
 		category: 'Tee',
 		price: 49.99,
 		countInStock: 0,
-		rating: 4.0,
+		rating: 3.0,
 		numReviews: 4,
+		likes: 8,
 	},
 	{
 		_id: '7',
@@ -88,7 +94,8 @@ const products = [
 		price: 49.99,
 		countInStock: 0,
 		rating: 3.5,
-		numReviews: 4,
+		numReviews: 0,
+		likes: 0,
 	},
 	{
 		_id: '8',
@@ -100,8 +107,9 @@ const products = [
 		category: 'Jacket',
 		price: 109.99,
 		countInStock: 10,
-		rating: 5.0,
+		rating: 4.0,
 		numReviews: 4,
+		likes: 1,
 	},
 	{
 		_id: '9',
@@ -113,8 +121,9 @@ const products = [
 		category: 'Jacket',
 		price: 59.99,
 		countInStock: 7,
-		rating: 3.5,
+		rating: 4.5,
 		numReviews: 4,
+		likes: 0,
 	},
 	{
 		_id: '10',
@@ -126,8 +135,9 @@ const products = [
 		category: 'Pants',
 		price: 79.99,
 		countInStock: 10,
-		rating: 2.5,
+		rating: 5.0,
 		numReviews: 6,
+		likes: 2,
 	},
 	{
 		_id: '11',
@@ -141,6 +151,7 @@ const products = [
 		countInStock: 8,
 		rating: 3.5,
 		numReviews: 4,
+		likes: 2,
 	},
 	{
 		_id: '12',
@@ -152,8 +163,9 @@ const products = [
 		category: 'Sweat Shirt',
 		price: 79.99,
 		countInStock: 8,
-		rating: 4.5,
+		rating: 5.0,
 		numReviews: 4,
+		likes: 0,
 	},
 	{
 		_id: '13',
@@ -167,6 +179,7 @@ const products = [
 		countInStock: 0,
 		rating: 4.0,
 		numReviews: 3,
+		likes: 2,
 	},
 	{
 		_id: '14',
@@ -180,6 +193,7 @@ const products = [
 		countInStock: 25,
 		rating: 4.5,
 		numReviews: 5,
+		likes: 2,
 	},
 	{
 		_id: '15',
@@ -193,6 +207,7 @@ const products = [
 		countInStock: 5,
 		rating: 5.0,
 		numReviews: 3,
+		likes: 7,
 	},
 	{
 		_id: '16',
@@ -206,6 +221,7 @@ const products = [
 		countInStock: 5,
 		rating: 4.0,
 		numReviews: 10,
+		likes: 2,
 	},
 	{
 		_id: '17',
@@ -219,6 +235,7 @@ const products = [
 		countInStock: 8,
 		rating: 3.5,
 		numReviews: 3,
+		likes: 2,
 	},
 	{
 		_id: '18',
@@ -232,6 +249,7 @@ const products = [
 		countInStock: 10,
 		rating: 2.5,
 		numReviews: 4,
+		likes: 0,
 	},
 ];
 
