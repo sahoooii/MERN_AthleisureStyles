@@ -1,10 +1,10 @@
-const products = [
+const items = [
 	{
 		_id: '1',
 		name: 'adidas Classics Black Jacket',
 		image: '/images/adidas/jacket/adidas-blk-jkt.jpg',
 		description:
-			'The classic Adidas TREFOIL jacket. You can wear it anywhere you want. Just fit and unisex style',
+			'The classic Adidas TREFOIL jacket. You can wear it anywhere you want. Just fit and unisex style.',
 		brand: 'adidas',
 		category: 'Jacket',
 		price: 89.99,
@@ -253,4 +253,4 @@ const products = [
 	},
 ];
 
-export default products;
+export default items;
