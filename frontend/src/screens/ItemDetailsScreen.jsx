@@ -1,26 +1,18 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { IconButton, Box, Typography, Button, Tabs, Tab } from '@mui/material';
-import {
-	FavoriteBorderOutlined,
-	Add,
-	Remove,
-	Favorite,
-} from '@mui/icons-material';
+import { IconButton, Box, Typography, Button } from '@mui/material';
+import { FavoriteBorderOutlined, Add, Remove } from '@mui/icons-material';
 import { shades } from '../theme';
 import items from '../items';
 import RatingLogic from '../components/RatingLogic';
+import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
+import SubmitButton from '../components/SubmitButton';
 
 const ItemDetailsScreen = () => {
 	const { itemId } = useParams();
 	const item = items.find((item) => item._id === itemId);
 
 	const [count, setCount] = useState(1);
-	// For tabs
-	const [value, setValue] = useState('description');
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
-	};
 
 	return (
 		<Box width='80%' sx={{ m: { md: '50px auto', xs: '20px auto' } }}>
@@ -42,8 +34,8 @@ const ItemDetailsScreen = () => {
 
 				{/* Right Side over mobile */}
 				{/* <Box flex='1 1 50%' mb='40px' order={{ xs: 1, sm: 2 }}> */}
-				<Box flex='1 1 50%' mb='90px'>
-					<Box m='40px 0 15px 0'>
+				<Box flex='1 1 50%' mb='40px'>
+					<Box m='40px 0 15px 0' sx={{ mt: { sm: '10px', md: '40px' } }}>
 						<Typography mb='15px' sx={{ typography: { md: 'h2', xs: 'h3' } }}>
 							{item.name}
 						</Typography>
@@ -100,7 +92,12 @@ const ItemDetailsScreen = () => {
 						</Typography>
 					</Box>
 
-					<Box display='flex' alignItems='center' marginBottom='25px'>
+					<Box
+						display='flex'
+						alignItems='center'
+						marginBottom='20px'
+						sx={{ mb: { md: '40px' } }}
+					>
 						<Box
 							display='flex'
 							alignItems='center'
@@ -129,6 +126,10 @@ const ItemDetailsScreen = () => {
 					</Box>
 
 					{/* Add To Cart */}
+					{/* Edit */}
+					<SubmitButton
+						children='ADD TO CART'
+					/>
 					<Box display='flex' alignItems='center'>
 						<Button
 							variant='contained'
@@ -158,45 +159,8 @@ const ItemDetailsScreen = () => {
 					</Box>
 				</Box>
 			</Box>
-
 			{/* Tabs */}
-			<Box mb='20px'>
-				<Tabs value={value} onChange={handleChange}>
-					<Tab label='DESCRIPTION' value='description' />
-					<Tab label='REVIEWS' value='reviews' />
-				</Tabs>
-			</Box>
-
-			<Box display='flex' flexWrap='wrap' gap='15px' mb='100px'>
-				{value === 'description' && (
-					<Typography variant='h4'>{item.description}</Typography>
-				)}
-				{/* Reviews and Write Review */}
-				<Box display='flex' flexWrap='wrap' columnGap='40px'>
-						{value === 'reviews' && (
-							<Box flex='1 1 40%'>
-								{item.numReviews > 0 ? (
-									<Box>
-										<Typography variant='h4' ml='8px'>
-											{item.numReviews} Reviews
-										</Typography>
-										<Typography variant='h4' ml='8px'>
-											Show Reviews
-										</Typography>
-									</Box>
-								) : (
-									<Typography variant='h4' ml='8px'>
-										No Reviews Yet
-									</Typography>
-								)}
-							</Box>
-						)}
-						{/* Move later */}
-					<Box flex='1 1 50%' mb='90px'>
-						aaaa
-					</Box>
-				</Box>
-			</Box>
+			<ItemDetailsTabs item={item} />
 		</Box>
 	);
 };
