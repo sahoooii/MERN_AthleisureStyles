@@ -6,7 +6,7 @@ import { shades } from '../theme';
 import items from '../items';
 import RatingLogic from '../components/RatingLogic';
 import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
-import SubmitButton from '../components/SubmitButton';
+import ButtonComponent from '../components/ButtonComponent';
 
 const ItemDetailsScreen = () => {
 	const { itemId } = useParams();
@@ -126,27 +126,10 @@ const ItemDetailsScreen = () => {
 					</Box>
 
 					{/* Add To Cart */}
-					{/* Edit */}
-					<SubmitButton
-						children='ADD TO CART'
-					/>
 					<Box display='flex' alignItems='center'>
-						<Button
-							variant='contained'
-							sx={{
-								backgroundColor: shades.blue[500],
-								color: 'white',
-								borderRadius: 1,
-								minWidth: '150px',
-								padding: '10px 40px',
-								width: '80%',
-								fontSize: '16px',
-								fontFamily: 'Play',
-								'&:hover': { backgroundColor: shades.blue[300] },
-							}}
-						>
-							ADD TO CART
-						</Button>
+						<ButtonComponent
+							children='ADD TO CART'
+						/>
 						<IconButton
 							sx={{
 								alignItems: 'center',
