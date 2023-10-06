@@ -14,9 +14,10 @@ import {
 	useMediaQuery,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { FavoriteBorderOutlined } from '@mui/icons-material';
+import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import products from '../../product';
+import items from '../../items';
+import RatingLogic from '../RatingLogic';
 
 const HomeItems = () => {
 	const [isLiked, setIsLiked] = useState(false);
@@ -24,8 +25,8 @@ const HomeItems = () => {
 	const navigate = useNavigate();
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
+	// Edit later
 	const handleLike = () => {
-		setIsLiked(!isLiked);
 		// setIsLiked(isLiked ? isLiked - 1 : isLiked + 1);
 		// setIsLiked(!isLiked);
 	};
@@ -39,9 +40,9 @@ const HomeItems = () => {
 			rowGap='40px'
 			columnGap='1.33%'
 		>
-			{products.map((product) => (
+			{items.map((item) => (
 				<Card
-					key={product._id}
+					key={item._id}
 					sx={{
 						width: 300,
 						maxWidth: '100%',
@@ -52,33 +53,48 @@ const HomeItems = () => {
 						component='img'
 						height='400px'
 						width='300px'
-						image={product.image}
-						alt={product.name}
+						image={item.image}
+						alt={item.name}
 						style={{ cursor: 'pointer' }}
-						onClick={() => navigate(`/item/${product._id}`)}
+						onClick={() => navigate(`/item/${item._id}`)}
 					/>
 
 					<CardContent sx={{ paddingBottom: '8px' }}>
 						<Link
-							to={`/item/${product._id}`}
+							to={`/item/${item._id}`}
 							style={{ textDecoration: 'none', color: 'inherit' }}
 						>
 							<Typography variant='h3' marginBottom='10px'>
-								{product.name}
+								{item.name}
 							</Typography>
 						</Link>
-						<Typography variant='subtitle1' marginBottom='5px'>
-							{product.numReviews} Reviews
-						</Typography>
+
+						{/* Rating */}
+						<Box
+							display='flex'
+							justifyContent='space-between'
+							alignItems='center'
+							marginBottom='5px'
+						>
+							<Typography variant='subtitle2'>
+								<RatingLogic rating={item.rating} />
+							</Typography>
+							{item.numReviews > 0 && (
+								<Typography variant='subtitle2'>
+									{item.numReviews} Reviews
+								</Typography>
+							)}
+						</Box>
+
 						<Box display='flex' justifyContent='space-between'>
-							<Typography variant='h3'>${product.price}</Typography>
+							<Typography variant='h3'>${item.price}</Typography>
 
 							{/* Will edit later bugs */}
 							<IconButton aria-label='add to favorites' onClick={handleLike}>
-								{isLiked ? (
-									<FavoriteBorderOutlined sx={{ color: 'red' }} />
+								{item.likes > 0 ? (
+									<Favorite sx={{ color: 'red' }} />
 								) : (
-									<FavoriteBorderOutlined />
+									<FavoriteBorder />
 								)}
 							</IconButton>
 						</Box>
@@ -91,14 +107,14 @@ const HomeItems = () => {
 								<AccordionSummary
 									expandIcon={<ExpandMoreIcon />}
 									aria-controls='panel1a-content'
-									id={product._id}
+									id={item._id}
 								>
 									<Typography paragraph sx={{ marginBottom: '0' }}>
 										Description:
 									</Typography>
 								</AccordionSummary>
 								<AccordionDetails sx={{ paddingTop: '0' }}>
-									<Typography>{product.description}</Typography>
+									<Typography>{item.description}</Typography>
 								</AccordionDetails>
 							</Accordion>
 						</CardActions>

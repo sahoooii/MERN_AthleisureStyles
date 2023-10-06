@@ -12,11 +12,13 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { theme } from './theme';
 import HomeScreen from './screens/HomeScreen';
+import ItemDetailsScreen from './screens/ItemDetailsScreen';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path='/' element={<App />}>
 			<Route index={true} path='/' element={<HomeScreen />} />
+			<Route  path="/item/:itemId" element={<ItemDetailsScreen />} />
 		</Route>
 	)
 );

@@ -7,7 +7,7 @@ function App() {
 	return (
 		<div className='app'>
 			<Navbar />
-			<main style={{ paddingTop: '80px' }}>
+			<main style={{ paddingTop: '120px' }}>
 				<Container>
 					<Outlet />
 				</Container>

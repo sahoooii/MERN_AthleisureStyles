@@ -5,7 +5,7 @@ import HomeItems from '../components/Home/HomeItems';
 
 const HomeScreen = () => {
 	return (
-		<Box margin='120px auto' width='100%'>
+		<Box margin='0 auto' width='100%'>
 			{/* Carousel */}
 			<HomeTabs />
 			<HomeItems />
