@@ -25,20 +25,18 @@ import * as yup from 'yup';
 import ButtonComponent from '../ButtonComponent';
 import { shades } from '../../theme';
 
-
-
-const ReviewForm = ({item}) => {
+const ReviewForm = ({ item }) => {
 	// For review
 	const [rating, setRating] = useState('');
 	const [comment, setComment] = useState('');
 
 	// For Validation
-	const reviewSchema = yup.object().shape({
+	const reviewValidationSchema = yup.object().shape({
 		rate: yup.number().required('Please rating this item'),
-		comment: yup.string().required('Let us know, something comment'),
+		comment: yup.string().required('Let us know, something your comment'),
 	});
 
-	const initialValueReview = {
+	const initialReviewValue = {
 		rate: '',
 		comment: '',
 	};
@@ -62,11 +60,14 @@ const ReviewForm = ({item}) => {
 						</Typography>
 					</AccordionSummary>
 
+					{/* Review Form */}
 					<AccordionDetails>
 						<Formik
-							onSubmit={handleFormSubmit}
-							initialValues={initialValueReview}
-							validationSchema={reviewSchema}
+							initialValues={{ ...initialReviewValue }}
+							validationSchema={reviewValidationSchema}
+							onSubmit={(values) => {
+								console.log(values);
+							}}
 						>
 							{({
 								values,
