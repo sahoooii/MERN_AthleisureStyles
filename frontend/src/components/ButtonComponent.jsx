@@ -6,6 +6,7 @@ const ButtonComponent = ({
 	children,
 	backgroundColor = shades.blue[500],
 	type = 'submit',
+	...otherProps
 }) => {
 	return (
 		<Button
@@ -21,8 +22,8 @@ const ButtonComponent = ({
 				fontSize: '16px',
 				fontFamily: 'Play',
 				'&:hover': { backgroundColor: shades.blue[300] },
-				// onClick: handleSubmit,
 			}}
+			{...otherProps}
 		>
 			{children}
 		</Button>

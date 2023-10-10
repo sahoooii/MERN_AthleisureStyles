@@ -8,7 +8,7 @@ const items = [
 		brand: 'adidas',
 		category: 'Jacket',
 		price: 89.99,
-		countInStock: 15,
+		countInStock: 0,
 		rating: 0.5,
 		numReviews: 0,
 		likes: 2,

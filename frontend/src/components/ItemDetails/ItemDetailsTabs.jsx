@@ -29,7 +29,7 @@ const ItemDetailsTabs = ({ item }) => {
 				</Tabs>
 			</Box>
 
-			<Box display='flex' flexWrap='wrap' gap='15px' mb='150px'>
+			<Box display='flex' flexWrap='wrap' gap='15px' mb='120px'>
 				{value === 'description' && (
 					<Typography
 						variant='p'

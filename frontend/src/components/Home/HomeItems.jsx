@@ -70,17 +70,10 @@ const HomeItems = () => {
 						</Link>
 
 						{/* Rating */}
-						<Box
-							display='flex'
-							justifyContent='space-between'
-							alignItems='center'
-							marginBottom='5px'
-						>
-							<Typography variant='subtitle2'>
-								<RatingLogic rating={item.rating} />
-							</Typography>
+						<Box display='flex' alignItems='center' marginBottom='5px'>
+							<RatingLogic rating={item.rating} />
 							{item.numReviews > 0 && (
-								<Typography variant='subtitle2'>
+								<Typography variant='subtitle2' ml='8px'>
 									{item.numReviews} Reviews
 								</Typography>
 							)}
