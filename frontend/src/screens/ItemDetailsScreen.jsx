@@ -127,9 +127,7 @@ const ItemDetailsScreen = () => {
 
 					{/* Add To Cart */}
 					<Box display='flex' alignItems='center'>
-						<ButtonComponent
-							children='ADD TO CART'
-						/>
+						<ButtonComponent children='ADD TO CART' />
 						<IconButton
 							sx={{
 								alignItems: 'center',
@@ -142,6 +140,7 @@ const ItemDetailsScreen = () => {
 					</Box>
 				</Box>
 			</Box>
+
 			{/* Tabs */}
 			<ItemDetailsTabs item={item} />
 		</Box>
