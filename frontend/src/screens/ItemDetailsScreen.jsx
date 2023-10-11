@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { IconButton, Box, Typography, Button } from '@mui/material';
 import { FavoriteBorderOutlined, Add, Remove } from '@mui/icons-material';
 import { shades } from '../theme';
-import items from '../items';
+import axios from 'axios';
 import RatingLogic from '../components/RatingLogic';
 import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
 import ButtonComponent from '../components/ButtonComponent';
@@ -11,7 +11,15 @@ import OnlyLeftMessage from '../components/OnlyLeftMessage';
 
 const ItemDetailsScreen = () => {
 	const { itemId } = useParams();
-	const item = items.find((item) => item._id === itemId);
+	const [item, setItem] = useState([]);
+
+	useEffect(() => {
+		const fetchItem = async () => {
+			const { data } = await axios.get(`/api/items/${itemId}`);
+			setItem(data);
+		};
+		fetchItem();
+	}, [itemId]);
 
 	const [count, setCount] = useState(1);
 
@@ -49,7 +57,7 @@ const ItemDetailsScreen = () => {
 
 						{/* Reviews */}
 						<Box display='flex' alignItems='center' mb='12px'>
-							<RatingLogic rating={item.rating} />
+							{item.rating && <RatingLogic rating={item.rating} />}
 							{item.numReviews > 0 && (
 								<Typography variant='span' ml='8px'>
 									{item.numReviews} Reviews

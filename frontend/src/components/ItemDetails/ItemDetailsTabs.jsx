@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ReviewForm from './ReviewForm';
+
 const ItemDetailsTabs = ({ item }) => {
 	const isNonMediumScreen = useMediaQuery('(min-width:900px)');
 

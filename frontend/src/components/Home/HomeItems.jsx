@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
 	IconButton,
@@ -14,12 +14,22 @@ import {
 	useMediaQuery,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import items from '../../items';
 import RatingLogic from '../RatingLogic';
 
 const HomeItems = () => {
+	const [items, setItems] = useState([]);
+
+	useEffect(() => {
+		const fetchItems = async () => {
+			const { data } = await axios.get('/api/items');
+			setItems(data);
+		};
+		fetchItems();
+	}, []);
+
 	// const [isLiked, setIsLiked] = useState(false);
 
 	const navigate = useNavigate();
