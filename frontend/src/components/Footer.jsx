@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Box, Container, Typography } from '@mui/material';
+import { AppBar, Container, Typography } from '@mui/material';
 
 const Footer = () => {
 	const currentYear = new Date().getFullYear();

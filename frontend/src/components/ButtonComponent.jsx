@@ -2,7 +2,12 @@ import React from 'react';
 import { Button } from '@mui/material';
 import { shades } from '../theme';
 
-const ButtonComponent = ({ children, backgroundColor = shades.blue[500], type='submit' }) => {
+const ButtonComponent = ({
+	children,
+	backgroundColor = shades.blue[500],
+	type = 'submit',
+	...otherProps
+}) => {
 	return (
 		<Button
 			variant='contained'
@@ -18,6 +23,7 @@ const ButtonComponent = ({ children, backgroundColor = shades.blue[500], type='s
 				fontFamily: 'Play',
 				'&:hover': { backgroundColor: shades.blue[300] },
 			}}
+			{...otherProps}
 		>
 			{children}
 		</Button>

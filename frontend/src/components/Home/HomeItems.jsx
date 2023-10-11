@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
 	IconButton,
@@ -14,13 +14,23 @@ import {
 	useMediaQuery,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import items from '../../items';
 import RatingLogic from '../RatingLogic';
 
 const HomeItems = () => {
-	const [isLiked, setIsLiked] = useState(false);
+	const [items, setItems] = useState([]);
+
+	useEffect(() => {
+		const fetchItems = async () => {
+			const { data } = await axios.get('/api/items');
+			setItems(data);
+		};
+		fetchItems();
+	}, []);
+
+	// const [isLiked, setIsLiked] = useState(false);
 
 	const navigate = useNavigate();
 	const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -70,17 +80,10 @@ const HomeItems = () => {
 						</Link>
 
 						{/* Rating */}
-						<Box
-							display='flex'
-							justifyContent='space-between'
-							alignItems='center'
-							marginBottom='5px'
-						>
-							<Typography variant='subtitle2'>
-								<RatingLogic rating={item.rating} />
-							</Typography>
+						<Box display='flex' alignItems='center' marginBottom='5px'>
+							<RatingLogic rating={item.rating} />
 							{item.numReviews > 0 && (
-								<Typography variant='subtitle2'>
+								<Typography variant='subtitle2' ml='8px'>
 									{item.numReviews} Reviews
 								</Typography>
 							)}
@@ -89,13 +92,9 @@ const HomeItems = () => {
 						<Box display='flex' justifyContent='space-between'>
 							<Typography variant='h3'>${item.price}</Typography>
 
-							{/* Will edit later bugs */}
+							{/* Will edit later */}
 							<IconButton aria-label='add to favorites' onClick={handleLike}>
-								{item.likes > 0 ? (
-									<Favorite sx={{ color: 'red' }} />
-								) : (
-									<FavoriteBorder />
-								)}
+								<FavoriteBorder />
 							</IconButton>
 						</Box>
 					</CardContent>

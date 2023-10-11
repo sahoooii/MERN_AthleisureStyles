@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ReviewForm from './ReviewForm';
+
 const ItemDetailsTabs = ({ item }) => {
 	const isNonMediumScreen = useMediaQuery('(min-width:900px)');
 
@@ -29,7 +30,7 @@ const ItemDetailsTabs = ({ item }) => {
 				</Tabs>
 			</Box>
 
-			<Box display='flex' flexWrap='wrap' gap='15px' mb='150px'>
+			<Box display='flex' flexWrap='wrap' gap='15px' mb='120px'>
 				{value === 'description' && (
 					<Typography
 						variant='p'

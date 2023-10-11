@@ -8,10 +8,9 @@ const items = [
 		brand: 'adidas',
 		category: 'Jacket',
 		price: 89.99,
-		countInStock: 15,
+		countInStock: 0,
 		rating: 0.5,
 		numReviews: 0,
-		likes: 2,
 	},
 	{
 		_id: '2',
@@ -22,10 +21,9 @@ const items = [
 		brand: 'adidas',
 		category: 'Jacket',
 		price: 69.99,
-		countInStock: 10,
+		countInStock: 5,
 		rating: 1.0,
 		numReviews: 6,
-		likes: 4,
 	},
 	{
 		_id: '3',
@@ -36,10 +34,9 @@ const items = [
 		brand: 'adidas',
 		category: 'Pants',
 		price: 59.99,
-		countInStock: 5,
+		countInStock: 4,
 		rating: 1.5,
 		numReviews: 3,
-		likes: 0,
 	},
 	{
 		_id: '4',
@@ -50,10 +47,9 @@ const items = [
 		brand: 'adidas',
 		category: 'Sweat Shirt',
 		price: 89.99,
-		countInStock: 10,
+		countInStock: 1,
 		rating: 2.0,
 		numReviews: 3,
-		likes: 0,
 	},
 	{
 		_id: '5',
@@ -67,7 +63,6 @@ const items = [
 		countInStock: 7,
 		rating: 2.5,
 		numReviews: 0,
-		likes: 7,
 	},
 	{
 		_id: '6',
@@ -81,7 +76,6 @@ const items = [
 		countInStock: 0,
 		rating: 3.0,
 		numReviews: 4,
-		likes: 8,
 	},
 	{
 		_id: '7',
@@ -95,7 +89,6 @@ const items = [
 		countInStock: 0,
 		rating: 3.5,
 		numReviews: 0,
-		likes: 0,
 	},
 	{
 		_id: '8',
@@ -109,7 +102,6 @@ const items = [
 		countInStock: 10,
 		rating: 4.0,
 		numReviews: 4,
-		likes: 1,
 	},
 	{
 		_id: '9',
@@ -123,7 +115,6 @@ const items = [
 		countInStock: 7,
 		rating: 4.5,
 		numReviews: 4,
-		likes: 0,
 	},
 	{
 		_id: '10',
@@ -137,7 +128,6 @@ const items = [
 		countInStock: 10,
 		rating: 5.0,
 		numReviews: 6,
-		likes: 2,
 	},
 	{
 		_id: '11',
@@ -151,7 +141,6 @@ const items = [
 		countInStock: 8,
 		rating: 3.5,
 		numReviews: 4,
-		likes: 2,
 	},
 	{
 		_id: '12',
@@ -165,7 +154,6 @@ const items = [
 		countInStock: 8,
 		rating: 5.0,
 		numReviews: 4,
-		likes: 0,
 	},
 	{
 		_id: '13',
@@ -179,7 +167,6 @@ const items = [
 		countInStock: 0,
 		rating: 4.0,
 		numReviews: 3,
-		likes: 2,
 	},
 	{
 		_id: '14',
@@ -193,7 +180,6 @@ const items = [
 		countInStock: 25,
 		rating: 4.5,
 		numReviews: 5,
-		likes: 2,
 	},
 	{
 		_id: '15',
@@ -207,7 +193,6 @@ const items = [
 		countInStock: 5,
 		rating: 5.0,
 		numReviews: 3,
-		likes: 7,
 	},
 	{
 		_id: '16',
@@ -221,7 +206,6 @@ const items = [
 		countInStock: 5,
 		rating: 4.0,
 		numReviews: 10,
-		likes: 2,
 	},
 	{
 		_id: '17',
@@ -235,7 +219,6 @@ const items = [
 		countInStock: 8,
 		rating: 3.5,
 		numReviews: 3,
-		likes: 2,
 	},
 	{
 		_id: '18',
@@ -249,7 +232,6 @@ const items = [
 		countInStock: 10,
 		rating: 2.5,
 		numReviews: 4,
-		likes: 0,
 	},
 ];
 
