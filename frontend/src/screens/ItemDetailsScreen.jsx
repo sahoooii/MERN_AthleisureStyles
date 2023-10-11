@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { IconButton, Box, Typography, Button } from '@mui/material';
-import {
-	FavoriteBorderOutlined,
-	Add,
-	Remove,
-} from '@mui/icons-material';
+import { FavoriteBorderOutlined, Add, Remove } from '@mui/icons-material';
 import { shades } from '../theme';
 import items from '../items';
 import RatingLogic from '../components/RatingLogic';
 import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
 import ButtonComponent from '../components/ButtonComponent';
+import OnlyLeftMessage from '../components/OnlyLeftMessage';
 
 const ItemDetailsScreen = () => {
 	const { itemId } = useParams();
@@ -85,11 +82,15 @@ const ItemDetailsScreen = () => {
 
 						{/* Stock */}
 						<Box mb='10px'>
-							{item.countInStock <= 0 && (
+							{item.countInStock === 0 && (
 								<Typography variant='h3' color='red'>
 									Out Of Stock
 								</Typography>
 							)}
+						</Box>
+						{/* Stock Alert */}
+						<Box mb='10px'>
+							<OnlyLeftMessage item={item} />
 						</Box>
 
 						{/* Count Button */}
@@ -126,8 +127,8 @@ const ItemDetailsScreen = () => {
 									</IconButton>
 								)}
 								<Typography sx={{ p: '0 5px' }}>{count}</Typography>
-
-								{item.countInStock <= 0 ? (
+								{/* When count=0 and over countInStock add disabled to Add button */}
+								{item.countInStock === 0 || item.countInStock <= count ? (
 									<IconButton disabled>
 										<Add />
 									</IconButton>
@@ -141,10 +142,10 @@ const ItemDetailsScreen = () => {
 
 						{/* Add To Cart */}
 						<Box display='flex' alignItems='center'>
-								<ButtonComponent
-									children='ADD TO CART'
-									disabled={item.countInStock <= 0}
-								/>
+							<ButtonComponent
+								children='ADD TO CART'
+								disabled={item.countInStock <= 0}
+							/>
 							<IconButton
 								sx={{
 									alignItems: 'center',
