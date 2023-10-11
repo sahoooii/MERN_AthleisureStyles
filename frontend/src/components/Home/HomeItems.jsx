@@ -20,7 +20,7 @@ import items from '../../items';
 import RatingLogic from '../RatingLogic';
 
 const HomeItems = () => {
-	const [isLiked, setIsLiked] = useState(false);
+	// const [isLiked, setIsLiked] = useState(false);
 
 	const navigate = useNavigate();
 	const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -82,13 +82,9 @@ const HomeItems = () => {
 						<Box display='flex' justifyContent='space-between'>
 							<Typography variant='h3'>${item.price}</Typography>
 
-							{/* Will edit later bugs */}
+							{/* Will edit later */}
 							<IconButton aria-label='add to favorites' onClick={handleLike}>
-								{item.likes > 0 ? (
-									<Favorite sx={{ color: 'red' }} />
-								) : (
-									<FavoriteBorder />
-								)}
+								<FavoriteBorder />
 							</IconButton>
 						</Box>
 					</CardContent>
