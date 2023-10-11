@@ -15,14 +15,15 @@
     "url": "git+https://github.com/sahoooii/MERN_AthleisureStyles.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Saho.N",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sahoooii/MERN_AthleisureStyles/issues"
   },
   "homepage": "https://github.com/sahoooii/MERN_AthleisureStyles#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongoose": "^7.6.1"
   },
   "devDependencies": {
     "concurrently": "^8.2.1",
