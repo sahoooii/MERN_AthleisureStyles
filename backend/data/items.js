@@ -1,6 +1,5 @@
 const items = [
 	{
-		_id: '1',
 		name: 'adidas Classics Black Jacket',
 		image: '/images/adidas/jacket/adidas-blk-jkt.jpg',
 		description:
@@ -13,7 +12,6 @@ const items = [
 		numReviews: 0,
 	},
 	{
-		_id: '2',
 		name: 'ADICOLOR Classics Red TRACK JACKET',
 		image: '/images/adidas/jacket/adidas-red-jkt.jpg',
 		description:
@@ -26,7 +24,6 @@ const items = [
 		numReviews: 6,
 	},
 	{
-		_id: '3',
 		name: 'adidas TREFOIL Gray Sweat Pants',
 		image: '/images/adidas/bottom/adidas-pants.jpg',
 		description:
@@ -39,7 +36,6 @@ const items = [
 		numReviews: 3,
 	},
 	{
-		_id: '4',
 		name: 'ADICOLOR TREFOIL White Hoodie',
 		image: '/images/adidas/sweatshirt/adidas-wht-swt.jpg',
 		description:
@@ -52,7 +48,6 @@ const items = [
 		numReviews: 3,
 	},
 	{
-		_id: '5',
 		name: 'ADICOLOR CREW RED Sweatshirt',
 		image: '/images/adidas/sweatshirt/adidas-res-swt.jpg',
 		description:
@@ -65,7 +60,6 @@ const items = [
 		numReviews: 0,
 	},
 	{
-		_id: '6',
 		name: 'Adidas CLASSICS White TREFOIL TEE',
 		image: '/images/adidas/tee/adidas-wht-tee.jpg',
 		description:
@@ -78,7 +72,6 @@ const items = [
 		numReviews: 4,
 	},
 	{
-		_id: '7',
 		name: 'Adidas CLASSICS Red TREFOIL TEE',
 		image: '/images/adidas/tee/adidas-red-tee.jpg',
 		description:
@@ -91,7 +84,6 @@ const items = [
 		numReviews: 0,
 	},
 	{
-		_id: '8',
 		name: 'Nike Oversized White Jacket',
 		image: '/images/nike/jacket/nike-wht-jkt.jpg',
 		description:
@@ -104,7 +96,6 @@ const items = [
 		numReviews: 4,
 	},
 	{
-		_id: '9',
 		name: 'Nike Sportswear Windrunner',
 		image: '/images/nike/jacket/nike-red-jkt.jpg',
 		description:
@@ -117,7 +108,6 @@ const items = [
 		numReviews: 4,
 	},
 	{
-		_id: '10',
 		name: 'Nike CLASSICS Black Sweat Pants',
 		image: '/images/nike/bottom/nike-blk-pants.jpg',
 		description:
@@ -130,7 +120,6 @@ const items = [
 		numReviews: 6,
 	},
 	{
-		_id: '11',
 		name: 'Nike CLASSICS Black Hoodie',
 		image: '/images/nike/sweatshirt/nike-blk-hoodie.jpg',
 		description:
@@ -143,7 +132,6 @@ const items = [
 		numReviews: 4,
 	},
 	{
-		_id: '12',
 		name: 'Nike CLASSICS MOS Sweatshirt',
 		image: '/images/nike/sweatshirt/nike-mos-sweat.jpg',
 		description:
@@ -156,7 +144,6 @@ const items = [
 		numReviews: 4,
 	},
 	{
-		_id: '13',
 		name: 'adidas CLASSICS Black Knit Cap',
 		image: '/images/cap/adidas-blk-knit.jpg',
 		description:
@@ -169,7 +156,6 @@ const items = [
 		numReviews: 3,
 	},
 	{
-		_id: '14',
 		name: 'Columbia Basic Daily Cap',
 		image: '/images/cap/columbia-cap.jpg',
 		description:
@@ -182,7 +168,6 @@ const items = [
 		numReviews: 5,
 	},
 	{
-		_id: '15',
 		name: 'Supreme Denim $ Cap',
 		image: '/images/cap/supreme-cap.jpg',
 		description:
@@ -195,7 +180,6 @@ const items = [
 		numReviews: 3,
 	},
 	{
-		_id: '16',
 		name: 'JANSPORT Back To School Black Backpack',
 		image: '/images/backpack/jansport-bp.jpg',
 		description:
@@ -208,7 +192,6 @@ const items = [
 		numReviews: 10,
 	},
 	{
-		_id: '17',
 		name: 'KANKEN Stylish Greenish Backpack',
 		image: '/images/backpack/kanken-grey-bp.jpg',
 		description:
@@ -221,7 +204,6 @@ const items = [
 		numReviews: 3,
 	},
 	{
-		_id: '18',
 		name: 'adidas red  Stadium Backpack',
 		image: '/images/backpack/adidas-red-bp.jpg',
 		description:

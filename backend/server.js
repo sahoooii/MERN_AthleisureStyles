@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
-import items from './data/items.js';
+import itemRoutes from './routes/itemRoutes.js';
 
 dotenv.config();
 connectDB(); // Connect to Mongo DB
@@ -13,16 +13,7 @@ app.get('/', (req, res) => {
 	res.send('API is running...');
 });
 
-// Get all items
-app.get('/api/items', (req, res) => {
-	res.json(items);
-});
-
-// Single item
-app.get('/api/items/:id', (req, res) => {
-	const item = items.find((item) => item._id === req.params.id);
-	res.json(item);
-});
+app.use('/api/items', itemRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
