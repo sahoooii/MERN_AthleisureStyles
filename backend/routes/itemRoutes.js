@@ -20,9 +20,10 @@ router.get(
 		const item = await Item.findById(req.params.id);
 
 		if (item) {
-			res.json(item);
+			return res.json(item);
 		}
-		res.status(404).json({ message: 'Item not Found' });
+		res.status(404);
+		throw new Error('Item not Found');
 	})
 );
 
