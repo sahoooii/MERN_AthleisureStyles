@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/items', itemRoutes);
 
+// error handling
 app.use(notFound);
 app.use(errorHandler);
 
