@@ -8,6 +8,8 @@ import RatingLogic from '../components/RatingLogic';
 import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
 import ButtonComponent from '../components/ButtonComponent';
 import OnlyLeftMessage from '../components/OnlyLeftMessage';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 
 const ItemDetailsScreen = () => {
 	const { itemId } = useParams();
@@ -19,19 +21,11 @@ const ItemDetailsScreen = () => {
 	return (
 		<>
 			{isLoading ? (
-				<Typography
-					variant='h3'
-					sx={{ display: 'flex', justifyContent: 'center' }}
-				>
-					Loading...
-				</Typography>
+				<Loader />
 			) : error ? (
-				<Typography
-					variant='h3'
-					sx={{ display: 'flex', justifyContent: 'center', color: 'red' }}
-				>
+				<Message severity='error'>
 					{error?.data?.message || error.error}
-				</Typography>
+				</Message>
 			) : (
 				<Box width='80%' sx={{ m: { md: '50px auto', xs: '20px auto' } }}>
 					<Box display='flex' flexWrap='wrap' columnGap='40px'>

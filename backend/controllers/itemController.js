@@ -19,7 +19,7 @@ const getItemById = asyncHandler(async (req, res) => {
 		return res.json(item);
 	} else {
 		res.status(404);
-		throw new Error('Item not Found');
+		throw new Error('Resource Not Found');
 	}
 });
 

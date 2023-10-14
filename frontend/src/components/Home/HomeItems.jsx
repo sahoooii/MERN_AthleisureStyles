@@ -19,6 +19,8 @@ import { useGetItemsQuery } from '../../slices/itemsApiSlice';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RatingLogic from '../RatingLogic';
+import Loader from '../Loader';
+import Message from '../Message';
 
 const HomeItems = () => {
 	const { data: items, isLoading, error } = useGetItemsQuery();
@@ -32,19 +34,11 @@ const HomeItems = () => {
 	return (
 		<>
 			{isLoading ? (
-				<Typography
-					variant='h3'
-					sx={{ display: 'flex', justifyContent: 'center' }}
-				>
-					Loading...
-				</Typography>
+				<Loader />
 			) : error ? (
-				<Typography
-					variant='h3'
-					sx={{ display: 'flex', justifyContent: 'center', color: 'red' }}
-				>
+				<Message severity='error'>
 					{error?.data?.message || error.error}
-				</Typography>
+				</Message>
 			) : (
 				<Box
 					margin='0 auto'
