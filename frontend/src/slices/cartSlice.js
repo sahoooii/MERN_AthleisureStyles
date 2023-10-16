@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = localStorage.getItem('cart')
-	? JSON.parse(localStorage.getItem * 'cart')
+	? JSON.parse(localStorage.getItem('cart'))
 	: { cartItems: [] };
 
 const addDecimals = (num) => {
@@ -13,12 +13,13 @@ const cartSlice = createSlice({
 	initialState,
 	reducers: {
 		addToCart: (state, action) => {
+			// Add to this new item to the cart
 			const item = action.payload;
-			// Is item already in the cart?
+			// If item already in the cart?
 			const existItem = state.cartItems.find(
 				(cartItem) => cartItem._id === item._id
 			);
-
+			// Update quantity
 			if (existItem) {
 				state.cartItems = state.cartItems.map((cartItem) =>
 					cartItem._id === existItem._id ? item : cartItem
