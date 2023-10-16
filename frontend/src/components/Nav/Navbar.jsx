@@ -20,14 +20,35 @@ import {
 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { shades } from '../../theme';
+import { useSelector } from 'react-redux';
 import storeLogo from '../../assets/logo/athleisureLogoMini.png';
 import shokota from '../../assets/shokota.JPG';
 import MenuLink from './MenuLink';
 import Footer from '../Footer';
+import { styled } from '@mui/material/styles';
 
 const Navbar = () => {
 	const [isLogin, setLogin] = useState(true);
 	const [open, setOpen] = useState(false);
+
+	const { cartItems } = useSelector((state) => state.cart);
+	console.log(cartItems);
+
+	// Badge
+	const badgeContent = cartItems.reduce(
+		(acc, currentItem) => acc + currentItem.quantity,
+		0
+	);
+
+	const StyledBadge = styled(Badge)(() => ({
+		'& .MuiBadge-badge': {
+			right: -5,
+			top: 1,
+			padding: '0 4px',
+			color: 'white',
+			fontWeight: 'bold',
+		},
+	}));
 
 	const anchorEl = useRef(null);
 	// Menu Open
@@ -38,7 +59,7 @@ const Navbar = () => {
 	const handleClose = () => {
 		setOpen(false);
 	};
-	// bottom of center icon
+	// bottom of center icon avatar
 	const avatarStyle = {
 		position: 'absolute',
 		zIndex: 1,
@@ -72,7 +93,6 @@ const Navbar = () => {
 					alignItems='center'
 				>
 					<Box
-						// onClick={() => {}}
 						sx={{
 							'&:hover': { cursor: 'pointer' },
 						}}
@@ -109,9 +129,17 @@ const Navbar = () => {
 						/>
 						<Box display='flex' alignItems='center'>
 							<Link to='/cart'>
-								<IconButton>
-									<ShoppingBagOutlined />
-								</IconButton>
+								{cartItems.length > 0 ? (
+									<IconButton aria-label='cart'>
+										<StyledBadge badgeContent={badgeContent} color='green'>
+											<ShoppingBagOutlined />
+										</StyledBadge>
+									</IconButton>
+								) : (
+									<IconButton>
+										<ShoppingBagOutlined />
+									</IconButton>
+								)}
 							</Link>
 						</Box>
 
@@ -288,12 +316,21 @@ const Navbar = () => {
 
 							<Box sx={{ flexGrow: 1 }} />
 							<Link to='/cart'>
-								<IconButton color='inherit'>
+								{cartItems.length > 0 ? (
+									<IconButton aria-label='cart'>
+										<StyledBadge badgeContent={badgeContent} color='green'>
+											<ShoppingBagOutlined
+												fontSize='large'
+												sx={{ color: 'white' }}
+											/>
+										</StyledBadge>
+									</IconButton>
+								) : (
 									<ShoppingBagOutlined
 										fontSize='large'
 										sx={{ color: 'white' }}
 									/>
-								</IconButton>
+								)}
 							</Link>
 						</Toolbar>
 					</AppBar>
