@@ -32,7 +32,6 @@ const Navbar = () => {
 	const [open, setOpen] = useState(false);
 
 	const { cartItems } = useSelector((state) => state.cart);
-	console.log(cartItems);
 
 	// Badge
 	const badgeContent = cartItems.reduce(

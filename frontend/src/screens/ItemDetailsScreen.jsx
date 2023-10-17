@@ -35,9 +35,11 @@ const ItemDetailsScreen = () => {
 			{isLoading ? (
 				<Loader />
 			) : error ? (
-				<Message severity='error'>
-					{error?.data?.message || error.error}
-				</Message>
+				<Box margin='0 auto' width='80%'>
+					<Message severity='error'>
+						{error?.data?.message || error.error}
+					</Message>
+				</Box>
 			) : (
 				<Box width='80%' sx={{ m: { md: '50px auto', xs: '20px auto' } }}>
 					<Box display='flex' flexWrap='wrap' columnGap='40px'>
