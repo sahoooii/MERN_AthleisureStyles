@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { addToCart } from '../slices/cartSlice';
+import { addToCart, removeFromCart } from '../slices/cartSlice';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import Message from '../components/Utils/Message';
 import CloseIcon from '@mui/icons-material/Close';
@@ -31,8 +31,17 @@ const CartScreen = () => {
 
 	// Change the quantity of items
 	// quantity = selected value of quantity
-	const addToCartHandler = async (item, quantity) => {
+	const addToCartHandler = (item, quantity) => {
 		dispatch(addToCart({ ...item, quantity }));
+	};
+
+	const removeFromCartHandler = async (id) => {
+		dispatch(removeFromCart(id));
+	};
+
+	// Check login
+	const checkoutHandler = () => {
+		navigate(`/login?redirect=/shipping`);
 	};
 
 	const FlexBox = styled(Box)`
@@ -122,7 +131,9 @@ const CartScreen = () => {
 												</Grid>
 												{/* Delete Items Button */}
 												<Grid item xs={1}>
-													<IconButton>
+													<IconButton
+														onClick={() => removeFromCartHandler(item._id)}
+													>
 														<CloseIcon />
 													</IconButton>
 												</Grid>
@@ -184,6 +195,7 @@ const CartScreen = () => {
 												type='button'
 												width='100%'
 												disabled={cartItems.length === 0}
+												onClick={checkoutHandler}
 											>
 												Proceed To Checkout
 											</ButtonComponent>
