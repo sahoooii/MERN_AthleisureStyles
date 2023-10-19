@@ -6,12 +6,12 @@ import { shades } from '../theme';
 import { useGetItemDetailsQuery } from '../slices/itemsApiSlice';
 import { addToCart } from '../slices/cartSlice';
 import { useDispatch } from 'react-redux';
-import RatingLogic from '../components/RatingLogic';
+import RatingLogic from '../components/Utils/RatingLogic';
 import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
-import ButtonComponent from '../components/ButtonComponent';
+import ButtonComponent from '../components/Utils/ButtonComponent';
 import OnlyLeftMessage from '../components/OnlyLeftMessage';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
+import Loader from '../components/Utils/Loader';
+import Message from '../components/Utils/Message';
 
 const ItemDetailsScreen = () => {
 	const dispatch = useDispatch();

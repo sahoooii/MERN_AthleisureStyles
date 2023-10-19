@@ -18,9 +18,9 @@ import { Link } from 'react-router-dom';
 import { useGetItemsQuery } from '../../slices/itemsApiSlice';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import RatingLogic from '../RatingLogic';
-import Loader from '../Loader';
-import Message from '../Message';
+import RatingLogic from '../Utils/RatingLogic';
+import Loader from '../Utils/Loader';
+import Message from '../Utils/Message';
 
 const HomeItems = () => {
 	const { data: items, isLoading, error } = useGetItemsQuery();
