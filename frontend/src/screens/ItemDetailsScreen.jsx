@@ -1,31 +1,45 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { IconButton, Box, Typography, Button } from '@mui/material';
 import { FavoriteBorderOutlined, Add, Remove } from '@mui/icons-material';
 import { shades } from '../theme';
 import { useGetItemDetailsQuery } from '../slices/itemsApiSlice';
-import RatingLogic from '../components/RatingLogic';
+import { addToCart } from '../slices/cartSlice';
+import { useDispatch } from 'react-redux';
+import RatingLogic from '../components/Utils/RatingLogic';
 import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
-import ButtonComponent from '../components/ButtonComponent';
+import ButtonComponent from '../components/Utils/ButtonComponent';
 import OnlyLeftMessage from '../components/OnlyLeftMessage';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
+import Loader from '../components/Utils/Loader';
+import Message from '../components/Utils/Message';
 
 const ItemDetailsScreen = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const { itemId } = useParams();
+
+	// Count quantity
+	const [quantity, setQuantity] = useState(1);
 
 	const { data: item, isLoading, error } = useGetItemDetailsQuery(itemId);
 
-	const [count, setCount] = useState(1);
+	const addToCartHandler = () => {
+		dispatch(addToCart({ ...item, quantity }));
+
+		navigate('/cart');
+	};
 
 	return (
 		<>
 			{isLoading ? (
 				<Loader />
 			) : error ? (
-				<Message severity='error'>
-					{error?.data?.message || error.error}
-				</Message>
+				<Box margin='0 auto' width='80%'>
+					<Message severity='error'>
+						{error?.data?.message || error.error}
+					</Message>
+				</Box>
 			) : (
 				<Box width='80%' sx={{ m: { md: '50px auto', xs: '20px auto' } }}>
 					<Box display='flex' flexWrap='wrap' columnGap='40px'>
@@ -96,7 +110,7 @@ const ItemDetailsScreen = () => {
 
 								{/* Stock */}
 								<Box mb='10px'>
-									{item.countInStock === 0 && (
+									{item.countInStock <= 0 && (
 										<Typography variant='h3' color='red'>
 											Out Of Stock
 										</Typography>
@@ -130,26 +144,32 @@ const ItemDetailsScreen = () => {
 										borderRadius={1}
 										width='120px'
 									>
-										{/* When count=1 add disabled to Remove button */}
-										{count <= 1 ? (
+										{/* When quantity=1 add disabled to Remove button */}
+										{quantity <= 1 ? (
 											<IconButton disabled>
 												<Remove />
 											</IconButton>
 										) : (
 											<IconButton
-												onClick={() => setCount(Math.max(count - 1, 1))}
+												onClick={() => setQuantity(Math.max(quantity - 1, 1))}
 											>
 												<Remove />
 											</IconButton>
 										)}
-										<Typography sx={{ p: '0 5px' }}>{count}</Typography>
-										{/* When count=0 and over countInStock add disabled to Add button */}
-										{item.countInStock === 0 || item.countInStock <= count ? (
+										<Typography
+											sx={{ p: '0 5px' }}
+											value={quantity}
+											onChange={(e) => setQuantity(Number(e.target.value))}
+										>
+											{quantity}
+										</Typography>
+										{/* When count< 0 and over countInStock add disabled to Add button */}
+										{item.countInStock <= 0 || item.countInStock <= quantity ? (
 											<IconButton disabled>
 												<Add />
 											</IconButton>
 										) : (
-											<IconButton onClick={() => setCount(count + 1)}>
+											<IconButton onClick={() => setQuantity(quantity + 1)}>
 												<Add />
 											</IconButton>
 										)}
@@ -161,6 +181,7 @@ const ItemDetailsScreen = () => {
 									<ButtonComponent
 										children='ADD TO CART'
 										disabled={item.countInStock <= 0}
+										onClick={addToCartHandler}
 									/>
 									<IconButton
 										sx={{
