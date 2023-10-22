@@ -35,11 +35,11 @@ const CartScreen = () => {
 		dispatch(addToCart({ ...item, quantity }));
 	};
 
-	const removeFromCartHandler = async (id) => {
+	const removeFromCartHandler = (id) => {
 		dispatch(removeFromCart(id));
 	};
 
-	// Check login
+	// Check login or not
 	const checkoutHandler = () => {
 		navigate(`/login?redirect=/shipping`);
 	};
@@ -61,7 +61,7 @@ const CartScreen = () => {
 							<Box>
 								<FlexBox mb='30px'>
 									<Typography variant='h3'>
-										Shopping Cart ({cartItems.length})
+										Shopping Cart
 									</Typography>
 								</FlexBox>
 
@@ -119,9 +119,9 @@ const CartScreen = () => {
 																}
 															>
 																{[...Array(item.countInStock).keys()].map(
-																	(qty) => (
-																		<MenuItem key={qty + 1} value={qty + 1}>
-																			{qty + 1}
+																	(quantity) => (
+																		<MenuItem key={quantity + 1} value={quantity + 1}>
+																			{quantity + 1}
 																		</MenuItem>
 																	)
 																)}
