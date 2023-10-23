@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import itemRoutes from './routes/itemRoutes.js';
@@ -10,6 +10,10 @@ connectDB(); // Connect to Mongo DB
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
 	res.send('API is running...');

@@ -5,7 +5,23 @@ import User from '../models/userModel.js';
 // @route POST /api/users/login
 // @access Public
 const loginUser = asyncHandler(async (req, res) => {
-	res.send('Auth login user');
+	const { email, password } = req.body;
+
+	// check user
+	const user = await User.findOne({ email: email });
+	// user exist check
+	if (user && (await user.matchPassword(password))) {
+		res.json({
+			_id: user._id,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			email: user.email,
+			isAdmin: user.isAdmin,
+		});
+	} else {
+		res.status(401);
+		throw new Error('Invalid Email or Password');
+	}
 });
 
 // @desc Register user
