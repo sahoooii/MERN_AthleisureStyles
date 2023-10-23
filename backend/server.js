@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import itemRoutes from './routes/itemRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/items', itemRoutes);
+app.use('/api/users', userRoutes);
 
 // error handling
 app.use(notFound);
