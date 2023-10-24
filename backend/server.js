@@ -1,5 +1,6 @@
-import express, { json } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import connectDB from './config/db.js';
 import itemRoutes from './routes/itemRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -14,6 +15,10 @@ const app = express();
 // Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Cookie parser middleware
+// To allow to access cookie.request
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
 	res.send('API is running...');
