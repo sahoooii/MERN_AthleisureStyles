@@ -15,7 +15,7 @@ const loginUser = asyncHandler(async (req, res) => {
 		// Create token
 		generateToken(res, user._id);
 
-		res.json({
+		res.status(200).json({
 			_id: user._id,
 			firstName: user.firstName,
 			lastName: user.lastName,
@@ -40,6 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
 		res.status(400);
 		throw new Error('You have already registered');
 	}
+
 	const user = await User.create({
 		firstName,
 		lastName,
@@ -88,14 +89,41 @@ const addToWishList = asyncHandler(async (req, res) => {
 // @route GET /api/users/profile
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
-	res.send('Get user profile');
+	const user = await User.findById(req.user._id);
+
+	if (user) {
+		res.status(200).json({
+			_id: user._id,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			email: user.email,
+			picturePath: user.picturePath,
+			isAdmin: user.isAdmin,
+		});
+	} else {
+		res.status(404);
+		throw new Error('User Not Found');
+	}
 });
 
 // @desc Get user profile
 // @route PUT /api/users/profile
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-	res.send('Update user profile');
+	const user = await User.findById(req.user._id);
+
+	// Only update updated field
+	if (user) {
+		user.firstName = req.body.firstName || user.firstName;
+		user.lastName = req.body.lastName || user.lastName;
+		user.email = req.body.email || user.email;
+		user.picturePath = req.body.picturePath || user.picturePath;
+
+		// Because of hashed
+		if (req.body.password) {
+			user.password = req.body.password;
+		}
+	}
 });
 
 // @Admin
