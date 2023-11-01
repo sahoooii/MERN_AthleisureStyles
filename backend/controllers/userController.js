@@ -82,7 +82,44 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @route POST /api/users/wishlist
 // @access Private
 const addToWishList = asyncHandler(async (req, res) => {
-	res.send('whishList');
+	const user = await User.findById(req.user._id);
+	const { _id } = user;
+	const { itemId } = req.body;
+
+	if (user) {
+		try {
+			const alreadyAdded = user.wishlist.find((id) => id.toString() === itemId);
+			if (alreadyAdded) {
+				let user = await User.findByIdAndUpdate(
+					_id,
+					{
+						$pull: { wishlist: itemId },
+					},
+					{
+						new: true,
+					}
+				);
+				res.status(200).json(user);
+			} else {
+				let user = await User.findByIdAndUpdate(
+					_id,
+					{
+						$push: { wishlist: itemId },
+					},
+					{
+						new: true,
+					}
+				);
+				res.status(200).json(user);
+			}
+		} catch (error) {
+			res.status(400);
+			throw new Error('Failed to add to wishlist');
+		}
+	} else {
+		res.status(404);
+		throw new Error('User Not Found');
+	}
 });
 
 // @desc Get user profile
@@ -119,10 +156,23 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 		user.email = req.body.email || user.email;
 		user.picturePath = req.body.picturePath || user.picturePath;
 
-		// Because of hashed
+		// Password was hashed, that's wht separated
 		if (req.body.password) {
 			user.password = req.body.password;
 		}
+
+		const updatedUser = await user.save();
+
+		res.status(200).json({
+			_id: updatedUser._id,
+			firstName: updatedUser.firstName,
+			lastName: updatedUser.lastName,
+			email: updatedUser.email,
+			isAdmin: updatedUser.isAdmin,
+		});
+	} else {
+		res.status(404);
+		throw new Error('User Not Found');
 	}
 });
 
