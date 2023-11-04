@@ -135,6 +135,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 			lastName: user.lastName,
 			email: user.email,
 			picturePath: user.picturePath,
+			wishlist: user.wishlist,
 			isAdmin: user.isAdmin,
 		});
 	} else {
@@ -155,6 +156,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 		user.lastName = req.body.lastName || user.lastName;
 		user.email = req.body.email || user.email;
 		user.picturePath = req.body.picturePath || user.picturePath;
+		user.wishlist = req.body.wishlist || user.wishlist;
 
 		// Password was hashed, that's wht separated
 		if (req.body.password) {
@@ -168,6 +170,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 			firstName: updatedUser.firstName,
 			lastName: updatedUser.lastName,
 			email: updatedUser.email,
+			picturePath: updatedUser.picturePath,
+			wishlist: updatedUser.wishlist,
 			isAdmin: updatedUser.isAdmin,
 		});
 	} else {
