@@ -83,12 +83,14 @@ export const theme = createTheme({
 		},
 		babyBlue: {
 			main: shades.babyBlue[500],
+			light: shades.babyBlue[200],
 		},
 		babyPink: {
 			main: shades.babyPink[500],
 		},
 		green: {
 			main: shades.green[600],
+			light: shades.green[200],
 		},
 		neutral: {
 			dark: shades.neutral[700],

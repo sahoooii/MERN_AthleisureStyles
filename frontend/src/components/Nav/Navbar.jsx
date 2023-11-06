@@ -109,23 +109,25 @@ const Navbar = () => {
 						zIndex='2'
 					>
 						{/* search function at TextField */}
-						<TextField
-							id='search'
-							type='text'
-							label='Search Keyword or Category'
-							sx={{ width: 250, input: { cursor: 'pointer' } }}
-							color='blue'
-							InputProps={{
-								style: {
-									borderRadius: '10px',
-								},
-								endAdornment: (
-									<InputAdornment position='end' sx={{ cursor: 'pointer' }}>
-										<SearchOutlined />
-									</InputAdornment>
-								),
-							}}
-						/>
+						{isLogin && (
+							<TextField
+								id='search'
+								type='text'
+								label='Search Keyword or Category'
+								sx={{ width: 250, input: { cursor: 'pointer' } }}
+								color='blue'
+								InputProps={{
+									style: {
+										borderRadius: '10px',
+									},
+									endAdornment: (
+										<InputAdornment position='end' sx={{ cursor: 'pointer' }}>
+											<SearchOutlined />
+										</InputAdornment>
+									),
+								}}
+							/>
+						)}
 						<Box display='flex' alignItems='center'>
 							<Link to='/cart'>
 								{cartItems.length > 0 ? (
@@ -209,26 +211,28 @@ const Navbar = () => {
 							</Link>
 						</Box>
 
-						<TextField
-							id='search'
-							type='text'
-							label='Search'
-							color='blue'
-							sx={{
-								width: '60%',
-								input: { cursor: 'pointer' },
-							}}
-							InputProps={{
-								style: {
-									borderRadius: '10px',
-								},
-								endAdornment: (
-									<InputAdornment position='end' sx={{ cursor: 'pointer' }}>
-										<SearchOutlined />
-									</InputAdornment>
-								),
-							}}
-						/>
+						{isLogin && (
+							<TextField
+								id='search'
+								type='text'
+								label='Search'
+								color='blue'
+								sx={{
+									width: '60%',
+									input: { cursor: 'pointer' },
+								}}
+								InputProps={{
+									style: {
+										borderRadius: '10px',
+									},
+									endAdornment: (
+										<InputAdornment position='end' sx={{ cursor: 'pointer' }}>
+											<SearchOutlined />
+										</InputAdornment>
+									),
+								}}
+							/>
+						)}
 					</Box>
 
 					{/* Bottom Footer */}

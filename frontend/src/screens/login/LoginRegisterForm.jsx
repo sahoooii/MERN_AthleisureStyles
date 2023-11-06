@@ -1,21 +1,31 @@
 import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom';
-import { Box, Grid, Typography, Stack } from '@mui/material';
-import FormTextField from '../components/FormUi/FormTextField';
-import SubmitButton from '../components/FormUi/SubmitButton';
+import { Link, useNavigate } from 'react-router-dom';
+import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import Dropzone from 'react-dropzone';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import FormTextField from '../../components/FormUi/FormTextField';
+import SubmitButton from '../../components/FormUi/SubmitButton';
 
-const LoginScreen = () => {
-
+const LoginRegisterForm = () => {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		console.log('submit');
 	};
 
-	const INITIAL_LOGIN_STATE = { email: '', password: '' };
+	const initialLoginState = { email: '', password: '' };
 
-	const LOGIN_VALIDATION = yup.object().shape({
+	const initialRegisterState = {
+		firstName: '',
+		lastName: '',
+		email: '',
+		password: '',
+		confirmationPassword: '',
+		picturePath: '',
+	};
+
+	const loginValidation = yup.object().shape({
 		email: yup
 			.string()
 			.email('Invalid email.')
@@ -23,20 +33,34 @@ const LoginScreen = () => {
 		password: yup.string().required('Please enter your password'),
 	});
 
+	const registerValidation = yup.object().shape({
+		firstName: yup.string().required('Please enter your first name'),
+		lastName: yup.string().required('Please enter your last name'),
+		email: yup
+			.string()
+			.email('Invalid email.')
+			.required('Please enter your email'),
+		password: yup.string().required('Please enter your password'),
+		confirmationPassword: yup
+			.string()
+			.required('Please enter your confirmation password'),
+		picturePath: yup.string(),
+	});
+
 	return (
 		<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-			<Typography
+			{/* <Typography
 				fontSize='32px'
 				fontWeight='bold'
 				fontFamily='Play'
 				textAlign='center'
 			>
 				Login
-			</Typography>
+			</Typography> */}
 
 			<Formik
-				initialValues={{ ...INITIAL_LOGIN_STATE }}
-				validationSchema={LOGIN_VALIDATION}
+				initialValues={{ ...initialLoginState }}
+				validationSchema={loginValidation}
 				onSubmit={(values) => {
 					console.log(values);
 				}}
@@ -100,4 +124,4 @@ const LoginScreen = () => {
 	);
 };
 
-export default LoginScreen;
+export default LoginRegisterForm;
