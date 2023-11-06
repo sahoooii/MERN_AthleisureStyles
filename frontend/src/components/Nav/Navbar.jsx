@@ -28,7 +28,7 @@ import Footer from '../Footer';
 import { styled } from '@mui/material/styles';
 
 const Navbar = () => {
-	const [isLogin, setLogin] = useState(true);
+	const [isLogin, setLogin] = useState(false);
 	const [open, setOpen] = useState(false);
 
 	const { cartItems } = useSelector((state) => state.cart);

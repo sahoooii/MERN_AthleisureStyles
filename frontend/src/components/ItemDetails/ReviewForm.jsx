@@ -18,7 +18,7 @@ import {
 	SentimentVerySatisfied,
 } from '@mui/icons-material';
 import { shades } from '../../theme';
-import { Formik, Form } from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 import FormTextField from '../FormUi/FormTextField';
 import SelectForm from '../FormUi/SelectForm';
@@ -62,61 +62,78 @@ const ReviewForm = ({ item }) => {
 								console.log(values);
 							}}
 						>
-							<Form>
-								<Stack spacing={2}>
-									{/* Select Reviews */}
-									<SelectForm name='rate' label='Rating This Item'>
-										<MenuItem value={1}>
-											<Box display='flex' alignItems='center'>
-												<MoodBad sx={{ marginRight: '5px' }} />1 -- Nop I don't
-												like it
-											</Box>
-										</MenuItem>
-										<MenuItem value={2}>
-											<Box display='flex' alignItems='center'>
-												<SentimentVeryDissatisfied
-													sx={{ marginRight: '5px' }}
-												/>
-												2 -- Maybe I give it to my sister
-											</Box>
-										</MenuItem>
-										<MenuItem value={3}>
-											<Box display='flex' alignItems='center'>
-												<SentimentNeutral sx={{ marginRight: '5px' }} />3 -- So
-												far, So Good
-											</Box>
-										</MenuItem>
-										<MenuItem value={4}>
-											<Box display='flex' alignItems='center'>
-												<SentimentSatisfiedAlt sx={{ marginRight: '5px' }} />4
-												-- Like it!
-											</Box>
-										</MenuItem>
-										<MenuItem value={5}>
-											<Box display='flex' alignItems='center'>
-												<SentimentVerySatisfied sx={{ marginRight: '5px' }} />5
-												-- Yes!! Love it!
-											</Box>
-										</MenuItem>
-									</SelectForm>
-									{/* Comment */}
-									<FormControl>
-										<FormTextField
-											name='comment'
-											label='Comment'
-											multiline
-											rows={4}
-										/>
-									</FormControl>
+							{({
+								values,
+								errors,
+								touched,
+								handleBlur,
+								handleChange,
+								handleSubmit,
+								resetForm,
+							}) => (
+								<form onSubmit={handleSubmit}>
+									<Stack spacing={2}>
+										{/* Select Reviews */}
+										<SelectForm name='rate' label='Rating This Item'>
+											<MenuItem value={1}>
+												<Box display='flex' alignItems='center'>
+													<MoodBad sx={{ marginRight: '5px' }} />1 -- Nop I
+													don't like it
+												</Box>
+											</MenuItem>
+											<MenuItem value={2}>
+												<Box display='flex' alignItems='center'>
+													<SentimentVeryDissatisfied
+														sx={{ marginRight: '5px' }}
+													/>
+													2 -- Maybe I give it to my sister
+												</Box>
+											</MenuItem>
+											<MenuItem value={3}>
+												<Box display='flex' alignItems='center'>
+													<SentimentNeutral sx={{ marginRight: '5px' }} />3 --
+													So far, So Good
+												</Box>
+											</MenuItem>
+											<MenuItem value={4}>
+												<Box display='flex' alignItems='center'>
+													<SentimentSatisfiedAlt sx={{ marginRight: '5px' }} />4
+													-- Like it!
+												</Box>
+											</MenuItem>
+											<MenuItem value={5}>
+												<Box display='flex' alignItems='center'>
+													<SentimentVerySatisfied sx={{ marginRight: '5px' }} />
+													5 -- Yes!! Love it!
+												</Box>
+											</MenuItem>
+										</SelectForm>
+										{/* Comment */}
+										<FormControl>
+											<FormTextField
+												name='comment'
+												label='Enter Your Comment'
+												multiline
+												rows={4}
+												onBlur={handleBlur}
+												onChange={handleChange}
+												value={values.comment}
+												error={
+													Boolean(touched.comment) && Boolean(errors.comment)
+												}
+												helperText={touched.comment && errors.comment}
+											/>
+										</FormControl>
 
-									<Box m='20px' display='flex' justifyContent='center'>
-										<SubmitButton
-											children='Submit'
-											backgroundColor={shades.blue[400]}
-										/>
-									</Box>
-								</Stack>
-							</Form>
+										<Box m='20px' display='flex' justifyContent='center'>
+											<SubmitButton
+												children='Submit'
+												backgroundColor={shades.blue[400]}
+											/>
+										</Box>
+									</Stack>
+								</form>
+							)}
 						</Formik>
 					</AccordionDetails>
 				</Accordion>
