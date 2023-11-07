@@ -5,16 +5,17 @@ import LoginRegisterForm from './LoginRegisterForm';
 
 const loginScreen = () => {
 	const theme = useTheme();
-	const isNonMobileScreen = useMediaQuery('(min-width:1000px)');
+	const isNonMobileScreens = useMediaQuery('(min-width:1000px)');
 
 	return (
 		<Box>
 			<Box
-				width={isNonMobileScreen ? '50%' : '93%'}
+				width={isNonMobileScreens ? '50%' : '93%'}
 				p='2rem'
 				m='2rem auto'
-				borderRadius='1.5rem'
+				borderRadius='1.2rem'
 				backgroundColor={theme.palette.neutral.light}
+				sx={{ mb: { xs: '100px' } }}
 			>
 				<Typography
 					fontWeight='bold'

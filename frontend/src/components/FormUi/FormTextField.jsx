@@ -6,7 +6,6 @@ import { useField } from 'formik';
 // ex: field= name:comment value='' mata=error handling
 const FormTextField = ({ name, ...otherProps }) => {
 	const [field, mata] = useField(name);
-	// console.log(field);
 
 	const configTextField = {
 		...field,

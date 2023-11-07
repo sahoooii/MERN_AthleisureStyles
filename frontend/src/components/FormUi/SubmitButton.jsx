@@ -11,6 +11,7 @@ const SubmitButton = ({ children, backgroundColor, width }) => {
 
 	return (
 		<ButtonComponent
+			type='submit'
 			children={children}
 			backgroundColor={backgroundColor}
 			width={width}

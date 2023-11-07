@@ -78,8 +78,9 @@ export const theme = createTheme({
 			main: shades.primary[400],
 		},
 		blue: {
-			dark: shades.blue[500],
-			main: shades.blue[400],
+			dark: shades.blue[700],
+			main: shades.blue[500],
+			light: shades.blue[300],
 		},
 		babyBlue: {
 			main: shades.babyBlue[500],
@@ -116,6 +117,10 @@ export const theme = createTheme({
 		h4: {
 			fontFamily: ['Play', 'sans-serif'].join(','),
 			fontSize: 14,
+		},
+		body2: {
+			fontFamily: ['Play', 'sans-serif'].join(','),
+			fontSize: 11,
 		},
 	},
 });
