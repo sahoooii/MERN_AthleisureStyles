@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import LoginRegisterForm from './LoginRegisterForm';
 
-const loginScreen = () => {
+const FormComponent = ({children}) => {
 	const theme = useTheme();
 	const isNonMobileScreens = useMediaQuery('(min-width:1000px)');
 
@@ -12,7 +11,7 @@ const loginScreen = () => {
 			<Box
 				width={isNonMobileScreens ? '50%' : '93%'}
 				p='2rem'
-				m='2rem auto'
+				m='1.5rem auto'
 				borderRadius='1.2rem'
 				backgroundColor={theme.palette.neutral.light}
 				sx={{ mb: { xs: '100px' } }}
@@ -25,10 +24,10 @@ const loginScreen = () => {
 				>
 					Welcome to Athleisure Styles, For All SHOPAHOLICS!
 				</Typography>
-				<LoginRegisterForm />
+				{children}
 			</Box>
 		</Box>
 	);
 };
 
-export default loginScreen;
+export default FormComponent;

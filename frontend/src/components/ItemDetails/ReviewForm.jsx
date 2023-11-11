@@ -7,6 +7,7 @@ import {
 	FormControl,
 	MenuItem,
 	Stack,
+	TextField,
 	Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -56,7 +57,7 @@ const ReviewForm = ({ item }) => {
 					{/* Review Form */}
 					<AccordionDetails>
 						<Formik
-							initialValues={{ ...initialReviewValue }}
+							initialValues={initialReviewValue}
 							validationSchema={reviewValidationSchema}
 							onSubmit={(values) => {
 								console.log(values);
@@ -69,7 +70,6 @@ const ReviewForm = ({ item }) => {
 								handleBlur,
 								handleChange,
 								handleSubmit,
-								resetForm,
 							}) => (
 								<form onSubmit={handleSubmit}>
 									<Stack spacing={2}>
@@ -110,9 +110,9 @@ const ReviewForm = ({ item }) => {
 										</SelectForm>
 										{/* Comment */}
 										<FormControl>
-											<FormTextField
-												name='comment'
+											<TextField
 												label='Enter Your Comment'
+												name='comment'
 												multiline
 												rows={4}
 												onBlur={handleBlur}
