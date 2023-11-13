@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -10,13 +10,11 @@ import {
 	useTheme,
 	TextField,
 } from '@mui/material';
+import { useLoginMutation } from '../../slices/usersApiSlice';
+import { setCredentials } from '../../slices/authSlice';
 import FormComponent from '../../components/auth/FormComponent';
 import SubmitButton from '../../components/FormUi/SubmitButton';
-
-const submitHandler = (e) => {
-	e.preventDefault();
-	console.log('submit');
-};
+import Loader from '../../components/Utils/Loader';
 
 const initialLoginState = { email: '', password: '' };
 
@@ -31,19 +29,33 @@ const loginValidation = yup.object().shape({
 const LoginFormScreen = () => {
 	const { palette } = useTheme();
 
+	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+	const [login, { isLoading }] = useLoginMutation();
+
+	// Get userInfo
+	const { userInfo } = useSelector((state) => state.auth);
 
 	const { search } = useLocation();
 	const searchParams = new URLSearchParams(search);
 	const redirect = searchParams.get('redirect') || '/';
 
-	const login = async (values, onSubmitProps) => {};
+	// check login, if so go to home page or something in that redirect
+	useEffect(() => {
+		if (userInfo) {
+			navigate(redirect);
+		}
+	}, [userInfo, redirect, navigate]);
 
-	const handleFormSubmit = async (values, onSubmitProps) => {
-		await login(values, onSubmitProps);
+	const submitHandler = async () => {
+		// e.preventDefault();
+		try {
+			// dataが渡せない問題
+			// const response = await login({email});
+		} catch (error) {}
 	};
 
 	return (
@@ -62,7 +74,10 @@ const LoginFormScreen = () => {
 				<Formik
 					initialValues={initialLoginState}
 					validationSchema={loginValidation}
-					onSubmit={handleFormSubmit}
+					onSubmit={submitHandler}
+					// onSubmit={(values) => {
+					// 	console.log(values);
+					// }}
 				>
 					{({
 						values,
@@ -71,7 +86,6 @@ const LoginFormScreen = () => {
 						handleBlur,
 						handleChange,
 						handleSubmit,
-						setFieldValue,
 						resetForm,
 					}) => (
 						<form onSubmit={handleSubmit}>

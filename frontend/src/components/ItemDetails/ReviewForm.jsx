@@ -21,8 +21,8 @@ import {
 import { shades } from '../../theme';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import FormTextField from '../FormUi/FormTextField';
-import SelectForm from '../FormUi/SelectForm';
+// import FormTextField from '../FormUi/FormTextField';
+// import SelectForm from '../FormUi/SelectForm';
 import SubmitButton from '../FormUi/SubmitButton';
 
 const ReviewForm = ({ item }) => {
@@ -34,7 +34,7 @@ const ReviewForm = ({ item }) => {
 
 	// For Validation
 	const reviewValidationSchema = yup.object().shape({
-		rate: yup.number().required('Please rating this item'),
+		rate: yup.string().required('Please rating this item'),
 		comment: yup.string().required('Let us know, something your comment'),
 	});
 
@@ -74,7 +74,17 @@ const ReviewForm = ({ item }) => {
 								<form onSubmit={handleSubmit}>
 									<Stack spacing={2}>
 										{/* Select Reviews */}
-										<SelectForm name='rate' label='Rating This Item'>
+										<TextField
+											select
+											id='rate'
+											name='rate'
+											label='Rating This Item'
+											value={values.rate}
+											onChange={handleChange}
+											onBlur={handleBlur}
+											error={Boolean(touched.rate) && Boolean(errors.rate)}
+											helperText={touched.rate && errors.rate}
+										>
 											<MenuItem value={1}>
 												<Box display='flex' alignItems='center'>
 													<MoodBad sx={{ marginRight: '5px' }} />1 -- Nop I
@@ -107,12 +117,13 @@ const ReviewForm = ({ item }) => {
 													5 -- Yes!! Love it!
 												</Box>
 											</MenuItem>
-										</SelectForm>
+										</TextField>
 										{/* Comment */}
 										<FormControl>
 											<TextField
 												label='Enter Your Comment'
 												name='comment'
+												id='comment'
 												multiline
 												rows={4}
 												onBlur={handleBlur}

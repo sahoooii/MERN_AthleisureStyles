@@ -20,21 +20,26 @@ const initialRegisterState = {
 	lastName: '',
 	email: '',
 	password: '',
-	confirmationPassword: '',
+	confirmPassword: '',
 	picturePath: '',
 };
 
 const registerValidation = yup.object().shape({
-	firstName: yup.string().max(30, 'Must be 30 characters or less').required('Please enter your first name'),
-	lastName: yup.string().max(30, 'Must be 30 characters or less').required('Please enter your last name'),
+	firstName: yup.string().required('Please enter your first name'),
+	lastName: yup.string().required('Please enter your last name'),
+	// notOneOf('emailList', 'Email already taken)
 	email: yup
 		.string()
 		.email('Invalid email.')
 		.required('Please enter your email'),
-	password: yup.string().required('Please enter your password'),
-	confirmationPassword: yup
+	password: yup
 		.string()
-		.required('Please enter your confirmation password'),
+		.min(6, 'Password must contain at least 6 characters')
+		.required('Please enter your password'),
+	confirmPassword: yup
+		.string()
+		.oneOf([yup.ref('password')], 'Password does not match')
+		.required('Please enter your confirm password'),
 	picturePath: yup.string().required('Please upload your profile picture'),
 });
 
@@ -156,18 +161,18 @@ const RegisterFormScreen = () => {
 									sx={{ gridColumn: 'span 4' }}
 								/>
 								<TextField
-									label='Confirmation Password'
+									label='Confirm Password'
 									type='password'
 									onBlur={handleBlur}
 									onChange={handleChange}
-									value={values.confirmationPassword}
-									name='confirmationPassword'
+									value={values.confirmPassword}
+									name='confirmPassword'
 									error={
-										Boolean(touched.confirmationPassword) &&
-										Boolean(errors.confirmationPassword)
+										Boolean(touched.confirmPassword) &&
+										Boolean(errors.confirmPassword)
 									}
 									helperText={
-										touched.confirmationPassword && errors.confirmationPassword
+										touched.confirmPassword && errors.confirmPassword
 									}
 									sx={{ gridColumn: 'span 4' }}
 								/>
