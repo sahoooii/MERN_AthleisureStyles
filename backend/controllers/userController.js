@@ -20,6 +20,7 @@ const loginUser = asyncHandler(async (req, res) => {
 			firstName: user.firstName,
 			lastName: user.lastName,
 			email: user.email,
+			picturePath: user.picturePath,
 			isAdmin: user.isAdmin,
 		});
 	} else {

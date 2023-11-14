@@ -22,16 +22,15 @@ import { Link } from 'react-router-dom';
 import { shades } from '../../theme';
 import { useSelector } from 'react-redux';
 import storeLogo from '../../assets/logo/athleisureLogoMini.png';
-import shokota from '../../assets/shokota.JPG';
 import MenuLink from './MenuLink';
 import Footer from '../Footer';
 import { styled } from '@mui/material/styles';
 
 const Navbar = () => {
-	const [isLogin, setLogin] = useState(false);
 	const [open, setOpen] = useState(false);
 
 	const { cartItems } = useSelector((state) => state.cart);
+	const { userInfo } = useSelector((state) => state.auth);
 
 	// Badge
 	const badgeContent = cartItems.reduce(
@@ -83,6 +82,7 @@ const Navbar = () => {
 			left='0'
 			zIndex='1'
 		>
+			{/* Over mobile screen */}
 			{isNonMobile ? (
 				<Box
 					width='80%'
@@ -109,7 +109,8 @@ const Navbar = () => {
 						zIndex='2'
 					>
 						{/* search function at TextField */}
-						{isLogin && (
+						{/* When not logged in, not showing search display */}
+						{userInfo && (
 							<TextField
 								id='search'
 								type='text'
@@ -146,13 +147,14 @@ const Navbar = () => {
 
 						<Box display='flex' alignItems='center'>
 							<Box sx={{ flexGrow: 0 }}>
-								{isLogin ? (
+								{/* When logged in */}
+								{userInfo ? (
 									<>
 										<IconButton onClick={handleOpen} sx={{ p: 0 }}>
 											<Avatar
 												ref={anchorEl}
-												src={shokota}
-												alt='shokota'
+												src={userInfo.picturePath}
+												alt={`${userInfo.firstName}${userInfo.lastName}`}
 												// sx={{ width: 56, height: 56 }}
 											/>
 										</IconButton>
@@ -201,7 +203,6 @@ const Navbar = () => {
 						alignItems='center'
 					>
 						<Box
-							// onClick={() => {}}
 							sx={{
 								'&:hover': { cursor: 'pointer' },
 							}}
@@ -211,7 +212,7 @@ const Navbar = () => {
 							</Link>
 						</Box>
 
-						{isLogin && (
+						{userInfo && (
 							<TextField
 								id='search'
 								type='text'
@@ -252,12 +253,12 @@ const Navbar = () => {
 								</IconButton>
 							</Link>
 
-							{isLogin ? (
+							{userInfo ? (
 								<>
 									<Avatar
 										ref={anchorEl}
-										src={shokota}
-										alt='shokota'
+										src={userInfo.picturePath}
+										alt={`${userInfo.firstName}${userInfo.lastName}`}
 										style={avatarStyle}
 										sx={{
 											width: 56,

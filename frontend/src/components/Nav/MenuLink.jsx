@@ -5,14 +5,22 @@ import {
 	FavoriteBorderOutlined,
 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const MenuLink = () => {
+	const { userInfo } = useSelector((state) => state.auth);
+
+	const logoutHandler = () => {
+		console.log('logout');
+	};
+
 	return (
 		<>
 			<Link to='/myprofile' style={{ textDecoration: 'none' }}>
 				<MenuItem sx={{ justifyContent: 'space-between' }}>
 					<ListItemIcon>
-						<PersonOutline sx={{ marginRight: '6px' }} /> My Profile
+						<PersonOutline sx={{ marginRight: '6px' }} /> {userInfo.firstName}{' '}
+						{userInfo.lastName}
 					</ListItemIcon>
 				</MenuItem>
 			</Link>
@@ -26,7 +34,10 @@ const MenuLink = () => {
 
 			<Divider />
 			<Link to='/logout' style={{ textDecoration: 'none' }}>
-				<MenuItem sx={{ justifyContent: 'space-between' }}>
+				<MenuItem
+					sx={{ justifyContent: 'space-between' }}
+					onClick={logoutHandler}
+				>
 					<ListItemIcon>
 						<Logout sx={{ marginRight: '8px' }} /> Logout
 					</ListItemIcon>

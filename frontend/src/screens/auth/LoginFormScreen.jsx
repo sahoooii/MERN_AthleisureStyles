@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -15,6 +15,7 @@ import { setCredentials } from '../../slices/authSlice';
 import FormComponent from '../../components/auth/FormComponent';
 import SubmitButton from '../../components/FormUi/SubmitButton';
 import Loader from '../../components/Utils/Loader';
+import { toast } from 'react-toastify';
 
 const initialLoginState = { email: '', password: '' };
 
@@ -50,12 +51,18 @@ const LoginFormScreen = () => {
 		}
 	}, [userInfo, redirect, navigate]);
 
-	const submitHandler = async () => {
-		// e.preventDefault();
+	const submitHandler = async (values, onSubmitProps) => {
 		try {
-			// dataが渡せない問題
-			// const response = await login({email});
-		} catch (error) {}
+			const { email, password } = values;
+
+			const response = await login({ email, password }).unwrap();
+			dispatch(setCredentials({ ...response }));
+			// onSubmitProps.resetForm();
+			navigate(redirect);
+		} catch (err) {
+			toast.error(err?.data?.message || err.error);
+			onSubmitProps.resetForm();
+		}
 	};
 
 	return (
@@ -71,13 +78,12 @@ const LoginFormScreen = () => {
 					LOGIN
 				</Typography>
 
+				{isLoading && <Loader />}
+
 				<Formik
 					initialValues={initialLoginState}
 					validationSchema={loginValidation}
 					onSubmit={submitHandler}
-					// onSubmit={(values) => {
-					// 	console.log(values);
-					// }}
 				>
 					{({
 						values,
@@ -122,7 +128,11 @@ const LoginFormScreen = () => {
 								/>
 
 								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
-									<SubmitButton children='LOGIN' width='100%' />
+									<SubmitButton
+										children='LOGIN'
+										width='100%'
+										disabled={isLoading}
+									/>
 								</Box>
 
 								<Box gridColumn='span 4'>
