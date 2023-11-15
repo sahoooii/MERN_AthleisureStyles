@@ -54,13 +54,13 @@ const LoginFormScreen = () => {
 	const submitHandler = async (values, onSubmitProps) => {
 		try {
 			const { email, password } = values;
-
 			const response = await login({ email, password }).unwrap();
 			dispatch(setCredentials({ ...response }));
-			// onSubmitProps.resetForm();
+
 			navigate(redirect);
 		} catch (err) {
 			toast.error(err?.data?.message || err.error);
+
 			onSubmitProps.resetForm();
 		}
 	};

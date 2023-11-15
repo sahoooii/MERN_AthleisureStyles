@@ -1,13 +1,13 @@
 import React from 'react';
 import ButtonComponent from '../Utils/ButtonComponent';
-import { useFormikContext } from 'formik';
+// import { useFormikContext } from 'formik';
 
 const SubmitButton = ({ children, backgroundColor, width }) => {
-	const { submitForm } = useFormikContext();
+	// const { submitForm } = useFormikContext();
 
-	const handleSubmit = () => {
-		submitForm();
-	};
+	// const handleSubmit = () => {
+	// 	submitForm();
+	// };
 
 	return (
 		<ButtonComponent
@@ -15,7 +15,7 @@ const SubmitButton = ({ children, backgroundColor, width }) => {
 			children={children}
 			backgroundColor={backgroundColor}
 			width={width}
-			onClick={handleSubmit}
+			// onClick={handleSubmit}
 		/>
 	);
 };

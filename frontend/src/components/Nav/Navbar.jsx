@@ -22,11 +22,13 @@ import { Link } from 'react-router-dom';
 import { shades } from '../../theme';
 import { useSelector } from 'react-redux';
 import storeLogo from '../../assets/logo/athleisureLogoMini.png';
+import { styled } from '@mui/material/styles';
 import MenuLink from './MenuLink';
 import Footer from '../Footer';
-import { styled } from '@mui/material/styles';
 
 const Navbar = () => {
+	const isNonMobile = useMediaQuery('(min-width:600px)');
+
 	const [open, setOpen] = useState(false);
 
 	const { cartItems } = useSelector((state) => state.cart);
@@ -66,8 +68,6 @@ const Navbar = () => {
 		right: 0,
 		margin: '0 auto',
 	};
-
-	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	return (
 		<Box

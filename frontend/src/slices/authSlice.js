@@ -6,6 +6,7 @@ const initialState = {
 		: null,
 };
 
+// For localsStorage functionality
 const authSlice = createSlice({
 	name: 'auth',
 	initialState,
@@ -14,9 +15,13 @@ const authSlice = createSlice({
 			state.userInfo = action.payload;
 			localStorage.setItem('userInfo', JSON.stringify(action.payload));
 		},
+		logout: (state, action) => {
+			state.userInfo = null;
+			localStorage.clear();
+		},
 	},
 });
 
-export const { setCredentials } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 
 export default authSlice.reducer;
