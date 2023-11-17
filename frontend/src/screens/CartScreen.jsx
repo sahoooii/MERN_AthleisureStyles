@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { addToCart } from '../slices/cartSlice';
+import { addToCart, removeFromCart } from '../slices/cartSlice';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import Message from '../components/Utils/Message';
 import CloseIcon from '@mui/icons-material/Close';
@@ -31,8 +31,17 @@ const CartScreen = () => {
 
 	// Change the quantity of items
 	// quantity = selected value of quantity
-	const addToCartHandler = async (item, quantity) => {
+	const addToCartHandler = (item, quantity) => {
 		dispatch(addToCart({ ...item, quantity }));
+	};
+
+	const removeFromCartHandler = (id) => {
+		dispatch(removeFromCart(id));
+	};
+
+	// Check login or not
+	const checkoutHandler = () => {
+		navigate(`/login?redirect=/shipping`);
 	};
 
 	const FlexBox = styled(Box)`
@@ -52,7 +61,7 @@ const CartScreen = () => {
 							<Box>
 								<FlexBox mb='30px'>
 									<Typography variant='h3'>
-										Shopping Cart ({cartItems.length})
+										Shopping Cart
 									</Typography>
 								</FlexBox>
 
@@ -110,9 +119,9 @@ const CartScreen = () => {
 																}
 															>
 																{[...Array(item.countInStock).keys()].map(
-																	(qty) => (
-																		<MenuItem key={qty + 1} value={qty + 1}>
-																			{qty + 1}
+																	(quantity) => (
+																		<MenuItem key={quantity + 1} value={quantity + 1}>
+																			{quantity + 1}
 																		</MenuItem>
 																	)
 																)}
@@ -122,7 +131,9 @@ const CartScreen = () => {
 												</Grid>
 												{/* Delete Items Button */}
 												<Grid item xs={1}>
-													<IconButton>
+													<IconButton
+														onClick={() => removeFromCartHandler(item._id)}
+													>
 														<CloseIcon />
 													</IconButton>
 												</Grid>
@@ -184,6 +195,7 @@ const CartScreen = () => {
 												type='button'
 												width='100%'
 												disabled={cartItems.length === 0}
+												onClick={checkoutHandler}
 											>
 												Proceed To Checkout
 											</ButtonComponent>

@@ -1,39 +1,35 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import {
 	Badge,
 	Box,
 	IconButton,
-	TextField,
-	InputAdornment,
 	useMediaQuery,
 	AppBar,
 	Toolbar,
 	Avatar,
-	Menu,
 	Tooltip,
 } from '@mui/material';
 import {
 	PersonOutline,
 	ShoppingBagOutlined,
-	SearchOutlined,
-	LocalFireDepartmentOutlined,
+	HomeOutlined,
 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { shades } from '../../theme';
 import { useSelector } from 'react-redux';
 import storeLogo from '../../assets/logo/athleisureLogoMini.png';
-import shokota from '../../assets/shokota.JPG';
+import { styled } from '@mui/material/styles';
 import MenuLink from './MenuLink';
 import Footer from '../Footer';
-import { styled } from '@mui/material/styles';
+import SearchInput from './SearchInput';
 
 const Navbar = () => {
-	const [isLogin, setLogin] = useState(true);
-	const [open, setOpen] = useState(false);
+	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	const { cartItems } = useSelector((state) => state.cart);
+	const { userInfo } = useSelector((state) => state.auth);
 
-	// Badge
+	// SHopping length Badge
 	const badgeContent = cartItems.reduce(
 		(acc, currentItem) => acc + currentItem.quantity,
 		0
@@ -49,16 +45,7 @@ const Navbar = () => {
 		},
 	}));
 
-	const anchorEl = useRef(null);
-	// Menu Open
-	const handleOpen = () => {
-		setOpen(!open);
-	};
-	// Menu Close
-	const handleClose = () => {
-		setOpen(false);
-	};
-	// bottom of center icon avatar
+	// bottom of center avatar icon
 	const avatarStyle = {
 		position: 'absolute',
 		zIndex: 1,
@@ -67,8 +54,6 @@ const Navbar = () => {
 		right: 0,
 		margin: '0 auto',
 	};
-
-	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	return (
 		<Box
@@ -83,6 +68,7 @@ const Navbar = () => {
 			left='0'
 			zIndex='1'
 		>
+			{/* Over mobile screen */}
 			{isNonMobile ? (
 				<Box
 					width='80%'
@@ -105,73 +91,44 @@ const Navbar = () => {
 					<Box
 						display='flex'
 						justifyContent='space-between'
+						alignItems='center'
 						columnGap='20px'
 						zIndex='2'
 					>
 						{/* search function at TextField */}
-						<TextField
-							id='search'
-							type='text'
-							label='Search Keyword or Category'
-							sx={{ width: 250, input: { cursor: 'pointer' } }}
-							color='blue'
-							InputProps={{
-								style: {
-									borderRadius: '10px',
-								},
-								endAdornment: (
-									<InputAdornment position='end' sx={{ cursor: 'pointer' }}>
-										<SearchOutlined />
-									</InputAdornment>
-								),
-							}}
-						/>
-						<Box display='flex' alignItems='center'>
-							<Link to='/cart'>
-								{cartItems.length > 0 ? (
-									<IconButton aria-label='cart'>
-										<StyledBadge badgeContent={badgeContent} color='green'>
-											<ShoppingBagOutlined />
-										</StyledBadge>
-									</IconButton>
-								) : (
-									<IconButton>
+						{/* When not logged in, not showing search display */}
+						{userInfo && (
+							<>
+								<SearchInput label='Search Keyword or Category' />
+							</>
+						)}
+
+						<Link to='/'>
+							<IconButton>
+								<HomeOutlined />
+							</IconButton>
+						</Link>
+
+						<Link to='/cart'>
+							{cartItems.length > 0 ? (
+								<IconButton aria-label='cart'>
+									<StyledBadge badgeContent={badgeContent} color='green'>
 										<ShoppingBagOutlined />
-									</IconButton>
-								)}
-							</Link>
-						</Box>
+									</StyledBadge>
+								</IconButton>
+							) : (
+								<IconButton>
+									<ShoppingBagOutlined />
+								</IconButton>
+							)}
+						</Link>
 
 						<Box display='flex' alignItems='center'>
 							<Box sx={{ flexGrow: 0 }}>
-								{isLogin ? (
+								{/* When logged in show Menu */}
+								{userInfo ? (
 									<>
-										<IconButton onClick={handleOpen} sx={{ p: 0 }}>
-											<Avatar
-												ref={anchorEl}
-												src={shokota}
-												alt='shokota'
-												// sx={{ width: 56, height: 56 }}
-											/>
-										</IconButton>
-										<Menu
-											sx={{ mt: '45px' }}
-											id='menu-appbar'
-											anchorEl={anchorEl.current}
-											anchorOrigin={{
-												vertical: 'top',
-												horizontal: 'left',
-											}}
-											keepMounted
-											transformOrigin={{
-												vertical: 'top',
-												horizontal: 'left',
-											}}
-											open={open}
-											onClose={handleClose}
-										>
-											<MenuLink />
-										</Menu>
+										<MenuLink />
 									</>
 								) : (
 									<Link to='/login'>
@@ -191,15 +148,16 @@ const Navbar = () => {
 				</Box>
 			) : (
 				<>
+					{/*  Mobile ver. Top NavBar */}
 					<Box
 						width='100%'
 						margin='auto'
+						pl='10px'
 						display='flex'
-						justifyContent='space-around'
+						justifyContent='space-between'
 						alignItems='center'
 					>
 						<Box
-							// onClick={() => {}}
 							sx={{
 								'&:hover': { cursor: 'pointer' },
 							}}
@@ -209,96 +167,30 @@ const Navbar = () => {
 							</Link>
 						</Box>
 
-						<TextField
-							id='search'
-							type='text'
-							label='Search'
-							color='blue'
-							sx={{
-								width: '60%',
-								input: { cursor: 'pointer' },
-							}}
-							InputProps={{
-								style: {
-									borderRadius: '10px',
-								},
-								endAdornment: (
-									<InputAdornment position='end' sx={{ cursor: 'pointer' }}>
-										<SearchOutlined />
-									</InputAdornment>
-								),
-							}}
-						/>
+						{userInfo && (
+							<>
+								<SearchInput label='Search' mr='30px' />
+							</>
+						)}
 					</Box>
 
-					{/* Bottom Footer */}
+					{/*  Mobile ver. Bottom Footer */}
 					<AppBar
 						position='fixed'
 						color='babyBlue'
 						sx={{ top: 'auto', bottom: 0 }}
 					>
 						<Toolbar>
-							{/* popular Items */}
-							<Link to='/toprated'>
-								<IconButton aria-label='onFire'>
-									<LocalFireDepartmentOutlined
-										fontSize='large'
-										sx={{ color: 'white' }}
-									/>
+							<Link to='/'>
+								<IconButton aria-label='home'>
+									<HomeOutlined fontSize='large' sx={{ color: 'white' }} />
 								</IconButton>
 							</Link>
 
-							{isLogin ? (
+							{/* Mobile ver. logged in logic */}
+							{userInfo ? (
 								<>
-									<Avatar
-										ref={anchorEl}
-										src={shokota}
-										alt='shokota'
-										style={avatarStyle}
-										sx={{
-											width: 56,
-											height: 56,
-											'&:hover': { cursor: 'pointer' },
-										}}
-										onClick={handleOpen}
-									/>
-									<Menu
-										id='account-menu'
-										anchorEl={anchorEl.current}
-										open={open}
-										onClose={handleClose}
-										disableAutoFocusItem={false}
-										paper={{
-											elevation: 0,
-											sx: {
-												overflow: 'visible',
-												filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-												mt: 1.5,
-												'& .MuiAvatar-root': {
-													width: 32,
-													height: 32,
-													ml: -0.5,
-													mr: 1,
-												},
-												'&:before': {
-													content: '""',
-													display: 'block',
-													position: 'absolute',
-													top: 0,
-													right: 14,
-													width: 10,
-													height: 10,
-													bgcolor: 'background.paper',
-													transform: 'translateY(-50%) rotate(45deg)',
-													zIndex: 0,
-												},
-											},
-										}}
-										transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-										anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-									>
-										<MenuLink />
-									</Menu>
+									<MenuLink style={avatarStyle} width={56} height={56} />
 								</>
 							) : (
 								<Link to='/login'>
