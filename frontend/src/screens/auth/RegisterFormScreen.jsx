@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -10,10 +10,13 @@ import {
 	useTheme,
 	TextField,
 } from '@mui/material';
-import Dropzone from 'react-dropzone';
+import { useRegisterMutation } from '../../slices/usersApiSlice';
+import { setCredentials } from '../../slices/authSlice';
+import { toast } from 'react-toastify';
 import FormComponent from '../../components/auth/FormComponent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SubmitButton from '../../components/FormUi/SubmitButton';
+import Loader from '../../components/Utils/Loader';
 
 const initialRegisterState = {
 	firstName: '',
@@ -46,23 +49,27 @@ const registerValidation = yup.object().shape({
 const RegisterFormScreen = () => {
 	const { palette } = useTheme();
 
+	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	const [register, { isLoading }] = useRegisterMutation();
+
+	const { userInfo } = useSelector((state) => state.auth);
 
 	const { search } = useLocation();
 	const searchParams = new URLSearchParams(search);
 	const redirect = searchParams.get('redirect') || '/';
 
-	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
-
-	// for form submit
-	const submitHandler = async (e) => {
-		e.preventDefault();
-		console.log('submit');
-	};
+	useEffect(() => {
+		if (userInfo) {
+			navigate(redirect);
+		}
+	}, [userInfo, redirect, navigate]);
 
 	// Use multer, will delete
-	const register = async (values, onSubmitProps) => {
+	const registerFunction = async (values, onSubmitProps) => {
 		// This allows to send form info with image
 		const formData = new FormData();
 		for (let value in values) {
@@ -71,8 +78,26 @@ const RegisterFormScreen = () => {
 		formData.append('picturePath', values.picturePath.name);
 	};
 
-	const handleFormSubmit = async (values, onSubmitProps) => {
-		await register(values, onSubmitProps);
+	const submitHandler = async (values, onSubmitProps) => {
+		try {
+			const { firstName, lastName, email, password, picturePath } = values;
+
+			// console.log(picturePath);
+			const response = await register({
+				firstName,
+				lastName,
+				email,
+				password,
+				picturePath,
+			}).unwrap();
+			dispatch(setCredentials({ ...response }));
+
+			navigate(redirect);
+		} catch (err) {
+			toast.error(err?.data?.message || err.error);
+
+			// onSubmitProps.resetForm();
+		}
 	};
 
 	return (
@@ -88,13 +113,15 @@ const RegisterFormScreen = () => {
 					REGISTER
 				</Typography>
 
+				{isLoading && <Loader />}
+
 				<Formik
 					initialValues={initialRegisterState}
 					validationSchema={registerValidation}
-					// onSubmit={handleFormSubmit}
-					onSubmit={(values) => {
-						console.log(values);
-					}}
+					onSubmit={submitHandler}
+					// onSubmit={(values) => {
+					// 	console.log(values);
+					// }}
 				>
 					{({
 						values,
@@ -106,7 +133,7 @@ const RegisterFormScreen = () => {
 						setFieldValue,
 						resetForm,
 					}) => (
-						<form onSubmit={handleSubmit}>
+						<form onSubmit={handleSubmit} enctype='multipart/form-data'>
 							<Box
 								display='grid'
 								gap='20px'
@@ -171,9 +198,7 @@ const RegisterFormScreen = () => {
 										Boolean(touched.confirmPassword) &&
 										Boolean(errors.confirmPassword)
 									}
-									helperText={
-										touched.confirmPassword && errors.confirmPassword
-									}
+									helperText={touched.confirmPassword && errors.confirmPassword}
 									sx={{ gridColumn: 'span 4' }}
 								/>
 
@@ -185,40 +210,27 @@ const RegisterFormScreen = () => {
 									p='1rem'
 								>
 									{/* Multer */}
-									<Dropzone
-										acceptedFiles='.jpg,.jpeg,.png'
-										multiple={false}
-										onDrop={(acceptedFiles) => {
-											setFieldValue('picturePath', acceptedFiles[0]);
-										}}
+									<Box
+										border={`2px dashed ${palette.green.main}`}
+										p='1rem'
+										sx={{ '&:hover': { cursor: 'pointer' } }}
 									>
-										{({ getRootProps, getInputProps }) => (
+										<input type='file' name='picturePath' />
+										{!values.picturePath ? (
+											<Typography variant='body2'>Add Picture Here</Typography>
+										) : (
 											<Box
-												{...getRootProps()}
-												border={`2px dashed ${palette.green.main}`}
-												p='1rem'
-												sx={{ '&:hover': { cursor: 'pointer' } }}
+												display='flex'
+												justifyContent='space-between'
+												alignItems='center'
 											>
-												<input {...getInputProps()} />
-												{!values.picturePath ? (
-													<Typography variant='body2'>
-														Add Picture Here
-													</Typography>
-												) : (
-													<Box
-														display='flex'
-														justifyContent='space-between'
-														alignItems='center'
-													>
-														<Typography variant='body2'>
-															{values.picturePath.name}
-														</Typography>
-														<EditOutlinedIcon color='blue' />
-													</Box>
-												)}
+												<Typography variant='body2'>
+													{values.picturePath.name}
+												</Typography>
+												<EditOutlinedIcon color='blue' />
 											</Box>
 										)}
-									</Dropzone>
+									</Box>
 								</Box>
 
 								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
