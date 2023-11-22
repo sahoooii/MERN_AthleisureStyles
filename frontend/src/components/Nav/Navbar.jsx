@@ -128,7 +128,7 @@ const Navbar = () => {
 								{/* When logged in show Menu */}
 								{userInfo ? (
 									<>
-										<MenuLink />
+										<MenuLink width={48} height={48} />
 									</>
 								) : (
 									<Link to='/login'>

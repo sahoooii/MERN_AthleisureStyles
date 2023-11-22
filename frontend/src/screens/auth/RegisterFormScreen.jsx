@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -10,7 +10,11 @@ import {
 	useTheme,
 	TextField,
 } from '@mui/material';
-import { useRegisterMutation } from '../../slices/usersApiSlice';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import {
+	useRegisterMutation,
+	useUploadProfileImageMutation,
+} from '../../slices/usersApiSlice';
 import { setCredentials } from '../../slices/authSlice';
 import { toast } from 'react-toastify';
 import FormComponent from '../../components/auth/FormComponent';
@@ -43,7 +47,7 @@ const registerValidation = yup.object().shape({
 		.string()
 		.oneOf([yup.ref('password')], 'Password does not match')
 		.required('Please enter your confirm password'),
-	picturePath: yup.string().required('Please upload your profile picture'),
+	picturePath: yup.mixed().required('Please upload your profile picture'),
 });
 
 const RegisterFormScreen = () => {
@@ -55,6 +59,7 @@ const RegisterFormScreen = () => {
 	const navigate = useNavigate();
 
 	const [register, { isLoading }] = useRegisterMutation();
+	const [uploadProfileImage] = useUploadProfileImageMutation();
 
 	const { userInfo } = useSelector((state) => state.auth);
 
@@ -68,28 +73,29 @@ const RegisterFormScreen = () => {
 		}
 	}, [userInfo, redirect, navigate]);
 
-	// Use multer, will delete
-	const registerFunction = async (values, onSubmitProps) => {
-		// This allows to send form info with image
-		const formData = new FormData();
-		for (let value in values) {
-			formData.append(value, values[value]);
-		}
-		formData.append('picturePath', values.picturePath.name);
-	};
-
+	// Profile image upload and register
 	const submitHandler = async (values, onSubmitProps) => {
 		try {
-			const { firstName, lastName, email, password, picturePath } = values;
+			const formData = new FormData();
+			for (let value in values) {
+				formData.append(value, values[value]);
+			}
 
-			// console.log(picturePath);
+			const { firstName, lastName, email, password } = values;
+			// picture path
+			formData.append('picturePath', values.picturePath.name);
+			const imageData = await uploadProfileImage(formData).unwrap();
+
 			const response = await register({
 				firstName,
 				lastName,
 				email,
 				password,
-				picturePath,
+				picturePath: imageData.picturePath,
 			}).unwrap();
+
+			// console.log(response);
+
 			dispatch(setCredentials({ ...response }));
 
 			navigate(redirect);
@@ -108,7 +114,7 @@ const RegisterFormScreen = () => {
 					fontWeight='bold'
 					fontFamily='Play'
 					textAlign='center'
-					mb='10px'
+					mb='15px'
 				>
 					REGISTER
 				</Typography>
@@ -133,7 +139,7 @@ const RegisterFormScreen = () => {
 						setFieldValue,
 						resetForm,
 					}) => (
-						<form onSubmit={handleSubmit} enctype='multipart/form-data'>
+						<form onSubmit={handleSubmit} encType='multipart/form-data'>
 							<Box
 								display='grid'
 								gap='20px'
@@ -209,15 +215,42 @@ const RegisterFormScreen = () => {
 									borderRadius='5px'
 									p='1rem'
 								>
-									{/* Multer */}
+									{/* Multer profile upload */}
 									<Box
 										border={`2px dashed ${palette.green.main}`}
 										p='1rem'
 										sx={{ '&:hover': { cursor: 'pointer' } }}
 									>
-										<input type='file' name='picturePath' />
 										{!values.picturePath ? (
-											<Typography variant='body2'>Add Picture Here</Typography>
+											<>
+												<label htmlFor='picturePath'>
+													<Box
+														sx={{
+															display: 'flex',
+															alignItems: 'center',
+															cursor: 'pointer',
+														}}
+													>
+														<AddPhotoAlternateIcon color='action' />
+														<Typography variant='body2' ml='3px'>
+															Add Picture Here
+														</Typography>
+													</Box>
+													<TextField
+														type='file'
+														name='picturePath'
+														id='picturePath'
+														accept='.png,.jpeg,.jpg'
+														style={{ display: 'none' }}
+														onChange={(e) =>
+															setFieldValue(
+																'picturePath',
+																e.currentTarget.files[0]
+															)
+														}
+													/>
+												</label>
+											</>
 										) : (
 											<Box
 												display='flex'
@@ -227,10 +260,36 @@ const RegisterFormScreen = () => {
 												<Typography variant='body2'>
 													{values.picturePath.name}
 												</Typography>
-												<EditOutlinedIcon color='blue' />
+												<label htmlFor='picturePath'>
+													<Box
+														sx={{
+															cursor: 'pointer',
+														}}
+													>
+														<EditOutlinedIcon color='blue' />
+													</Box>
+													<input
+														type='file'
+														name='picturePath'
+														id='picturePath'
+														accept='.png,.jpeg,.jpg'
+														style={{ display: 'none' }}
+														onChange={(e) =>
+															setFieldValue(
+																'picturePath',
+																e.currentTarget.files[0]
+															)
+														}
+													/>
+												</label>
 											</Box>
 										)}
 									</Box>
+									{errors.picturePath && (
+										<p style={{ color: '#d32f2f', fontSize: '10px', marginBottom: '0' }}>
+											{errors.picturePath}
+										</p>
+									)}
 								</Box>
 
 								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
