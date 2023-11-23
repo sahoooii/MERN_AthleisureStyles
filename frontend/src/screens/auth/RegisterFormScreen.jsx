@@ -31,6 +31,19 @@ const initialRegisterState = {
 	picturePath: '',
 };
 
+// For profile image validation
+const MAX_FILE_SIZE = 512000; //5MB
+const validFileExtensions = {
+	image: ['jpg', 'png', 'jpeg', 'webp'],
+};
+
+function isValidFileType(fileName, fileType) {
+	return (
+		fileName &&
+		validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1
+	);
+}
+
 const registerValidation = yup.object().shape({
 	firstName: yup.string().required('Please enter your first name'),
 	lastName: yup.string().required('Please enter your last name'),
@@ -47,7 +60,17 @@ const registerValidation = yup.object().shape({
 		.string()
 		.oneOf([yup.ref('password')], 'Password does not match')
 		.required('Please enter your confirm password'),
-	picturePath: yup.mixed().required('Please upload your profile picture'),
+	picturePath: yup
+		.mixed()
+		.required('Please upload your profile picture')
+		.test('is-valid-type', 'Not a valid image type', (value) =>
+			isValidFileType(value && value.name.toLowerCase(), 'image')
+		)
+		.test(
+			'is-valid-size',
+			'Max allowed size is 5MB',
+			(value) => value && value.size <= MAX_FILE_SIZE
+		),
 });
 
 const RegisterFormScreen = () => {
@@ -76,14 +99,14 @@ const RegisterFormScreen = () => {
 	// Profile image upload and register
 	const submitHandler = async (values, onSubmitProps) => {
 		try {
+			const { firstName, lastName, email, password } = values;
+
 			const formData = new FormData();
 			for (let value in values) {
 				formData.append(value, values[value]);
 			}
-
-			const { firstName, lastName, email, password } = values;
 			// picture path
-			formData.append('picturePath', values.picturePath.name);
+			formData.append('profile', values.picturePath.name);
 			const imageData = await uploadProfileImage(formData).unwrap();
 
 			const response = await register({
@@ -93,8 +116,10 @@ const RegisterFormScreen = () => {
 				password,
 				picturePath: imageData.picturePath,
 			}).unwrap();
+			// const imageData = await uploadProfileImage(formData).unwrap();
+			// response.picturePath = imageData;
 
-			// console.log(response);
+			console.log(response);
 
 			dispatch(setCredentials({ ...response }));
 
@@ -286,7 +311,13 @@ const RegisterFormScreen = () => {
 										)}
 									</Box>
 									{errors.picturePath && (
-										<p style={{ color: '#d32f2f', fontSize: '10px', marginBottom: '0' }}>
+										<p
+											style={{
+												color: '#d32f2f',
+												fontSize: '10px',
+												marginBottom: '0',
+											}}
+										>
 											{errors.picturePath}
 										</p>
 									)}
