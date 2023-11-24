@@ -32,7 +32,7 @@ const initialRegisterState = {
 };
 
 // For profile image validation
-const MAX_FILE_SIZE = 512000; //5MB
+const MAX_FILE_SIZE = 819200; //800MB
 const validFileExtensions = {
 	image: ['jpg', 'png', 'jpeg', 'webp'],
 };
@@ -68,7 +68,7 @@ const registerValidation = yup.object().shape({
 		)
 		.test(
 			'is-valid-size',
-			'Max allowed size is 5MB',
+			'Max allowed size is 800MB',
 			(value) => value && value.size <= MAX_FILE_SIZE
 		),
 });
@@ -98,15 +98,14 @@ const RegisterFormScreen = () => {
 
 	// Profile image upload and register
 	const submitHandler = async (values, onSubmitProps) => {
+		const { firstName, lastName, email, password } = values;
+		const formData = new FormData();
+		for (let value in values) {
+			formData.append(value, values[value]);
+		}
+		// picture path
+		formData.append('picturePath', values.picturePath.name);
 		try {
-			const { firstName, lastName, email, password } = values;
-
-			const formData = new FormData();
-			for (let value in values) {
-				formData.append(value, values[value]);
-			}
-			// picture path
-			formData.append('profile', values.picturePath.name);
 			const imageData = await uploadProfileImage(formData).unwrap();
 
 			const response = await register({
@@ -116,11 +115,15 @@ const RegisterFormScreen = () => {
 				password,
 				picturePath: imageData.picturePath,
 			}).unwrap();
+
+			// Consider later
 			// const imageData = await uploadProfileImage(formData).unwrap();
-			// response.picturePath = imageData;
 
-			console.log(response);
-
+			// const data = {
+			// 	...response,
+			// 	picturePath: imageData.picturePath,
+			// };
+			// await register(data);
 			dispatch(setCredentials({ ...response }));
 
 			navigate(redirect);
@@ -267,6 +270,7 @@ const RegisterFormScreen = () => {
 														id='picturePath'
 														accept='.png,.jpeg,.jpg'
 														style={{ display: 'none' }}
+														onBlur={handleBlur}
 														onChange={(e) =>
 															setFieldValue(
 																'picturePath',
@@ -310,7 +314,7 @@ const RegisterFormScreen = () => {
 											</Box>
 										)}
 									</Box>
-									{errors.picturePath && (
+									{errors.picturePath && Boolean(touched.picturePath) && (
 										<p
 											style={{
 												color: '#d32f2f',

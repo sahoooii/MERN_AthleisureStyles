@@ -18,15 +18,14 @@ const storage = multer.diskStorage({
 
 function fileFilter(req, file, cb) {
 	const fileTypes = /jpe?g|png|webp/;
-	// const mimeTypes = /image\/jpe?g|image\/png|image\/webp/;
+	const mimeTypes = /image\/jpe?g|image\/png|image\/webp/;
 
 	const extensionName = fileTypes.test(
 		path.extname(file.originalname).toLowerCase()
 	);
-	// const mimeType = mimeTypes.test(file.mimeType);
+	const mimeType = mimeTypes.test(file.mimetype);
 
-	// if (extensionName && mimeType) {
-	if (extensionName) {
+	if (extensionName && mimeType) {
 		return cb(null, true);
 	} else {
 		cb(new Error('Update images only!'), false);
