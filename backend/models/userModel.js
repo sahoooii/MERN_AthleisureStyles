@@ -21,8 +21,10 @@ const userSchema = new mongoose.Schema(
 			required: true,
 		},
 		picturePath: {
+			// data: Buffer,
+			// contentType: String,
 			type: String,
-			default: '',
+			// required: true,
 		},
 		isAdmin: {
 			type: Boolean,

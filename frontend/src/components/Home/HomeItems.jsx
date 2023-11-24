@@ -16,14 +16,16 @@ import {
 import { Link } from 'react-router-dom';
 // import axios from 'axios';
 import { useGetItemsQuery } from '../../slices/itemsApiSlice';
-import { FavoriteBorder, Favorite } from '@mui/icons-material';
+import { FavoriteBorder } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RatingLogic from '../Utils/RatingLogic';
 import Loader from '../Utils/Loader';
 import Message from '../Utils/Message';
+import { shades } from '../../theme';
 
 const HomeItems = () => {
 	const { data: items, isLoading, error } = useGetItemsQuery();
+	// console.log(items);
 
 	const navigate = useNavigate();
 	const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -57,15 +59,41 @@ const HomeItems = () => {
 								boxShadow: 'md',
 							}}
 						>
-							<CardMedia
-								component='img'
-								height='400px'
-								width='300px'
-								image={item.image}
-								alt={item.name}
-								style={{ cursor: 'pointer' }}
-								onClick={() => navigate(`/item/${item._id}`)}
-							/>
+							{item.countInStock === 0 ? (
+								<Box position='relative'>
+									<CardMedia
+										component='img'
+										height='400px'
+										width='300px'
+										image={item.image}
+										alt={item.name}
+										style={{ cursor: 'pointer', opacity: '0.5' }}
+										onClick={() => navigate(`/item/${item._id}`)}
+									/>
+									<Typography
+										variant='h3'
+										color={shades.green[800]}
+										fontWeight='bold'
+										sx={{
+											position: 'absolute',
+											bottom: '25px',
+											left: '25px',
+										}}
+									>
+										Out Of Stock
+									</Typography>
+								</Box>
+							) : (
+								<CardMedia
+									component='img'
+									height='400px'
+									width='300px'
+									image={item.image}
+									alt={item.name}
+									style={{ cursor: 'pointer' }}
+									onClick={() => navigate(`/item/${item._id}`)}
+								/>
+							)}
 
 							<CardContent sx={{ paddingBottom: '8px' }}>
 								<Link

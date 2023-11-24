@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -10,10 +10,17 @@ import {
 	useTheme,
 	TextField,
 } from '@mui/material';
-import Dropzone from 'react-dropzone';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import {
+	useRegisterMutation,
+	useUploadProfileImageMutation,
+} from '../../slices/usersApiSlice';
+import { setCredentials } from '../../slices/authSlice';
+import { toast } from 'react-toastify';
 import FormComponent from '../../components/auth/FormComponent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SubmitButton from '../../components/FormUi/SubmitButton';
+import Loader from '../../components/Utils/Loader';
 
 const initialRegisterState = {
 	firstName: '',
@@ -23,6 +30,19 @@ const initialRegisterState = {
 	confirmPassword: '',
 	picturePath: '',
 };
+
+// For profile image validation
+const MAX_FILE_SIZE = 819200; //800MB
+const validFileExtensions = {
+	image: ['jpg', 'png', 'jpeg', 'webp'],
+};
+
+function isValidFileType(fileName, fileType) {
+	return (
+		fileName &&
+		validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1
+	);
+}
 
 const registerValidation = yup.object().shape({
 	firstName: yup.string().required('Please enter your first name'),
@@ -40,39 +60,78 @@ const registerValidation = yup.object().shape({
 		.string()
 		.oneOf([yup.ref('password')], 'Password does not match')
 		.required('Please enter your confirm password'),
-	picturePath: yup.string().required('Please upload your profile picture'),
+	picturePath: yup
+		.mixed()
+		.required('Please upload your profile picture')
+		.test('is-valid-type', 'Not a valid image type', (value) =>
+			isValidFileType(value && value.name.toLowerCase(), 'image')
+		)
+		.test(
+			'is-valid-size',
+			'Max allowed size is 800MB',
+			(value) => value && value.size <= MAX_FILE_SIZE
+		),
 });
 
 const RegisterFormScreen = () => {
 	const { palette } = useTheme();
 
+	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	const [register, { isLoading }] = useRegisterMutation();
+	const [uploadProfileImage] = useUploadProfileImageMutation();
+
+	const { userInfo } = useSelector((state) => state.auth);
 
 	const { search } = useLocation();
 	const searchParams = new URLSearchParams(search);
 	const redirect = searchParams.get('redirect') || '/';
 
-	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+	useEffect(() => {
+		if (userInfo) {
+			navigate(redirect);
+		}
+	}, [userInfo, redirect, navigate]);
 
-	// for form submit
-	const submitHandler = async (e) => {
-		e.preventDefault();
-		console.log('submit');
-	};
-
-	// Use multer, will delete
-	const register = async (values, onSubmitProps) => {
-		// This allows to send form info with image
+	// Profile image upload and register
+	const submitHandler = async (values, onSubmitProps) => {
+		const { firstName, lastName, email, password } = values;
 		const formData = new FormData();
 		for (let value in values) {
 			formData.append(value, values[value]);
 		}
+		// picture path
 		formData.append('picturePath', values.picturePath.name);
-	};
+		try {
+			const imageData = await uploadProfileImage(formData).unwrap();
 
-	const handleFormSubmit = async (values, onSubmitProps) => {
-		await register(values, onSubmitProps);
+			const response = await register({
+				firstName,
+				lastName,
+				email,
+				password,
+				picturePath: imageData.picturePath,
+			}).unwrap();
+
+			// Consider later
+			// const imageData = await uploadProfileImage(formData).unwrap();
+
+			// const data = {
+			// 	...response,
+			// 	picturePath: imageData.picturePath,
+			// };
+			// await register(data);
+			dispatch(setCredentials({ ...response }));
+
+			navigate(redirect);
+		} catch (err) {
+			toast.error(err?.data?.message || err.error);
+
+			// onSubmitProps.resetForm();
+		}
 	};
 
 	return (
@@ -83,18 +142,20 @@ const RegisterFormScreen = () => {
 					fontWeight='bold'
 					fontFamily='Play'
 					textAlign='center'
-					mb='10px'
+					mb='15px'
 				>
 					REGISTER
 				</Typography>
 
+				{isLoading && <Loader />}
+
 				<Formik
 					initialValues={initialRegisterState}
 					validationSchema={registerValidation}
-					// onSubmit={handleFormSubmit}
-					onSubmit={(values) => {
-						console.log(values);
-					}}
+					onSubmit={submitHandler}
+					// onSubmit={(values) => {
+					// 	console.log(values);
+					// }}
 				>
 					{({
 						values,
@@ -106,7 +167,7 @@ const RegisterFormScreen = () => {
 						setFieldValue,
 						resetForm,
 					}) => (
-						<form onSubmit={handleSubmit}>
+						<form onSubmit={handleSubmit} encType='multipart/form-data'>
 							<Box
 								display='grid'
 								gap='20px'
@@ -171,9 +232,7 @@ const RegisterFormScreen = () => {
 										Boolean(touched.confirmPassword) &&
 										Boolean(errors.confirmPassword)
 									}
-									helperText={
-										touched.confirmPassword && errors.confirmPassword
-									}
+									helperText={touched.confirmPassword && errors.confirmPassword}
 									sx={{ gridColumn: 'span 4' }}
 								/>
 
@@ -184,41 +243,88 @@ const RegisterFormScreen = () => {
 									borderRadius='5px'
 									p='1rem'
 								>
-									{/* Multer */}
-									<Dropzone
-										acceptedFiles='.jpg,.jpeg,.png'
-										multiple={false}
-										onDrop={(acceptedFiles) => {
-											setFieldValue('picturePath', acceptedFiles[0]);
-										}}
+									{/* Multer profile upload */}
+									<Box
+										border={`2px dashed ${palette.green.main}`}
+										p='1rem'
+										sx={{ '&:hover': { cursor: 'pointer' } }}
 									>
-										{({ getRootProps, getInputProps }) => (
-											<Box
-												{...getRootProps()}
-												border={`2px dashed ${palette.green.main}`}
-												p='1rem'
-												sx={{ '&:hover': { cursor: 'pointer' } }}
-											>
-												<input {...getInputProps()} />
-												{!values.picturePath ? (
-													<Typography variant='body2'>
-														Add Picture Here
-													</Typography>
-												) : (
+										{!values.picturePath ? (
+											<>
+												<label htmlFor='picturePath'>
 													<Box
-														display='flex'
-														justifyContent='space-between'
-														alignItems='center'
+														sx={{
+															display: 'flex',
+															alignItems: 'center',
+															cursor: 'pointer',
+														}}
 													>
-														<Typography variant='body2'>
-															{values.picturePath.name}
+														<AddPhotoAlternateIcon color='action' />
+														<Typography variant='body2' ml='3px'>
+															Add Picture Here
 														</Typography>
+													</Box>
+													<TextField
+														type='file'
+														name='picturePath'
+														id='picturePath'
+														accept='.png,.jpeg,.jpg'
+														style={{ display: 'none' }}
+														onBlur={handleBlur}
+														onChange={(e) =>
+															setFieldValue(
+																'picturePath',
+																e.currentTarget.files[0]
+															)
+														}
+													/>
+												</label>
+											</>
+										) : (
+											<Box
+												display='flex'
+												justifyContent='space-between'
+												alignItems='center'
+											>
+												<Typography variant='body2'>
+													{values.picturePath.name}
+												</Typography>
+												<label htmlFor='picturePath'>
+													<Box
+														sx={{
+															cursor: 'pointer',
+														}}
+													>
 														<EditOutlinedIcon color='blue' />
 													</Box>
-												)}
+													<input
+														type='file'
+														name='picturePath'
+														id='picturePath'
+														accept='.png,.jpeg,.jpg'
+														style={{ display: 'none' }}
+														onChange={(e) =>
+															setFieldValue(
+																'picturePath',
+																e.currentTarget.files[0]
+															)
+														}
+													/>
+												</label>
 											</Box>
 										)}
-									</Dropzone>
+									</Box>
+									{errors.picturePath && Boolean(touched.picturePath) && (
+										<p
+											style={{
+												color: '#d32f2f',
+												fontSize: '10px',
+												marginBottom: '0',
+											}}
+										>
+											{errors.picturePath}
+										</p>
+									)}
 								</Box>
 
 								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>

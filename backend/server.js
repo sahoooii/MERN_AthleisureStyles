@@ -1,9 +1,11 @@
+import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/db.js';
 import itemRoutes from './routes/itemRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
@@ -26,6 +28,14 @@ app.get('/', (req, res) => {
 
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/profileupload', uploadRoutes);
+
+// Set __dirname to current directory
+const __dirname = path.resolve();
+app.use(
+	'/profileImages',
+	express.static(path.join(__dirname, '/profileImages'))
+);
 
 // error handling
 app.use(notFound);
