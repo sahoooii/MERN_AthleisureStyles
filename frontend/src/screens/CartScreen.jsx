@@ -41,7 +41,7 @@ const CartScreen = () => {
 
 	// Check login or not
 	const checkoutHandler = () => {
-		navigate(`/login?redirect=/shipping`);
+		navigate(`/login?redirect=/checkout`);
 	};
 
 	const FlexBox = styled(Box)`
