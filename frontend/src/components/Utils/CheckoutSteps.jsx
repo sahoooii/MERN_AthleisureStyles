@@ -1,35 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Step, Stepper, StepLabel, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const CheckoutSteps = ({ step }) => {
-	const [activeStep, setActiveStep] = useState(0);
-
-	const isFirstStep = activeStep === 0;
-	const isSecondStep = activeStep === 1;
-	const isThirdStep = activeStep === 3;
-	const isFourthStep = activeStep === 4;
-
+const CheckoutSteps = ({ step, link }) => {
+	const steps = ['Sign In', 'Checkout', 'Payment', 'Place Order'];
 	return (
-		<Box width='80%' m='0 auto'>
-			<Stepper activeStep={step} sx={{ m: '20px 0' }}>
-				<Step>
-					<StepLabel>Sign In</StepLabel>
-				</Step>
-				<Step>
-					<StepLabel>Check out</StepLabel>
-				</Step>
+		<Box>
+			<Stepper activeStep={step} alternativeLabel sx={{ m: '20px 0' }}>
+				{steps.map((label) => (
+					<Step key={label}>
+						<Link to={link}>
+							<StepLabel>{label}</StepLabel>
+						</Link>
+					</Step>
+				))}
 			</Stepper>
-
-			{/* <Step>
-				<StepLabel>Checkout</StepLabel>
-			</Step>
-			<Step>
-				<StepLabel>Payment</StepLabel>
-			</Step>
-			<Step>
-				<StepLabel>Place Order</StepLabel>
-			</Step> */}
 		</Box>
 	);
 };

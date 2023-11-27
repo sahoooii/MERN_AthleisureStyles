@@ -22,7 +22,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SubmitButton from '../../components/FormUi/SubmitButton';
 import Loader from '../../components/Utils/Loader';
 
-const initialRegisterState = {
+const initialRegisterValues = {
 	firstName: '',
 	lastName: '',
 	email: '',
@@ -44,7 +44,7 @@ function isValidFileType(fileName, fileType) {
 	);
 }
 
-const registerValidation = yup.object().shape({
+const registerSchema = yup.object().shape({
 	firstName: yup.string().required('Please enter your first name'),
 	lastName: yup.string().required('Please enter your last name'),
 	// notOneOf('emailList', 'Email already taken)
@@ -150,8 +150,8 @@ const RegisterFormScreen = () => {
 				{isLoading && <Loader />}
 
 				<Formik
-					initialValues={initialRegisterState}
-					validationSchema={registerValidation}
+					initialValues={initialRegisterValues}
+					validationSchema={registerSchema}
 					onSubmit={submitHandler}
 					// onSubmit={(values) => {
 					// 	console.log(values);
