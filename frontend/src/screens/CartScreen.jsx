@@ -151,7 +151,7 @@ const CartScreen = () => {
 							md={4}
 							xs={12}
 							sx={{
-								mb: { xs: '120px', md: '0' },
+								// mb: { xs: '120px', md: '0' },
 								mt: { xs: '25px', md: '35px' },
 							}}
 						>
@@ -193,7 +193,6 @@ const CartScreen = () => {
 										<CardActions>
 											<ButtonComponent
 												type='button'
-												width='100%'
 												disabled={cartItems.length === 0}
 												onClick={checkoutHandler}
 											>

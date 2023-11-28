@@ -30,8 +30,9 @@ const Shipping = ({
 				/>
 			</Box>
 
-			<Box mb='20px'>
+			<Box mt='5px'>
 				<FormControlLabel
+					label='Same For Shipping Address'
 					control={
 						<Checkbox
 							defaultChecked
@@ -44,21 +45,20 @@ const Shipping = ({
 							}
 						/>
 					}
-					label='Same For Shipping Address'
 				/>
 			</Box>
 
 			{/* Shipping Address Form */}
 			{!values.shippingAddress.isSameAddress && (
-				<Box>
+				<Box mt='15px' sx={{ mb: { xs: '100px' } }}>
 					<Typography sx={{ mb: '15px' }} variant='h3'>
 						Shipping Information
 					</Typography>
 					<AddressForm
 						type='shippingAddress'
 						values={values.shippingAddress}
-						errors={errors}
 						touched={touched}
+						errors={errors}
 						handleBlur={handleBlur}
 						handleChange={handleChange}
 					/>

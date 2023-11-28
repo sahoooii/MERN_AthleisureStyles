@@ -5,17 +5,15 @@ import { Link } from 'react-router-dom';
 const CheckoutSteps = ({ step, link }) => {
 	const steps = ['Sign In', 'Checkout', 'Payment', 'Place Order'];
 	return (
-		<Box>
-			<Stepper activeStep={step} alternativeLabel sx={{ m: '20px 0' }}>
-				{steps.map((label) => (
-					<Step key={label}>
-						<Link to={link}>
-							<StepLabel>{label}</StepLabel>
-						</Link>
-					</Step>
-				))}
-			</Stepper>
-		</Box>
+		<Stepper activeStep={step} alternativeLabel sx={{ m: '20px 0' }}>
+			{steps.map((label) => (
+				<Step key={label}>
+					<Link to={link}>
+						<StepLabel>{label}</StepLabel>
+					</Link>
+				</Step>
+			))}
+		</Stepper>
 	);
 };
 

@@ -19,7 +19,7 @@ import { setCredentials } from '../../slices/authSlice';
 import { toast } from 'react-toastify';
 import FormComponent from '../../components/auth/FormComponent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import SubmitButton from '../../components/FormUi/SubmitButton';
+import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 
 const initialRegisterValues = {
@@ -153,9 +153,6 @@ const RegisterFormScreen = () => {
 					initialValues={initialRegisterValues}
 					validationSchema={registerSchema}
 					onSubmit={submitHandler}
-					// onSubmit={(values) => {
-					// 	console.log(values);
-					// }}
 				>
 					{({
 						values,
@@ -328,7 +325,7 @@ const RegisterFormScreen = () => {
 								</Box>
 
 								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
-									<SubmitButton children='REGISTER' width='100%' />
+									<ButtonComponent>REGISTER</ButtonComponent>
 								</Box>
 
 								<Box gridColumn='span 4'>

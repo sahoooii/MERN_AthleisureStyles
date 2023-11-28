@@ -10,7 +10,7 @@ function App() {
 		<div className='app'>
 			<Navbar />
 			<main style={{ paddingTop: '120px' }}>
-				<Container>
+				<Container sx={{ mb: { xs: '100px', sm: '0' } }}>
 					<Outlet />
 				</Container>
 			</main>
