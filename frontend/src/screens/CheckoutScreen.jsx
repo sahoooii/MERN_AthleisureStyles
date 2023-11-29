@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
 import Shipping from '../components/Checkout/Shipping';
 import ButtonComponent from '../components/Utils/ButtonComponent';
-import { shades } from '../theme';
-import { Link } from 'react-router-dom';
+import { saveBillingAddress, saveShippingAddress } from '../slices/cartSlice';
 
 const initialFormValues = {
 	billingAddress: {
@@ -74,23 +75,59 @@ const formSchema = yup.object().shape({
 
 // add error handling
 const CheckoutScreen = () => {
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
 	const submitHandler = (values, actions) => {
+		const { firstName, lastName, address, city, state, postalCode, country } =
+			values.billingAddress;
+
+		dispatch(
+			saveBillingAddress({
+				firstName,
+				lastName,
+				address,
+				city,
+				state,
+				postalCode,
+				country,
+			})
+		);
+
 		// Copy billing address onto shipping address
 		if (values.shippingAddress.isSameAddress) {
 			actions.setFieldValue('shippingAddress', {
 				...values.billingAddress,
 				isSameAddress: true,
 			});
+			dispatch(
+				saveShippingAddress({
+					...values.billingAddress,
+				})
+			);
+		} else {
+			actions.setFieldValue('shippingAddress', {
+				...values.shippingAddress,
+				isSameAddress: false,
+			});
+			dispatch(
+				saveShippingAddress({
+					...values.shippingAddress,
+				})
+			);
 		}
+		actions.setTouched({});
+
+		navigate('/payment');
 	};
 
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '85%', sm: '80%' } }}>
 			<Box sx={{ mt: { sm: '20px' } }}>
-				<CheckoutSteps step={1} link='/checkout' />
+				<CheckoutSteps step={1} />
 			</Box>
 
-			<Box>
+			<Box sx={{ mb: { md: '100px' } }}>
 				<Formik
 					initialValues={initialFormValues}
 					validationSchema={formSchema}
@@ -115,22 +152,9 @@ const CheckoutScreen = () => {
 								setFieldValue={setFieldValue}
 							/>
 
-							<Box display='flex' justifyContent='space-between' gap='10px'>
-								<Box width='30%'>
-									<Link to='/cart'>
-										{/* bg color */}
-										<ButtonComponent
-											type='button'
-											backgroundColor={shades.neutral[500]}
-										>
-											Back
-										</ButtonComponent>
-									</Link>
-								</Box>
-								<Box width='50%'>
-									<Link to='/payment'>
-										<ButtonComponent>NEXT</ButtonComponent>
-									</Link>
+							<Box display='flex' justifyContent='space-between'>
+								<Box sx={{ width: { sm: '50%' } }}>
+									<ButtonComponent>NEXT</ButtonComponent>
 								</Box>
 							</Box>
 						</form>

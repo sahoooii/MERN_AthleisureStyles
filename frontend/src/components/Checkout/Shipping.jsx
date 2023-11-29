@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography, FormControlLabel, Checkbox } from '@mui/material';
 import AddressForm from './AddressForm';
+import { useSelector } from 'react-redux';
 
 const Shipping = ({
 	values,
@@ -11,6 +12,9 @@ const Shipping = ({
 	handleSubmit,
 	setFieldValue,
 }) => {
+	const cart = useSelector((state) => state.cart);
+	const { billingAddress, shippingAddress } = cart;
+
 	return (
 		<Box m='30px auto'>
 			{/* Billing Form */}
@@ -20,7 +24,8 @@ const Shipping = ({
 				</Typography>
 				<AddressForm
 					type='billingAddress'
-					values={values.billingAddress}
+					values={billingAddress ? billingAddress : values.billingAddress}
+					// values={values.billingAddress}
 					errors={errors}
 					touched={touched}
 					handleBlur={handleBlur}
@@ -50,12 +55,13 @@ const Shipping = ({
 
 			{/* Shipping Address Form */}
 			{!values.shippingAddress.isSameAddress && (
-				<Box mt='15px' sx={{ mb: { xs: '100px' } }}>
+				<Box mt='15px'>
 					<Typography sx={{ mb: '15px' }} variant='h3'>
 						Shipping Information
 					</Typography>
 					<AddressForm
 						type='shippingAddress'
+						// values={shippingAddress ? shippingAddress : values.shippingAddress}
 						values={values.shippingAddress}
 						touched={touched}
 						errors={errors}
