@@ -6,7 +6,8 @@ const ButtonComponent = ({
 	children,
 	backgroundColor = shades.blue[500],
 	type = 'submit',
-	width='80%',
+	color='white',
+	width='100%',
 	...otherProps
 }) => {
 	return (
@@ -15,7 +16,7 @@ const ButtonComponent = ({
 			type={type}
 			sx={{
 				backgroundColor: { backgroundColor },
-				color: 'white',
+				color: {color},
 				borderRadius: 1,
 				minWidth: '150px',
 				padding: '10px 40px',

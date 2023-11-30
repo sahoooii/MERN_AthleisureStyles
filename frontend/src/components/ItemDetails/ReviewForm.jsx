@@ -21,9 +21,7 @@ import {
 import { shades } from '../../theme';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-// import FormTextField from '../FormUi/FormTextField';
-// import SelectForm from '../FormUi/SelectForm';
-import SubmitButton from '../FormUi/SubmitButton';
+import ButtonComponent from '../../components/Utils/ButtonComponent';
 
 const ReviewForm = ({ item }) => {
 	// For Review form
@@ -137,10 +135,11 @@ const ReviewForm = ({ item }) => {
 										</FormControl>
 
 										<Box m='20px' display='flex' justifyContent='center'>
-											<SubmitButton
-												children='Submit'
+											<ButtonComponent
 												backgroundColor={shades.blue[400]}
-											/>
+											>
+												Submit
+											</ButtonComponent>
 										</Box>
 									</Stack>
 								</form>

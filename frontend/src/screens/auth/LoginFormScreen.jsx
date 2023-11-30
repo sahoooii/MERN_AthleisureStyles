@@ -13,13 +13,13 @@ import {
 import { useLoginMutation } from '../../slices/usersApiSlice';
 import { setCredentials } from '../../slices/authSlice';
 import FormComponent from '../../components/auth/FormComponent';
-import SubmitButton from '../../components/FormUi/SubmitButton';
+import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 import { toast } from 'react-toastify';
 
-const initialLoginState = { email: '', password: '' };
+const initialLoginValues = { email: '', password: '' };
 
-const loginValidation = yup.object().shape({
+const loginSchema = yup.object().shape({
 	email: yup
 		.string()
 		.email('Invalid email.')
@@ -81,8 +81,8 @@ const LoginFormScreen = () => {
 				{isLoading && <Loader />}
 
 				<Formik
-					initialValues={initialLoginState}
-					validationSchema={loginValidation}
+					initialValues={initialLoginValues}
+					validationSchema={loginSchema}
 					onSubmit={submitHandler}
 				>
 					{({
@@ -128,11 +128,7 @@ const LoginFormScreen = () => {
 								/>
 
 								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
-									<SubmitButton
-										children='LOGIN'
-										width='100%'
-										disabled={isLoading}
-									/>
+									<ButtonComponent disabled={isLoading}>LOGIN</ButtonComponent>
 								</Box>
 
 								<Box gridColumn='span 4'>

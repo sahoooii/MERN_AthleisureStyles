@@ -179,10 +179,12 @@ const ItemDetailsScreen = () => {
 								{/* Add To Cart */}
 								<Box display='flex' alignItems='center'>
 									<ButtonComponent
-										children='ADD TO CART'
+										width='80%'
 										disabled={item.countInStock <= 0}
 										onClick={addToCartHandler}
-									/>
+									>
+										ADD TO CART
+									</ButtonComponent>
 									<IconButton
 										sx={{
 											alignItems: 'center',
