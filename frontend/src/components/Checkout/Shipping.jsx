@@ -12,9 +12,6 @@ const Shipping = ({
 	handleSubmit,
 	setFieldValue,
 }) => {
-	const cart = useSelector((state) => state.cart);
-	const { billingAddress, shippingAddress } = cart;
-
 	return (
 		<Box m='30px auto'>
 			{/* Billing Form */}
@@ -24,8 +21,7 @@ const Shipping = ({
 				</Typography>
 				<AddressForm
 					type='billingAddress'
-					values={billingAddress ? billingAddress : values.billingAddress}
-					// values={values.billingAddress}
+					values={values.billingAddress}
 					errors={errors}
 					touched={touched}
 					handleBlur={handleBlur}
@@ -61,7 +57,6 @@ const Shipping = ({
 					</Typography>
 					<AddressForm
 						type='shippingAddress'
-						// values={shippingAddress ? shippingAddress : values.shippingAddress}
 						values={values.shippingAddress}
 						touched={touched}
 						errors={errors}
