@@ -2,12 +2,13 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
 import Shipping from '../components/Checkout/Shipping';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import { saveBillingAddress, saveShippingAddress } from '../slices/cartSlice';
+import { shades } from '../theme';
 
 const CheckoutScreen = () => {
 	const navigate = useNavigate();
@@ -158,6 +159,16 @@ const CheckoutScreen = () => {
 							/>
 
 							<Box display='flex' justifyContent='space-between'>
+								<Box width='30%'>
+									<Link to='/cart'>
+										<ButtonComponent
+											type='button'
+											backgroundColor={shades.neutral[500]}
+										>
+											Back
+										</ButtonComponent>
+									</Link>
+								</Box>
 								<Box sx={{ width: { sm: '50%' } }}>
 									<ButtonComponent>NEXT</ButtonComponent>
 								</Box>

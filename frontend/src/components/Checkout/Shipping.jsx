@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Typography, FormControlLabel, Checkbox } from '@mui/material';
 import AddressForm from './AddressForm';
-import { useSelector } from 'react-redux';
 
 const Shipping = ({
 	values,

@@ -3,16 +3,27 @@ import React from 'react';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import { Link } from 'react-router-dom';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
+import { shades } from '../theme';
 
 const PaymentScreen = () => {
 	return (
 		<Box>
 			<CheckoutSteps step={2} />
-			<Link to='/checkout'>
-				<Box sx={{ width: { sm: '50%' } }}>
-					<ButtonComponent type='button'>BACK</ButtonComponent>
+			<Box display='flex' justifyContent='space-between'>
+				<Box width='30%'>
+					<Link to='/checkout'>
+						<ButtonComponent
+							type='button'
+							backgroundColor={shades.neutral[500]}
+						>
+							Back
+						</ButtonComponent>
+					</Link>
 				</Box>
-			</Link>
+				<Box sx={{ width: { sm: '50%' } }}>
+					<ButtonComponent>NEXT</ButtonComponent>
+				</Box>
+			</Box>
 		</Box>
 	);
 };
