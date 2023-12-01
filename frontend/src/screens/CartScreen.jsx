@@ -29,6 +29,8 @@ const CartScreen = () => {
 	const cart = useSelector((state) => state.cart);
 	const { cartItems } = cart;
 
+	const { userInfo } = useSelector((state) => state.auth);
+
 	// Change the quantity of items
 	// quantity = selected value of quantity
 	const addToCartHandler = (item, quantity) => {
@@ -41,7 +43,11 @@ const CartScreen = () => {
 
 	// Check login or not
 	const checkoutHandler = () => {
-		navigate('/login?redirect=/checkout');
+		if (userInfo) {
+			navigate('/checkout');
+		} else {
+			navigate('/login?redirect=/checkout');
+		}
 	};
 
 	const FlexBox = styled(Box)`
@@ -60,9 +66,7 @@ const CartScreen = () => {
 						<Grid item md={8} xs={12}>
 							<Box>
 								<FlexBox mb='30px'>
-									<Typography variant='h3'>
-										Shopping Cart
-									</Typography>
+									<Typography variant='h3'>Shopping Cart</Typography>
 								</FlexBox>
 
 								{/* Shopping Cart */}
@@ -110,7 +114,8 @@ const CartScreen = () => {
 															<InputLabel id='quantity'>Quantity</InputLabel>
 															<Select
 																labelId='quantity'
-																id='quantity-select'
+																id='quantity'
+																name='quantity'
 																color='neutral'
 																label='Quantity'
 																value={item.quantity}
@@ -120,7 +125,10 @@ const CartScreen = () => {
 															>
 																{[...Array(item.countInStock).keys()].map(
 																	(quantity) => (
-																		<MenuItem key={quantity + 1} value={quantity + 1}>
+																		<MenuItem
+																			key={quantity + 1}
+																			value={quantity + 1}
+																		>
 																			{quantity + 1}
 																		</MenuItem>
 																	)

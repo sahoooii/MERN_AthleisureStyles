@@ -106,9 +106,11 @@ const CheckoutScreen = () => {
 				...values.billingAddress,
 				isSameAddress: true,
 			});
+
 			dispatch(
 				saveShippingAddress({
 					...values.billingAddress,
+					isSameAddress: true,
 				})
 			);
 		} else {
@@ -116,13 +118,13 @@ const CheckoutScreen = () => {
 				...values.shippingAddress,
 				isSameAddress: false,
 			});
+
 			dispatch(
 				saveShippingAddress({
 					...values.shippingAddress,
 				})
 			);
 		}
-		actions.setTouched({});
 
 		navigate('/payment');
 	};

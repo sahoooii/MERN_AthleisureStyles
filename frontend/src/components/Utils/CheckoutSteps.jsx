@@ -1,6 +1,5 @@
 import React from 'react';
-import { Step, Stepper, StepLabel, Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Step, Stepper, StepLabel } from '@mui/material';
 
 const CheckoutSteps = ({ step }) => {
 	const steps = ['Sign In', 'Checkout', 'Payment', 'Place Order'];
