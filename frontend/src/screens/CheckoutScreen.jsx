@@ -160,8 +160,8 @@ const CheckoutScreen = () => {
 								setFieldValue={setFieldValue}
 							/>
 
-							<Box display='flex' justifyContent='space-between'>
-								<Box width='30%'>
+							<Box display='flex' justifyContent='space-between' gap='15px'>
+								<Box sx={{ width: { xs: '50%', sm: '30%' } }}>
 									<Link to='/cart'>
 										<ButtonComponent
 											type='button'
@@ -171,7 +171,7 @@ const CheckoutScreen = () => {
 										</ButtonComponent>
 									</Link>
 								</Box>
-								<Box sx={{ width: { sm: '50%' } }}>
+								<Box width='50%'>
 									<ButtonComponent>NEXT</ButtonComponent>
 								</Box>
 							</Box>

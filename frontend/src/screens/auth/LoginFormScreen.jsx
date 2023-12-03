@@ -66,7 +66,7 @@ const LoginFormScreen = () => {
 	};
 
 	return (
-		<FormComponent>
+		<FormComponent title='Welcome to Athleisure Styles, For All SHOPAHOLICS!'>
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
 				<Typography
 					fontSize='32px'
