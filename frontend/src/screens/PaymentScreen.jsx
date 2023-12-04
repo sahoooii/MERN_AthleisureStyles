@@ -14,55 +14,73 @@ const PaymentScreen = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
+	const cart = useSelector((state) => state.cart);
+	const { billingAddress, shippingAddress } = cart;
+
+	const isBillingEmpty = Object.keys(billingAddress).length === 0;
+	const isShippingEmpty = Object.keys(shippingAddress).length === 0;
+
+	// Check fill out billingAddress and shippingAddress
+	useEffect(() => {
+		if (isBillingEmpty || isShippingEmpty) {
+			navigate('/checkout');
+		}
+	}, [isBillingEmpty, isShippingEmpty, navigate]);
+
+	const submitHandler = (e) => {
+		e.preventDefault();
+
+		dispatch(savePaymentMethod(paymentMethod));
+		navigate('/placeorder');
+	};
+
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '93%', sm: '80%' } }}>
 			<CheckoutSteps step={2} />
 
 			<Box mt='40px'>
 				<FormComponent title='Select Method'>
-					<Box>
-						<Typography sx={{ mb: '15px', textAlign: 'center' }} variant='h3'>
-							Payment Method
-						</Typography>
+					<Typography sx={{ mb: '15px', textAlign: 'center' }} variant='h3'>
+						Payment Method
+					</Typography>
 
+					<form onSubmit={submitHandler}>
 						<Box mb='40px' textAlign='center'>
-							<form>
-								<FormControlLabel
-									label='PayPal or Credit Card'
-									control={
-										<Checkbox
-											checked
-											id='PayPal'
-											name='paymentMethod'
-											value='PayPal'
-											onChange={(e) => setPaymentMethod(e.target.value)}
-										/>
-									}
-								/>
-							</form>
+							<FormControlLabel
+								label='PayPal or Credit Card'
+								control={
+									<Checkbox
+										checked
+										id='PayPal'
+										name='paymentMethod'
+										value='PayPal'
+										onChange={(e) => setPaymentMethod(e.target.value)}
+									/>
+								}
+							/>
 						</Box>
-					</Box>
 
-					<Box
-						mb='20px'
-						display='flex'
-						justifyContent='space-between'
-						gap='15px'
-					>
-						<Box sx={{ width: { xs: '50%', sm: '30%' } }}>
-							<Link to='/checkout'>
-								<ButtonComponent
-									type='button'
-									backgroundColor={shades.neutral[500]}
-								>
-									Back
-								</ButtonComponent>
-							</Link>
+						<Box
+							mb='20px'
+							display='flex'
+							justifyContent='space-between'
+							gap='15px'
+						>
+							<Box sx={{ width: { xs: '50%', sm: '30%' } }}>
+								<Link to='/checkout'>
+									<ButtonComponent
+										type='button'
+										backgroundColor={shades.neutral[500]}
+									>
+										Back
+									</ButtonComponent>
+								</Link>
+							</Box>
+							<Box width='50%'>
+								<ButtonComponent>NEXT</ButtonComponent>
+							</Box>
 						</Box>
-						<Box width='50%'>
-							<ButtonComponent>NEXT</ButtonComponent>
-						</Box>
-					</Box>
+					</form>
 				</FormComponent>
 			</Box>
 		</Box>
