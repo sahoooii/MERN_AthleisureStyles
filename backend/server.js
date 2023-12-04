@@ -6,6 +6,7 @@ import connectDB from './config/db.js';
 import itemRoutes from './routes/itemRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.get('/', (req, res) => {
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/profileupload', uploadRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Set __dirname to current directory
 const __dirname = path.resolve();
