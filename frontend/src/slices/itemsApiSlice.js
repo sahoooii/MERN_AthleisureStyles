@@ -1,8 +1,8 @@
 import { ITEMS_URL } from '../constants';
-import { apiSLice } from './apiSlice';
+import { apiSlice } from './apiSlice';
 
 // injectEndpoints = for separate each endpoints
-export const itemsApiSlice = apiSLice.injectEndpoints({
+export const itemsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getItems: builder.query({
 			query: () => ({

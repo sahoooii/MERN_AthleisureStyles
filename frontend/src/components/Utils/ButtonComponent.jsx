@@ -18,7 +18,7 @@ const ButtonComponent = ({
 				backgroundColor: { backgroundColor },
 				color: {color},
 				borderRadius: 1,
-				minWidth: '150px',
+				// minWidth: '150px',
 				padding: '10px 40px',
 				width: {width},
 				fontSize: '16px',

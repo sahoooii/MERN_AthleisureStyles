@@ -72,50 +72,56 @@ const ReviewForm = ({ item }) => {
 								<form onSubmit={handleSubmit}>
 									<Stack spacing={2}>
 										{/* Select Reviews */}
-										<TextField
-											select
-											id='rate'
-											name='rate'
-											label='Rating This Item'
-											value={values.rate}
-											onChange={handleChange}
-											onBlur={handleBlur}
-											error={Boolean(touched.rate) && Boolean(errors.rate)}
-											helperText={touched.rate && errors.rate}
-										>
-											<MenuItem value={1}>
-												<Box display='flex' alignItems='center'>
-													<MoodBad sx={{ marginRight: '5px' }} />1 -- Nop I
-													don't like it
-												</Box>
-											</MenuItem>
-											<MenuItem value={2}>
-												<Box display='flex' alignItems='center'>
-													<SentimentVeryDissatisfied
-														sx={{ marginRight: '5px' }}
-													/>
-													2 -- Maybe I give it to my sister
-												</Box>
-											</MenuItem>
-											<MenuItem value={3}>
-												<Box display='flex' alignItems='center'>
-													<SentimentNeutral sx={{ marginRight: '5px' }} />3 --
-													So far, So Good
-												</Box>
-											</MenuItem>
-											<MenuItem value={4}>
-												<Box display='flex' alignItems='center'>
-													<SentimentSatisfiedAlt sx={{ marginRight: '5px' }} />4
-													-- Like it!
-												</Box>
-											</MenuItem>
-											<MenuItem value={5}>
-												<Box display='flex' alignItems='center'>
-													<SentimentVerySatisfied sx={{ marginRight: '5px' }} />
-													5 -- Yes!! Love it!
-												</Box>
-											</MenuItem>
-										</TextField>
+										<FormControl>
+											<TextField
+												select
+												id='rate'
+												name='rate'
+												label='Rating This Item'
+												value={values.rate}
+												onChange={handleChange}
+												onBlur={handleBlur}
+												error={Boolean(touched.rate) && Boolean(errors.rate)}
+												helperText={touched.rate && errors.rate}
+											>
+												<MenuItem value={1}>
+													<Box display='flex' alignItems='center'>
+														<MoodBad sx={{ marginRight: '5px' }} />1 -- Nop I
+														don't like it
+													</Box>
+												</MenuItem>
+												<MenuItem value={2}>
+													<Box display='flex' alignItems='center'>
+														<SentimentVeryDissatisfied
+															sx={{ marginRight: '5px' }}
+														/>
+														2 -- Maybe I give it to my sister
+													</Box>
+												</MenuItem>
+												<MenuItem value={3}>
+													<Box display='flex' alignItems='center'>
+														<SentimentNeutral sx={{ marginRight: '5px' }} />3 --
+														So far, So Good
+													</Box>
+												</MenuItem>
+												<MenuItem value={4}>
+													<Box display='flex' alignItems='center'>
+														<SentimentSatisfiedAlt
+															sx={{ marginRight: '5px' }}
+														/>
+														4 -- Like it!
+													</Box>
+												</MenuItem>
+												<MenuItem value={5}>
+													<Box display='flex' alignItems='center'>
+														<SentimentVerySatisfied
+															sx={{ marginRight: '5px' }}
+														/>
+														5 -- Yes!! Love it!
+													</Box>
+												</MenuItem>
+											</TextField>
+										</FormControl>
 										{/* Comment */}
 										<FormControl>
 											<TextField
@@ -135,9 +141,7 @@ const ReviewForm = ({ item }) => {
 										</FormControl>
 
 										<Box m='20px' display='flex' justifyContent='center'>
-											<ButtonComponent
-												backgroundColor={shades.blue[400]}
-											>
+											<ButtonComponent backgroundColor={shades.blue[400]}>
 												Submit
 											</ButtonComponent>
 										</Box>

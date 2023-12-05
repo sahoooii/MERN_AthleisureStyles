@@ -7,7 +7,7 @@ const baseQuery = fetchBaseQuery({ baseUrl: BASE_URL });
 
 // RTK Query = Easy to fetch data and cache tool
 // This is the parent API not write logics
-export const apiSLice = createApi({
+export const apiSlice = createApi({
 	baseQuery: baseQuery,
 	tagTypes: ['Items', 'Order', 'User'],
 	endpoints: (builder) => ({}),

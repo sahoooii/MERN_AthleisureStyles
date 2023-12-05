@@ -2,12 +2,13 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
 import Shipping from '../components/Checkout/Shipping';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import { saveBillingAddress, saveShippingAddress } from '../slices/cartSlice';
+import { shades } from '../theme';
 
 const CheckoutScreen = () => {
 	const navigate = useNavigate();
@@ -105,9 +106,11 @@ const CheckoutScreen = () => {
 				...values.billingAddress,
 				isSameAddress: true,
 			});
+
 			dispatch(
 				saveShippingAddress({
 					...values.billingAddress,
+					isSameAddress: true,
 				})
 			);
 		} else {
@@ -115,13 +118,13 @@ const CheckoutScreen = () => {
 				...values.shippingAddress,
 				isSameAddress: false,
 			});
+
 			dispatch(
 				saveShippingAddress({
 					...values.shippingAddress,
 				})
 			);
 		}
-		actions.setTouched({});
 
 		navigate('/payment');
 	};
@@ -129,7 +132,7 @@ const CheckoutScreen = () => {
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '85%', sm: '80%' } }}>
 			<Box sx={{ mt: { sm: '20px' } }}>
-				<CheckoutSteps step={1} />
+				<CheckoutSteps step={0} />
 			</Box>
 
 			<Box sx={{ mb: { md: '100px' } }}>
@@ -157,8 +160,18 @@ const CheckoutScreen = () => {
 								setFieldValue={setFieldValue}
 							/>
 
-							<Box display='flex' justifyContent='space-between'>
-								<Box sx={{ width: { sm: '50%' } }}>
+							<Box display='flex' justifyContent='space-between' gap='15px'>
+								<Box sx={{ width: { xs: '50%', sm: '30%' } }}>
+									<Link to='/cart'>
+										<ButtonComponent
+											type='button'
+											backgroundColor={shades.neutral[500]}
+										>
+											Back
+										</ButtonComponent>
+									</Link>
+								</Box>
+								<Box width='50%'>
 									<ButtonComponent>NEXT</ButtonComponent>
 								</Box>
 							</Box>

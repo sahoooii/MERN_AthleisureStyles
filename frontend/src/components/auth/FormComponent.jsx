@@ -2,7 +2,7 @@
 import React from 'react';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 
-const FormComponent = ({children}) => {
+const FormComponent = ({ title, children }) => {
 	const theme = useTheme();
 	const isNonMobileScreens = useMediaQuery('(min-width:1000px)');
 
@@ -22,7 +22,7 @@ const FormComponent = ({children}) => {
 					sx={{ mb: '1.5rem', mt: '1.5rem' }}
 					textAlign='center'
 				>
-					Welcome to Athleisure Styles, For All SHOPAHOLICS!
+					{title}
 				</Typography>
 				{children}
 			</Box>

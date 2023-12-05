@@ -1,4 +1,5 @@
 import React from 'react';
+import App from './App';
 import ReactDOM from 'react-dom/client';
 import {
 	createBrowserRouter,
@@ -7,12 +8,12 @@ import {
 	RouterProvider,
 } from 'react-router-dom';
 import './index.css';
-import App from './App';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { theme } from './theme';
 import { Provider } from 'react-redux';
 import store from './store';
+import PrivateRoute from './components/PrivateRoute';
 import HomeScreen from './screens/HomeScreen';
 import ItemDetailsScreen from './screens/ItemDetailsScreen';
 import CartScreen from './screens/CartScreen';
@@ -20,6 +21,7 @@ import LoginFormScreen from './screens/auth/LoginFormScreen';
 import RegisterFormScreen from './screens/auth/RegisterFormScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 import PaymentScreen from './screens/PaymentScreen';
+import PlaceOrderScreen from './screens/PlaceOrderScreen';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -29,8 +31,13 @@ const router = createBrowserRouter(
 			<Route path='/cart' element={<CartScreen />} />
 			<Route path='/login' element={<LoginFormScreen />} />
 			<Route path='/register' element={<RegisterFormScreen />} />
-			<Route path='/checkout' element={<CheckoutScreen />} />
-			<Route path='/payment' element={<PaymentScreen />} />
+
+			{/* Private Route */}
+			<Route path='/' element={<PrivateRoute />}>
+				<Route path='/checkout' element={<CheckoutScreen />} />
+				<Route path='/payment' element={<PaymentScreen />} />
+				<Route path='/placeorder' element={<PlaceOrderScreen />} />
+			</Route>
 		</Route>
 	)
 );

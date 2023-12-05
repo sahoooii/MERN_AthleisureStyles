@@ -1,35 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
 	Box,
-	Divider,
-	IconButton,
-	Typography,
-	Grid,
-	Stack,
-	Select,
-	InputLabel,
-	FormControl,
-	MenuItem,
 	Card,
-	CardContent,
 	CardActions,
+	CardContent,
+	Divider,
+	FormControl,
+	Grid,
+	IconButton,
+	InputLabel,
+	MenuItem,
+	Select,
+	Stack,
+	Typography,
 } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
-import ButtonComponent from '../components/Utils/ButtonComponent';
+import { shades } from '../theme';
+import CheckoutSteps from '../components/Utils/CheckoutSteps';
 import Message from '../components/Utils/Message';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-import styled from '@emotion/styled';
+import ButtonComponent from '../components/Utils/ButtonComponent';
 
-const CartScreen = () => {
+const PlaceOrderScreen = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const cart = useSelector((state) => state.cart);
-	const { cartItems } = cart;
+	const { billingAddress, shippingAddress, paymentMethod, cartItems } = cart;
 
-	const { userInfo } = useSelector((state) => state.auth);
+	const isBillingEmpty = Object.keys(billingAddress).length === 0;
+	const isShippingEmpty = Object.keys(shippingAddress).length === 0;
+
+	// Check fill out billingAddress and shippingAddress
+	useEffect(() => {
+		if (isBillingEmpty || isShippingEmpty) {
+			navigate('/checkout');
+		} else if (!paymentMethod) {
+			navigate('/payment');
+		}
+	}, [isBillingEmpty, isShippingEmpty, paymentMethod, navigate]);
 
 	// Change the quantity of items
 	// quantity = selected value of quantity
@@ -41,32 +53,97 @@ const CartScreen = () => {
 		dispatch(removeFromCart(id));
 	};
 
-	// Check login or not
-	const checkoutHandler = () => {
-		if (userInfo) {
-			navigate('/checkout');
-		} else {
-			navigate('/login?redirect=/checkout');
-		}
-	};
-
 	return (
-		<Box margin='0 auto' sx={{ width: { xs: '90%', sm: '90%' } }}>
+		<Box m='0 auto' sx={{ width: { xs: '90%', md: '90%' } }}>
+			<CheckoutSteps step={2} />
+
 			{cartItems.length === 0 ? (
 				<Message severity='error'>
 					Oh No! Your cart is empty
 					<Link to='/'> - Go Back</Link>
 				</Message>
 			) : (
-				<Box sx={{ flexGrow: 1, alignItems: 'center' }}>
-					<Grid container spacing={2} mt='15px'>
+				<Box
+					sx={{
+						flexGrow: 1,
+						alignItems: 'center',
+						mt: '30px',
+						mb: { sm: '40px' },
+					}}
+				>
+					<Grid container mt='18px' spacing={2}>
 						<Grid item md={8} xs={12}>
 							<Box>
-								<Box mb='30px'>
-									<Typography variant='h3'>Shopping Cart</Typography>
+								<Box mb='25px'>
+									<Typography variant='h3' fontWeight='bold'>
+										Your Information
+									</Typography>
 								</Box>
 
-								{/* Shopping Cart */}
+								{/* Information */}
+								<Grid container m='14px 0'>
+									<Grid item xs={11}>
+										<Stack spacing={1}>
+											<Typography variant='h3'>Shipping Address</Typography>
+											<Typography variant='subtitle1'>
+												<strong>Name:</strong> {shippingAddress.firstName}{' '}
+												{shippingAddress.lastName}
+											</Typography>
+											<Typography variant='subtitle1'>
+												<strong>Address:</strong> {shippingAddress.address},{' '}
+												{shippingAddress.city}, {shippingAddress.state},{' '}
+												{shippingAddress.postalCode}, {shippingAddress.country}
+											</Typography>
+										</Stack>
+									</Grid>
+
+									<Grid item xs={1}>
+										<Link to='/checkout'>
+											<IconButton>
+												<EditOutlinedIcon />
+											</IconButton>
+										</Link>
+									</Grid>
+								</Grid>
+
+								<Divider />
+
+								<Grid container m='14px 0'>
+									<Grid item xs={11}>
+										<Stack spacing={1}>
+											<Typography variant='h3'>Billing Address</Typography>
+											<Typography variant='subtitle1'>
+												<strong>Name:</strong> {billingAddress.firstName}{' '}
+												{billingAddress.lastName}
+											</Typography>
+											<Typography variant='subtitle1'>
+												<strong>Address:</strong> {billingAddress.address},{' '}
+												{billingAddress.city}, {billingAddress.state},{' '}
+												{billingAddress.postalCode}, {billingAddress.country}
+											</Typography>
+										</Stack>
+									</Grid>
+
+									<Grid item xs={1}>
+										<Link to='/checkout'>
+											<IconButton>
+												<EditOutlinedIcon />
+											</IconButton>
+										</Link>
+									</Grid>
+								</Grid>
+
+								<Divider />
+
+								<Stack spacing={1} m='14px 0'>
+									<Typography variant='h3'>Payment Method</Typography>
+									<Typography variant='subtitle1'>
+										<strong>Method:</strong> {paymentMethod}
+									</Typography>
+								</Stack>
+
+								<Divider />
+
 								<Box>
 									{cartItems.map((item) => (
 										<Box key={item._id}>
@@ -75,26 +152,21 @@ const CartScreen = () => {
 													<img
 														src={item.image}
 														alt={item.name}
-														width='123px'
-														height='164px'
+														width='84px'
+														height='120px'
 														style={{
 															borderRadius: '3px',
 														}}
 													/>
 												</Grid>
-												<Grid
-													item
-													sm={7}
-													xs={5}
-													sx={{ mt: { sm: '12px', xs: '8px' }, mb: '10px' }}
-												>
+												<Grid item sm={7} xs={5}>
 													<Stack spacing={2}>
 														<Link
 															to={`/item/${item._id}`}
 															style={{ textDecoration: 'underline' }}
 														>
 															<Typography
-																sx={{ fontSize: { xs: '14px', sm: '18px' } }}
+																sx={{ fontSize: { xs: '12px', sm: '16px' } }}
 																fontWeight='bold'
 																color='secondary'
 															>
@@ -150,12 +222,12 @@ const CartScreen = () => {
 							</Box>
 						</Grid>
 
-						{/* OrderSummary */}
 						<Grid
 							item
 							md={4}
 							xs={12}
 							sx={{
+								// mb: { xs: '120px', md: '0' },
 								mt: { xs: '25px', md: '35px' },
 							}}
 						>
@@ -198,9 +270,9 @@ const CartScreen = () => {
 											<ButtonComponent
 												type='button'
 												disabled={cartItems.length === 0}
-												onClick={checkoutHandler}
+												// onClick={checkoutHandler}
 											>
-												Proceed To Checkout
+												Place Order
 											</ButtonComponent>
 										</CardActions>
 									</Stack>
@@ -210,8 +282,20 @@ const CartScreen = () => {
 					</Grid>
 				</Box>
 			)}
+
+			<Box textAlign='center' m='20px 0 100px 0'>
+				<Link to='/payment'>
+					<ButtonComponent
+						width='40%'
+						type='button'
+						backgroundColor={shades.neutral[500]}
+					>
+						Back
+					</ButtonComponent>
+				</Link>
+			</Box>
 		</Box>
 	);
 };
 
-export default CartScreen;
+export default PlaceOrderScreen;

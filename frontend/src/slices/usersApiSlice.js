@@ -1,9 +1,9 @@
 import { USERS_URL, PROFILE_UPLOAD_URL } from '../constants';
-import { apiSLice } from './apiSlice';
+import { apiSlice } from './apiSlice';
 
 // injectEndpoints = for separate each endpoints
 // For server functionality
-export const usersApiSlice = apiSLice.injectEndpoints({
+export const usersApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		login: builder.mutation({
 			query: (data) => ({
