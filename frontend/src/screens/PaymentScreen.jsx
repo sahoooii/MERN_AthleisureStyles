@@ -36,7 +36,7 @@ const PaymentScreen = () => {
 
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '93%', sm: '80%' } }}>
-			<CheckoutSteps step={2} />
+			<CheckoutSteps step={1} />
 
 			<Box mt='40px'>
 				<FormComponent title='Select Method'>

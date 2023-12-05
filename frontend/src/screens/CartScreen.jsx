@@ -50,9 +50,6 @@ const CartScreen = () => {
 		}
 	};
 
-	const FlexBox = styled(Box)`
-	display: flex: justify-content: space-between: align-items: center`;
-
 	return (
 		<Box margin='0 auto' sx={{ width: { xs: '90%', sm: '90%' } }}>
 			{cartItems.length === 0 ? (
@@ -65,9 +62,9 @@ const CartScreen = () => {
 					<Grid container spacing={2} mt='15px'>
 						<Grid item md={8} xs={12}>
 							<Box>
-								<FlexBox mb='30px'>
+								<Box mb='30px'>
 									<Typography variant='h3'>Shopping Cart</Typography>
-								</FlexBox>
+								</Box>
 
 								{/* Shopping Cart */}
 								<Box>
@@ -159,7 +156,6 @@ const CartScreen = () => {
 							md={4}
 							xs={12}
 							sx={{
-								// mb: { xs: '120px', md: '0' },
 								mt: { xs: '25px', md: '35px' },
 							}}
 						>
@@ -179,7 +175,7 @@ const CartScreen = () => {
 											Items: $
 											{cartItems
 												.reduce(
-													(acc, item) => acc + item.quantity + item.price,
+													(acc, item) => acc + item.quantity * item.price,
 													0
 												)
 												.toFixed(2)}

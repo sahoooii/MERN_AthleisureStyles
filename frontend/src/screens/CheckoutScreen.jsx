@@ -132,7 +132,7 @@ const CheckoutScreen = () => {
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '85%', sm: '80%' } }}>
 			<Box sx={{ mt: { sm: '20px' } }}>
-				<CheckoutSteps step={1} />
+				<CheckoutSteps step={0} />
 			</Box>
 
 			<Box sx={{ mb: { md: '100px' } }}>
