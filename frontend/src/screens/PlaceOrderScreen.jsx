@@ -16,10 +16,13 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, removeFromCart } from '../slices/cartSlice';
+import { addToCart, clearCartItems, removeFromCart } from '../slices/cartSlice';
+import { useCreateOrderMutation } from '../slices/orderApiSlice';
 import { shades } from '../theme';
+import { toast } from 'react-toastify';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
 import Message from '../components/Utils/Message';
+import Loader from '../components/Utils/ButtonComponent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import ButtonComponent from '../components/Utils/ButtonComponent';
@@ -53,6 +56,31 @@ const PlaceOrderScreen = () => {
 		dispatch(removeFromCart(id));
 	};
 
+	const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+
+	const placeOrderHandler = async () => {
+		try {
+			const response = await createOrder({
+				orderItems: cartItems,
+				shippingAddress: shippingAddress,
+				billingAddress: billingAddress,
+				paymentMethod: paymentMethod,
+				itemsPrice: cart.itemsPrice,
+				shippingPrice: cart.shippingPrice,
+				taxPrice: cart.taxPrice,
+				totalPrice: cart.totalPrice,
+			}).unwrap();
+
+			dispatch(clearCartItems());
+
+			// console.log('error')
+			// response._id = orderId
+			navigate(`/order/${response._id}`);
+		} catch (error) {
+			toast.error(error);
+		}
+	};
+
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '90%', md: '90%' } }}>
 			<CheckoutSteps step={2} />
@@ -71,7 +99,7 @@ const PlaceOrderScreen = () => {
 						mb: { sm: '40px' },
 					}}
 				>
-					<Grid container mt='18px' spacing={2}>
+					<Grid container mt='10px' spacing={3}>
 						<Grid item md={8} xs={12}>
 							<Box>
 								<Box mb='25px'>
@@ -152,7 +180,7 @@ const PlaceOrderScreen = () => {
 													<img
 														src={item.image}
 														alt={item.name}
-														width='84px'
+														width='90px'
 														height='120px'
 														style={{
 															borderRadius: '3px',
@@ -266,16 +294,22 @@ const PlaceOrderScreen = () => {
 											Total: ${cart.totalPrice}
 										</Typography>
 
+										<Typography>
+											{error && <Message severity='error'>{error}</Message>}
+										</Typography>
+
 										<CardActions>
 											<ButtonComponent
 												type='button'
 												disabled={cartItems.length === 0}
-												// onClick={checkoutHandler}
+												onClick={placeOrderHandler}
 											>
 												Place Order
 											</ButtonComponent>
 										</CardActions>
 									</Stack>
+
+									{isLoading && <Loader />}
 								</CardContent>
 							</Card>
 						</Grid>

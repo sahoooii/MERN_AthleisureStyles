@@ -20,7 +20,6 @@ import { addToCart, removeFromCart } from '../slices/cartSlice';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import Message from '../components/Utils/Message';
 import CloseIcon from '@mui/icons-material/Close';
-import styled from '@emotion/styled';
 
 const CartScreen = () => {
 	const navigate = useNavigate();
