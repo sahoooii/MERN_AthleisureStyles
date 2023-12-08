@@ -10,7 +10,7 @@ import ButtonComponent from '../components/Utils/ButtonComponent';
 import { saveBillingAddress, saveShippingAddress } from '../slices/cartSlice';
 import { shades } from '../theme';
 
-const CheckoutScreen = () => {
+const ShippingBillingScreen = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -183,4 +183,4 @@ const CheckoutScreen = () => {
 	);
 };
 
-export default CheckoutScreen;
+export default ShippingBillingScreen;

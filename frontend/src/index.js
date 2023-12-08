@@ -19,7 +19,7 @@ import ItemDetailsScreen from './screens/ItemDetailsScreen';
 import CartScreen from './screens/CartScreen';
 import LoginFormScreen from './screens/auth/LoginFormScreen';
 import RegisterFormScreen from './screens/auth/RegisterFormScreen';
-import CheckoutScreen from './screens/CheckoutScreen';
+import ShippingBillingScreen from './screens/ShippingBillingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 
@@ -34,7 +34,7 @@ const router = createBrowserRouter(
 
 			{/* Private Route */}
 			<Route path='/' element={<PrivateRoute />}>
-				<Route path='/checkout' element={<CheckoutScreen />} />
+				<Route path='/shipping' element={<ShippingBillingScreen />} />
 				<Route path='/payment' element={<PaymentScreen />} />
 				<Route path='/placeorder' element={<PlaceOrderScreen />} />
 			</Route>
