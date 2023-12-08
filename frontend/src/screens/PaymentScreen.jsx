@@ -23,7 +23,7 @@ const PaymentScreen = () => {
 	// Check fill out billingAddress and shippingAddress
 	useEffect(() => {
 		if (isBillingEmpty || isShippingEmpty) {
-			navigate('/checkout');
+			navigate('/shipping');
 		}
 	}, [isBillingEmpty, isShippingEmpty, navigate]);
 
@@ -67,7 +67,7 @@ const PaymentScreen = () => {
 							gap='15px'
 						>
 							<Box sx={{ width: { xs: '50%', sm: '30%' } }}>
-								<Link to='/checkout'>
+								<Link to='/shipping'>
 									<ButtonComponent
 										type='button'
 										backgroundColor={shades.neutral[500]}

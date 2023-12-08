@@ -43,9 +43,9 @@ const CartScreen = () => {
 	// Check login or not
 	const checkoutHandler = () => {
 		if (userInfo) {
-			navigate('/checkout');
+			navigate('/shipping');
 		} else {
-			navigate('/login?redirect=/checkout');
+			navigate('/login?redirect=/shipping');
 		}
 	};
 
