@@ -22,6 +22,7 @@ import RegisterFormScreen from './screens/auth/RegisterFormScreen';
 import ShippingBillingScreen from './screens/ShippingBillingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
+import CheckoutScreen from './screens/CheckoutScreen';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -32,11 +33,12 @@ const router = createBrowserRouter(
 			<Route path='/login' element={<LoginFormScreen />} />
 			<Route path='/register' element={<RegisterFormScreen />} />
 
-			{/* Private Route */}
+			{/* Private Route must logged in */}
 			<Route path='/' element={<PrivateRoute />}>
 				<Route path='/shipping' element={<ShippingBillingScreen />} />
 				<Route path='/payment' element={<PaymentScreen />} />
 				<Route path='/placeorder' element={<PlaceOrderScreen />} />
+				<Route path='/order/:id' element={<CheckoutScreen />} />
 			</Route>
 		</Route>
 	)
