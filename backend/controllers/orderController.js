@@ -7,8 +7,8 @@ import Order from '../models/orderModel.js';
 const addOrderItems = asyncHandler(async (req, res) => {
 	const {
 		orderItems,
-		billingAddress,
 		shippingAddress,
+		billingAddress,
 		paymentMethod,
 		itemsPrice,
 		taxPrice,
@@ -27,8 +27,8 @@ const addOrderItems = asyncHandler(async (req, res) => {
 				_id: undefined,
 			})),
 			user: req.user._id,
-			billingAddress,
 			shippingAddress,
+			billingAddress,
 			paymentMethod,
 			itemsPrice,
 			taxPrice,
@@ -36,7 +36,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
 			totalPrice,
 		});
 
-		const createdOrder = await order.save;
+		const createdOrder = await order.save();
 
 		res.status(201).json(createdOrder);
 	}
@@ -71,7 +71,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 // @access Private/Admin
 const getOrderById = asyncHandler(async (req, res) => {
 	// get name and email from user collection
-	const order = await order
+	const order = await Order
 		.findById(req.params.id)
 		.populate('user', 'firstName lastName email');
 

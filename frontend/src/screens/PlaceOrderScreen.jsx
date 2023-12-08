@@ -17,12 +17,12 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, clearCartItems, removeFromCart } from '../slices/cartSlice';
-import { useCreateOrderMutation } from '../slices/orderApiSlice';
+import { useCreateOrderMutation } from '../slices/ordersApiSlice';
 import { shades } from '../theme';
 import { toast } from 'react-toastify';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
 import Message from '../components/Utils/Message';
-import Loader from '../components/Utils/ButtonComponent';
+import Loader from '../components/Utils/Loader';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import ButtonComponent from '../components/Utils/ButtonComponent';
@@ -60,20 +60,20 @@ const PlaceOrderScreen = () => {
 
 	const placeOrderHandler = async () => {
 		try {
+			// Save on DB
 			const response = await createOrder({
 				orderItems: cartItems,
 				shippingAddress: shippingAddress,
 				billingAddress: billingAddress,
 				paymentMethod: paymentMethod,
 				itemsPrice: cart.itemsPrice,
-				shippingPrice: cart.shippingPrice,
 				taxPrice: cart.taxPrice,
+				shippingPrice: cart.shippingPrice,
 				totalPrice: cart.totalPrice,
 			}).unwrap();
 
 			dispatch(clearCartItems());
 
-			// console.log('error')
 			// response._id = orderId
 			navigate(`/order/${response._id}`);
 		} catch (error) {
@@ -298,6 +298,8 @@ const PlaceOrderScreen = () => {
 											{error && <Message severity='error'>{error}</Message>}
 										</Typography>
 
+										{isLoading && <Loader />}
+
 										<CardActions>
 											<ButtonComponent
 												type='button'
@@ -308,8 +310,6 @@ const PlaceOrderScreen = () => {
 											</ButtonComponent>
 										</CardActions>
 									</Stack>
-
-									{isLoading && <Loader />}
 								</CardContent>
 							</Card>
 						</Grid>
