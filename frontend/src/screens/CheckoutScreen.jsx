@@ -37,11 +37,10 @@ const CheckoutScreen = () => {
 		isError,
 	} = useGetOrderDetailsQuery(orderId);
 
-
 	const cart = useSelector((state) => state.cart);
 	const { billingAddress, shippingAddress, paymentMethod, cartItems } = cart;
 
-	console.log(order);
+	// console.log(order);
 
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '90%', md: '90%' } }}>
@@ -119,6 +118,9 @@ const CheckoutScreen = () => {
 								<Divider />
 
 								<Box sx={{ mb: { md: '100px' } }}>
+									<Typography variant='h3' sx={{ mt: '14px' }}>
+										Order Items
+									</Typography>
 									{cartItems.map((item) => (
 										<Box key={item._id}>
 											<Grid container m='15px 0'>
