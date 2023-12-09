@@ -17,6 +17,8 @@ const ShippingBillingScreen = () => {
 	const cart = useSelector((state) => state.cart);
 	const { billingAddress, shippingAddress } = cart;
 
+	console.log(billingAddress);
+
 	const initialFormValues = {
 		billingAddress: {
 			firstName: billingAddress.firstName ? billingAddress.firstName : '',

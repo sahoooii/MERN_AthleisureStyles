@@ -8,6 +8,7 @@ import {
 	RouterProvider,
 } from 'react-router-dom';
 import './index.css';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { theme } from './theme';
@@ -50,7 +51,9 @@ root.render(
 		<Provider store={store}>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-				<RouterProvider router={router} />
+				<PayPalScriptProvider deferLoading={true}>
+					<RouterProvider router={router} />
+				</PayPalScriptProvider>
 			</ThemeProvider>
 		</Provider>
 	</React.StrictMode>
