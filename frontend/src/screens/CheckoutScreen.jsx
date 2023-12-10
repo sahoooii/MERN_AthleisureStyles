@@ -16,20 +16,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
 	useCreateOrderMutation,
 	useGetOrderDetailsQuery,
+	usePayOrderMutation,
+	useGetPayPalClientIdQuery,
 } from '../slices/ordersApiSlice';
 import { toast } from 'react-toastify';
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
 import Message from '../components/Utils/Message';
 import Loader from '../components/Utils/Loader';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 
 const CheckoutScreen = () => {
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
-
-	// Get order details
+	// Get order details probably will change
 	const { id: orderId } = useParams();
-
+	// use next page summary
 	const {
 		data: order,
 		refetch,
@@ -40,7 +40,39 @@ const CheckoutScreen = () => {
 	const cart = useSelector((state) => state.cart);
 	const { billingAddress, shippingAddress, paymentMethod, cartItems } = cart;
 
-	// console.log(order);
+	// From here PayPal
+	const { userInfo } = useSelector((state) => state.auth);
+
+	const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+
+	const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+
+	const {
+		data: paypal,
+		isLoading: loadingPayPal,
+		error: errorPayPal,
+	} = useGetPayPalClientIdQuery();
+
+	useEffect(() => {
+		if (!errorPayPal && !loadingPayPal && paypal.clientId) {
+			const loadPayPalScript = async () => {
+				paypalDispatch({
+					type: 'resetOptions',
+					value: {
+						'client-id': paypal.clientId,
+						currency: 'USD',
+					},
+				});
+				paypalDispatch({
+					type: 'setLoadingStatus',
+					value: 'pending',
+				});
+			};
+			if (!window.paypal) {
+				loadPayPalScript();
+			}
+		}
+	}, [paypal, paypalDispatch, loadingPayPal, errorPayPal]);
 
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '90%', md: '90%' } }}>
