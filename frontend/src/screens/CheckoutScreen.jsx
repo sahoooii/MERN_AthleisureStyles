@@ -11,10 +11,9 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
-	useCreateOrderMutation,
 	useGetOrderDetailsQuery,
 	usePayOrderMutation,
 	useGetPayPalClientIdQuery,
@@ -25,22 +24,19 @@ import CheckoutSteps from '../components/Utils/CheckoutSteps';
 import Message from '../components/Utils/Message';
 import Loader from '../components/Utils/Loader';
 import ButtonComponent from '../components/Utils/ButtonComponent';
+import { shades } from '../theme';
 
 const CheckoutScreen = () => {
-	// Get order details probably will change
+	// Get order details
 	const { id: orderId } = useParams();
-	// use next page summary
+
 	const {
 		data: order,
 		refetch,
 		isLoading,
-		isError,
+		error,
 	} = useGetOrderDetailsQuery(orderId);
 
-	const cart = useSelector((state) => state.cart);
-	const { billingAddress, shippingAddress, paymentMethod, cartItems } = cart;
-
-	// From here PayPal
 	const { userInfo } = useSelector((state) => state.auth);
 
 	const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
@@ -68,214 +64,309 @@ const CheckoutScreen = () => {
 					value: 'pending',
 				});
 			};
-			if (!window.paypal) {
-				loadPayPalScript();
+			if (order && !order.isPaid) {
+				// Not already loaded
+				if (!window.paypal) {
+					loadPayPalScript();
+				}
 			}
 		}
-	}, [paypal, paypalDispatch, loadingPayPal, errorPayPal]);
+	}, [order, paypal, paypalDispatch, loadingPayPal, errorPayPal]);
+
+	// details come from PayPal, actions is trigger to PayPal
+	function onApprove(data, actions) {
+		return actions.order.capture().then(async function (details) {
+			try {
+				await payOrder({ orderId, details });
+				// To mark paid
+				refetch();
+
+				toast.success('Payment Successful');
+			} catch (err) {
+				toast.error(err?.data?.message || err.message);
+			}
+		});
+	}
+	// For payment test
+	// async function onApproveTest() {
+	// 	await payOrder({ orderId, details: { payer: {} } });
+	// 	refetch();
+	// 	toast.success('Payment Successful');
+	// }
+
+	function onError(err) {
+		toast.error(err.message);
+	}
+
+	function createOrder(data, actions) {
+		return actions.order
+			.create({
+				purchase_units: [
+					{
+						amount: {
+							value: order.totalPrice,
+						},
+					},
+				],
+			})
+			.then((orderId) => {
+				return orderId;
+			});
+	}
 
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '90%', md: '90%' } }}>
-			<CheckoutSteps step={3} />
-
-			{cartItems.length === 0 ? (
-				<Message severity='error'>
-					Oh No! Your cart is empty
-					<Link to='/'> - Go Back</Link>
-				</Message>
+			{isLoading ? (
+				<Loader />
+			) : error ? (
+				<Message severity={error}>{error.data.message}</Message>
 			) : (
-				<Box
-					sx={{
-						flexGrow: 1,
-						alignItems: 'center',
-						mt: '30px',
-						mb: { sm: '40px' },
-					}}
-				>
-					<Grid container mt='10px' spacing={3}>
-						<Grid item md={8} xs={12}>
-							<Box>
-								<Box mb='25px'>
-									<Typography variant='h3' fontWeight='bold'>
-										Your Information
-									</Typography>
-								</Box>
+				<>
+					{!order.isPaid ? (
+						<CheckoutSteps step={3} />
+					) : (
+						<CheckoutSteps step={4} />
+					)}
 
-								{/* Information */}
-								<Grid container m='14px 0'>
-									<Grid item xs={12}>
-										<Stack spacing={1}>
-											<Typography variant='h3'>Shipping Address</Typography>
-											<Typography variant='subtitle1'>
-												<strong>Name:</strong> {shippingAddress.firstName}{' '}
-												{shippingAddress.lastName}
+					<Box
+						sx={{
+							flexGrow: 1,
+							alignItems: 'center',
+							mt: '30px',
+							mb: { sm: '40px' },
+						}}
+					>
+						<Grid container mt='10px' spacing={3}>
+							<Grid item md={8} xs={12}>
+								<Box>
+									<Box mb='25px'>
+										<Stack spacing={2}>
+											<Typography variant='h3' fontWeight='bold'>
+												Your Order
 											</Typography>
-											<Typography variant='subtitle1'>
-												<strong>Address:</strong> {shippingAddress.address},{' '}
-												{shippingAddress.city}, {shippingAddress.state},{' '}
-												{shippingAddress.postalCode}, {shippingAddress.country}
-											</Typography>
+											{order.isPaid && (
+												<Message severity='success'>Order: {order._id}</Message>
+											)}
 										</Stack>
+									</Box>
+
+									{/* Information */}
+									<Grid container m='14px 0'>
+										<Grid item xs={12}>
+											<Stack spacing={1}>
+												<Typography variant='h3'>Shipping Address</Typography>
+												<Typography variant='subtitle1'>
+													<strong>Name:</strong>{' '}
+													{order.shippingAddress.firstName}{' '}
+													{order.shippingAddress.lastName}
+												</Typography>
+												<Typography variant='subtitle1'>
+													<strong>Address:</strong>{' '}
+													{order.shippingAddress.address},{' '}
+													{order.shippingAddress.city},{' '}
+													{order.shippingAddress.state},{' '}
+													{order.shippingAddress.postalCode},{' '}
+													{order.shippingAddress.country}
+												</Typography>
+
+												{order.isDelivered ? (
+													<Message>Delivered on {order.deliveredAt}</Message>
+												) : (
+													<Message severity='error'>Not Delivered</Message>
+												)}
+											</Stack>
+										</Grid>
 									</Grid>
-								</Grid>
 
-								<Divider />
+									<Divider />
 
-								<Grid container m='14px 0'>
-									<Grid item xs={12}>
-										<Stack spacing={1}>
-											<Typography variant='h3'>Billing Address</Typography>
-											<Typography variant='subtitle1'>
-												<strong>Name:</strong> {billingAddress.firstName}{' '}
-												{billingAddress.lastName}
-											</Typography>
-											<Typography variant='subtitle1'>
-												<strong>Address:</strong> {billingAddress.address},{' '}
-												{billingAddress.city}, {billingAddress.state},{' '}
-												{billingAddress.postalCode}, {billingAddress.country}
-											</Typography>
-										</Stack>
+									<Grid container m='14px 0'>
+										<Grid item xs={12}>
+											<Stack spacing={1}>
+												<Typography variant='h3'>Billing Address</Typography>
+												<Typography variant='subtitle1'>
+													<strong>Name:</strong>{' '}
+													{order.billingAddress.firstName}{' '}
+													{order.billingAddress.lastName}
+												</Typography>
+												<Typography variant='subtitle1'>
+													<strong>Address:</strong>{' '}
+													{order.billingAddress.address},{' '}
+													{order.billingAddress.city},{' '}
+													{order.billingAddress.state},{' '}
+													{order.billingAddress.postalCode},{' '}
+													{order.billingAddress.country}
+												</Typography>
+											</Stack>
+										</Grid>
 									</Grid>
-								</Grid>
 
-								<Divider />
+									<Divider />
 
-								<Stack spacing={1} m='14px 0'>
-									<Typography variant='h3'>Payment Method</Typography>
-									<Typography variant='subtitle1'>
-										<strong>Method:</strong> {paymentMethod}
-									</Typography>
-								</Stack>
+									<Stack spacing={1} m='14px 0'>
+										<Typography variant='h3'>Payment Method</Typography>
+										<Typography variant='subtitle1'>
+											<strong>Method:</strong> {order.paymentMethod}
+										</Typography>
 
-								<Divider />
+										{order.isPaid ? (
+											<Message>Paid on {order.paidAt.substring(0, 10)}</Message>
+										) : (
+											<Message severity='error'>Not Paid</Message>
+										)}
+									</Stack>
 
-								<Box sx={{ mb: { md: '100px' } }}>
-									<Typography variant='h3' sx={{ mt: '14px' }}>
-										Order Items
-									</Typography>
-									{cartItems.map((item) => (
-										<Box key={item._id}>
-											<Grid container m='15px 0'>
-												<Grid item sm={4} xs={5}>
-													<img
-														src={item.image}
-														alt={item.name}
-														width='90px'
-														height='120px'
-														style={{
-															borderRadius: '3px',
-														}}
-													/>
-												</Grid>
-												<Grid item sm={7} xs={5}>
-													<Stack spacing={2}>
-														{/* <Link
+									<Divider />
+
+									<Box sx={{ mb: { md: '100px' } }}>
+										<Typography variant='h3' sx={{ mt: '14px' }}>
+											Order Items
+										</Typography>
+										{order.orderItems.map((item) => (
+											<Box key={item._id}>
+												<Grid container m='15px 0'>
+													<Grid item sm={4} xs={5}>
+														<img
+															src={item.image}
+															alt={item.name}
+															width='90px'
+															height='120px'
+															style={{
+																borderRadius: '3px',
+															}}
+														/>
+													</Grid>
+													<Grid item sm={7} xs={5}>
+														<Stack spacing={2}>
+															{/* <Link
 															to={`/item/${item._id}`}
 															style={{ textDecoration: 'underline' }}
 														> */}
-														<Typography
-															sx={{ fontSize: { xs: '12px', sm: '16px' } }}
-															fontWeight='bold'
-															color='secondary'
-														>
-															{item.name}
-														</Typography>
-														{/* </Link> */}
-														<Typography variant='h4' fontWeight='bold'>
-															${item.price}
-														</Typography>
-														{/* Quantity */}
-														<FormControl
-															sx={{ m: 1, width: { sm: 120, xs: 100 } }}
-														>
-															<TextField
-																name='quantity'
-																color='neutral'
-																label='Quantity'
-																value={item.quantity}
-																InputProps={{
-																	readOnly: true,
-																}}
-															/>
-														</FormControl>
-													</Stack>
+															<Typography
+																sx={{ fontSize: { xs: '12px', sm: '16px' } }}
+																fontWeight='bold'
+																color='secondary'
+															>
+																{item.name}
+															</Typography>
+															{/* </Link> */}
+															<Typography variant='h4' fontWeight='bold'>
+																${item.price}
+															</Typography>
+															{/* Quantity */}
+															<FormControl
+																sx={{ m: 1, width: { sm: 120, xs: 100 } }}
+															>
+																<TextField
+																	name='quantity'
+																	color='neutral'
+																	label='Quantity'
+																	value={item.quantity}
+																	InputProps={{
+																		readOnly: true,
+																	}}
+																/>
+															</FormControl>
+														</Stack>
+													</Grid>
 												</Grid>
-											</Grid>
-											<Divider />
-										</Box>
-									))}
+												<Divider />
+											</Box>
+										))}
+									</Box>
 								</Box>
-							</Box>
-						</Grid>
+							</Grid>
 
-						<Grid
-							item
-							md={4}
-							xs={12}
-							sx={{
-								// mb: { xs: '120px', md: '0' },
-								mt: { xs: '25px', md: '35px' },
-							}}
-						>
-							<Card>
-								<CardContent>
-									<Stack spacing={2}>
-										<Typography variant='h3' fontWeight='bold'>
-											Order Summary
-										</Typography>
-										<Typography variant='h3'>
-											SubTotal: (
-											{cartItems.reduce((acc, item) => acc + item.quantity, 0)})
-											Items
-										</Typography>
-
-										<Typography variant='h3'>
-											Items: $
-											{cartItems
-												.reduce(
-													(acc, item) => acc + item.quantity * item.price,
+							<Grid
+								item
+								md={4}
+								xs={12}
+								sx={{
+									mt: { xs: '25px', md: '35px' },
+								}}
+							>
+								<Card>
+									<CardContent>
+										<Stack spacing={2}>
+											<Typography variant='h3' fontWeight='bold'>
+												Order Summary
+											</Typography>
+											<Typography variant='h3'>
+												SubTotal: (
+												{order.orderItems.reduce(
+													(acc, item) => acc + item.quantity,
 													0
-												)
-												.toFixed(2)}
-										</Typography>
-										<Stack spacing={0}>
-											<Typography variant='subtitle1'>
-												Tax: <span>${cart.taxPrice}</span>
+												)}
+												) Items
 											</Typography>
-											<Typography variant='subtitle1'>
-												Shipping: <span>${cart.shippingPrice}</span>
+
+											<Typography variant='h3'>
+												Items: $
+												{order.orderItems
+													.reduce(
+														(acc, item) => acc + item.quantity * item.price,
+														0
+													)
+													.toFixed(2)}
 											</Typography>
+											<Stack spacing={0}>
+												<Typography variant='subtitle1'>
+													Tax: <span>${order.taxPrice}</span>
+												</Typography>
+												<Typography variant='subtitle1'>
+													Shipping: <span>${order.shippingPrice}</span>
+												</Typography>
+											</Stack>
+											<Divider />
+
+											<Typography variant='h3'>
+												Total: ${order.totalPrice}
+											</Typography>
+
+											<Divider />
+
+											{!order.isPaid && (
+												<CardActions>
+													{loadingPay && <Loader />}
+
+													{isPending ? (
+														<Loader />
+													) : (
+														<Stack width='100%' spacing={2}>
+															{/* <ButtonComponent onClick={onApproveTest}>
+																Test Button
+															</ButtonComponent> */}
+
+															<PayPalButtons
+																createOrder={createOrder}
+																onApprove={onApprove}
+																onError={onError}
+															></PayPalButtons>
+														</Stack>
+													)}
+												</CardActions>
+											)}
 										</Stack>
-										<Divider />
-
-										<Typography variant='h3'>
-											Total: ${cart.totalPrice}
-										</Typography>
-
-										<Divider />
-
-										{/* <Typography>
-											{error && <Message severity='error'>{error}</Message>}
-										</Typography> */}
-
-										{/* {isLoading && <Loader />} */}
-
-										<CardActions>
-											<ButtonComponent
-												type='button'
-												disabled={cartItems.length === 0}
-												// onClick={placeOrderHandler}
-											>
-												PayPal
-											</ButtonComponent>
-										</CardActions>
-									</Stack>
-								</CardContent>
-							</Card>
+									</CardContent>
+								</Card>
+							</Grid>
 						</Grid>
-					</Grid>
-				</Box>
+					</Box>
+				</>
 			)}
+
+			{/* Change mt */}
+			<Box textAlign='center' m='20px 0 100px 0'>
+				<Link to='/'>
+					<ButtonComponent
+						width='40%'
+						type='button'
+						backgroundColor={shades.neutral[500]}
+					>
+						HOME
+					</ButtonComponent>
+				</Link>
+			</Box>
 		</Box>
 	);
 };
