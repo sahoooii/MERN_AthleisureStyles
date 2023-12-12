@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import {
 	PersonOutline,
+	ManageSearchOutlined,
 	Logout,
 	FavoriteBorderOutlined,
 } from '@mui/icons-material';
@@ -100,6 +101,16 @@ const MenuLink = ({ style, width, height }) => {
 						<ListItemIcon>
 							<PersonOutline sx={{ marginRight: '6px' }} />
 							{fullName}
+						</ListItemIcon>
+					</MenuItem>
+				</Link>
+				<Link to='/orderhistory' style={{ textDecoration: 'none' }}>
+					<MenuItem
+						sx={{ justifyContent: 'space-between' }}
+						onClick={handleClose}
+					>
+						<ListItemIcon>
+							<ManageSearchOutlined sx={{ marginRight: '8px' }} /> Order History
 						</ListItemIcon>
 					</MenuItem>
 				</Link>

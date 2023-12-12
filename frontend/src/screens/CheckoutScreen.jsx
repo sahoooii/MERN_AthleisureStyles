@@ -7,16 +7,18 @@ import {
 	Divider,
 	FormControl,
 	Grid,
+	IconButton,
 	Stack,
 	TextField,
 	Typography,
 } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
 	useGetOrderDetailsQuery,
 	usePayOrderMutation,
 	useGetPayPalClientIdQuery,
+	useDeleteMyOrderMutation,
 } from '../slices/ordersApiSlice';
 import { toast } from 'react-toastify';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
@@ -24,11 +26,15 @@ import CheckoutSteps from '../components/Utils/CheckoutSteps';
 import Message from '../components/Utils/Message';
 import Loader from '../components/Utils/Loader';
 import ButtonComponent from '../components/Utils/ButtonComponent';
+import WavingHandOutlinedIcon from '@mui/icons-material/WavingHandOutlined';
 import { shades } from '../theme';
 
 const CheckoutScreen = () => {
+	const navigate = useNavigate();
+
 	// Get order details
 	const { id: orderId } = useParams();
+	const { userInfo } = useSelector((state) => state.auth);
 
 	const {
 		data: order,
@@ -37,7 +43,21 @@ const CheckoutScreen = () => {
 		error,
 	} = useGetOrderDetailsQuery(orderId);
 
-	const { userInfo } = useSelector((state) => state.auth);
+	// Delete order before paid or not pay
+	const [deleteMyOrder, { isLoading: loadingDelete }] =
+		useDeleteMyOrderMutation();
+
+	const deleteHandler = async (id) => {
+		if (window.confirm('Are you sure delete your order?')) {
+			try {
+				await deleteMyOrder(id);
+
+				navigate('/');
+			} catch (err) {
+				toast.error(err?.data?.message || err.message);
+			}
+		}
+	};
 
 	const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
 
@@ -118,6 +138,8 @@ const CheckoutScreen = () => {
 		<Box m='0 auto' sx={{ width: { xs: '90%', md: '90%' } }}>
 			{isLoading ? (
 				<Loader />
+			) : loadingDelete ? (
+				<Loader />
 			) : error ? (
 				<Message severity={error}>{error.data.message}</Message>
 			) : (
@@ -133,11 +155,26 @@ const CheckoutScreen = () => {
 							flexGrow: 1,
 							alignItems: 'center',
 							mt: '30px',
-							mb: { sm: '40px' },
+							// mb: { sm: '20px' },
 						}}
 					>
 						<Grid container mt='10px' spacing={3}>
 							<Grid item md={8} xs={12}>
+								<Box mb='25px'>
+									{order.isPaid && (
+										<IconButton>
+											<Typography
+												variant='h3'
+												sx={{ color: '#529085', fontWeight: 'bold' }}
+											>
+												Thank you for shopping with us
+											</Typography>
+											<WavingHandOutlinedIcon
+												sx={{ ml: '5px', color: '#6ec0b2' }}
+											/>
+										</IconButton>
+									)}
+								</Box>
 								<Box>
 									<Box mb='25px'>
 										<Stack spacing={2}>
@@ -210,7 +247,10 @@ const CheckoutScreen = () => {
 										</Typography>
 
 										{order.isPaid ? (
-											<Message>Paid on {order.paidAt.substring(0, 10)}</Message>
+											<Message>
+												Paid on{' '}
+												{order.paidAt}
+											</Message>
 										) : (
 											<Message severity='error'>Not Paid</Message>
 										)}
@@ -218,7 +258,7 @@ const CheckoutScreen = () => {
 
 									<Divider />
 
-									<Box sx={{ mb: { md: '100px' } }}>
+									<Box sx={{ mb: { md: '40px' } }}>
 										<Typography variant='h3' sx={{ mt: '14px' }}>
 											Order Items
 										</Typography>
@@ -283,6 +323,7 @@ const CheckoutScreen = () => {
 								xs={12}
 								sx={{
 									mt: { xs: '25px', md: '35px' },
+									mb: { xs: '20px' },
 								}}
 							>
 								<Card>
@@ -332,7 +373,7 @@ const CheckoutScreen = () => {
 													{isPending ? (
 														<Loader />
 													) : (
-														<Stack width='100%' spacing={2}>
+														<Stack width='100%' spacing={2} sx={{ zIndex: 0 }}>
 															{/* <ButtonComponent onClick={onApproveTest}>
 																Test Button
 															</ButtonComponent> */}
@@ -341,6 +382,7 @@ const CheckoutScreen = () => {
 																createOrder={createOrder}
 																onApprove={onApprove}
 																onError={onError}
+																style={{ zIndex: '0' }}
 															></PayPalButtons>
 														</Stack>
 													)}
@@ -352,21 +394,37 @@ const CheckoutScreen = () => {
 							</Grid>
 						</Grid>
 					</Box>
+					{/* Change mt */}
+					{!order.isPaid ? (
+						<Box
+							textAlign='center'
+							m='20px 0 110px 0'
+							// sx={{ width: { xs: '100%', sm: '40%' } }}
+						>
+							<ButtonComponent
+								width='80%'
+								type='button'
+								backgroundColor={shades.neutral[500]}
+								onClick={() => deleteHandler(order._id)}
+							>
+								Cancel The Order
+							</ButtonComponent>
+						</Box>
+					) : (
+						<Box textAlign='center' m='20px 0 110px 0'>
+							<Link to='/'>
+								<ButtonComponent
+									width='80%'
+									type='button'
+									backgroundColor={shades.neutral[500]}
+								>
+									Back To Home
+								</ButtonComponent>
+							</Link>
+						</Box>
+					)}
 				</>
 			)}
-
-			{/* Change mt */}
-			<Box textAlign='center' m='20px 0 100px 0'>
-				<Link to='/'>
-					<ButtonComponent
-						width='40%'
-						type='button'
-						backgroundColor={shades.neutral[500]}
-					>
-						HOME
-					</ButtonComponent>
-				</Link>
-			</Box>
 		</Box>
 	);
 };

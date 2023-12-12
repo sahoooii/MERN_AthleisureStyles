@@ -1,5 +1,6 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Order from '../models/orderModel.js';
+import Item from '../models/itemModel.js';
 
 // @desc Create New Order
 // @route POST /api/orders
@@ -42,6 +43,22 @@ const addOrderItems = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Delete orders when nor paid
+// @route GET /api/orders/:id
+// @access Private
+const deleteMyOrder = asyncHandler(async (req, res) => {
+	const order = await Order.findById(req.params.id);
+
+	if (order) {
+		await Order.deleteOne({ _id: order._id });
+
+		res.status(200).json({ message: 'Your order was deleted' });
+	} else {
+		res.status(404);
+		throw new Error('Your order not found');
+	}
+});
+
 // @desc Get logged in user orders
 // @route GET /api/orders/myorders
 // @access Private
@@ -69,9 +86,20 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 			email_address: req.body.payer.email_address,
 		};
 
-		const updateOrder = await order.save();
+		const updatedOrder = await order.save();
 
-		res.status(200).json(updateOrder);
+		// Update countInStock
+		for (const index in updatedOrder.orderItems) {
+			const item = updatedOrder.orderItems[index];
+			// console.log('Item - ', item);
+			const product = await Item.findById(item.item);
+			// console.log('Product - ', product);
+			product.countInStock -= item.quantity;
+			// console.log('updatedQty - ', product.countInStock);
+			product.save();
+		}
+
+		res.status(200).json(updatedOrder);
 	} else {
 		res.status(404);
 		throw new Error('Order not Found');
@@ -113,6 +141,7 @@ const getOrders = asyncHandler(async (req, res) => {
 
 export {
 	addOrderItems,
+	deleteMyOrder,
 	getMyOrders,
 	getOrderById,
 	updateOrderToPaid,
