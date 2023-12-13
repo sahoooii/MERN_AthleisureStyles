@@ -247,10 +247,7 @@ const CheckoutScreen = () => {
 										</Typography>
 
 										{order.isPaid ? (
-											<Message>
-												Paid on{' '}
-												{order.paidAt}
-											</Message>
+											<Message>Paid on {order.paidAt.substring(0, 10)}</Message>
 										) : (
 											<Message severity='error'>Not Paid</Message>
 										)}
