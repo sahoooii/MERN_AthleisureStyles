@@ -2,7 +2,6 @@ import {
 	MenuItem,
 	ListItemIcon,
 	Divider,
-	Menu,
 	IconButton,
 	Avatar,
 	Box,
@@ -16,6 +15,7 @@ import {
 	Logout,
 	FavoriteBorderOutlined,
 	CloseOutlined,
+	ProductionQuantityLimitsOutlined,
 } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -96,7 +96,6 @@ const MenuLink = ({ style, width, height }) => {
 				overflow='auto'
 			>
 				{/* Modal */}
-
 				<Box
 					position='fixed'
 					right='0'
@@ -105,9 +104,14 @@ const MenuLink = ({ style, width, height }) => {
 					backgroundColor='white'
 					sx={{ width: { xs: 1, sm: 'max(350px, 25%)' } }}
 				>
-					<Box padding='30px' overflow='auto' height='100%'>
-						{/* Header */}
-						<Box display='flex' justifyContent='flex-end' mb='15px' mr='20px'>
+					<Box
+						padding='30px'
+						width='80%'
+						m='0 auto'
+						overflow='auto'
+						height='100%'
+					>
+						<Box display='flex' justifyContent='flex-end' mb='15px' mr='8px'>
 							<IconButton onClick={() => setIsMenuToggled(!isMenuToggled)}>
 								<CloseOutlined />
 							</IconButton>
@@ -123,7 +127,7 @@ const MenuLink = ({ style, width, height }) => {
 												<ListItemIcon>
 													<PersonOutline
 														sx={{ marginRight: '6px', fontSize: '20px' }}
-													/>{' '}
+													/>
 												</ListItemIcon>
 												<Typography
 													variant='h3'
@@ -136,40 +140,76 @@ const MenuLink = ({ style, width, height }) => {
 									</FlexBox>
 									<FlexBox>
 										<Link to='/orderhistory' style={{ textDecoration: 'none' }}>
-											<MenuItem
-												sx={{ justifyContent: 'space-between' }}
-												onClick={handleClose}
-											>
+											<MenuItem sx={{ alignItems: 'center' }}>
 												<ListItemIcon>
-													<ManageSearchOutlined sx={{ marginRight: '8px' }} />{' '}
-													Order History
+													<ManageSearchOutlined
+														sx={{ marginRight: '8px', fontSize: '20px' }}
+													/>
 												</ListItemIcon>
+												<Typography
+													variant='h3'
+													sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+												>
+													Order History
+												</Typography>
+											</MenuItem>
+										</Link>
+									</FlexBox>
+									<FlexBox>
+										<Link
+											to='/orderhistory/notpaid'
+											style={{ textDecoration: 'none' }}
+										>
+											<MenuItem sx={{ alignItems: 'center' }}>
+												<ListItemIcon>
+													<ProductionQuantityLimitsOutlined
+														sx={{ marginRight: '8px', fontSize: '20px' }}
+													/>
+												</ListItemIcon>
+												<Typography
+													variant='h3'
+													sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+												>
+													Not Paid Order
+												</Typography>
 											</MenuItem>
 										</Link>
 									</FlexBox>
 									<FlexBox>
 										<Link to='/wishlist' style={{ textDecoration: 'none' }}>
-											<MenuItem
-												sx={{ justifyContent: 'space-between' }}
-												onClick={handleClose}
-											>
+											<MenuItem sx={{ display: 'flex', alignItems: 'center' }}>
 												<ListItemIcon>
-													<FavoriteBorderOutlined sx={{ marginRight: '8px' }} />{' '}
-													Wish List
+													<FavoriteBorderOutlined
+														sx={{ marginRight: '8px', fontSize: '20px' }}
+													/>
 												</ListItemIcon>
+												<Typography
+													variant='h3'
+													sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+												>
+													Wish List
+												</Typography>
 											</MenuItem>
 										</Link>
 									</FlexBox>
 
 									<Divider />
-									<MenuItem
-										sx={{ justifyContent: 'space-between', mt: 0.5 }}
-										onClick={logoutHandler}
-									>
-										<ListItemIcon>
-											<Logout sx={{ marginRight: '8px' }} /> Logout
-										</ListItemIcon>
-									</MenuItem>
+									<FlexBox>
+										<MenuItem
+											sx={{ display: 'flex', alignItems: 'center', mt: 0.5 }}
+											onClick={logoutHandler}
+										>
+											<ListItemIcon>
+												<Logout sx={{ marginRight: '8px', fontSize: '20px' }} />
+											</ListItemIcon>
+											<Typography
+												variant='h3'
+												sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+											>
+												Logout
+											</Typography>
+										</MenuItem>
+									</FlexBox>
 								</Stack>
 							</MenuList>
 						</Box>

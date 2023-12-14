@@ -22,6 +22,7 @@ import { styled } from '@mui/material/styles';
 import MenuLink from './MenuLink';
 import Footer from '../Footer';
 import SearchInput from './SearchInput';
+import SideMenuAnimation from './SideMenuAnimation';
 
 const Navbar = () => {
 	const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -48,7 +49,7 @@ const Navbar = () => {
 	// bottom of center avatar icon
 	const avatarStyle = {
 		position: 'absolute',
-		zIndex: 1,
+		// zIndex: 1,
 		top: -30,
 		left: 0,
 		right: 0,
@@ -128,7 +129,8 @@ const Navbar = () => {
 								{/* When logged in show Menu */}
 								{userInfo ? (
 									<>
-										<MenuLink width={48} height={48} />
+										<SideMenuAnimation width={48} height={48} />
+										{/* <MenuLink width={48} height={48} /> */}
 									</>
 								) : (
 									<Link to='/login'>
@@ -190,14 +192,23 @@ const Navbar = () => {
 							{/* Mobile ver. logged in logic */}
 							{userInfo ? (
 								<>
-									<MenuLink style={avatarStyle} width={56} height={56} />
+									<SideMenuAnimation
+										style={avatarStyle}
+										width={56}
+										height={56}
+									/>
+									{/* <MenuLink style={avatarStyle} width={56} height={56} /> */}
 								</>
 							) : (
 								<Link to='/login'>
 									<Tooltip title='Login'>
 										<Avatar
 											style={avatarStyle}
-											sx={{ bgcolor: shades.blue[500], width: 56, height: 56 }}
+											sx={{
+												bgcolor: shades.blue[500],
+												width: 56,
+												height: 56,
+											}}
 										>
 											<PersonOutline fontSize='large' />
 										</Avatar>
