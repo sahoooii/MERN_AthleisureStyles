@@ -129,7 +129,7 @@ const Navbar = () => {
 								{/* When logged in show Menu */}
 								{userInfo ? (
 									<>
-										<SideMenuAnimation width={48} height={48} />
+										<SideMenuAnimation />
 										{/* <MenuLink width={48} height={48} /> */}
 									</>
 								) : (
@@ -194,8 +194,8 @@ const Navbar = () => {
 								<>
 									<SideMenuAnimation
 										style={avatarStyle}
-										width={56}
-										height={56}
+										width={60}
+										height={60}
 									/>
 									{/* <MenuLink style={avatarStyle} width={56} height={56} /> */}
 								</>
