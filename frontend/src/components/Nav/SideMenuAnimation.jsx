@@ -66,14 +66,14 @@ const SideMenuAnimation = ({ style, width, height }) => {
 			clipPath: 'circle(1200px at  48px -15px)',
 			transition: {
 				type: 'spring',
-				stiffness: 20,
+				stiffness: 25,
 			},
 			zIndex: 10,
 		},
 		closed: {
 			clipPath: 'circle(10px at 48px -15px)',
 			transition: {
-				delay: 0.1,
+				delay: 0.3,
 				type: 'spring',
 				stiffness: 400,
 				damping: 40,
@@ -101,7 +101,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 			opacity: 1,
 		},
 		closed: {
-			y: 200,
+			y: 100,
 			opacity: 0,
 		},
 	};
@@ -113,6 +113,8 @@ const SideMenuAnimation = ({ style, width, height }) => {
 				sx={{
 					p: 0,
 					// zIndex: 30,
+					// later
+					'&:hover': { shadow: 'none' },
 				}}
 				style={style}
 			>
@@ -159,12 +161,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 					variants={variants}
 				>
 					{/* Links */}
-					<Box
-						position='relative'
-						width='100%'
-						height='100%'
-						// border='dashed red'
-					>
+					<Box position='relative' width='100%' height='100%'>
 						<Box
 							position='absolute'
 							width='100%'
@@ -174,7 +171,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							flexDirection='column'
 							justifyContent='center'
 							alignItems='center'
-							// border='dashed blue'
 						>
 							{/* Icon Profile */}
 							<IconButton
@@ -198,31 +194,22 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							</IconButton>
 
 							{/* Menu */}
-							<Box
-								display='flex'
-								justifyContent='center'
-								alignItems='center'
-								component={motion.div}
-								variants={linksVariants}
-							>
+							<Box display='flex' justifyContent='center' alignItems='center'>
 								<MenuList>
-									{/* ここで動くか？ */}
 									<Stack
 										spacing={3}
 										component={motion.div}
-										variants={itemVariants}
+										variants={linksVariants}
 									>
 										<FlexBox
 											component={motion.div}
+											variants={itemVariants}
 											whileHover={{ scale: 1.1 }}
-											whileTap={{ scale: 0.95 }}
+											whileTap={{ scale: 0.7 }}
+											initial='hidden'
+											whileInView='visible'
 										>
-											<Link
-												to='/myprofile'
-												style={{ textDecoration: 'none' }}
-												// component={motion.a}
-												// variants={linksVariants}
-											>
+											<Link to='/myprofile' style={{ textDecoration: 'none' }}>
 												<MenuItem style={{ alignItems: 'center' }}>
 													<ListItemIcon>
 														<PersonOutline
@@ -240,8 +227,9 @@ const SideMenuAnimation = ({ style, width, height }) => {
 										</FlexBox>
 										<FlexBox
 											component={motion.div}
+											variants={itemVariants}
 											whileHover={{ scale: 1.1 }}
-											whileTap={{ scale: 0.95 }}
+											whileTap={{ scale: 0.7 }}
 										>
 											<Link
 												to='/orderhistory'
@@ -264,8 +252,9 @@ const SideMenuAnimation = ({ style, width, height }) => {
 										</FlexBox>
 										<FlexBox
 											component={motion.div}
+											variants={itemVariants}
 											whileHover={{ scale: 1.1 }}
-											whileTap={{ scale: 0.95 }}
+											whileTap={{ scale: 0.7 }}
 										>
 											<Link
 												to='/orderhistory/notpaid'
@@ -288,8 +277,9 @@ const SideMenuAnimation = ({ style, width, height }) => {
 										</FlexBox>
 										<FlexBox
 											component={motion.div}
+											variants={itemVariants}
 											whileHover={{ scale: 1.1 }}
-											whileTap={{ scale: 0.95 }}
+											whileTap={{ scale: 0.7 }}
 										>
 											<Link to='/wishlist' style={{ textDecoration: 'none' }}>
 												<MenuItem
@@ -313,8 +303,9 @@ const SideMenuAnimation = ({ style, width, height }) => {
 										<Divider />
 										<FlexBox
 											component={motion.div}
+											variants={itemVariants}
 											whileHover={{ scale: 1.1 }}
-											whileTap={{ scale: 0.95 }}
+											whileTap={{ scale: 0.7 }}
 										>
 											<MenuItem
 												sx={{
