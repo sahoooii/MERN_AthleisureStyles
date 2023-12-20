@@ -43,14 +43,14 @@ const CheckoutScreen = () => {
 		error,
 	} = useGetOrderDetailsQuery(orderId);
 
-	// Delete order before paid or not pay
+	// Delete order before pay or in order history without pay
 	const [deleteMyOrder, { isLoading: loadingDelete }] =
 		useDeleteMyOrderMutation();
 
-	const deleteHandler = async (id) => {
+	const deleteHandler = async (orderId) => {
 		if (window.confirm('Are you sure delete your order?')) {
 			try {
-				await deleteMyOrder(id);
+				await deleteMyOrder(orderId);
 
 				navigate('/');
 			} catch (err) {
@@ -415,7 +415,7 @@ const CheckoutScreen = () => {
 									type='button'
 									backgroundColor={shades.neutral[500]}
 								>
-									Back To Home
+									More Shopping ?
 								</ButtonComponent>
 							</Link>
 						</Box>
