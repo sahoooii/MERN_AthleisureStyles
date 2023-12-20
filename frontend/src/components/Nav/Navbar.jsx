@@ -19,7 +19,6 @@ import { shades } from '../../theme';
 import { useSelector } from 'react-redux';
 import storeLogo from '../../assets/logo/athleisureLogoMini.png';
 import { styled } from '@mui/material/styles';
-import MenuLink from './MenuLink';
 import Footer from '../Footer';
 import SearchInput from './SearchInput';
 import SideMenuAnimation from './SideMenuAnimation';
@@ -54,6 +53,7 @@ const Navbar = () => {
 		left: 0,
 		right: 0,
 		margin: '0 auto',
+		boxShadow: 'none',
 	};
 
 	return (
@@ -130,7 +130,6 @@ const Navbar = () => {
 								{userInfo ? (
 									<>
 										<SideMenuAnimation />
-										{/* <MenuLink width={48} height={48} /> */}
 									</>
 								) : (
 									<Link to='/login'>
@@ -153,7 +152,7 @@ const Navbar = () => {
 					{/*  Mobile ver. Top NavBar */}
 					<Box
 						width='100%'
-						margin='auto'
+						margin='0 8px'
 						pl='10px'
 						display='flex'
 						justifyContent='space-between'
@@ -197,7 +196,6 @@ const Navbar = () => {
 										width={60}
 										height={60}
 									/>
-									{/* <MenuLink style={avatarStyle} width={56} height={56} /> */}
 								</>
 							) : (
 								<Link to='/login'>

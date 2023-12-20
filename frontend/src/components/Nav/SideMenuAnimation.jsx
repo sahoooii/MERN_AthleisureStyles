@@ -10,7 +10,6 @@ import {
 	MenuList,
 	Stack,
 	Typography,
-	useMediaQuery,
 } from '@mui/material';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,8 +31,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 	const navigate = useNavigate();
 
 	const [open, setOpen] = useState(false);
-
-	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	const { userInfo } = useSelector((state) => state.auth);
 
@@ -67,6 +64,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 			transition: {
 				type: 'spring',
 				stiffness: 25,
+				duration: 0.5,
 			},
 			zIndex: 10,
 		},
@@ -108,25 +106,17 @@ const SideMenuAnimation = ({ style, width, height }) => {
 
 	return (
 		<>
-			<IconButton
-				onClick={() => setOpen(!open)}
+			<Avatar
+				src={userInfo.picturePath}
+				alt={fullName}
 				sx={{
+					width: { width },
+					height: { height },
 					p: 0,
-					// zIndex: 30,
-					// later
-					'&:hover': { shadow: 'none' },
 				}}
 				style={style}
-			>
-				<Avatar
-					src={userInfo.picturePath}
-					alt={fullName}
-					sx={{
-						width: { width },
-						height: { height },
-					}}
-				/>
-			</IconButton>
+				onClick={() => setOpen(!open)}
+			/>
 
 			{/* Overlay */}
 			<Box
@@ -160,7 +150,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 					sx={{ width: { xs: 1, sm: 'max(350px, 25%)' } }}
 					variants={variants}
 				>
-					{/* Links */}
 					<Box position='relative' width='100%' height='100%'>
 						<Box
 							position='absolute'
@@ -193,7 +182,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 								/>
 							</IconButton>
 
-							{/* Menu */}
+							{/* Menu Links */}
 							<Box display='flex' justifyContent='center' alignItems='center'>
 								<MenuList>
 									<Stack
