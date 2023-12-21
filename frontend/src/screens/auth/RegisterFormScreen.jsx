@@ -199,6 +199,7 @@ const RegisterFormScreen = () => {
 								/>
 								<TextField
 									label='Email'
+									autoComplete='off'
 									onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.email}

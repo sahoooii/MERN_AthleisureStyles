@@ -1,0 +1,310 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	Box,
+	Typography,
+	useMediaQuery,
+	useTheme,
+	TextField,
+	Avatar,
+} from '@mui/material';
+import { toast } from 'react-toastify';
+import {
+	useUploadProfileImageMutation,
+	useUpdateProfileMutation,
+} from '../slices/usersApiSlice';
+import { setCredentials } from '../slices/authSlice';
+import FormComponent from '../components/auth/FormComponent';
+import ButtonComponent from '../components/Utils/ButtonComponent';
+import Loader from '../components/Utils/Loader';
+
+const ProfileScreen = () => {
+	const { palette } = useTheme();
+	const { userInfo } = useSelector((state) => state.auth);
+
+	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+
+	const [profilePic, setProfilePic] = useState(userInfo.picturePath);
+
+	const dispatch = useDispatch();
+
+	const [updateProfile, { isLoading: loadingUpdateProfile }] =
+		useUpdateProfileMutation();
+
+	const [uploadProfileImage] = useUploadProfileImageMutation();
+
+	const initialRegisterValues = {
+		firstName: userInfo.firstName ? userInfo.firstName : '',
+		lastName: userInfo.lastName ? userInfo.lastName : '',
+		email: userInfo.email ? userInfo.email : '',
+		password: '',
+		confirmPassword: '',
+		picturePath: userInfo.picturePath ? userInfo.picturePath : '',
+		// picturePath: '',
+	};
+	// For profile image validation
+	const MAX_FILE_SIZE = 819200; //800MB
+	const validFileExtensions = {
+		image: ['jpg', 'png', 'jpeg', 'webp'],
+	};
+
+	function isValidFileType(fileName, fileType) {
+		return (
+			fileName &&
+			validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1
+		);
+	}
+
+	const registerSchema = yup.object().shape({
+		firstName: yup.string().required('Please enter your first name'),
+		lastName: yup.string().required('Please enter your last name'),
+		// notOneOf('emailList', 'Email already taken)
+		email: yup
+			.string()
+			.email('Invalid email.')
+			.required('Please enter your email'),
+		password: yup
+			.string()
+			.min(6, 'Password must contain at least 6 characters')
+			.required('Please enter your password'),
+		confirmPassword: yup
+			.string()
+			.oneOf([yup.ref('password')], 'Password does not match')
+			.required('Please enter your confirm password'),
+		picturePath: yup
+			.mixed()
+			.required('Please upload your profile picture')
+			.test('is-valid-type', 'Not a valid image type', (value) =>
+				isValidFileType(value && value.name.toLowerCase(), 'image')
+			)
+			.test(
+				'is-valid-size',
+				'Max allowed size is 800MB',
+				(value) => value && value.size <= MAX_FILE_SIZE
+			),
+	});
+
+	// useEffect(() => {
+	// 	if (userInfo) {
+
+	// 	}
+	// }, []);
+
+	// Profile image upload and register
+	const submitHandler = async (values, onSubmitProps) => {
+		console.log(values);
+
+		const { firstName, lastName, email, password, picturePath } = values;
+
+		const updatedProfile = {
+			firstName,
+			lastName,
+			email,
+			password,
+			picturePath,
+		}.unwrap();
+
+		const response = await updateProfile(updatedProfile);
+
+		if (response.error) {
+			toast.error(response.error);
+		} else {
+			toast.success('Profile updated successfully');
+		}
+	};
+
+	const uploadProfile = async (values, actions) => {
+		const formData = new FormData();
+		for (let value in values) {
+			formData.append(value, values[value]);
+		}
+		// picture path
+		formData.append('picturePath', values.picturePath.name);
+
+		try {
+			const response = uploadProfileImage(formData).unwrap();
+			toast.success(response.message);
+			setProfilePic(response.picturePath);
+		} catch (err) {
+			toast.error(err?.data?.message || err.message);
+		}
+	};
+
+	return (
+		<FormComponent>
+			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
+				<Typography
+					fontSize='32px'
+					fontWeight='bold'
+					fontFamily='Play'
+					textAlign='center'
+					mb='15px'
+				>
+					User Profile
+				</Typography>
+
+				{/* {isLoading && <Loader />} */}
+
+				<Formik
+					initialValues={initialRegisterValues}
+					validationSchema={registerSchema}
+					onSubmit={submitHandler}
+				>
+					{({
+						values,
+						errors,
+						touched,
+						handleBlur,
+						handleChange,
+						handleSubmit,
+						setFieldValue,
+					}) => (
+						<form onSubmit={handleSubmit} encType='multipart/form-data'>
+							{/* Profile Picture */}
+							<Box
+								display='flex'
+								justifyContent='center'
+								alignItems='center'
+								m='20px 0 10px 0'
+							>
+								<label htmlFor='picturePath'>
+									<Box
+										border={`2px dashed ${palette.green.main}`}
+										p='0.5rem'
+										borderRadius='50%'
+										sx={{ '&:hover': { cursor: 'pointer' } }}
+									>
+										<Avatar
+											htmlFor='picturePath'
+											src={values.picturePath}
+											alt={`${values.firstName} ${values.lastName}`}
+											sx={{
+												width: 120,
+												height: 120,
+												cursor: 'pointer',
+											}}
+										/>
+									</Box>
+
+									<TextField
+										type='file'
+										name='picturePath'
+										id='picturePath'
+										accept='.png,.jpeg,.jpg'
+										style={{ display: 'none' }}
+										onBlur={handleBlur}
+										onChange={(e) => {
+											setFieldValue('picturePath', e.currentTarget.files[0]);
+										}}
+										// onChange={uploadProfile}
+									/>
+								</label>
+							</Box>
+
+							<Box
+								mt='0'
+								mb='20px'
+								display='flex'
+								justifyContent='center'
+								alignItems='center'
+							>
+								{errors.picturePath && Boolean(touched.picturePath) && (
+									<p
+										style={{
+											color: '#d32f2f',
+											fontSize: '10px',
+											marginBottom: '0',
+											marginTop: '0',
+										}}
+									>
+										{errors.picturePath}
+									</p>
+								)}
+							</Box>
+
+							{loadingUpdateProfile && <Loader />}
+
+							<Box
+								display='grid'
+								gap='20px'
+								gridTemplateColumns='repeat(4, minmax(0, 1fr))'
+								sx={{
+									'& > div': {
+										gridColumn: isNonMobileScreen ? undefined : 'span 4',
+									},
+								}}
+							>
+								<TextField
+									label='First Name'
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.firstName}
+									name='firstName'
+									error={
+										Boolean(touched.firstName) && Boolean(errors.firstName)
+									}
+									helperText={touched.firstName && errors.firstName}
+									sx={{ gridColumn: 'span 2' }}
+								/>
+								<TextField
+									label='Last Name'
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.lastName}
+									name='lastName'
+									error={Boolean(touched.lastName) && Boolean(errors.lastName)}
+									helperText={touched.lastName && errors.lastName}
+									sx={{ gridColumn: 'span 2' }}
+								/>
+								<TextField
+									label='Email'
+									autoComplete='on'
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.email}
+									name='email'
+									error={Boolean(touched.email) && Boolean(errors.email)}
+									helperText={touched.email && errors.email}
+									sx={{ gridColumn: 'span 4' }}
+								/>
+								<TextField
+									label='Password'
+									type='password'
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.password}
+									name='password'
+									error={Boolean(touched.password) && Boolean(errors.password)}
+									helperText={touched.password && errors.password}
+									sx={{ gridColumn: 'span 4' }}
+								/>
+								<TextField
+									label='Confirm Password'
+									type='password'
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.confirmPassword}
+									name='confirmPassword'
+									error={
+										Boolean(touched.confirmPassword) &&
+										Boolean(errors.confirmPassword)
+									}
+									helperText={touched.confirmPassword && errors.confirmPassword}
+									sx={{ gridColumn: 'span 4' }}
+								/>
+
+								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
+									<ButtonComponent>UPDATE</ButtonComponent>
+								</Box>
+							</Box>
+						</form>
+					)}
+				</Formik>
+			</Box>
+		</FormComponent>
+	);
+};
+
+export default ProfileScreen;

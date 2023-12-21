@@ -198,7 +198,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											initial='hidden'
 											whileInView='visible'
 										>
-											<Link to='/myprofile' style={{ textDecoration: 'none' }}>
+											<Link to='/profile' style={{ textDecoration: 'none' }}>
 												<MenuItem style={{ alignItems: 'center' }}>
 													<ListItemIcon>
 														<PersonOutline
