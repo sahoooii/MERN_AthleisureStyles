@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,13 +22,12 @@ import Loader from '../components/Utils/Loader';
 
 const ProfileScreen = () => {
 	const { palette } = useTheme();
+	const dispatch = useDispatch();
 	const { userInfo } = useSelector((state) => state.auth);
 
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
-	const [profilePic, setProfilePic] = useState(userInfo.picturePath);
-
-	const dispatch = useDispatch();
+	const [profilePic, setProfilePic] = useState('');
 
 	const [updateProfile, { isLoading: loadingUpdateProfile }] =
 		useUpdateProfileMutation();
@@ -41,8 +40,8 @@ const ProfileScreen = () => {
 		email: userInfo.email ? userInfo.email : '',
 		password: '',
 		confirmPassword: '',
-		picturePath: userInfo.picturePath ? userInfo.picturePath : '',
-		// picturePath: '',
+		// picturePath: userInfo.picturePath ? userInfo.picturePath : '',
+		// picturePath: profilePic,
 	};
 	// For profile image validation
 	const MAX_FILE_SIZE = 819200; //800MB
@@ -57,7 +56,7 @@ const ProfileScreen = () => {
 		);
 	}
 
-	const registerSchema = yup.object().shape({
+	const updateSchema = yup.object().shape({
 		firstName: yup.string().required('Please enter your first name'),
 		lastName: yup.string().required('Please enter your last name'),
 		// notOneOf('emailList', 'Email already taken)
@@ -73,62 +72,56 @@ const ProfileScreen = () => {
 			.string()
 			.oneOf([yup.ref('password')], 'Password does not match')
 			.required('Please enter your confirm password'),
-		picturePath: yup
-			.mixed()
-			.required('Please upload your profile picture')
-			.test('is-valid-type', 'Not a valid image type', (value) =>
-				isValidFileType(value && value.name.toLowerCase(), 'image')
-			)
-			.test(
-				'is-valid-size',
-				'Max allowed size is 800MB',
-				(value) => value && value.size <= MAX_FILE_SIZE
-			),
+		// picturePath: yup
+		// 	.mixed()
+		// 	.required('Please upload your profile picture')
+		// 	.test('is-valid-type', 'Not a valid image type', (value) =>
+		// 		isValidFileType(value && value.name.toLowerCase(), 'image')
+		// 	)
+		// 	.test(
+		// 		'is-valid-size',
+		// 		'Max allowed size is 800MB',
+		// 		(value) => value && value.size <= MAX_FILE_SIZE
+		// 	),
 	});
 
 	// useEffect(() => {
 	// 	if (userInfo) {
-
+	// 		setProfilePic(profilePic);
 	// 	}
-	// }, []);
+	// }, [userInfo, profilePic]);
 
-	// Profile image upload and register
 	const submitHandler = async (values, onSubmitProps) => {
+		const { firstName, lastName, email, password } = values;
 		console.log(values);
 
-		const { firstName, lastName, email, password, picturePath } = values;
-
-		const updatedProfile = {
-			firstName,
-			lastName,
-			email,
-			password,
-			picturePath,
-		}.unwrap();
-
-		const response = await updateProfile(updatedProfile);
-
-		if (response.error) {
-			toast.error(response.error);
-		} else {
-			toast.success('Profile updated successfully');
-		}
-	};
-
-	const uploadProfile = async (values, actions) => {
-		const formData = new FormData();
-		for (let value in values) {
-			formData.append(value, values[value]);
-		}
-		// picture path
-		formData.append('picturePath', values.picturePath.name);
+		// const formData = new FormData();
+		// for (let value in values) {
+		// 	formData.append(value, values[value]);
+		// }
+		// // picture path
+		// formData.append('picturePath', values.picturePath.name);
 
 		try {
-			const response = uploadProfileImage(formData).unwrap();
-			toast.success(response.message);
-			setProfilePic(response.picturePath);
-		} catch (err) {
-			toast.error(err?.data?.message || err.message);
+			// const imageData = await uploadProfileImage(formData).unwrap();
+			// toast.success(imageData.message);
+
+			const response = await updateProfile({
+				_id: userInfo._id,
+				firstName,
+				lastName,
+				email,
+				password,
+				// picturePath: imageData.picturePath,
+			}).unwrap();
+
+			// setProfilePic(true);
+
+			dispatch(setCredentials(response));
+
+			toast.success('Profile updated successfully');
+		} catch (error) {
+			toast.error(error?.data?.message || error.error);
 		}
 	};
 
@@ -145,11 +138,10 @@ const ProfileScreen = () => {
 					User Profile
 				</Typography>
 
-				{/* {isLoading && <Loader />} */}
-
 				<Formik
 					initialValues={initialRegisterValues}
-					validationSchema={registerSchema}
+					validationSchema={updateSchema}
+					enableReinitialize={true}
 					onSubmit={submitHandler}
 				>
 					{({
@@ -162,6 +154,8 @@ const ProfileScreen = () => {
 						setFieldValue,
 					}) => (
 						<form onSubmit={handleSubmit} encType='multipart/form-data'>
+							{loadingUpdateProfile && <Loader />}
+
 							{/* Profile Picture */}
 							<Box
 								display='flex'
@@ -170,24 +164,6 @@ const ProfileScreen = () => {
 								m='20px 0 10px 0'
 							>
 								<label htmlFor='picturePath'>
-									<Box
-										border={`2px dashed ${palette.green.main}`}
-										p='0.5rem'
-										borderRadius='50%'
-										sx={{ '&:hover': { cursor: 'pointer' } }}
-									>
-										<Avatar
-											htmlFor='picturePath'
-											src={values.picturePath}
-											alt={`${values.firstName} ${values.lastName}`}
-											sx={{
-												width: 120,
-												height: 120,
-												cursor: 'pointer',
-											}}
-										/>
-									</Box>
-
 									<TextField
 										type='file'
 										name='picturePath'
@@ -197,13 +173,33 @@ const ProfileScreen = () => {
 										onBlur={handleBlur}
 										onChange={(e) => {
 											setFieldValue('picturePath', e.currentTarget.files[0]);
+											console.log('pic:', e.currentTarget.files[0]);
+											console.log('image:', profilePic);
 										}}
-										// onChange={uploadProfile}
 									/>
+									<Box
+										border={`2px dashed ${palette.green.main}`}
+										p='0.5rem'
+										borderRadius='50%'
+										sx={{ '&:hover': { cursor: 'pointer' } }}
+									>
+										<Avatar
+											htmlFor='picturePath'
+											// src={values.picturePath}
+											// src={profilePic}
+											src={userInfo.picturePath}
+											alt={`${values.firstName} ${values.lastName}`}
+											sx={{
+												width: 120,
+												height: 120,
+												cursor: 'pointer',
+											}}
+										/>
+									</Box>
 								</label>
 							</Box>
 
-							<Box
+							{/* <Box
 								mt='0'
 								mb='20px'
 								display='flex'
@@ -223,9 +219,7 @@ const ProfileScreen = () => {
 									</p>
 								)}
 							</Box>
-
-							{loadingUpdateProfile && <Loader />}
-
+ */}
 							<Box
 								display='grid'
 								gap='20px'
