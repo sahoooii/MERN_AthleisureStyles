@@ -9,16 +9,21 @@ import {
 	useTheme,
 	TextField,
 	Avatar,
+	Input,
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import {
 	useUploadProfileImageMutation,
 	useUpdateProfileMutation,
+	useGetProfileDetailsQuery,
 } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import FormComponent from '../components/auth/FormComponent';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import Loader from '../components/Utils/Loader';
+import Message from '../components/Utils/Message';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 const ProfileScreen = () => {
 	const { palette } = useTheme();
@@ -27,12 +32,7 @@ const ProfileScreen = () => {
 
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
-	const [profilePic, setProfilePic] = useState('');
-
-	const [updateProfile, { isLoading: loadingUpdateProfile }] =
-		useUpdateProfileMutation();
-
-	const [uploadProfileImage] = useUploadProfileImageMutation();
+	const [profilePic, setProfilePic] = useState(userInfo.picturePath);
 
 	const initialRegisterValues = {
 		firstName: userInfo.firstName ? userInfo.firstName : '',
@@ -40,9 +40,13 @@ const ProfileScreen = () => {
 		email: userInfo.email ? userInfo.email : '',
 		password: '',
 		confirmPassword: '',
+		// isPicturePath: false,
+		// 2つともvalidation errorで引っかかる
+		// picturePath: profilePic ? profilePic : '',
 		// picturePath: userInfo.picturePath ? userInfo.picturePath : '',
-		// picturePath: profilePic,
+		picturePath: '',
 	};
+
 	// For profile image validation
 	const MAX_FILE_SIZE = 819200; //800MB
 	const validFileExtensions = {
@@ -72,39 +76,80 @@ const ProfileScreen = () => {
 			.string()
 			.oneOf([yup.ref('password')], 'Password does not match')
 			.required('Please enter your confirm password'),
-		// picturePath: yup
-		// 	.mixed()
-		// 	.required('Please upload your profile picture')
-		// 	.test('is-valid-type', 'Not a valid image type', (value) =>
-		// 		isValidFileType(value && value.name.toLowerCase(), 'image')
-		// 	)
-		// 	.test(
-		// 		'is-valid-size',
-		// 		'Max allowed size is 800MB',
-		// 		(value) => value && value.size <= MAX_FILE_SIZE
-		// 	),
+		picturePath: yup
+			.mixed()
+			.test('is-valid-type', 'Not a valid image type', (value) =>
+				isValidFileType(value && value.name.toLowerCase(), 'image')
+			)
+			.test(
+				'is-valid-size',
+				'Max allowed size is 800MB',
+				(value) => value && value.size <= MAX_FILE_SIZE
+			),
+		// isPicturePath: yup.boolean(),
+		// picturePath: yup.mixed().when('isPicturePath', {
+		// 	is: true,
+		// 	then: yup
+		// 		.mixed()
+		// 		.test('is-valid-type', 'Not a valid image type', (value) =>
+		// 			isValidFileType(value && value.name.toLowerCase(), 'image')
+		// 		)
+		// 		.test(
+		// 			'is-valid-size',
+		// 			'Max allowed size is 800MB',
+		// 			(value) => value && value.size <= MAX_FILE_SIZE
+		// 		),
+		// }),
 	});
 
-	// useEffect(() => {
-	// 	if (userInfo) {
-	// 		setProfilePic(profilePic);
-	// 	}
-	// }, [userInfo, profilePic]);
+	// Get user profile details
+	const {
+		data: userProfile,
+		isLoading: loadingProfile,
+		refetch,
+		error,
+	} = useGetProfileDetailsQuery();
+	// console.log('userProfile', userProfile);
 
-	const submitHandler = async (values, onSubmitProps) => {
-		const { firstName, lastName, email, password } = values;
-		console.log(values);
+	const [updateProfile, { isLoading: loadingUpdateProfile }] =
+		useUpdateProfileMutation();
 
-		// const formData = new FormData();
-		// for (let value in values) {
-		// 	formData.append(value, values[value]);
-		// }
-		// // picture path
-		// formData.append('picturePath', values.picturePath.name);
+	const [uploadProfileImage, { isLoading: loadingProfileImage }] =
+		useUploadProfileImageMutation();
+
+	useEffect(() => {
+		if (userProfile) {
+			setProfilePic(userProfile.picturePath);
+		}
+	}, [userProfile]);
+
+	const uploadProfileHandler = async (e) => {
+		const formData = new FormData();
+		formData.append('picturePath', e.target.files[0]);
 
 		try {
-			// const imageData = await uploadProfileImage(formData).unwrap();
-			// toast.success(imageData.message);
+			const response = await uploadProfileImage(formData).unwrap();
+
+			toast.success(response.message);
+			setProfilePic(response.picturePath);
+		} catch (err) {
+			toast.error(err?.data?.message || err.message);
+		}
+	};
+
+	const submitHandler = async (values, onSubmitProps) => {
+		console.log(values);
+		const { firstName, lastName, email, password } = values;
+
+		const formData = new FormData();
+		for (let value in values) {
+			formData.append(value, values[value]);
+		}
+		// picture path
+		formData.append('picturePath', values.picturePath.name);
+
+		try {
+			const imageData = await uploadProfileImage(formData).unwrap();
 
 			const response = await updateProfile({
 				_id: userInfo._id,
@@ -112,15 +157,14 @@ const ProfileScreen = () => {
 				lastName,
 				email,
 				password,
-				// picturePath: imageData.picturePath,
+				picturePath: imageData.picturePath,
 			}).unwrap();
 
-			// setProfilePic(true);
-
 			dispatch(setCredentials(response));
-
 			toast.success('Profile updated successfully');
-		} catch (error) {
+
+			refetch();
+		} catch (err) {
 			toast.error(error?.data?.message || error.error);
 		}
 	};
@@ -138,164 +182,241 @@ const ProfileScreen = () => {
 					User Profile
 				</Typography>
 
-				<Formik
-					initialValues={initialRegisterValues}
-					validationSchema={updateSchema}
-					enableReinitialize={true}
-					onSubmit={submitHandler}
-				>
-					{({
-						values,
-						errors,
-						touched,
-						handleBlur,
-						handleChange,
-						handleSubmit,
-						setFieldValue,
-					}) => (
-						<form onSubmit={handleSubmit} encType='multipart/form-data'>
-							{loadingUpdateProfile && <Loader />}
+				{loadingProfile ? (
+					<Loader />
+				) : error ? (
+					<Box margin='0 auto' width='80%'>
+						<Message severity='error'>
+							{error?.data?.message || error.error}
+						</Message>
+					</Box>
+				) : (
+					<Formik
+						initialValues={initialRegisterValues}
+						validationSchema={updateSchema}
+						enableReinitialize={true}
+						onSubmit={submitHandler}
+					>
+						{({
+							values,
+							errors,
+							touched,
+							handleBlur,
+							handleChange,
+							handleSubmit,
+							setFieldValue,
+						}) => (
+							<form onSubmit={handleSubmit} encType='multipart/form-data'>
+								{loadingUpdateProfile && <Loader />}
 
-							{/* Profile Picture */}
-							<Box
-								display='flex'
-								justifyContent='center'
-								alignItems='center'
-								m='20px 0 10px 0'
-							>
-								<label htmlFor='picturePath'>
-									<TextField
-										type='file'
-										name='picturePath'
-										id='picturePath'
-										accept='.png,.jpeg,.jpg'
-										style={{ display: 'none' }}
-										onBlur={handleBlur}
-										onChange={(e) => {
-											setFieldValue('picturePath', e.currentTarget.files[0]);
-											console.log('pic:', e.currentTarget.files[0]);
-											console.log('image:', profilePic);
+								{/* Profile Picture */}
+								<Box
+									display='flex'
+									justifyContent='center'
+									alignItems='center'
+									m='20px 0 15px 0'
+								>
+									{loadingProfileImage && <Loader />}
+									<Avatar
+										htmlFor='picturePath'
+										src={profilePic}
+										alt={`${values.firstName} ${values.lastName}`}
+										sx={{
+											width: 120,
+											height: 120,
 										}}
 									/>
-									<Box
-										border={`2px dashed ${palette.green.main}`}
-										p='0.5rem'
-										borderRadius='50%'
-										sx={{ '&:hover': { cursor: 'pointer' } }}
-									>
-										<Avatar
-											htmlFor='picturePath'
-											// src={values.picturePath}
-											// src={profilePic}
-											src={userInfo.picturePath}
-											alt={`${values.firstName} ${values.lastName}`}
-											sx={{
-												width: 120,
-												height: 120,
-												cursor: 'pointer',
-											}}
-										/>
-									</Box>
-								</label>
-							</Box>
-
-							{/* <Box
-								mt='0'
-								mb='20px'
-								display='flex'
-								justifyContent='center'
-								alignItems='center'
-							>
-								{errors.picturePath && Boolean(touched.picturePath) && (
-									<p
-										style={{
-											color: '#d32f2f',
-											fontSize: '10px',
-											marginBottom: '0',
-											marginTop: '0',
-										}}
-									>
-										{errors.picturePath}
-									</p>
-								)}
-							</Box>
- */}
-							<Box
-								display='grid'
-								gap='20px'
-								gridTemplateColumns='repeat(4, minmax(0, 1fr))'
-								sx={{
-									'& > div': {
-										gridColumn: isNonMobileScreen ? undefined : 'span 4',
-									},
-								}}
-							>
-								<TextField
-									label='First Name'
-									onBlur={handleBlur}
-									onChange={handleChange}
-									value={values.firstName}
-									name='firstName'
-									error={
-										Boolean(touched.firstName) && Boolean(errors.firstName)
-									}
-									helperText={touched.firstName && errors.firstName}
-									sx={{ gridColumn: 'span 2' }}
-								/>
-								<TextField
-									label='Last Name'
-									onBlur={handleBlur}
-									onChange={handleChange}
-									value={values.lastName}
-									name='lastName'
-									error={Boolean(touched.lastName) && Boolean(errors.lastName)}
-									helperText={touched.lastName && errors.lastName}
-									sx={{ gridColumn: 'span 2' }}
-								/>
-								<TextField
-									label='Email'
-									autoComplete='on'
-									onBlur={handleBlur}
-									onChange={handleChange}
-									value={values.email}
-									name='email'
-									error={Boolean(touched.email) && Boolean(errors.email)}
-									helperText={touched.email && errors.email}
-									sx={{ gridColumn: 'span 4' }}
-								/>
-								<TextField
-									label='Password'
-									type='password'
-									onBlur={handleBlur}
-									onChange={handleChange}
-									value={values.password}
-									name='password'
-									error={Boolean(touched.password) && Boolean(errors.password)}
-									helperText={touched.password && errors.password}
-									sx={{ gridColumn: 'span 4' }}
-								/>
-								<TextField
-									label='Confirm Password'
-									type='password'
-									onBlur={handleBlur}
-									onChange={handleChange}
-									value={values.confirmPassword}
-									name='confirmPassword'
-									error={
-										Boolean(touched.confirmPassword) &&
-										Boolean(errors.confirmPassword)
-									}
-									helperText={touched.confirmPassword && errors.confirmPassword}
-									sx={{ gridColumn: 'span 4' }}
-								/>
-
-								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
-									<ButtonComponent>UPDATE</ButtonComponent>
 								</Box>
-							</Box>
-						</form>
-					)}
-				</Formik>
+
+								{/* For picturePath validation */}
+								{values.picturePath && (
+									<Box
+										mt='0'
+										display='flex'
+										justifyContent='center'
+										alignItems='center'
+									>
+										{errors.picturePath && Boolean(touched.picturePath) && (
+											<p
+												style={{
+													color: '#d32f2f',
+													fontSize: '10px',
+													marginBottom: '0',
+													marginTop: '0px',
+												}}
+											>
+												{errors.picturePath}
+											</p>
+										)}
+									</Box>
+								)}
+
+								<Box
+									border={`2px dashed ${palette.green.main}`}
+									p='1rem'
+									sx={{ m: '10px 0 20px 0', '&:hover': { cursor: 'pointer' } }}
+								>
+									{!values.picturePath ? (
+										<>
+											<label htmlFor='picturePath'>
+												<Box
+													sx={{
+														display: 'flex',
+														alignItems: 'center',
+														cursor: 'pointer',
+													}}
+												>
+													<AddPhotoAlternateIcon color='action' />
+													<Typography variant='body2' ml='3px'>
+														Change Picture Here
+													</Typography>
+												</Box>
+												<TextField
+													type='file'
+													name='picturePath'
+													id='picturePath'
+													accept='.png,.jpeg,.jpg'
+													style={{ display: 'none' }}
+													onBlur={handleBlur}
+													onChange={(e) =>
+														setFieldValue(
+															'picturePath',
+															e.currentTarget.files[0]
+														)
+													}
+												/>
+											</label>
+										</>
+									) : (
+										<>
+											<label
+												htmlFor='picturePath'
+												style={{ cursor: 'pointer' }}
+											>
+												<Box
+													display='flex'
+													justifyContent='space-between'
+													alignItems='center'
+													// cursor='pointer'
+												>
+													<Typography variant='body2'>
+														{values.picturePath.name}
+													</Typography>
+													<Box
+														sx={{
+															cursor: 'pointer',
+															mr: '20px',
+														}}
+													>
+														<EditOutlinedIcon color='blue' />
+													</Box>
+													<Input
+														type='file'
+														name='picturePath'
+														id='picturePath'
+														accept='.png,.jpeg,.jpg'
+														style={{ display: 'none' }}
+														onChange={(e) =>
+															setFieldValue(
+																'picturePath',
+																e.currentTarget.files[0]
+															)
+														}
+													/>
+												</Box>
+											</label>
+										</>
+									)}
+								</Box>
+
+								<Box
+									display='grid'
+									gap='20px'
+									gridTemplateColumns='repeat(4, minmax(0, 1fr))'
+									sx={{
+										'& > div': {
+											gridColumn: isNonMobileScreen ? undefined : 'span 4',
+										},
+									}}
+								>
+									<TextField
+										label='First Name'
+										onBlur={handleBlur}
+										onChange={handleChange}
+										value={values.firstName}
+										name='firstName'
+										error={
+											Boolean(touched.firstName) && Boolean(errors.firstName)
+										}
+										helperText={touched.firstName && errors.firstName}
+										sx={{ gridColumn: 'span 2' }}
+									/>
+									<TextField
+										label='Last Name'
+										onBlur={handleBlur}
+										onChange={handleChange}
+										value={values.lastName}
+										name='lastName'
+										error={
+											Boolean(touched.lastName) && Boolean(errors.lastName)
+										}
+										helperText={touched.lastName && errors.lastName}
+										sx={{ gridColumn: 'span 2' }}
+									/>
+									<TextField
+										label='Email'
+										autoComplete='on'
+										onBlur={handleBlur}
+										onChange={handleChange}
+										value={values.email}
+										name='email'
+										error={Boolean(touched.email) && Boolean(errors.email)}
+										helperText={touched.email && errors.email}
+										sx={{ gridColumn: 'span 4' }}
+									/>
+									<TextField
+										label='Password'
+										type='password'
+										onBlur={handleBlur}
+										onChange={handleChange}
+										value={values.password}
+										name='password'
+										error={
+											Boolean(touched.password) && Boolean(errors.password)
+										}
+										helperText={touched.password && errors.password}
+										sx={{ gridColumn: 'span 4' }}
+									/>
+									<TextField
+										label='Confirm Password'
+										type='password'
+										onBlur={handleBlur}
+										onChange={handleChange}
+										value={values.confirmPassword}
+										name='confirmPassword'
+										error={
+											Boolean(touched.confirmPassword) &&
+											Boolean(errors.confirmPassword)
+										}
+										helperText={
+											touched.confirmPassword && errors.confirmPassword
+										}
+										sx={{ gridColumn: 'span 4' }}
+									/>
+
+									<Box
+										gridColumn='span 4'
+										textAlign='center'
+										mt='25px'
+										mb='15px'
+									>
+										<ButtonComponent>UPDATE</ButtonComponent>
+									</Box>
+								</Box>
+							</form>
+						)}
+					</Formik>
+				)}
 			</Box>
 		</FormComponent>
 	);

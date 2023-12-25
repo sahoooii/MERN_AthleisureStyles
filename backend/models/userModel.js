@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		// isPicturePath: { type: Boolean },
 		picturePath: {
 			// data: Buffer,
 			// contentType: String,

@@ -10,7 +10,6 @@ import {
 	useTheme,
 	TextField,
 } from '@mui/material';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
 	useRegisterMutation,
 	useUploadProfileImageMutation,
@@ -18,9 +17,10 @@ import {
 import { setCredentials } from '../../slices/authSlice';
 import { toast } from 'react-toastify';
 import FormComponent from '../../components/auth/FormComponent';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 const initialRegisterValues = {
 	firstName: '',
@@ -279,37 +279,42 @@ const RegisterFormScreen = () => {
 												</label>
 											</>
 										) : (
-											<Box
-												display='flex'
-												justifyContent='space-between'
-												alignItems='center'
-											>
-												<Typography variant='body2'>
-													{values.picturePath.name}
-												</Typography>
-												<label htmlFor='picturePath'>
+											<>
+												<label
+													htmlFor='picturePath'
+													style={{ cursor: 'pointer' }}
+												>
 													<Box
-														sx={{
-															cursor: 'pointer',
-														}}
+														display='flex'
+														justifyContent='space-between'
+														alignItems='center'
 													>
-														<EditOutlinedIcon color='blue' />
+														<Typography variant='body2'>
+															{values.picturePath.name}
+														</Typography>
+														<Box
+															sx={{
+																cursor: 'pointer',
+															}}
+														>
+															<EditOutlinedIcon color='blue' />
+														</Box>
+														<input
+															type='file'
+															name='picturePath'
+															id='picturePath'
+															accept='.png,.jpeg,.jpg'
+															style={{ display: 'none' }}
+															onChange={(e) =>
+																setFieldValue(
+																	'picturePath',
+																	e.currentTarget.files[0]
+																)
+															}
+														/>
 													</Box>
-													<input
-														type='file'
-														name='picturePath'
-														id='picturePath'
-														accept='.png,.jpeg,.jpg'
-														style={{ display: 'none' }}
-														onChange={(e) =>
-															setFieldValue(
-																'picturePath',
-																e.currentTarget.files[0]
-															)
-														}
-													/>
 												</label>
-											</Box>
+											</>
 										)}
 									</Box>
 									{errors.picturePath && Boolean(touched.picturePath) && (
