@@ -113,6 +113,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 					width: { width },
 					height: { height },
 					p: 0,
+					cursor: 'pointer',
 				}}
 				style={style}
 				onClick={() => setOpen(!open)}

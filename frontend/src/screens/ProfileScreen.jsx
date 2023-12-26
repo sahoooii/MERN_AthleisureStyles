@@ -40,7 +40,6 @@ const ProfileScreen = () => {
 		email: userInfo.email ? userInfo.email : '',
 		password: '',
 		confirmPassword: '',
-		// isPicturePath: false,
 		// 2つともvalidation errorで引っかかる
 		// picturePath: profilePic ? profilePic : '',
 		// picturePath: userInfo.picturePath ? userInfo.picturePath : '',
@@ -77,29 +76,16 @@ const ProfileScreen = () => {
 			.oneOf([yup.ref('password')], 'Password does not match')
 			.required('Please enter your confirm password'),
 		picturePath: yup
-			.mixed()
-			.test('is-valid-type', 'Not a valid image type', (value) =>
-				isValidFileType(value && value.name.toLowerCase(), 'image')
-			)
-			.test(
-				'is-valid-size',
-				'Max allowed size is 800MB',
-				(value) => value && value.size <= MAX_FILE_SIZE
-			),
-		// isPicturePath: yup.boolean(),
-		// picturePath: yup.mixed().when('isPicturePath', {
-		// 	is: true,
-		// 	then: yup
-		// 		.mixed()
-		// 		.test('is-valid-type', 'Not a valid image type', (value) =>
-		// 			isValidFileType(value && value.name.toLowerCase(), 'image')
-		// 		)
-		// 		.test(
-		// 			'is-valid-size',
-		// 			'Max allowed size is 800MB',
-		// 			(value) => value && value.size <= MAX_FILE_SIZE
-		// 		),
-		// }),
+		.mixed()
+		.notRequired()
+		.test('is-valid-type', 'Not a valid image type', (value) =>
+			isValidFileType(value && value.name.toLowerCase(), 'image')
+		)
+		.test(
+			'is-valid-size',
+			'Max allowed size is 800MB',
+			(value) => value && value.size <= MAX_FILE_SIZE
+		),
 	});
 
 	// Get user profile details
@@ -123,24 +109,10 @@ const ProfileScreen = () => {
 		}
 	}, [userProfile]);
 
-	const uploadProfileHandler = async (e) => {
-		const formData = new FormData();
-		formData.append('picturePath', e.target.files[0]);
-
-		try {
-			const response = await uploadProfileImage(formData).unwrap();
-
-			toast.success(response.message);
-			setProfilePic(response.picturePath);
-		} catch (err) {
-			toast.error(err?.data?.message || err.message);
-		}
-	};
-
 	const submitHandler = async (values, onSubmitProps) => {
-		console.log(values);
 		const { firstName, lastName, email, password } = values;
 
+		// console.log(Boolean(values.picturePath === ''));
 		const formData = new FormData();
 		for (let value in values) {
 			formData.append(value, values[value]);
@@ -208,7 +180,6 @@ const ProfileScreen = () => {
 						}) => (
 							<form onSubmit={handleSubmit} encType='multipart/form-data'>
 								{loadingUpdateProfile && <Loader />}
-
 								{/* Profile Picture */}
 								<Box
 									display='flex'
@@ -227,7 +198,6 @@ const ProfileScreen = () => {
 										}}
 									/>
 								</Box>
-
 								{/* For picturePath validation */}
 								{values.picturePath && (
 									<Box
@@ -328,7 +298,6 @@ const ProfileScreen = () => {
 										</>
 									)}
 								</Box>
-
 								<Box
 									display='grid'
 									gap='20px'
