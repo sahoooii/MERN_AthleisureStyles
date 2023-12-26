@@ -107,6 +107,7 @@ const LoginFormScreen = () => {
 							>
 								<TextField
 									label='Email'
+									autoComplete='on'
 									onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.email}
