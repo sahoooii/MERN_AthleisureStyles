@@ -59,8 +59,8 @@ const deleteMyOrder = asyncHandler(async (req, res) => {
 	}
 });
 
-// @desc Get logged in user orders
-// @route GET /api/orders/myorders
+// @desc Get logged in user orders history
+// @route GET /api/orders/orderhistory
 // @access Private
 const getMyOrders = asyncHandler(async (req, res) => {
 	// look for logged in user orders

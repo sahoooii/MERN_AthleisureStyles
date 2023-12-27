@@ -34,7 +34,7 @@ const CheckoutScreen = () => {
 
 	// Get order details
 	const { id: orderId } = useParams();
-	const { userInfo } = useSelector((state) => state.auth);
+	// const { userInfo } = useSelector((state) => state.auth);
 
 	const {
 		data: order,

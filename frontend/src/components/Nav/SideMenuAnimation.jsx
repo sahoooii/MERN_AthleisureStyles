@@ -148,7 +148,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 					right='0'
 					bottom='0'
 					backgroundColor='white'
-					sx={{ width: { xs: 1, sm: 'max(350px, 25%)' } }}
+					sx={{ width: { xs: 0.7, sm: 'max(350px, 25%)' } }}
 					variants={variants}
 				>
 					<Box position='relative' width='100%' height='100%'>
