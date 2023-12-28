@@ -76,16 +76,16 @@ const ProfileScreen = () => {
 			.oneOf([yup.ref('password')], 'Password does not match')
 			.required('Please enter your confirm password'),
 		picturePath: yup
-		.mixed()
-		.notRequired()
-		.test('is-valid-type', 'Not a valid image type', (value) =>
-			isValidFileType(value && value.name.toLowerCase(), 'image')
-		)
-		.test(
-			'is-valid-size',
-			'Max allowed size is 800MB',
-			(value) => value && value.size <= MAX_FILE_SIZE
-		),
+			.mixed()
+			.notRequired()
+			// .test('is-valid-type', 'Not a valid image type', (value) =>
+			// 	isValidFileType(value && value.name.toLowerCase(), 'image')
+			// )
+			// .test(
+			// 	'is-valid-size',
+			// 	'Max allowed size is 800MB',
+			// 	(value) => value && value.size <= MAX_FILE_SIZE
+			// ),
 	});
 
 	// Get user profile details
@@ -110,35 +110,89 @@ const ProfileScreen = () => {
 	}, [userProfile]);
 
 	const submitHandler = async (values, onSubmitProps) => {
+		console.log(values);
 		const { firstName, lastName, email, password } = values;
+		// console.log(Boolean(values.picturePath === ''));
+
+		if (
+			values.picturePath === '' &&
+			values.firstName &&
+			values.lastName &&
+			values.email &&
+			values.password
+		) {
+			try {
+				const response = await updateProfile({
+					_id: userInfo._id,
+					firstName,
+					lastName,
+					email,
+					password,
+					picturePath: userInfo.picturePath,
+				}).unwrap();
+
+				dispatch(setCredentials(response));
+				toast.success('Profile updated successfully');
+
+				refetch();
+			} catch (error) {
+				toast.error(error?.data?.message || error.error);
+			}
+		} else {
+			const formData = new FormData();
+			for (let value in values) {
+				formData.append(value, values[value]);
+			}
+			// picture path
+			formData.append('picturePath', values.picturePath.name);
+			try {
+				const imageData = await uploadProfileImage(formData).unwrap();
+
+				const response = await updateProfile({
+					_id: userInfo._id,
+					firstName,
+					lastName,
+					email,
+					password,
+					picturePath: imageData.picturePath,
+				}).unwrap();
+
+				dispatch(setCredentials(response));
+				toast.success('Profile updated successfully');
+
+				refetch();
+			} catch (error) {
+				toast.error(error?.data?.message || error.error);
+			}
+		}
 
 		// console.log(Boolean(values.picturePath === ''));
-		const formData = new FormData();
-		for (let value in values) {
-			formData.append(value, values[value]);
-		}
-		// picture path
-		formData.append('picturePath', values.picturePath.name);
+		// const formData = new FormData();
+		// for (let value in values) {
+		// 	formData.append(value, values[value]);
+		// }
+		// // picture path
+		// formData.append('picturePath', values.picturePath.name);
 
-		try {
-			const imageData = await uploadProfileImage(formData).unwrap();
+		// try {
+		// 	const imageData = await uploadProfileImage(formData).unwrap();
 
-			const response = await updateProfile({
-				_id: userInfo._id,
-				firstName,
-				lastName,
-				email,
-				password,
-				picturePath: imageData.picturePath,
-			}).unwrap();
+		// 	const response = await updateProfile({
+		// 		_id: userInfo._id,
+		// 		firstName,
+		// 		lastName,
+		// 		email,
+		// 		password,
+		// 		picturePath: imageData.picturePath,
+		// 	}).unwrap();
 
-			dispatch(setCredentials(response));
-			toast.success('Profile updated successfully');
+		// 	dispatch(setCredentials(response));
+		// 	toast.success('Profile updated successfully');
 
-			refetch();
-		} catch (err) {
-			toast.error(error?.data?.message || error.error);
-		}
+		// 	refetch();
+		// } catch (err) {
+		// 	toast.error(error?.data?.message || error.error);
+		// }
 	};
 
 	return (
@@ -199,7 +253,7 @@ const ProfileScreen = () => {
 									/>
 								</Box>
 								{/* For picturePath validation */}
-								{values.picturePath && (
+								{!values.picturePath && (
 									<Box
 										mt='0'
 										display='flex'
