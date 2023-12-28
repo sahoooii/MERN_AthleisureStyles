@@ -47,17 +47,17 @@ const ProfileScreen = () => {
 	};
 
 	// For profile image validation
-	const MAX_FILE_SIZE = 819200; //800MB
-	const validFileExtensions = {
-		image: ['jpg', 'png', 'jpeg', 'webp'],
-	};
+	// const MAX_FILE_SIZE = 819200; //800MB
+	// const validFileExtensions = {
+	// 	image: ['jpg', 'png', 'jpeg', 'webp'],
+	// };
 
-	function isValidFileType(fileName, fileType) {
-		return (
-			fileName &&
-			validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1
-		);
-	}
+	// function isValidFileType(fileName, fileType) {
+	// 	return (
+	// 		fileName &&
+	// 		validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1
+	// 	);
+	// }
 
 	const updateSchema = yup.object().shape({
 		firstName: yup.string().required('Please enter your first name'),
@@ -95,7 +95,6 @@ const ProfileScreen = () => {
 		refetch,
 		error,
 	} = useGetProfileDetailsQuery();
-	// console.log('userProfile', userProfile);
 
 	const [updateProfile, { isLoading: loadingUpdateProfile }] =
 		useUpdateProfileMutation();
@@ -110,10 +109,10 @@ const ProfileScreen = () => {
 	}, [userProfile]);
 
 	const submitHandler = async (values, onSubmitProps) => {
-		console.log(values);
+		// console.log(values);
 		const { firstName, lastName, email, password } = values;
-		// console.log(Boolean(values.picturePath === ''));
 
+		// When not change profilePic
 		if (
 			values.picturePath === '' &&
 			values.firstName &&
@@ -139,6 +138,7 @@ const ProfileScreen = () => {
 				toast.error(error?.data?.message || error.error);
 			}
 		} else {
+			// When changed profilePic
 			const formData = new FormData();
 			for (let value in values) {
 				formData.append(value, values[value]);
@@ -165,34 +165,6 @@ const ProfileScreen = () => {
 				toast.error(error?.data?.message || error.error);
 			}
 		}
-
-		// console.log(Boolean(values.picturePath === ''));
-		// const formData = new FormData();
-		// for (let value in values) {
-		// 	formData.append(value, values[value]);
-		// }
-		// // picture path
-		// formData.append('picturePath', values.picturePath.name);
-
-		// try {
-		// 	const imageData = await uploadProfileImage(formData).unwrap();
-
-		// 	const response = await updateProfile({
-		// 		_id: userInfo._id,
-		// 		firstName,
-		// 		lastName,
-		// 		email,
-		// 		password,
-		// 		picturePath: imageData.picturePath,
-		// 	}).unwrap();
-
-		// 	dispatch(setCredentials(response));
-		// 	toast.success('Profile updated successfully');
-
-		// 	refetch();
-		// } catch (err) {
-		// 	toast.error(error?.data?.message || error.error);
-		// }
 	};
 
 	return (
@@ -253,7 +225,7 @@ const ProfileScreen = () => {
 									/>
 								</Box>
 								{/* For picturePath validation */}
-								{!values.picturePath && (
+								{values.picturePath && (
 									<Box
 										mt='0'
 										display='flex'
