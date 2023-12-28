@@ -17,261 +17,291 @@ const OrderHistoryScreen = () => {
 	return (
 		<Box
 			sx={{
-				m: { md: '50px auto', xs: '10px auto' },
+				m: { md: '30px auto', xs: '10px auto' },
 				width: { xs: '95%', sm: '90%' },
 			}}
 		>
-			<Typography variant='h3' sx={{ mb: '20px' }}>
-				My <b>Orders</b>
-			</Typography>
-			{isLoading ? (
-				<Loader />
-			) : error ? (
-				<Message severity='error'>
-					{error?.data?.message || error.error}
-				</Message>
-			) : (
-				<>
-					{orders.length === 0 ? (
-						<Message severity='error'>
-							Oh No! You haven't shopping yet!
-							<Link to='/'>
-								- Go Back
-							</Link>
-						</Message>
-					) : isNonMobileScreen ? (
-						<>
-							{orders.map((order) => (
-								<Box
-									key={order._id}
-									sx={{
-										alignItems: 'center',
-										border: `1px ${shades.neutral[500]} solid`,
-										borderRadius: 1,
-										m: '15px 0',
-									}}
-								>
+			<Box mb='100px'>
+				<Typography variant='h3' sx={{ mb: '20px' }}>
+					My <b>Orders</b>
+				</Typography>
+				{isLoading ? (
+					<Loader />
+				) : error ? (
+					<Message severity='error'>
+						{error?.data?.message || error.error}
+					</Message>
+				) : (
+					<>
+						{orders.length === 0 ? (
+							<Message severity='error'>
+								Oh No! You haven't shopping yet!
+								<Link to='/'>- Go Back</Link>
+							</Message>
+						) : isNonMobileScreen ? (
+							<>
+								{orders.map((order) => (
 									<Box
-										backgroundColor={shades.blue[400]}
-										p='10px 30px'
-										display='flex'
-										alignItems='center'
-										justifyContent='center'
+										key={order._id}
+										sx={{
+											alignItems: 'center',
+											border: `1px ${shades.neutral[500]} solid`,
+											borderRadius: 1,
+											m: '15px 0',
+										}}
 									>
-										<Grid container alignItems='center' columnSpacing={2}>
-											{/* Header */}
-											<Grid item sm={3}>
-												<Stack spacing={1.5} sx={{ color: 'white' }}>
-													<Typography variant='h3'>ORDER DATE</Typography>
-													<Typography variant='h4'>
-														{order.createdAt.substring(0, 10)}
-													</Typography>
-												</Stack>
-											</Grid>
-											<Grid item sm={3}>
-												<Stack spacing={1.5} sx={{ color: 'white' }}>
-													<Typography variant='h3'>$TOTAL</Typography>
-													<Typography variant='h4'>
-														${order.totalPrice}
-													</Typography>
-												</Stack>
-											</Grid>
-											<Grid item sm={2} />
-											<Grid
-												item
-												sm={4}
-												sx={{
-													color: 'white',
-													alignItems: 'center',
-												}}
-											>
-												<Stack spacing={1.5}>
-													<Typography variant='h3'>ORDER NO.</Typography>
-													<Typography variant='h4'>{order._id}</Typography>
-												</Stack>
-											</Grid>
-										</Grid>
-									</Box>
-
-									<Box
-										p='15px 30px'
-										display='flex'
-										alignItems='center'
-										justifyContent='center'
-									>
-										{/* Details */}
-										{/* 1以上の時だけcolumnにする */}
-										<Grid
-											container
+										<Box
+											backgroundColor={shades.blue[400]}
+											p='10px 30px'
+											display='flex'
 											alignItems='center'
-											columnSpacing={2}
-											sx={{ display: 'flex', flexDirection: 'column' }}
+											justifyContent='center'
 										>
-											{order.orderItems.map((item) => (
-												<Box key={item._id}>
-													{order.orderItems.length > 1 ? (
-														<Box>
-															<Grid
-																item
-																sm={3}
-																// not work
-																// sx={{ display: 'flex', flexDirection: 'column' }}
-															>
-																<img
-																	src={item.image}
-																	alt={item.name}
-																	width='95px'
-																	height='120px'
-																	style={{
-																		borderRadius: '3px',
-																	}}
-																/>
-															</Grid>
-														</Box>
-													) : (
-														<Box key={item._id}>
-															<Grid item sm={3}>
-																<img
-																	src={item.image}
-																	alt={item.name}
-																	width='95px'
-																	height='120px'
-																	style={{
-																		borderRadius: '3px',
-																	}}
-																/>
-															</Grid>
-														</Box>
-													)}
-												</Box>
-											))}
-										</Grid>
+											<Grid container alignItems='center' columnSpacing={2}>
+												{/* Header */}
+												<Grid item sm={3}>
+													<Stack spacing={1.5} sx={{ color: 'white' }}>
+														<Typography variant='h3'>ORDER DATE</Typography>
+														<Typography variant='h4'>
+															{order.createdAt.substring(0, 10)}
+														</Typography>
+													</Stack>
+												</Grid>
+												<Grid item sm={3}>
+													<Stack spacing={1.5} sx={{ color: 'white' }}>
+														<Typography variant='h3'>$TOTAL</Typography>
+														<Typography variant='h4'>
+															${order.totalPrice}
+														</Typography>
+													</Stack>
+												</Grid>
+												<Grid item sm={2} />
+												<Grid
+													item
+													sm={4}
+													sx={{
+														color: 'white',
+														alignItems: 'center',
+													}}
+												>
+													<Stack spacing={1.5}>
+														<Typography variant='h3'>ORDER NO.</Typography>
+														<Typography variant='h4'>{order._id}</Typography>
+													</Stack>
+												</Grid>
+											</Grid>
+										</Box>
 
-										<Grid container alignItems='center' columnSpacing={2}>
-											<Grid item sm={5}>
-												<Stack spacing={1}>
-													<Typography variant='h4'>
+										<Box
+											p='15px 30px'
+											display='flex'
+											alignItems='center'
+											justifyContent='center'
+										>
+											{/* Details */}
+											<Grid container alignItems='center'>
+												<Grid item sm={12} sx={{ mb: '8px' }}>
+													<Typography variant='h4' sx={{ fontWeight: 'bold' }}>
 														DELIVERED AT 2023/12/25
 													</Typography>
-													<Link to='/'>
-														<Typography
-															variant='h3'
-															fontWeight='bold'
-															color='secondary'
-															sx={{ cursor: 'pointer' }}
-														>
-															Item Name
-														</Typography>
-													</Link>
-												</Stack>
-											</Grid>
+												</Grid>
 
-											<Grid item sm={3}>
-												<Stack spacing={3}>
-													<Box
-														display='flex'
-														alignItems='center'
-														justifyContent='flex-end'
+												{/* When more than one order, display column */}
+												{order.orderItems.map((item) => (
+													<Grid
+														item
+														sm={8}
+														key={item._id}
+														// sx={{ display: 'flex', flexDirection: 'column' }}
 													>
-														<Box sx={{ width: { sm: '80%', md: '60%' } }}>
-															<ButtonComponent
-																backgroundColor={shades.neutral[600]}
+														{order.orderItems.length > 1 ? (
+															// flex for image and item name
+															<Grid
+																sx={{
+																	display: 'flex',
+																	alignItems: 'center',
+																	mb: '5px',
+																}}
 															>
-																<Typography variant='h4' sx={{ mr: '8px' }}>
-																	DETAILS
-																</Typography>
-																<ArrowForwardIosOutlined />
-															</ButtonComponent>
-														</Box>
-													</Box>
-													<Box
-														display='flex'
-														alignItems='center'
-														justifyContent='flex-end'
-													>
-														<Box sx={{ width: { sm: '80%', md: '60%' } }}>
-															<ButtonComponent
-																backgroundColor={shades.babyPink[600]}
+																<Grid item sm={3}>
+																	<img
+																		src={item.image}
+																		alt={item.name}
+																		width='100px'
+																		height='120px'
+																		style={{
+																			borderRadius: '3px',
+																		}}
+																	/>
+																</Grid>
+																<Grid item sm={5}>
+																	<Link
+																		to={`/item/${item.item}`}
+																		style={{ textDecoration: 'underline' }}
+																	>
+																		<Typography
+																			variant='h3'
+																			fontWeight='bold'
+																			color='secondary'
+																			sx={{ cursor: 'pointer' }}
+																		>
+																			{item.name}
+																		</Typography>
+																	</Link>
+																</Grid>
+															</Grid>
+														) : (
+															<Grid
+																sx={{
+																	display: 'flex',
+																	alignItems: 'center',
+																	mb: '5px',
+																}}
 															>
-																<Typography variant='h4' sx={{ mr: '8px' }}>
-																	REVIEW
-																</Typography>
-																<CreateOutlined />
-															</ButtonComponent>
+																<Grid item sm={3}>
+																	<img
+																		src={item.image}
+																		alt={item.name}
+																		width='100px'
+																		height='120px'
+																		style={{
+																			borderRadius: '3px',
+																		}}
+																	/>
+																</Grid>
+																<Grid item sm={5}>
+																	<Link
+																		to={`/item/${item.item}`}
+																		style={{ textDecoration: 'underline' }}
+																	>
+																		<Typography
+																			variant='h3'
+																			fontWeight='bold'
+																			color='secondary'
+																			sx={{ cursor: 'pointer' }}
+																		>
+																			{item.name}
+																		</Typography>
+																	</Link>
+																</Grid>
+															</Grid>
+														)}
+													</Grid>
+												))}
+
+												<Grid item sm={4} sx={{ alignItems: 'center' }}>
+													<Stack spacing={3}>
+														<Box
+															display='flex'
+															alignItems='center'
+															justifyContent='flex-end'
+														>
+															<Box sx={{ width: { sm: '80%', md: '60%' } }}>
+																{/* Replace */}
+																<Link to='/'>
+																	<ButtonComponent
+																		backgroundColor={shades.neutral[600]}
+																	>
+																		<Typography variant='h4' sx={{ mr: '8px' }}>
+																			DETAILS
+																		</Typography>
+																		<ArrowForwardIosOutlined />
+																	</ButtonComponent>
+																</Link>
+															</Box>
 														</Box>
-													</Box>
-												</Stack>
+														<Box
+															display='flex'
+															alignItems='center'
+															justifyContent='flex-end'
+														>
+															<Box sx={{ width: { sm: '80%', md: '60%' } }}>
+																{/* Think later */}
+																{/* <Link to={}> */}
+																	<ButtonComponent
+																		backgroundColor={shades.babyPink[600]}
+																	>
+																		<Typography variant='h4' sx={{ mr: '8px' }}>
+																			REVIEW
+																		</Typography>
+																		<CreateOutlined />
+																	</ButtonComponent>
+																{/* </Link> */}
+															</Box>
+														</Box>
+													</Stack>
+												</Grid>
 											</Grid>
-										</Grid>
+										</Box>
 									</Box>
-								</Box>
-							))}
-						</>
-					) : (
-						// Mobile ver.
-						<Box
-							sx={{
-								alignItems: 'center',
-								border: `1px ${shades.neutral[500]} solid`,
-								borderRadius: 1,
-								m: '15px 0',
-							}}
-						>
+								))}
+							</>
+						) : (
+							// Mobile ver.
 							<Box
-								p='15px 12px'
-								display='flex'
-								alignItems='center'
-								justifyContent='center'
+								sx={{
+									alignItems: 'center',
+									border: `1px ${shades.neutral[500]} solid`,
+									borderRadius: 1,
+									m: '15px 0',
+								}}
 							>
-								{/* Details */}
-								<Grid container alignItems='center' columnSpacing={2}>
-									<Grid item xs={4}>
-										<img
-											src='/images/profilePics/shohei.jpg'
-											alt='shohei'
-											width='80px'
-											height='100px'
-											style={{
-												borderRadius: '3px',
-											}}
-										/>
-									</Grid>
-									<Grid item xs={6}>
-										<Stack spacing={1}>
-											<Typography variant='h4'>
-												DELIVERED AT 2023/12/25
-											</Typography>
-											<Link to='/'>
-												<Typography
-													variant='h3'
-													fontWeight='bold'
-													color='secondary'
-													sx={{ cursor: 'pointer' }}
-												>
-													Item Name
-												</Typography>
-											</Link>
-										</Stack>
-									</Grid>
-									<Grid
-										item
-										xs={2}
-										display='flex'
-										alignItems='center'
-										justifyContent='flex-end'
-									>
-										<Link to='/' sx={{ cursor: 'pointer' }}>
-											<ArrowForwardIosOutlined
-												sx={{ color: shades.neutral[700] }}
+								<Box
+									p='15px 12px'
+									display='flex'
+									alignItems='center'
+									justifyContent='center'
+								>
+									{/* Details */}
+									<Grid container alignItems='center' columnSpacing={2}>
+										<Grid item xs={4}>
+											<img
+												src='/images/profilePics/shohei.jpg'
+												alt='shohei'
+												width='80px'
+												height='100px'
+												style={{
+													borderRadius: '3px',
+												}}
 											/>
-										</Link>
+										</Grid>
+										<Grid item xs={6}>
+											<Stack spacing={1}>
+												<Typography variant='h4'>
+													DELIVERED AT 2023/12/25
+												</Typography>
+												<Link to='/'>
+													<Typography
+														variant='h3'
+														fontWeight='bold'
+														color='secondary'
+														sx={{ cursor: 'pointer' }}
+													>
+														Item Name
+													</Typography>
+												</Link>
+											</Stack>
+										</Grid>
+										<Grid
+											item
+											xs={2}
+											display='flex'
+											alignItems='center'
+											justifyContent='flex-end'
+										>
+											<Link to='/' sx={{ cursor: 'pointer' }}>
+												<ArrowForwardIosOutlined
+													sx={{ color: shades.neutral[700] }}
+												/>
+											</Link>
+										</Grid>
 									</Grid>
-								</Grid>
+								</Box>
 							</Box>
-						</Box>
-					)}
-				</>
-			)}
+						)}
+					</>
+				)}
+			</Box>
 		</Box>
 	);
 };
