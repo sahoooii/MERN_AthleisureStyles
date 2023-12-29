@@ -15,6 +15,7 @@ import { theme } from './theme';
 import { Provider } from 'react-redux';
 import store from './store';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 import HomeScreen from './screens/HomeScreen';
 import ItemDetailsScreen from './screens/ItemDetailsScreen';
 import CartScreen from './screens/CartScreen';
@@ -27,6 +28,7 @@ import CheckoutScreen from './screens/CheckoutScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';
 import NotPaidOrderHistoryScreen from './screens/NotPaidOrderHistoryScreen';
+import OrderListScreen from './screens/admin/OrderListScreen';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -46,6 +48,11 @@ const router = createBrowserRouter(
 				<Route path='/profile' element={<ProfileScreen />} />
 				<Route path='/orderhistory' element={<OrderHistoryScreen />} />
 				<Route path='/notpaidorder' element={<NotPaidOrderHistoryScreen />} />
+			</Route>
+
+			{/* Admin Route only admin can see these */}
+			<Route path='/' element={<AdminRoute />}>
+				<Route path='/admin/orderlist' element={<OrderListScreen />} />
 			</Route>
 		</Route>
 	)

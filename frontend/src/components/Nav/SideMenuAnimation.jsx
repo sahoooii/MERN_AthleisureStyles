@@ -21,6 +21,9 @@ import {
 	ManageSearchOutlined,
 	PersonOutline,
 	ProductionQuantityLimitsOutlined,
+	DescriptionOutlined,
+	ManageAccountsOutlined,
+	ListAltOutlined,
 } from '@mui/icons-material';
 import { useLogoutMutation } from '../../slices/usersApiSlice';
 import { logout } from '../../slices/authSlice';
@@ -299,6 +302,113 @@ const SideMenuAnimation = ({ style, width, height }) => {
 												</MenuItem>
 											</Link>
 										</FlexBox>
+
+										{/* Admin Menu */}
+										{userInfo && userInfo.isAdmin && (
+											<Box>
+												<Divider sx={{ mb: '10px' }} />
+
+												<Stack
+													spacing={3}
+													component={motion.div}
+													variants={linksVariants}
+												>
+													<FlexBox
+														component={motion.div}
+														variants={itemVariants}
+														whileHover={{ scale: 1.1 }}
+														whileTap={{ scale: 0.7 }}
+														initial='hidden'
+														whileInView='visible'
+													>
+														<Link
+															// to='/profile'
+															style={{ textDecoration: 'none' }}
+															onClick={() => setOpen(!open)}
+														>
+															<MenuItem style={{ alignItems: 'center' }}>
+																<ListItemIcon>
+																	<DescriptionOutlined
+																		sx={{
+																			marginRight: '8px',
+																			fontSize: '20px',
+																		}}
+																	/>
+																</ListItemIcon>
+																<Typography
+																	variant='h3'
+																	sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+																>
+																	Products
+																</Typography>
+															</MenuItem>
+														</Link>
+													</FlexBox>
+													<FlexBox
+														component={motion.div}
+														variants={itemVariants}
+														whileHover={{ scale: 1.1 }}
+														whileTap={{ scale: 0.7 }}
+														initial='hidden'
+														whileInView='visible'
+													>
+														<Link
+															// to='/profile'
+															style={{ textDecoration: 'none' }}
+															onClick={() => setOpen(!open)}
+														>
+															<MenuItem style={{ alignItems: 'center' }}>
+																<ListItemIcon>
+																	<ManageAccountsOutlined
+																		sx={{
+																			marginRight: '8px',
+																			fontSize: '20px',
+																		}}
+																	/>
+																</ListItemIcon>
+																<Typography
+																	variant='h3'
+																	sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+																>
+																	Users
+																</Typography>
+															</MenuItem>
+														</Link>
+													</FlexBox>
+													<FlexBox
+														component={motion.div}
+														variants={itemVariants}
+														whileHover={{ scale: 1.1 }}
+														whileTap={{ scale: 0.7 }}
+														initial='hidden'
+														whileInView='visible'
+													>
+														<Link
+															to='/admin/orderlist'
+															style={{ textDecoration: 'none' }}
+															onClick={() => setOpen(!open)}
+														>
+															<MenuItem style={{ alignItems: 'center' }}>
+																<ListItemIcon>
+																	<ListAltOutlined
+																		sx={{
+																			marginRight: '8px',
+																			fontSize: '20px',
+																		}}
+																	/>
+																</ListItemIcon>
+																<Typography
+																	variant='h3'
+																	sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+																>
+																	Orders
+																</Typography>
+															</MenuItem>
+														</Link>
+													</FlexBox>
+												</Stack>
+											</Box>
+										)}
 
 										<Divider />
 										<FlexBox
