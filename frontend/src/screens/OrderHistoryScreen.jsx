@@ -5,8 +5,7 @@ import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
 import { shades } from '../theme';
 import ButtonComponent from '../components/Utils/ButtonComponent';
-import styled from '@emotion/styled';
-import { ArrowForwardIosOutlined, CreateOutlined } from '@mui/icons-material';
+import { ArrowForwardIosOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 const OrderHistoryScreen = () => {
@@ -100,92 +99,71 @@ const OrderHistoryScreen = () => {
 										>
 											{/* Details */}
 											<Grid container alignItems='center'>
-												<Grid item sm={12} sx={{ mb: '8px' }}>
-													<Typography variant='h4' sx={{ fontWeight: 'bold' }}>
-														DELIVERED AT 2023/12/25
-													</Typography>
+												<Grid
+													item
+													sm={12}
+													sx={{
+														display: 'flex',
+														justifyContent: 'space-between',
+														alignItems: 'center',
+													}}
+													columnSpacing={2}
+												>
+													<Grid item sm={5} sx={{ mb: '12px' }}>
+														{order.isPaid && (
+															<Message severity='info'>
+																{/* Replace */}
+																PAID AT {order.paidAt.substring(0, 10)}
+															</Message>
+														)}
+													</Grid>
+													<Grid item sm={5} sx={{ mb: '12px' }}>
+														{orders.isDelivered && (
+															<Message severity='success'>
+																{/* Replace */}
+																DELIVERED AT{' '}
+																{order.deliveredAt.substring(0, 10)}
+															</Message>
+														)}
+													</Grid>
 												</Grid>
 
-												{/* When more than one order, display column */}
 												{order.orderItems.map((item) => (
-													<Grid
-														item
-														sm={8}
-														key={item._id}
-														// sx={{ display: 'flex', flexDirection: 'column' }}
-													>
-														{order.orderItems.length > 1 ? (
-															// flex for image and item name
-															<Grid
-																sx={{
-																	display: 'flex',
-																	alignItems: 'center',
-																	mb: '5px',
-																}}
-															>
-																<Grid item sm={3}>
-																	<img
-																		src={item.image}
-																		alt={item.name}
-																		width='100px'
-																		height='120px'
-																		style={{
-																			borderRadius: '3px',
-																		}}
-																	/>
-																</Grid>
-																<Grid item sm={5}>
-																	<Link
-																		to={`/item/${item.item}`}
-																		style={{ textDecoration: 'underline' }}
-																	>
-																		<Typography
-																			variant='h3'
-																			fontWeight='bold'
-																			color='secondary'
-																			sx={{ cursor: 'pointer' }}
-																		>
-																			{item.name}
-																		</Typography>
-																	</Link>
-																</Grid>
+													<Grid item sm={8} key={item._id}>
+														<Grid
+															sx={{
+																display: 'flex',
+																alignItems: 'center',
+																mb: '5px',
+															}}
+														>
+															<Grid item sm={3}>
+																<img
+																	src={item.image}
+																	alt={item.name}
+																	width='100px'
+																	height='120px'
+																	style={{
+																		borderRadius: '3px',
+																	}}
+																/>
 															</Grid>
-														) : (
-															<Grid
-																sx={{
-																	display: 'flex',
-																	alignItems: 'center',
-																	mb: '5px',
-																}}
-															>
-																<Grid item sm={3}>
-																	<img
-																		src={item.image}
-																		alt={item.name}
-																		width='100px'
-																		height='120px'
-																		style={{
-																			borderRadius: '3px',
-																		}}
-																	/>
-																</Grid>
-																<Grid item sm={5}>
-																	<Link
-																		to={`/item/${item.item}`}
-																		style={{ textDecoration: 'underline' }}
+															<Grid item sm={5}>
+																<Link
+																	to={`/item/${item.item}`}
+																	style={{ textDecoration: 'underline' }}
+																>
+																	<Typography
+																		variant='h3'
+																		fontWeight='bold'
+																		color='secondary'
+																		sx={{ cursor: 'pointer' }}
 																	>
-																		<Typography
-																			variant='h3'
-																			fontWeight='bold'
-																			color='secondary'
-																			sx={{ cursor: 'pointer' }}
-																		>
-																			{item.name}
-																		</Typography>
-																	</Link>
-																</Grid>
+																		{item.name}
+																	</Typography>
+																</Link>
 															</Grid>
-														)}
+														</Grid>
 													</Grid>
 												))}
 
@@ -197,8 +175,7 @@ const OrderHistoryScreen = () => {
 															justifyContent='flex-end'
 														>
 															<Box sx={{ width: { sm: '80%', md: '60%' } }}>
-																{/* Replace */}
-																<Link to='/'>
+																<Link to={`/order/${order._id}`}>
 																	<ButtonComponent
 																		backgroundColor={shades.neutral[600]}
 																	>
@@ -210,25 +187,6 @@ const OrderHistoryScreen = () => {
 																</Link>
 															</Box>
 														</Box>
-														<Box
-															display='flex'
-															alignItems='center'
-															justifyContent='flex-end'
-														>
-															<Box sx={{ width: { sm: '80%', md: '60%' } }}>
-																{/* Think later */}
-																{/* <Link to={}> */}
-																	<ButtonComponent
-																		backgroundColor={shades.babyPink[600]}
-																	>
-																		<Typography variant='h4' sx={{ mr: '8px' }}>
-																			REVIEW
-																		</Typography>
-																		<CreateOutlined />
-																	</ButtonComponent>
-																{/* </Link> */}
-															</Box>
-														</Box>
 													</Stack>
 												</Grid>
 											</Grid>
@@ -238,66 +196,104 @@ const OrderHistoryScreen = () => {
 							</>
 						) : (
 							// Mobile ver.
-							<Box
-								sx={{
-									alignItems: 'center',
-									border: `1px ${shades.neutral[500]} solid`,
-									borderRadius: 1,
-									m: '15px 0',
-								}}
-							>
-								<Box
-									p='15px 12px'
-									display='flex'
-									alignItems='center'
-									justifyContent='center'
-								>
-									{/* Details */}
-									<Grid container alignItems='center' columnSpacing={2}>
-										<Grid item xs={4}>
-											<img
-												src='/images/profilePics/shohei.jpg'
-												alt='shohei'
-												width='80px'
-												height='100px'
-												style={{
-													borderRadius: '3px',
-												}}
-											/>
-										</Grid>
-										<Grid item xs={6}>
-											<Stack spacing={1}>
-												<Typography variant='h4'>
-													DELIVERED AT 2023/12/25
-												</Typography>
-												<Link to='/'>
-													<Typography
-														variant='h3'
-														fontWeight='bold'
-														color='secondary'
-														sx={{ cursor: 'pointer' }}
-													>
-														Item Name
-													</Typography>
-												</Link>
-											</Stack>
-										</Grid>
-										<Grid
-											item
-											xs={2}
+							<>
+								{orders.map((order) => (
+									<Box
+										sx={{
+											alignItems: 'center',
+											border: `1px ${shades.neutral[500]} solid`,
+											borderRadius: 1,
+											m: '15px 0',
+										}}
+									>
+										<Box
+											p='15px 12px'
 											display='flex'
 											alignItems='center'
-											justifyContent='flex-end'
+											justifyContent='center'
+											key={order._id}
 										>
-											<Link to='/' sx={{ cursor: 'pointer' }}>
-												<ArrowForwardIosOutlined
-													sx={{ color: shades.neutral[700] }}
-												/>
-											</Link>
-										</Grid>
-									</Grid>
-								</Box>
-							</Box>
+											{/* Details */}
+											<Grid container alignItems='center'>
+												{/* <Stack spacing={2}> */}
+													<Grid item xs={12} sx={{ mb: '12px' }}>
+														{order.isPaid && (
+															<Message severity='info'>
+																{/* Replace */}
+																PAID AT {order.paidAt.substring(0, 10)}
+															</Message>
+														)}
+													</Grid>
+													<Grid item xs={5} sx={{ mb: '12px' }}>
+														{orders.isDelivered && (
+															<Message severity='success'>
+																{/* Replace */}
+																DELIVERED AT{' '}
+																{order.deliveredAt.substring(0, 10)}
+															</Message>
+														)}
+													</Grid>
+												{/* </Stack> */}
+
+												{order.orderItems.map((item) => (
+													<Grid item xs={11} key={item._id} columnSpacing={2}>
+														<Grid
+															sx={{
+																display: 'flex',
+																alignItems: 'center',
+																mb: '5px',
+															}}
+														>
+															<Grid item xs={5}>
+																<img
+																	src={item.image}
+																	alt={item.name}
+																	width='80px'
+																	height='100px'
+																	style={{
+																		borderRadius: '3px',
+																	}}
+																/>
+															</Grid>
+															<Grid item xs={6}>
+																<Link
+																	to={`/item/${item.item}`}
+																	style={{ textDecoration: 'underline' }}
+																>
+																	<Typography
+																		variant='h4'
+																		fontWeight='bold'
+																		color='secondary'
+																		sx={{ cursor: 'pointer' }}
+																	>
+																		{item.name}
+																	</Typography>
+																</Link>
+															</Grid>
+														</Grid>
+													</Grid>
+												))}
+												<Grid
+													item
+													xs={1}
+													display='flex'
+													alignItems='center'
+													justifyContent='flex-end'
+												>
+													<Link
+														to={`/order/${order._id}`}
+														sx={{ cursor: 'pointer' }}
+													>
+														<ArrowForwardIosOutlined
+															sx={{ color: shades.neutral[700] }}
+														/>
+													</Link>
+												</Grid>
+											</Grid>
+										</Box>
+									</Box>
+								))}
+							</>
 						)}
 					</>
 				)}
