@@ -199,7 +199,11 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											initial='hidden'
 											whileInView='visible'
 										>
-											<Link to='/profile' style={{ textDecoration: 'none' }}>
+											<Link
+												to='/profile'
+												style={{ textDecoration: 'none' }}
+												onClick={() => setOpen(!open)}
+											>
 												<MenuItem style={{ alignItems: 'center' }}>
 													<ListItemIcon>
 														<PersonOutline
@@ -224,6 +228,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											<Link
 												to='/orderhistory'
 												style={{ textDecoration: 'none' }}
+												onClick={() => setOpen(!open)}
 											>
 												<MenuItem sx={{ alignItems: 'center' }}>
 													<ListItemIcon>
@@ -249,6 +254,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											<Link
 												to='/orderhistory/notpaid'
 												style={{ textDecoration: 'none' }}
+												onClick={() => setOpen(!open)}
 											>
 												<MenuItem sx={{ alignItems: 'center' }}>
 													<ListItemIcon>
@@ -271,7 +277,11 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											whileHover={{ scale: 1.1 }}
 											whileTap={{ scale: 0.7 }}
 										>
-											<Link to='/wishlist' style={{ textDecoration: 'none' }}>
+											<Link
+												to='/wishlist'
+												style={{ textDecoration: 'none' }}
+												onClick={() => setOpen(!open)}
+											>
 												<MenuItem
 													sx={{ display: 'flex', alignItems: 'center' }}
 												>

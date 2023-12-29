@@ -199,6 +199,7 @@ const OrderHistoryScreen = () => {
 							<>
 								{orders.map((order) => (
 									<Box
+										key={order._id}
 										sx={{
 											alignItems: 'center',
 											border: `1px ${shades.neutral[500]} solid`,
@@ -215,7 +216,7 @@ const OrderHistoryScreen = () => {
 										>
 											{/* Details */}
 											<Grid container alignItems='center'>
-												{/* <Stack spacing={2}> */}
+												<Grid item xs={12}>
 													<Grid item xs={12} sx={{ mb: '12px' }}>
 														{order.isPaid && (
 															<Message severity='info'>
@@ -224,16 +225,16 @@ const OrderHistoryScreen = () => {
 															</Message>
 														)}
 													</Grid>
-													<Grid item xs={5} sx={{ mb: '12px' }}>
+													<Grid item xs={12} sx={{ mb: '12px' }}>
 														{orders.isDelivered && (
 															<Message severity='success'>
 																{/* Replace */}
-																DELIVERED AT{' '}
+																DELIVERED AT
 																{order.deliveredAt.substring(0, 10)}
 															</Message>
 														)}
 													</Grid>
-												{/* </Stack> */}
+												</Grid>
 
 												{order.orderItems.map((item) => (
 													<Grid item xs={11} key={item._id} columnSpacing={2}>
