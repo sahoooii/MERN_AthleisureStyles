@@ -8,11 +8,11 @@ import ButtonComponent from '../components/Utils/ButtonComponent';
 import { ArrowForwardIosOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
-const OrderHistoryScreen = () => {
+const NotPaidOrderHistoryScreen = () => {
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
 	const { data: orders, isLoading, error } = useGetMyOrdersQuery();
-	// console.log(orders);
+
 	return (
 		<Box
 			sx={{
@@ -21,8 +21,8 @@ const OrderHistoryScreen = () => {
 			}}
 		>
 			<Box mb='100px'>
-				<Typography variant='h3' sx={{ mb: '20px' }}>
-					My <b>Orders</b>
+				<Typography variant='h3' sx={{ mb: '20px', color: 'neutral.dark' }}>
+					You Might Forget <b>These Items</b>
 				</Typography>
 				{isLoading ? (
 					<Loader />
@@ -41,7 +41,7 @@ const OrderHistoryScreen = () => {
 							<>
 								{orders.map((order) => (
 									<Box key={order._id}>
-										{order.isPaid && (
+										{!order.isPaid && (
 											<Box
 												sx={{
 													alignItems: 'center',
@@ -102,35 +102,6 @@ const OrderHistoryScreen = () => {
 												>
 													{/* Details */}
 													<Grid container alignItems='center'>
-														<Grid
-															item
-															sm={12}
-															sx={{
-																display: 'flex',
-																justifyContent: 'space-between',
-																alignItems: 'center',
-															}}
-															columnSpacing={2}
-														>
-															<Grid item sm={5} sx={{ mb: '12px' }}>
-																{/* {order.isPaid && ( */}
-																<Message severity='info'>
-																	{/* Replace */}
-																	PAID AT {order.paidAt.substring(0, 10)}
-																</Message>
-																{/* )} */}
-															</Grid>
-															<Grid item sm={5} sx={{ mb: '12px' }}>
-																{orders.isDelivered && (
-																	<Message severity='success'>
-																		{/* Replace */}
-																		DELIVERED AT{' '}
-																		{order.deliveredAt.substring(0, 10)}
-																	</Message>
-																)}
-															</Grid>
-														</Grid>
-
 														{order.orderItems.map((item) => (
 															<Grid
 																item
@@ -208,7 +179,7 @@ const OrderHistoryScreen = () => {
 							<>
 								{orders.map((order) => (
 									<Box key={order._id}>
-										{order.isPaid && (
+										{!order.isPaid && (
 											<Box
 												sx={{
 													alignItems: 'center',
@@ -226,30 +197,10 @@ const OrderHistoryScreen = () => {
 												>
 													{/* Details */}
 													<Grid container alignItems='center'>
-														<Grid item xs={12}>
-															<Grid item xs={12} sx={{ mb: '12px' }}>
-																{/* {order.isPaid && ( */}
-																<Message severity='info'>
-																	{/* Replace */}
-																	PAID AT {order.paidAt.substring(0, 10)}
-																</Message>
-																{/* )} */}
-															</Grid>
-															<Grid item xs={12} sx={{ mb: '12px' }}>
-																{orders.isDelivered && (
-																	<Message severity='success'>
-																		{/* Replace */}
-																		DELIVERED AT
-																		{order.deliveredAt.substring(0, 10)}
-																	</Message>
-																)}
-															</Grid>
-														</Grid>
-
 														{order.orderItems.map((item) => (
 															<Grid
 																item
-																xs={11}
+																xs={10}
 																key={item._id}
 																columnSpacing={2}
 																sx={{
@@ -269,13 +220,13 @@ const OrderHistoryScreen = () => {
 																		}}
 																	/>
 																</Grid>
-																<Grid item xs={6}>
+																<Grid item xs={7}>
 																	<Link
 																		to={`/item/${item.item}`}
 																		style={{ textDecoration: 'underline' }}
 																	>
 																		<Typography
-																			variant='h4'
+																			variant='h3'
 																			fontWeight='bold'
 																			color='secondary'
 																			sx={{ cursor: 'pointer' }}
@@ -288,7 +239,7 @@ const OrderHistoryScreen = () => {
 														))}
 														<Grid
 															item
-															xs={1}
+															xs={2}
 															display='flex'
 															alignItems='center'
 															justifyContent='flex-end'
@@ -317,4 +268,4 @@ const OrderHistoryScreen = () => {
 	);
 };
 
-export default OrderHistoryScreen;
+export default NotPaidOrderHistoryScreen;
