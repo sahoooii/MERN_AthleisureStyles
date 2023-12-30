@@ -171,9 +171,13 @@ const SideMenuAnimation = ({ style, width, height }) => {
 								component={motion.button}
 								sx={{
 									position: 'absolute',
-									top: '100px',
 									display: 'flex',
 									justifyContent: 'center',
+									top: {
+										xs: userInfo.isAdmin ? '40px' : '80px',
+										sm: userInfo.isAdmin ? '80px' : '120px',
+										md: userInfo.isAdmin ? '40px' : '100px',
+									},
 								}}
 							>
 								<Avatar
@@ -190,7 +194,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							<Box display='flex' justifyContent='center' alignItems='center'>
 								<MenuList>
 									<Stack
-										spacing={3}
+										spacing={2.5}
 										component={motion.div}
 										variants={linksVariants}
 									>
@@ -309,7 +313,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 												<Divider sx={{ mb: '10px' }} />
 
 												<Stack
-													spacing={3}
+													spacing={2.5}
 													component={motion.div}
 													variants={linksVariants}
 												>
@@ -331,7 +335,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 																	<DescriptionOutlined
 																		sx={{
 																			marginRight: '8px',
-																			fontSize: '20px',
+																			fontSize: '18px',
 																		}}
 																	/>
 																</ListItemIcon>
@@ -445,9 +449,10 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							{/* <Box display={isNonMobile ? 'block' : 'none'}> */}
 							<Box
 								position='absolute'
-								bottom='100px'
+								// bottom='100px'
 								left='50%'
 								m='0 auto'
+								sx={{ bottom: userInfo.isAdmin ? '70px' : '100px' }}
 								style={{ transform: 'translateX(-50%)' }}
 							>
 								<IconButton onClick={() => setOpen(!open)}>
