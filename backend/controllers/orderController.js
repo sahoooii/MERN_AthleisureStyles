@@ -136,7 +136,10 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @route GET /api/orders
 // @access Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-	res.send('getOrders');
+	// Get all orders and get id and user name from user collection
+	const orders = await Order.find({}).populate('user', 'id firstName lastName');
+
+	res.status(200).json(orders);
 });
 
 export {
