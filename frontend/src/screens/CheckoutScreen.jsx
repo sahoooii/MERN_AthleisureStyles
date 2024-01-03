@@ -7,13 +7,11 @@ import {
 	Divider,
 	FormControl,
 	Grid,
-	IconButton,
 	Stack,
 	TextField,
 	Typography,
 } from '@mui/material';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import {
 	useGetOrderDetailsQuery,
 	usePayOrderMutation,
@@ -34,7 +32,7 @@ const CheckoutScreen = () => {
 
 	// Get order details
 	const { id: orderId } = useParams();
-	const { userInfo } = useSelector((state) => state.auth);
+	// const { userInfo } = useSelector((state) => state.auth);
 
 	const {
 		data: order,
@@ -162,7 +160,11 @@ const CheckoutScreen = () => {
 							<Grid item md={8} xs={12}>
 								<Box mb='25px'>
 									{order.isPaid && (
-										<IconButton>
+										<Box
+											display='flex'
+											justifyContent='center'
+											alignItems='center'
+										>
 											<Typography
 												variant='h3'
 												sx={{ color: '#529085', fontWeight: 'bold' }}
@@ -172,7 +174,7 @@ const CheckoutScreen = () => {
 											<WavingHandOutlinedIcon
 												sx={{ ml: '5px', color: '#6ec0b2' }}
 											/>
-										</IconButton>
+										</Box>
 									)}
 								</Box>
 								<Box>

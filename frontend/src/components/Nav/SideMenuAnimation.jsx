@@ -21,6 +21,9 @@ import {
 	ManageSearchOutlined,
 	PersonOutline,
 	ProductionQuantityLimitsOutlined,
+	ManageAccountsOutlined,
+	ListAltOutlined,
+	PostAddOutlined,
 } from '@mui/icons-material';
 import { useLogoutMutation } from '../../slices/usersApiSlice';
 import { logout } from '../../slices/authSlice';
@@ -148,7 +151,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 					right='0'
 					bottom='0'
 					backgroundColor='white'
-					sx={{ width: { xs: 1, sm: 'max(350px, 25%)' } }}
+					sx={{ width: { xs: 0.7, sm: 'max(350px, 25%)' } }}
 					variants={variants}
 				>
 					<Box position='relative' width='100%' height='100%'>
@@ -168,9 +171,13 @@ const SideMenuAnimation = ({ style, width, height }) => {
 								component={motion.button}
 								sx={{
 									position: 'absolute',
-									top: '100px',
 									display: 'flex',
 									justifyContent: 'center',
+									top: {
+										xs: userInfo.isAdmin ? '40px' : '80px',
+										sm: userInfo.isAdmin ? '80px' : '120px',
+										md: userInfo.isAdmin ? '40px' : '100px',
+									},
 								}}
 							>
 								<Avatar
@@ -187,7 +194,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							<Box display='flex' justifyContent='center' alignItems='center'>
 								<MenuList>
 									<Stack
-										spacing={3}
+										spacing={2.5}
 										component={motion.div}
 										variants={linksVariants}
 									>
@@ -199,7 +206,11 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											initial='hidden'
 											whileInView='visible'
 										>
-											<Link to='/profile' style={{ textDecoration: 'none' }}>
+											<Link
+												to='/profile'
+												style={{ textDecoration: 'none' }}
+												onClick={() => setOpen(!open)}
+											>
 												<MenuItem style={{ alignItems: 'center' }}>
 													<ListItemIcon>
 														<PersonOutline
@@ -224,6 +235,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											<Link
 												to='/orderhistory'
 												style={{ textDecoration: 'none' }}
+												onClick={() => setOpen(!open)}
 											>
 												<MenuItem sx={{ alignItems: 'center' }}>
 													<ListItemIcon>
@@ -247,8 +259,9 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											whileTap={{ scale: 0.7 }}
 										>
 											<Link
-												to='/orderhistory/notpaid'
+												to='/notpaidorder'
 												style={{ textDecoration: 'none' }}
+												onClick={() => setOpen(!open)}
 											>
 												<MenuItem sx={{ alignItems: 'center' }}>
 													<ListItemIcon>
@@ -271,7 +284,11 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											whileHover={{ scale: 1.1 }}
 											whileTap={{ scale: 0.7 }}
 										>
-											<Link to='/wishlist' style={{ textDecoration: 'none' }}>
+											<Link
+												to='/wishlist'
+												style={{ textDecoration: 'none' }}
+												onClick={() => setOpen(!open)}
+											>
 												<MenuItem
 													sx={{ display: 'flex', alignItems: 'center' }}
 												>
@@ -289,6 +306,113 @@ const SideMenuAnimation = ({ style, width, height }) => {
 												</MenuItem>
 											</Link>
 										</FlexBox>
+
+										{/* Admin Menu */}
+										{userInfo && userInfo.isAdmin && (
+											<Box>
+												<Divider sx={{ mb: '10px' }} />
+
+												<Stack
+													spacing={2.5}
+													component={motion.div}
+													variants={linksVariants}
+												>
+													<FlexBox
+														component={motion.div}
+														variants={itemVariants}
+														whileHover={{ scale: 1.1 }}
+														whileTap={{ scale: 0.7 }}
+														initial='hidden'
+														whileInView='visible'
+													>
+														<Link
+															// to='/profile'
+															style={{ textDecoration: 'none' }}
+															onClick={() => setOpen(!open)}
+														>
+															<MenuItem style={{ alignItems: 'center' }}>
+																<ListItemIcon>
+																	<ManageAccountsOutlined
+																		sx={{
+																			marginRight: '8px',
+																			fontSize: '20px',
+																		}}
+																	/>
+																</ListItemIcon>
+																<Typography
+																	variant='h3'
+																	sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+																>
+																	Users
+																</Typography>
+															</MenuItem>
+														</Link>
+													</FlexBox>
+													<FlexBox
+														component={motion.div}
+														variants={itemVariants}
+														whileHover={{ scale: 1.1 }}
+														whileTap={{ scale: 0.7 }}
+														initial='hidden'
+														whileInView='visible'
+													>
+														<Link
+															to='/admin/orderlist'
+															style={{ textDecoration: 'none' }}
+															onClick={() => setOpen(!open)}
+														>
+															<MenuItem style={{ alignItems: 'center' }}>
+																<ListItemIcon>
+																	<ListAltOutlined
+																		sx={{
+																			marginRight: '8px',
+																			fontSize: '20px',
+																		}}
+																	/>
+																</ListItemIcon>
+																<Typography
+																	variant='h3'
+																	sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+																>
+																	Orders
+																</Typography>
+															</MenuItem>
+														</Link>
+													</FlexBox>
+													<FlexBox
+														component={motion.div}
+														variants={itemVariants}
+														whileHover={{ scale: 1.1 }}
+														whileTap={{ scale: 0.7 }}
+														initial='hidden'
+														whileInView='visible'
+													>
+														<Link
+															// to='/profile'
+															style={{ textDecoration: 'none' }}
+															onClick={() => setOpen(!open)}
+														>
+															<MenuItem style={{ alignItems: 'center' }}>
+																<ListItemIcon>
+																	<PostAddOutlined
+																		sx={{
+																			marginRight: '8px',
+																			fontSize: '20px',
+																		}}
+																	/>
+																</ListItemIcon>
+																<Typography
+																	variant='h3'
+																	sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+																>
+																	Items
+																</Typography>
+															</MenuItem>
+														</Link>
+													</FlexBox>
+												</Stack>
+											</Box>
+										)}
 
 										<Divider />
 										<FlexBox
@@ -322,12 +446,12 @@ const SideMenuAnimation = ({ style, width, height }) => {
 								</MenuList>
 							</Box>
 
-							{/* <Box display={isNonMobile ? 'block' : 'none'}> */}
 							<Box
 								position='absolute'
-								bottom='100px'
+								// bottom='100px'
 								left='50%'
 								m='0 auto'
+								sx={{ bottom: userInfo.isAdmin ? '70px' : '100px' }}
 								style={{ transform: 'translateX(-50%)' }}
 							>
 								<IconButton onClick={() => setOpen(!open)}>

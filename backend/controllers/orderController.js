@@ -59,8 +59,8 @@ const deleteMyOrder = asyncHandler(async (req, res) => {
 	}
 });
 
-// @desc Get logged in user orders
-// @route GET /api/orders/myorders
+// @desc Get logged in user orders history
+// @route GET /api/orders/orderhistory
 // @access Private
 const getMyOrders = asyncHandler(async (req, res) => {
 	// look for logged in user orders
@@ -136,7 +136,10 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @route GET /api/orders
 // @access Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-	res.send('getOrders');
+	// Get all orders and get id and user name from user collection
+	const orders = await Order.find({}).populate('user', 'id firstName lastName');
+
+	res.status(200).json(orders);
 });
 
 export {
