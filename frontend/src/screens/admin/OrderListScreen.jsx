@@ -13,6 +13,7 @@ import {
 	tableCellClasses,
 } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { Link } from 'react-router-dom';
 import { useGetOrdersQuery } from '../../slices/ordersApiSlice';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
@@ -20,18 +21,17 @@ import Message from '../../components/Utils/Message';
 
 const OrderListScreen = () => {
 	const { data: orders, isLoading, error } = useGetOrdersQuery();
-	// console.log(orders);
 
 	const columns = [
-		{ id: 'id', label: 'ID', minWidth: 170 },
-		{ id: 'user', label: 'USER NAME', minWidth: 170 },
-		{ id: 'order_date', label: 'ORDER DATE', minWidth: 170, align: 'right' },
-		{ id: 'total_price', label: '$ TOTAL', minWidth: 170, align: 'right' },
-		{ id: 'paid_at', label: 'PAID AT', minWidth: 170, align: 'right' },
+		{ id: 'id', label: 'ID', minWidth: 150 },
+		{ id: 'user', label: 'USER NAME', minWidth: 120 },
+		{ id: 'order_date', label: 'ORDER DATE', minWidth: 120, align: 'right' },
+		{ id: 'total_price', label: '$ TOTAL', minWidth: 120, align: 'right' },
+		{ id: 'paid_at', label: 'PAID AT', minWidth: 120, align: 'right' },
 		{
 			id: 'delivered_at',
 			label: 'DELIVERED AT',
-			minWidth: 170,
+			minWidth: 120,
 			align: 'right',
 		},
 	];
@@ -48,7 +48,7 @@ const OrderListScreen = () => {
 
 	const StyledTableRow = styled(TableRow)(({ theme }) => ({
 		'&:nth-of-type(odd)': {
-			backgroundColor: theme.palette.action.hover,
+			backgroundColor: shades.neutral[300],
 		},
 		// hide last border
 		'&:last-child td, &:last-child th': {
@@ -60,7 +60,7 @@ const OrderListScreen = () => {
 		<Box
 			sx={{
 				m: { md: '30px auto', xs: '10px auto' },
-				width: { xs: '95%', sm: '95%' },
+				width: '95%',
 			}}
 		>
 			<Typography variant='h3' sx={{ mb: '20px' }}>
@@ -100,7 +100,9 @@ const OrderListScreen = () => {
 								<TableBody>
 									{orders.map((order) => (
 										<StyledTableRow key={order._id} hover>
-											<StyledTableCell>{order._id}</StyledTableCell>
+											<StyledTableCell>
+												<Link to={`/order/${order._id}`}>{order._id}</Link>
+											</StyledTableCell>
 											<StyledTableCell>
 												{order.user &&
 													`${order.user.firstName} ${order.user.lastName}`}
