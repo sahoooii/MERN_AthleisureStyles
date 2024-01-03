@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import {
 	Box,
+	Button,
 	Card,
 	CardActions,
 	CardContent,
@@ -17,6 +18,7 @@ import {
 	usePayOrderMutation,
 	useGetPayPalClientIdQuery,
 	useDeleteMyOrderMutation,
+	useDeliverOrderMutation,
 } from '../slices/ordersApiSlice';
 import { toast } from 'react-toastify';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
@@ -26,13 +28,18 @@ import Loader from '../components/Utils/Loader';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import WavingHandOutlinedIcon from '@mui/icons-material/WavingHandOutlined';
 import { shades } from '../theme';
+import { useSelector } from 'react-redux';
 
 const CheckoutScreen = () => {
 	const navigate = useNavigate();
 
+	const { userInfo } = useSelector((state) => state.auth);
+
+	const [deliverOrder, { loading: loadingDeliver }] = useDeliverOrderMutation();
+	const deliverOrderHandler = () => {};
+
 	// Get order details
 	const { id: orderId } = useParams();
-	// const { userInfo } = useSelector((state) => state.auth);
 
 	const {
 		data: order,
@@ -387,6 +394,21 @@ const CheckoutScreen = () => {
 													)}
 												</CardActions>
 											)}
+
+											{/* Mark as deliver button */}
+											{loadingDeliver && <Loader />}
+
+											{userInfo &&
+												userInfo.isAdmin &&
+												order.isPaid &&
+												!order.isDelivered && (
+													<ButtonComponent
+														type='button'
+														onClick={deliverOrderHandler}
+													>
+														MARK AS DELIVERED
+													</ButtonComponent>
+												)}
 										</Stack>
 									</CardContent>
 								</Card>
