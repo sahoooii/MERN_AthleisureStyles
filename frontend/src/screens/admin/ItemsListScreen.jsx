@@ -12,28 +12,24 @@ import {
 	styled,
 	tableCellClasses,
 } from '@mui/material';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Link } from 'react-router-dom';
-import { useGetOrdersQuery } from '../../slices/ordersApiSlice';
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
+import { useGetItemsQuery } from '../../slices/itemsApiSlice';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
+import ButtonComponent from '../../components/Utils/ButtonComponent';
 
-const OrderListScreen = () => {
-	const { data: orders, isLoading, error } = useGetOrdersQuery();
+const ItemsListScreen = () => {
+	const { data: items, isLoading, error } = useGetItemsQuery();
 
 	const columns = [
 		{ id: 'id', label: 'ID', minWidth: 150 },
-		{ id: 'user', label: 'USER NAME', minWidth: 120 },
-		{ id: 'order_date', label: 'ORDER DATE', minWidth: 120, align: 'right' },
-		{ id: 'total_price', label: '$ TOTAL', minWidth: 120, align: 'right' },
-		{ id: 'paid_at', label: 'PAID AT', minWidth: 120, align: 'right' },
-		{
-			id: 'delivered_at',
-			label: 'DELIVERED AT',
-			minWidth: 120,
-			align: 'right',
-		},
+		{ id: 'item_name', label: 'ITEM NAME', minWidth: 120 },
+		{ id: 'price', label: '$ PRICE', minWidth: 110, align: 'right' },
+		{ id: 'item_image', label: 'ITEM IMAGE', minWidth: 120, align: 'center' },
+		{ id: 'brand', label: 'BRAND', minWidth: 130 },
+		{ id: 'category', label: 'CATEGORY', minWidth: 120 },
 	];
 
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -43,6 +39,7 @@ const OrderListScreen = () => {
 		},
 		[`&.${tableCellClasses.body}`]: {
 			fontSize: 14,
+			padding: '8px 16px',
 		},
 	}));
 
@@ -63,9 +60,22 @@ const OrderListScreen = () => {
 				width: '95%',
 			}}
 		>
-			<Typography variant='h3' sx={{ mb: '20px' }}>
-				All <b>Orders</b>
-			</Typography>
+			<Box
+				display='flex'
+				alignItems='center'
+				justifyContent='space-between'
+				mb='20px'
+			>
+				<Typography variant='h3'>
+					Items <b>Edit</b>
+				</Typography>
+				<Box sx={{ width: { sm: '30%', md: '20%' } }}>
+					<ButtonComponent backgroundColor={shades.neutral[600]}>
+						<EditNoteOutlinedIcon sx={{ fontSize: '20px', mr: '5px' }} /> CREATE
+						ITEM
+					</ButtonComponent>
+				</Box>
+			</Box>
 
 			{isLoading ? (
 				<Loader />
@@ -97,35 +107,30 @@ const OrderListScreen = () => {
 							</TableHead>
 
 							<TableBody>
-								{orders.map((order) => (
-									<StyledTableRow key={order._id} hover>
+								{items.map((item) => (
+									<StyledTableRow key={item._id} hover>
 										<StyledTableCell>
-											<Link to={`/order/${order._id}`}>{order._id}</Link>
+											<Link to={`/admin/item/${item._id}`}>{item._id}</Link>
 										</StyledTableCell>
-										<StyledTableCell>
-											{order.user &&
-												`${order.user.firstName} ${order.user.lastName}`}
-										</StyledTableCell>
+										<StyledTableCell>{item.name}</StyledTableCell>
 										<StyledTableCell align='right'>
-											{order.createdAt.substring(0, 10)}
+											$ {item.price}
 										</StyledTableCell>
-										<StyledTableCell align='right'>
-											$ {order.totalPrice}
+
+										<StyledTableCell align='center'>
+											<img
+												src={item.image}
+												alt={item.name}
+												width='55px'
+												height='70px'
+												style={{
+													borderRadius: '3px',
+													objectFit: 'cover',
+												}}
+											/>
 										</StyledTableCell>
-										<StyledTableCell align='right'>
-											{order.isPaid ? (
-												order.paidAt.substring(0, 10)
-											) : (
-												<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
-											)}
-										</StyledTableCell>
-										<StyledTableCell align='right'>
-											{order.isDelivered ? (
-												order.deliveredAt.substring(0, 10)
-											) : (
-												<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
-											)}
-										</StyledTableCell>
+										<StyledTableCell>{item.brand}</StyledTableCell>
+										<StyledTableCell>{item.category}</StyledTableCell>
 									</StyledTableRow>
 								))}
 							</TableBody>
@@ -137,4 +142,4 @@ const OrderListScreen = () => {
 	);
 };
 
-export default OrderListScreen;
+export default ItemsListScreen;
