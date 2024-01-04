@@ -17,7 +17,9 @@ import {
 	usePayOrderMutation,
 	useGetPayPalClientIdQuery,
 	useDeleteMyOrderMutation,
+	useDeliverOrderMutation,
 } from '../slices/ordersApiSlice';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import { toast } from 'react-toastify';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
@@ -26,14 +28,16 @@ import Loader from '../components/Utils/Loader';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import WavingHandOutlinedIcon from '@mui/icons-material/WavingHandOutlined';
 import { shades } from '../theme';
+import { useSelector } from 'react-redux';
 
 const CheckoutScreen = () => {
+	const { id: orderId } = useParams();
+
 	const navigate = useNavigate();
 
-	// Get order details
-	const { id: orderId } = useParams();
-	// const { userInfo } = useSelector((state) => state.auth);
+	const { userInfo } = useSelector((state) => state.auth);
 
+	// Get order details
 	const {
 		data: order,
 		refetch,
@@ -54,6 +58,20 @@ const CheckoutScreen = () => {
 			} catch (err) {
 				toast.error(err?.data?.message || err.message);
 			}
+		}
+	};
+
+	// For admin to mark as deliver
+	const [deliverOrder, { loading: loadingDeliver }] = useDeliverOrderMutation();
+
+	const deliverOrderHandler = async () => {
+		try {
+			await deliverOrder(orderId);
+			refetch();
+
+			toast.success('Order Delivered');
+		} catch (err) {
+			toast.error(err?.data?.message || err.message);
 		}
 	};
 
@@ -387,6 +405,24 @@ const CheckoutScreen = () => {
 													)}
 												</CardActions>
 											)}
+
+											{/* Mark as deliver button */}
+											{loadingDeliver && <Loader />}
+
+											{userInfo &&
+												userInfo.isAdmin &&
+												order.isPaid &&
+												!order.isDelivered && (
+													<ButtonComponent
+														type='button'
+														onClick={deliverOrderHandler}
+													>
+														<CheckCircleOutlineOutlinedIcon
+															sx={{ mr: '5px' }}
+														/>{' '}
+														MARK AS DELIVERED
+													</ButtonComponent>
+												)}
 										</Stack>
 									</CardContent>
 								</Card>

@@ -29,6 +29,8 @@ import ProfileScreen from './screens/ProfileScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';
 import NotPaidOrderHistoryScreen from './screens/NotPaidOrderHistoryScreen';
 import OrderListScreen from './screens/admin/OrderListScreen';
+import ItemsListScreen from './screens/admin/ItemsListScreen';
+import CreateItemScreen from './screens/admin/CreateItemScreen';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -53,6 +55,7 @@ const router = createBrowserRouter(
 			{/* Admin Route only admin can see these */}
 			<Route path='/' element={<AdminRoute />}>
 				<Route path='/admin/orderlist' element={<OrderListScreen />} />
+				<Route path='/admin/itemslist' element={<ItemsListScreen />} />
 			</Route>
 		</Route>
 	)

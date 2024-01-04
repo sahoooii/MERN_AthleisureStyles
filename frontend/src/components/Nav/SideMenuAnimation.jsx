@@ -388,7 +388,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 														whileInView='visible'
 													>
 														<Link
-															// to='/profile'
+															to='/admin/itemslist'
 															style={{ textDecoration: 'none' }}
 															onClick={() => setOpen(!open)}
 														>

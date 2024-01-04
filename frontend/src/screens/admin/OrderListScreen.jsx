@@ -48,7 +48,7 @@ const OrderListScreen = () => {
 
 	const StyledTableRow = styled(TableRow)(({ theme }) => ({
 		'&:nth-of-type(odd)': {
-			backgroundColor: shades.neutral[300],
+			backgroundColor: shades.babyPink[200],
 		},
 		// hide last border
 		'&:last-child td, &:last-child th': {
@@ -74,66 +74,64 @@ const OrderListScreen = () => {
 					{error?.data?.message || error.error}
 				</Message>
 			) : (
-				<>
-					<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-						<TableContainer sx={{ maxHeight: 440 }}>
-							<Table
-								stickyHeader
-								aria-label='sticky table'
-								sx={{ minWidth: 654 }}
-							>
-								<TableHead>
-									<TableRow>
-										{columns.map((column) => (
-											<StyledTableCell
-												key={column.id}
-												align={column.align}
-												style={{ minWidth: column.minWidth }}
-												sx={{ fontWeight: 'bold' }}
-											>
-												{column.label}
-											</StyledTableCell>
-										))}
-									</TableRow>
-								</TableHead>
-
-								<TableBody>
-									{orders.map((order) => (
-										<StyledTableRow key={order._id} hover>
-											<StyledTableCell>
-												<Link to={`/order/${order._id}`}>{order._id}</Link>
-											</StyledTableCell>
-											<StyledTableCell>
-												{order.user &&
-													`${order.user.firstName} ${order.user.lastName}`}
-											</StyledTableCell>
-											<StyledTableCell align='right'>
-												{order.createdAt.substring(0, 10)}
-											</StyledTableCell>
-											<StyledTableCell align='right'>
-												$ {order.totalPrice}
-											</StyledTableCell>
-											<StyledTableCell align='right'>
-												{order.isPaid ? (
-													order.paidAt.substring(0, 10)
-												) : (
-													<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
-												)}
-											</StyledTableCell>
-											<StyledTableCell align='right'>
-												{order.isDelivered ? (
-													order.deliveredAt.substring(0, 10)
-												) : (
-													<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
-												)}
-											</StyledTableCell>
-										</StyledTableRow>
+				<Paper sx={{ width: '100%', overflow: 'hidden' }}>
+					<TableContainer sx={{ maxHeight: { xs: 500, sm: 800, md: 440 } }}>
+						<Table
+							stickyHeader
+							aria-label='sticky table'
+							sx={{ minWidth: 654 }}
+						>
+							<TableHead>
+								<TableRow>
+									{columns.map((column) => (
+										<StyledTableCell
+											key={column.id}
+											align={column.align}
+											style={{ minWidth: column.minWidth }}
+											sx={{ fontWeight: 'bold' }}
+										>
+											{column.label}
+										</StyledTableCell>
 									))}
-								</TableBody>
-							</Table>
-						</TableContainer>
-					</Paper>
-				</>
+								</TableRow>
+							</TableHead>
+
+							<TableBody>
+								{orders.map((order) => (
+									<StyledTableRow key={order._id} hover>
+										<StyledTableCell>
+											<Link to={`/order/${order._id}`}>{order._id}</Link>
+										</StyledTableCell>
+										<StyledTableCell>
+											{order.user &&
+												`${order.user.firstName} ${order.user.lastName}`}
+										</StyledTableCell>
+										<StyledTableCell align='right'>
+											{order.createdAt.substring(0, 10)}
+										</StyledTableCell>
+										<StyledTableCell align='right'>
+											$ {order.totalPrice}
+										</StyledTableCell>
+										<StyledTableCell align='right'>
+											{order.isPaid ? (
+												order.paidAt.substring(0, 10)
+											) : (
+												<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
+											)}
+										</StyledTableCell>
+										<StyledTableCell align='right'>
+											{order.isDelivered ? (
+												order.deliveredAt.substring(0, 10)
+											) : (
+												<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
+											)}
+										</StyledTableCell>
+									</StyledTableRow>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
+				</Paper>
 			)}
 		</Box>
 	);
