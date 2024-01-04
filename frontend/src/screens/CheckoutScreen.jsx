@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import {
 	Box,
-	Button,
 	Card,
 	CardActions,
 	CardContent,
@@ -20,6 +19,7 @@ import {
 	useDeleteMyOrderMutation,
 	useDeliverOrderMutation,
 } from '../slices/ordersApiSlice';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import { toast } from 'react-toastify';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
@@ -31,16 +31,13 @@ import { shades } from '../theme';
 import { useSelector } from 'react-redux';
 
 const CheckoutScreen = () => {
+	const { id: orderId } = useParams();
+
 	const navigate = useNavigate();
 
 	const { userInfo } = useSelector((state) => state.auth);
 
-	const [deliverOrder, { loading: loadingDeliver }] = useDeliverOrderMutation();
-	const deliverOrderHandler = () => {};
-
 	// Get order details
-	const { id: orderId } = useParams();
-
 	const {
 		data: order,
 		refetch,
@@ -61,6 +58,20 @@ const CheckoutScreen = () => {
 			} catch (err) {
 				toast.error(err?.data?.message || err.message);
 			}
+		}
+	};
+
+	// For admin to mark as deliver
+	const [deliverOrder, { loading: loadingDeliver }] = useDeliverOrderMutation();
+
+	const deliverOrderHandler = async () => {
+		try {
+			await deliverOrder(orderId);
+			refetch();
+
+			toast.success('Order Delivered');
+		} catch (err) {
+			toast.error(err?.data?.message || err.message);
 		}
 	};
 
@@ -406,6 +417,9 @@ const CheckoutScreen = () => {
 														type='button'
 														onClick={deliverOrderHandler}
 													>
+														<CheckCircleOutlineOutlinedIcon
+															sx={{ mr: '5px' }}
+														/>{' '}
 														MARK AS DELIVERED
 													</ButtonComponent>
 												)}
