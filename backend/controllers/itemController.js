@@ -23,4 +23,34 @@ const getItemById = asyncHandler(async (req, res) => {
 	}
 });
 
-export { getItems, getItemById };
+// @desc Create a sample Item
+// @route POST /api/items
+// @access Private/Admin
+const createItem = asyncHandler(async (req, res) => {
+	const item = new Item({
+		name: 'Sample Name',
+		price: 0,
+		user: req.user._id,
+		image: '/images/sample-nike-shoes.jpg',
+		brand: 'Sample Brand',
+		category: 'Sample Category',
+		description: 'Sample Description',
+		countInStock: 0,
+		numReviews: 0,
+	});
+
+	const createdItem = await item.save();
+
+	res.status(201).json(createdItem);
+});
+
+// @desc Update a Item
+// @route PUT /api/items/:id
+// @access Private/Admin
+const updateItem = asyncHandler(async (req, res) => {
+	const items = await Item.find({});
+	res.json(items);
+});
+
+
+export { getItems, getItemById, createItem, updateItem };
