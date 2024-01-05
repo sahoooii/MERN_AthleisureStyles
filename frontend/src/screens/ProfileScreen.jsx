@@ -76,7 +76,7 @@ const ProfileScreen = () => {
 			.oneOf([yup.ref('password')], 'Password does not match')
 			.required('Please enter your confirm password'),
 		picturePath: yup
-			.mixed()
+			.string()
 			.notRequired()
 			// .test('is-valid-type', 'Not a valid image type', (value) =>
 			// 	isValidFileType(value && value.name.toLowerCase(), 'image')
@@ -170,14 +170,8 @@ const ProfileScreen = () => {
 	return (
 		<FormComponent>
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-				<Typography
-					fontSize='32px'
-					fontWeight='bold'
-					fontFamily='Play'
-					textAlign='center'
-					mb='15px'
-				>
-					User Profile
+				<Typography variant='h3' fontFamily='Play' textAlign='center' mb='15px'>
+					User <b>Profile</b>
 				</Typography>
 
 				{loadingProfile ? (

@@ -23,6 +23,14 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Items'],
 		}),
+		updateItem: builder.mutation({
+			query: (data) => ({
+				url: `${ITEMS_URL}/${data._id}`,
+				method: 'PUT',
+				body: data,
+			}),
+			invalidatesTags: ['Items'],
+		}),
 	}),
 });
 
@@ -30,4 +38,5 @@ export const {
 	useGetItemsQuery,
 	useGetItemDetailsQuery,
 	useCreateItemMutation,
+	useUpdateItemMutation,
 } = itemsApiSlice;

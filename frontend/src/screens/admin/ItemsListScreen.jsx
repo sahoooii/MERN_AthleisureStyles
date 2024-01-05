@@ -132,7 +132,7 @@ const ItemsListScreen = () => {
 								{items.map((item) => (
 									<StyledTableRow key={item._id} hover>
 										<StyledTableCell>
-											<Link to={`/admin/item/${item._id}`}>{item._id}</Link>
+											<Link to={`/admin/item/${item._id}/edit`}>{item._id}</Link>
 										</StyledTableCell>
 										<StyledTableCell>{item.name}</StyledTableCell>
 										<StyledTableCell align='right'>

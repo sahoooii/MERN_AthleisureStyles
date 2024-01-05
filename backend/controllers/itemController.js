@@ -48,9 +48,26 @@ const createItem = asyncHandler(async (req, res) => {
 // @route PUT /api/items/:id
 // @access Private/Admin
 const updateItem = asyncHandler(async (req, res) => {
-	const items = await Item.find({});
-	res.json(items);
-});
+	const { name, price, image, brand, category, countInStock, description } =
+		req.body;
 
+	const item = await Item.findById(req.params.id);
+
+	if (item) {
+		item.name = name;
+		item.price = price;
+		item.image = image;
+		item.brand = brand;
+		item.category = category;
+		item.countInStock = countInStock;
+		item.description = description;
+
+		const updatedItem = await Item.save();
+		res.status(201).json(updatedItem);
+	} else {
+		res.status(404);
+		throw new Error('Resource Not Found');
+	}
+});
 
 export { getItems, getItemById, createItem, updateItem };
