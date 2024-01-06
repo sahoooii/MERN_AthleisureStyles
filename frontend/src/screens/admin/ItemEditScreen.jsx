@@ -5,7 +5,6 @@ import {
 	useMediaQuery,
 	useTheme,
 	TextField,
-	Avatar,
 	Input,
 } from '@mui/material';
 import { Link, useParams, useNavigate } from 'react-router-dom';
@@ -80,21 +79,12 @@ const ItemEditScreen = () => {
 	}, [items]);
 
 	const submitHandler = async (values, onSubmitProps) => {
-		console.log(values);
+		// console.log(values);
 		const { name, price, image, brand, category, countInStock, description } =
 			values;
 
-		// When not change itemImage
-		if (
-			values.image &&
-			values.name &&
-			values.price &&
-			values.brand &&
-			values.category &&
-			values.countInStock &&
-			values.description
-		) {
-			const updatedItem = {
+		try {
+			await updateItem({
 				_id: itemId,
 				name,
 				price,
@@ -103,17 +93,13 @@ const ItemEditScreen = () => {
 				category,
 				countInStock,
 				description,
-			};
+			}).unwrap();
 
-			const result = await updateItem(updatedItem);
-
-			if (result.error) {
-				toast.error(error?.data?.message || error.error);
-			} else {
-				toast.success('Item updated successfully');
-
-				navigate('/admin/itemslist');
-			}
+			toast.success('Item updated successfully');
+			refetch();
+			navigate('/admin/itemslist');
+		} catch (error) {
+			toast.error(error?.data?.message || error.error);
 		}
 	};
 
@@ -168,29 +154,30 @@ const ItemEditScreen = () => {
 											objectFit: 'contain',
 										}}
 									/>
-
-									{values.image && (
-										<Box
-											mt='0'
-											display='flex'
-											justifyContent='center'
-											alignItems='center'
-										>
-											{errors.image && Boolean(touched.image) && (
-												<p
-													style={{
-														color: '#d32f2f',
-														fontSize: '10px',
-														marginBottom: '0',
-														marginTop: '0px',
-													}}
-												>
-													{errors.image}
-												</p>
-											)}
-										</Box>
-									)}
 								</Box>
+
+								{values.image && (
+									<Box
+										mt='0'
+										display='flex'
+										justifyContent='center'
+										alignItems='center'
+									>
+										{errors.image && Boolean(touched.image) && (
+											<p
+												style={{
+													color: '#d32f2f',
+													fontSize: '10px',
+													marginBottom: '0',
+													marginTop: '0px',
+												}}
+											>
+												{errors.image}
+											</p>
+										)}
+									</Box>
+								)}
+
 								<Box
 									border={`2px dashed ${palette.green.main}`}
 									p='1rem'

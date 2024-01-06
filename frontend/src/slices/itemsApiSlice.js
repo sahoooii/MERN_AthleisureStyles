@@ -8,6 +8,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			query: () => ({
 				url: ITEMS_URL,
 			}),
+			providesTags: ['Items'],
 			keepUnusedDataFor: 5,
 		}),
 		getItemDetails: builder.query({
