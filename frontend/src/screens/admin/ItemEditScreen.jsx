@@ -60,7 +60,6 @@ const ItemEditScreen = () => {
 		price: yup
 			.number()
 			.required('Please enter item price')
-			.integer()
 			.min(0, 'Please enter positive number or 0'),
 		image: yup.string().notRequired(),
 		brand: yup.string().required('Please enter item brand name'),
@@ -80,13 +79,49 @@ const ItemEditScreen = () => {
 		}
 	}, [items]);
 
-	const submitHandler = () => {};
+	const submitHandler = async (values, onSubmitProps) => {
+		console.log(values);
+		const { name, price, image, brand, category, countInStock, description } =
+			values;
+
+		// When not change itemImage
+		if (
+			values.image &&
+			values.name &&
+			values.price &&
+			values.brand &&
+			values.category &&
+			values.countInStock &&
+			values.description
+		) {
+			const updatedItem = {
+				_id: itemId,
+				name,
+				price,
+				image,
+				brand,
+				category,
+				countInStock,
+				description,
+			};
+
+			const result = await updateItem(updatedItem);
+
+			if (result.error) {
+				toast.error(error?.data?.message || error.error);
+			} else {
+				toast.success('Item updated successfully');
+
+				navigate('/admin/itemslist');
+			}
+		}
+	};
 
 	return (
 		<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
 			<FormComponent>
 				<Typography variant='h3' fontFamily='Play' textAlign='center' mb='15px'>
-					Edit <b>Product</b>
+					Edit <b>Items</b>
 				</Typography>
 
 				{isLoading ? (
@@ -239,6 +274,7 @@ const ItemEditScreen = () => {
 								>
 									<TextField
 										label='Item Name'
+										autoComplete='off'
 										onBlur={handleBlur}
 										onChange={handleChange}
 										value={values.name}
@@ -296,11 +332,11 @@ const ItemEditScreen = () => {
 									<TextField
 										multiline
 										rows={4}
+										name='description'
 										label='Item Description'
 										onBlur={handleBlur}
 										onChange={handleChange}
 										value={values.description}
-										name='description'
 										error={
 											Boolean(touched.description) &&
 											Boolean(errors.description)
@@ -318,7 +354,7 @@ const ItemEditScreen = () => {
 									justifyContent='space-between'
 									alignItems='center'
 								>
-									<ButtonComponent>UPDATE</ButtonComponent>
+									<ButtonComponent type='submit'>UPDATE</ButtonComponent>
 									<ButtonComponent backgroundColor={shades.neutral[500]}>
 										DELETE
 									</ButtonComponent>
