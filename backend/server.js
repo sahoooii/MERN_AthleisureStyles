@@ -5,7 +5,8 @@ import cookieParser from 'cookie-parser';
 import connectDB from './config/db.js';
 import itemRoutes from './routes/itemRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import uploadRoutes from './routes/uploadRoutes.js';
+import profileImageUploadRoutes from './routes/profileImageUploadRoutes.js';
+import itemImageUploadRoutes from './routes/itemImageUploadRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
@@ -29,7 +30,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/profileupload', uploadRoutes);
+app.use('/api/profileupload', profileImageUploadRoutes);
+app.use('/api/itemupload', itemImageUploadRoutes);
 app.use('/api/orders', orderRoutes);
 
 // For PayPal
@@ -40,8 +42,13 @@ app.use('/api/config/paypal', (req, res) =>
 // Set __dirname to current directory
 const __dirname = path.resolve();
 app.use(
-	'/profileImages',
-	express.static(path.join(__dirname, '/profileImages'))
+	'/uploads/profileImages',
+	express.static(path.join(__dirname, '/uploads/profileImages'))
+);
+
+app.use(
+	'/uploads/itemImages',
+	express.static(path.join(__dirname, '/uploads/itemImages'))
 );
 
 // error handling

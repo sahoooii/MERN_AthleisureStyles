@@ -1,4 +1,4 @@
-import { ITEMS_URL } from '../constants';
+import { ITEMS_URL, ITEM_UPLOAD_URL } from '../constants';
 import { apiSlice } from './apiSlice';
 
 // injectEndpoints = for separate each endpoints
@@ -32,6 +32,13 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Items'],
 		}),
+		uploadItemImag: builder.mutation({
+			query: (data) => ({
+				url: ITEM_UPLOAD_URL,
+				method: 'POST',
+				body: data,
+			}),
+		}),
 	}),
 });
 
@@ -40,4 +47,5 @@ export const {
 	useGetItemDetailsQuery,
 	useCreateItemMutation,
 	useUpdateItemMutation,
+	useUploadItemImagMutation,
 } = itemsApiSlice;

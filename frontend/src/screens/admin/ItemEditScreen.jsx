@@ -16,6 +16,7 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
 	useUpdateItemMutation,
 	useGetItemDetailsQuery,
+	useUploadItemImagMutation,
 } from '../../slices/itemsApiSlice';
 import FormComponent from '../../components/auth/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
@@ -41,6 +42,9 @@ const ItemEditScreen = () => {
 	// console.log(items);
 
 	const [updateItem, { isLoading: loadingUpdate }] = useUpdateItemMutation();
+
+	const [uploadItemImag, { isLoading: loadingUpload }] =
+		useUploadItemImagMutation();
 
 	const [itemImage, setItemImage] = useState(items && items.image);
 
@@ -80,15 +84,27 @@ const ItemEditScreen = () => {
 
 	const submitHandler = async (values, onSubmitProps) => {
 		// console.log(values);
-		const { name, price, image, brand, category, countInStock, description } =
+		const { name, price, brand, category, countInStock, description } =
 			values;
 
+		// When changed itemImage
+		const formData = new FormData();
+		for (let value in values) {
+			formData.append(value, values[value]);
+		}
+
+		formData.append('image', values.image.name);
+
 		try {
+			const imageData = await uploadItemImag(formData).unwrap();
+
+			console.log(imageData);
+
 			await updateItem({
 				_id: itemId,
 				name,
 				price,
-				image,
+				image: imageData.image,
 				brand,
 				category,
 				countInStock,
@@ -138,6 +154,8 @@ const ItemEditScreen = () => {
 								{loadingUpdate && <Loader />}
 
 								{/* Item Image */}
+
+								{loadingUpload && <Loader />}
 								<Box
 									display='flex'
 									justifyContent='center'
