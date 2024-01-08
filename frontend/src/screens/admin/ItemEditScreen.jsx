@@ -43,6 +43,7 @@ const ItemEditScreen = () => {
 
 	const [updateItem, { isLoading: loadingUpdate }] = useUpdateItemMutation();
 
+	// For item Image Upload
 	const [uploadItemImag, { isLoading: loadingUpload }] =
 		useUploadItemImagMutation();
 
@@ -51,7 +52,7 @@ const ItemEditScreen = () => {
 	const initialItemsValues = items && {
 		name: items.name ? items.name : '',
 		price: items.price ? items.price : '',
-		image: items.image ? items.image : '',
+		image: '',
 		brand: items.brand ? items.brand : '',
 		category: items.category ? items.category : '',
 		countInStock: items.countInStock ? items.countInStock : '',
@@ -83,39 +84,67 @@ const ItemEditScreen = () => {
 	}, [items]);
 
 	const submitHandler = async (values, onSubmitProps) => {
-		// console.log(values);
-		const { name, price, brand, category, countInStock, description } =
-			values;
+		// console.log('values:', values);
+		const { name, price, brand, category, countInStock, description } = values;
 
-		// When changed itemImage
-		const formData = new FormData();
-		for (let value in values) {
-			formData.append(value, values[value]);
-		}
+		// When not change itemImage
+		if (
+			values.image === '' &&
+			values.name &&
+			values.price &&
+			values.brand &&
+			values.category &&
+			values.countInStock
+		) {
+			try {
+				await updateItem({
+					_id: itemId,
+					name,
+					price,
+					image: items.image,
+					brand,
+					category,
+					countInStock,
+					description,
+				}).unwrap();
 
-		formData.append('image', values.image.name);
+				toast.success('Item updated successfully');
 
-		try {
-			const imageData = await uploadItemImag(formData).unwrap();
+				refetch();
+				navigate('/admin/itemslist');
+			} catch (error) {
+				toast.error(error?.data?.message || error.error);
+			}
+		} else {
+			// When changed itemImage
+			const formData = new FormData();
+			for (let value in values) {
+				formData.append(value, values[value]);
+			}
 
-			console.log(imageData);
+			formData.append('image', values.image.name);
 
-			await updateItem({
-				_id: itemId,
-				name,
-				price,
-				image: imageData.image,
-				brand,
-				category,
-				countInStock,
-				description,
-			}).unwrap();
+			try {
+				const imageData = await uploadItemImag(formData).unwrap();
 
-			toast.success('Item updated successfully');
-			refetch();
-			navigate('/admin/itemslist');
-		} catch (error) {
-			toast.error(error?.data?.message || error.error);
+				await updateItem({
+					_id: itemId,
+					name,
+					price,
+					image: imageData.image,
+					brand,
+					category,
+					countInStock,
+					description,
+				}).unwrap();
+
+				toast.success('Item updated successfully');
+
+				refetch();
+				navigate('/admin/itemslist');
+			} catch (error) {
+				toast.error(error?.data?.message || error.error);
+			}
 		}
 	};
 
@@ -174,28 +203,6 @@ const ItemEditScreen = () => {
 									/>
 								</Box>
 
-								{values.image && (
-									<Box
-										mt='0'
-										display='flex'
-										justifyContent='center'
-										alignItems='center'
-									>
-										{errors.image && Boolean(touched.image) && (
-											<p
-												style={{
-													color: '#d32f2f',
-													fontSize: '10px',
-													marginBottom: '0',
-													marginTop: '0px',
-												}}
-											>
-												{errors.image}
-											</p>
-										)}
-									</Box>
-								)}
-
 								<Box
 									border={`2px dashed ${palette.green.main}`}
 									p='1rem'
@@ -204,7 +211,7 @@ const ItemEditScreen = () => {
 										'&:hover': { cursor: 'pointer' },
 									}}
 								>
-									{!values.image.name ? (
+									{!values.image ? (
 										<>
 											<label htmlFor='image'>
 												<Box

@@ -40,9 +40,7 @@ const ProfileScreen = () => {
 		email: userInfo.email ? userInfo.email : '',
 		password: '',
 		confirmPassword: '',
-		// 2つともvalidation errorで引っかかる
-		// picturePath: profilePic ? profilePic : '',
-		// picturePath: userInfo.picturePath ? userInfo.picturePath : '',
+		// initialValuesは空にしておく
 		picturePath: '',
 	};
 
@@ -75,17 +73,15 @@ const ProfileScreen = () => {
 			.string()
 			.oneOf([yup.ref('password')], 'Password does not match')
 			.required('Please enter your confirm password'),
-		picturePath: yup
-			.string()
-			.notRequired()
-			// .test('is-valid-type', 'Not a valid image type', (value) =>
-			// 	isValidFileType(value && value.name.toLowerCase(), 'image')
-			// )
-			// .test(
-			// 	'is-valid-size',
-			// 	'Max allowed size is 800MB',
-			// 	(value) => value && value.size <= MAX_FILE_SIZE
-			// ),
+		picturePath: yup.string().notRequired(),
+		// .test('is-valid-type', 'Not a valid image type', (value) =>
+		// 	isValidFileType(value && value.name.toLowerCase(), 'image')
+		// )
+		// .test(
+		// 	'is-valid-size',
+		// 	'Max allowed size is 800MB',
+		// 	(value) => value && value.size <= MAX_FILE_SIZE
+		// ),
 	});
 
 	// Get user profile details
@@ -99,6 +95,7 @@ const ProfileScreen = () => {
 	const [updateProfile, { isLoading: loadingUpdateProfile }] =
 		useUpdateProfileMutation();
 
+	// For profile Image Upload
 	const [uploadProfileImage, { isLoading: loadingProfileImage }] =
 		useUploadProfileImageMutation();
 
@@ -218,29 +215,6 @@ const ProfileScreen = () => {
 										}}
 									/>
 								</Box>
-								{/* For picturePath validation */}
-								{values.picturePath && (
-									<Box
-										mt='0'
-										display='flex'
-										justifyContent='center'
-										alignItems='center'
-									>
-										{errors.picturePath && Boolean(touched.picturePath) && (
-											<p
-												style={{
-													color: '#d32f2f',
-													fontSize: '10px',
-													marginBottom: '0',
-													marginTop: '0px',
-												}}
-											>
-												{errors.picturePath}
-											</p>
-										)}
-									</Box>
-								)}
-
 								<Box
 									border={`2px dashed ${palette.green.main}`}
 									p='1rem'

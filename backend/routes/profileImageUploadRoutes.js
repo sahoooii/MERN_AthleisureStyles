@@ -32,7 +32,13 @@ function fileFilter(req, file, cb) {
 	}
 }
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({
+	storage,
+	fileFilter,
+	limits: {
+		fileSize: 2000000, // 2MB
+	},
+});
 
 const uploadSingleImage = upload.single('picturePath');
 
