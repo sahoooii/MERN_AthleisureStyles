@@ -50,7 +50,7 @@ const CheckoutScreen = () => {
 		useDeleteMyOrderMutation();
 
 	const deleteHandler = async (orderId) => {
-		if (window.confirm('Are you sure delete your order?')) {
+		if (window.confirm('Would you like to delete this order?')) {
 			try {
 				await deleteMyOrder(orderId);
 

@@ -11,12 +11,14 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { DeleteSweepOutlined, EditOutlined } from '@mui/icons-material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
 	useUpdateItemMutation,
 	useGetItemDetailsQuery,
 	useUploadItemImagMutation,
+	useDeleteItemMutation,
+	useGetItemsQuery,
 } from '../../slices/itemsApiSlice';
 import FormComponent from '../../components/auth/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
@@ -39,6 +41,8 @@ const ItemEditScreen = () => {
 		error,
 	} = useGetItemDetailsQuery(itemId);
 
+	const { refetch: itemListRefetch } = useGetItemsQuery();
+
 	// console.log(items);
 
 	const [updateItem, { isLoading: loadingUpdate }] = useUpdateItemMutation();
@@ -46,6 +50,9 @@ const ItemEditScreen = () => {
 	// For item Image Upload
 	const [uploadItemImag, { isLoading: loadingUpload }] =
 		useUploadItemImagMutation();
+
+	// Fo delete Item
+	const [deleteItem] = useDeleteItemMutation();
 
 	const [itemImage, setItemImage] = useState(items && items.image);
 
@@ -82,6 +89,21 @@ const ItemEditScreen = () => {
 			setItemImage(items.image);
 		}
 	}, [items]);
+
+	const deleteHandler = async (id) => {
+		if (window.confirm('Would you like to delete this item ?')) {
+			try {
+				await deleteItem(id);
+
+				toast.success('Item deleted successfully');
+
+				itemListRefetch();
+				navigate('/admin/itemslist');
+			} catch (err) {
+				toast.error(err?.data?.message || err.error);
+			}
+		}
+	};
 
 	const submitHandler = async (values, onSubmitProps) => {
 		// console.log('values:', values);
@@ -256,7 +278,7 @@ const ItemEditScreen = () => {
 															mr: '20px',
 														}}
 													>
-														<EditOutlinedIcon color='blue' />
+														<EditOutlined color='blue' />
 													</Box>
 													<Input
 														type='file'
@@ -367,7 +389,12 @@ const ItemEditScreen = () => {
 									alignItems='center'
 								>
 									<ButtonComponent type='submit'>UPDATE</ButtonComponent>
-									<ButtonComponent backgroundColor={shades.neutral[500]}>
+									<ButtonComponent
+										backgroundColor={shades.neutral[500]}
+										type='button'
+										onClick={() => deleteHandler(itemId)}
+									>
+										<DeleteSweepOutlined sx={{ mr: '5px' }} />
 										DELETE
 									</ButtonComponent>
 								</Box>

@@ -4,12 +4,17 @@ import {
 	getItemById,
 	createItem,
 	updateItem,
+	deleteItem,
 } from '../controllers/itemController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.route('/').get(getItems).post(protect, admin, createItem);
-router.route('/:id').get(getItemById).put(protect, admin, updateItem);
+router
+	.route('/:id')
+	.get(getItemById)
+	.put(protect, admin, updateItem)
+	.delete(protect, admin, deleteItem);
 
 export default router;
