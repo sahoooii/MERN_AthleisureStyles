@@ -9,7 +9,7 @@ const FormComponent = ({ title, children }) => {
 	return (
 		<Box>
 			<Box
-				width={isNonMobileScreens ? '50%' : '93%'}
+				width={isNonMobileScreens ? '65%' : '93%'}
 				p='2rem'
 				m='1.5rem auto'
 				borderRadius='1.2rem'

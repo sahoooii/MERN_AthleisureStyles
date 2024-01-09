@@ -87,17 +87,17 @@ const ItemsListScreen = () => {
 					Items <b>Edit</b>
 				</Typography>
 				<Box sx={{ width: { sm: '30%', md: '20%' } }}>
-					<ButtonComponent
-						backgroundColor={shades.neutral[600]}
-						onClick={createItemHandler}
-					>
-						<EditNoteOutlinedIcon sx={{ fontSize: '20px', mr: '5px' }} /> CREATE
-						ITEM
-					</ButtonComponent>
+					<Link to='/admin/item'>
+						<ButtonComponent
+							backgroundColor={shades.neutral[600]}
+							// onClick={createItemHandler}
+						>
+							<EditNoteOutlinedIcon sx={{ fontSize: '20px', mr: '5px' }} />{' '}
+							CREATE ITEM
+						</ButtonComponent>
+					</Link>
 				</Box>
 			</Box>
-
-			{loadingCreate && <Loader />}
 
 			{isLoading ? (
 				<Loader />
@@ -132,7 +132,9 @@ const ItemsListScreen = () => {
 								{items.map((item) => (
 									<StyledTableRow key={item._id} hover>
 										<StyledTableCell>
-											<Link to={`/admin/item/${item._id}`}>{item._id}</Link>
+											<Link to={`/admin/item/${item._id}/edit`}>
+												{item._id}
+											</Link>
 										</StyledTableCell>
 										<StyledTableCell>{item.name}</StyledTableCell>
 										<StyledTableCell align='right'>

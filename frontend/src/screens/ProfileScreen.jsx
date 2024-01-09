@@ -40,9 +40,7 @@ const ProfileScreen = () => {
 		email: userInfo.email ? userInfo.email : '',
 		password: '',
 		confirmPassword: '',
-		// 2つともvalidation errorで引っかかる
-		// picturePath: profilePic ? profilePic : '',
-		// picturePath: userInfo.picturePath ? userInfo.picturePath : '',
+		// initialValuesは空にしておく
 		picturePath: '',
 	};
 
@@ -75,17 +73,15 @@ const ProfileScreen = () => {
 			.string()
 			.oneOf([yup.ref('password')], 'Password does not match')
 			.required('Please enter your confirm password'),
-		picturePath: yup
-			.mixed()
-			.notRequired()
-			// .test('is-valid-type', 'Not a valid image type', (value) =>
-			// 	isValidFileType(value && value.name.toLowerCase(), 'image')
-			// )
-			// .test(
-			// 	'is-valid-size',
-			// 	'Max allowed size is 800MB',
-			// 	(value) => value && value.size <= MAX_FILE_SIZE
-			// ),
+		picturePath: yup.string().notRequired(),
+		// .test('is-valid-type', 'Not a valid image type', (value) =>
+		// 	isValidFileType(value && value.name.toLowerCase(), 'image')
+		// )
+		// .test(
+		// 	'is-valid-size',
+		// 	'Max allowed size is 800MB',
+		// 	(value) => value && value.size <= MAX_FILE_SIZE
+		// ),
 	});
 
 	// Get user profile details
@@ -99,6 +95,7 @@ const ProfileScreen = () => {
 	const [updateProfile, { isLoading: loadingUpdateProfile }] =
 		useUpdateProfileMutation();
 
+	// For profile Image Upload
 	const [uploadProfileImage, { isLoading: loadingProfileImage }] =
 		useUploadProfileImageMutation();
 
@@ -170,14 +167,8 @@ const ProfileScreen = () => {
 	return (
 		<FormComponent>
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-				<Typography
-					fontSize='32px'
-					fontWeight='bold'
-					fontFamily='Play'
-					textAlign='center'
-					mb='15px'
-				>
-					User Profile
+				<Typography variant='h3' fontFamily='Play' textAlign='center' mb='15px'>
+					User <b>Profile</b>
 				</Typography>
 
 				{loadingProfile ? (
@@ -224,106 +215,7 @@ const ProfileScreen = () => {
 										}}
 									/>
 								</Box>
-								{/* For picturePath validation */}
-								{values.picturePath && (
-									<Box
-										mt='0'
-										display='flex'
-										justifyContent='center'
-										alignItems='center'
-									>
-										{errors.picturePath && Boolean(touched.picturePath) && (
-											<p
-												style={{
-													color: '#d32f2f',
-													fontSize: '10px',
-													marginBottom: '0',
-													marginTop: '0px',
-												}}
-											>
-												{errors.picturePath}
-											</p>
-										)}
-									</Box>
-								)}
 
-								<Box
-									border={`2px dashed ${palette.green.main}`}
-									p='1rem'
-									sx={{ m: '10px 0 20px 0', '&:hover': { cursor: 'pointer' } }}
-								>
-									{!values.picturePath ? (
-										<>
-											<label htmlFor='picturePath'>
-												<Box
-													sx={{
-														display: 'flex',
-														alignItems: 'center',
-														cursor: 'pointer',
-													}}
-												>
-													<AddPhotoAlternateIcon color='action' />
-													<Typography variant='body2' ml='3px'>
-														Change Picture Here
-													</Typography>
-												</Box>
-												<TextField
-													type='file'
-													name='picturePath'
-													id='picturePath'
-													accept='.png,.jpeg,.jpg'
-													style={{ display: 'none' }}
-													onBlur={handleBlur}
-													onChange={(e) =>
-														setFieldValue(
-															'picturePath',
-															e.currentTarget.files[0]
-														)
-													}
-												/>
-											</label>
-										</>
-									) : (
-										<>
-											<label
-												htmlFor='picturePath'
-												style={{ cursor: 'pointer' }}
-											>
-												<Box
-													display='flex'
-													justifyContent='space-between'
-													alignItems='center'
-													// cursor='pointer'
-												>
-													<Typography variant='body2'>
-														{values.picturePath.name}
-													</Typography>
-													<Box
-														sx={{
-															cursor: 'pointer',
-															mr: '20px',
-														}}
-													>
-														<EditOutlinedIcon color='blue' />
-													</Box>
-													<Input
-														type='file'
-														name='picturePath'
-														id='picturePath'
-														accept='.png,.jpeg,.jpg'
-														style={{ display: 'none' }}
-														onChange={(e) =>
-															setFieldValue(
-																'picturePath',
-																e.currentTarget.files[0]
-															)
-														}
-													/>
-												</Box>
-											</label>
-										</>
-									)}
-								</Box>
 								<Box
 									display='grid'
 									gap='20px'
@@ -334,6 +226,93 @@ const ProfileScreen = () => {
 										},
 									}}
 								>
+									<Box
+										gridColumn='span 4'
+										border={`1px solid ${palette.neutral.main}`}
+										borderRadius='5px'
+										p='1rem'
+									>
+										<Box
+											border={`2px dashed ${palette.green.main}`}
+											p='1rem'
+											sx={{
+												'&:hover': { cursor: 'pointer' },
+											}}
+										>
+											{!values.picturePath ? (
+												<>
+													<label htmlFor='picturePath'>
+														<Box
+															sx={{
+																display: 'flex',
+																alignItems: 'center',
+																cursor: 'pointer',
+															}}
+														>
+															<AddPhotoAlternateIcon color='action' />
+															<Typography variant='body2' ml='3px'>
+																Change Picture Here
+															</Typography>
+														</Box>
+														<TextField
+															type='file'
+															name='picturePath'
+															id='picturePath'
+															accept='.png,.jpeg,.jpg'
+															style={{ display: 'none' }}
+															onBlur={handleBlur}
+															onChange={(e) =>
+																setFieldValue(
+																	'picturePath',
+																	e.currentTarget.files[0]
+																)
+															}
+														/>
+													</label>
+												</>
+											) : (
+												<>
+													<label
+														htmlFor='picturePath'
+														style={{ cursor: 'pointer' }}
+													>
+														<Box
+															display='flex'
+															justifyContent='space-between'
+															alignItems='center'
+															// cursor='pointer'
+														>
+															<Typography variant='body2'>
+																{values.picturePath.name}
+															</Typography>
+															<Box
+																sx={{
+																	cursor: 'pointer',
+																	mr: '20px',
+																}}
+															>
+																<EditOutlinedIcon color='blue' />
+															</Box>
+															<Input
+																type='file'
+																name='picturePath'
+																id='picturePath'
+																accept='.png,.jpeg,.jpg'
+																style={{ display: 'none' }}
+																onChange={(e) =>
+																	setFieldValue(
+																		'picturePath',
+																		e.currentTarget.files[0]
+																	)
+																}
+															/>
+														</Box>
+													</label>
+												</>
+											)}
+										</Box>
+									</Box>
+
 									<TextField
 										label='First Name'
 										onBlur={handleBlur}
@@ -398,15 +377,10 @@ const ProfileScreen = () => {
 										}
 										sx={{ gridColumn: 'span 4' }}
 									/>
+								</Box>
 
-									<Box
-										gridColumn='span 4'
-										textAlign='center'
-										mt='25px'
-										mb='15px'
-									>
-										<ButtonComponent>UPDATE</ButtonComponent>
-									</Box>
+								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
+									<ButtonComponent>UPDATE</ButtonComponent>
 								</Box>
 							</form>
 						)}

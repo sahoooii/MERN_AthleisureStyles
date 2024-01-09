@@ -6,7 +6,7 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
 	destination(req, file, cb) {
-		cb(null, 'profileImages/');
+		cb(null, 'uploads/profileImages/');
 	},
 	filename(req, file, cb) {
 		cb(
@@ -32,7 +32,13 @@ function fileFilter(req, file, cb) {
 	}
 }
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({
+	storage,
+	fileFilter,
+	limits: {
+		fileSize: 2000000, // 2MB
+	},
+});
 
 const uploadSingleImage = upload.single('picturePath');
 

@@ -32,7 +32,7 @@ const initialRegisterValues = {
 };
 
 // For profile image validation
-const MAX_FILE_SIZE = 819200; //800MB
+const MAX_FILE_SIZE = 3145728; //3MB
 const validFileExtensions = {
 	image: ['jpg', 'png', 'jpeg', 'webp'],
 };
@@ -68,7 +68,7 @@ const registerSchema = yup.object().shape({
 		)
 		.test(
 			'is-valid-size',
-			'Max allowed size is 800MB',
+			'Max allowed size is 3MB',
 			(value) => value && value.size <= MAX_FILE_SIZE
 		),
 });
