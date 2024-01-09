@@ -27,21 +27,46 @@ const getItemById = asyncHandler(async (req, res) => {
 // @route POST /api/items
 // @access Private/Admin
 const createItem = asyncHandler(async (req, res) => {
-	const item = new Item({
-		name: 'Sample Name',
-		price: 0,
+	const {
+		name,
+		price,
+		image,
+		brand,
+		category,
+		description,
+		countInStock,
+		numReviews,
+	} = req.body;
+
+	const item = await Item.create({
+		name,
+		price,
 		user: req.user._id,
-		image: '/images/sample-nike-shoes.jpg',
-		brand: 'Sample Brand',
-		category: 'Sample Category',
-		description: 'Sample Description',
-		countInStock: 0,
-		numReviews: 0,
+		image,
+		brand,
+		category,
+		description,
+		countInStock,
+		numReviews,
 	});
 
-	const createdItem = await item.save();
-
-	res.status(201).json(createdItem);
+	if (item) {
+		res.status(201).json({
+			_id: item._id,
+			name: item.name,
+			price: item.price,
+			user: req.user._id,
+			image: item.image,
+			brand: item.brand,
+			category: item.category,
+			description: item.description,
+			countInStock: item.countInStock,
+			numReviews: item.numReviews,
+		});
+	} else {
+		res.status(400);
+		throw new Error('Invalid item data');
+	}
 });
 
 // @desc Update a Item
@@ -52,7 +77,7 @@ const updateItem = asyncHandler(async (req, res) => {
 		req.body;
 
 	const item = await Item.findById(req.params.id);
-	
+
 	// Only update updated field
 	if (item) {
 		item.name = name || item.name;
@@ -79,22 +104,6 @@ const updateItem = asyncHandler(async (req, res) => {
 		res.status(404);
 		throw new Error('Item Not Found');
 	}
-
-	// if (item) {
-	// 	item.name = name;
-	// 	item.price = price;
-	// 	item.image = image;
-	// 	item.brand = brand;
-	// 	item.category = category;
-	// 	item.countInStock = countInStock;
-	// 	item.description = description;
-
-	// 	const updatedItem = await Item.save();
-	// 	res.status(201).json(updatedItem);
-	// } else {
-	// 	res.status(404);
-	// 	throw new Error('Resource Not Found');
-	// }
 });
 
 export { getItems, getItemById, createItem, updateItem };

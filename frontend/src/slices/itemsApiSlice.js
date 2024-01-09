@@ -18,9 +18,10 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			keepUnusedDataFor: 5,
 		}),
 		createItem: builder.mutation({
-			query: () => ({
+			query: (data) => ({
 				url: ITEMS_URL,
 				method: 'POST',
+				body: data,
 			}),
 			invalidatesTags: ['Items'],
 		}),

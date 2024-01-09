@@ -215,83 +215,7 @@ const ProfileScreen = () => {
 										}}
 									/>
 								</Box>
-								<Box
-									border={`2px dashed ${palette.green.main}`}
-									p='1rem'
-									sx={{ m: '10px 0 20px 0', '&:hover': { cursor: 'pointer' } }}
-								>
-									{!values.picturePath ? (
-										<>
-											<label htmlFor='picturePath'>
-												<Box
-													sx={{
-														display: 'flex',
-														alignItems: 'center',
-														cursor: 'pointer',
-													}}
-												>
-													<AddPhotoAlternateIcon color='action' />
-													<Typography variant='body2' ml='3px'>
-														Change Picture Here
-													</Typography>
-												</Box>
-												<TextField
-													type='file'
-													name='picturePath'
-													id='picturePath'
-													accept='.png,.jpeg,.jpg'
-													style={{ display: 'none' }}
-													onBlur={handleBlur}
-													onChange={(e) =>
-														setFieldValue(
-															'picturePath',
-															e.currentTarget.files[0]
-														)
-													}
-												/>
-											</label>
-										</>
-									) : (
-										<>
-											<label
-												htmlFor='picturePath'
-												style={{ cursor: 'pointer' }}
-											>
-												<Box
-													display='flex'
-													justifyContent='space-between'
-													alignItems='center'
-													// cursor='pointer'
-												>
-													<Typography variant='body2'>
-														{values.picturePath.name}
-													</Typography>
-													<Box
-														sx={{
-															cursor: 'pointer',
-															mr: '20px',
-														}}
-													>
-														<EditOutlinedIcon color='blue' />
-													</Box>
-													<Input
-														type='file'
-														name='picturePath'
-														id='picturePath'
-														accept='.png,.jpeg,.jpg'
-														style={{ display: 'none' }}
-														onChange={(e) =>
-															setFieldValue(
-																'picturePath',
-																e.currentTarget.files[0]
-															)
-														}
-													/>
-												</Box>
-											</label>
-										</>
-									)}
-								</Box>
+
 								<Box
 									display='grid'
 									gap='20px'
@@ -302,6 +226,93 @@ const ProfileScreen = () => {
 										},
 									}}
 								>
+									<Box
+										gridColumn='span 4'
+										border={`1px solid ${palette.neutral.main}`}
+										borderRadius='5px'
+										p='1rem'
+									>
+										<Box
+											border={`2px dashed ${palette.green.main}`}
+											p='1rem'
+											sx={{
+												'&:hover': { cursor: 'pointer' },
+											}}
+										>
+											{!values.picturePath ? (
+												<>
+													<label htmlFor='picturePath'>
+														<Box
+															sx={{
+																display: 'flex',
+																alignItems: 'center',
+																cursor: 'pointer',
+															}}
+														>
+															<AddPhotoAlternateIcon color='action' />
+															<Typography variant='body2' ml='3px'>
+																Change Picture Here
+															</Typography>
+														</Box>
+														<TextField
+															type='file'
+															name='picturePath'
+															id='picturePath'
+															accept='.png,.jpeg,.jpg'
+															style={{ display: 'none' }}
+															onBlur={handleBlur}
+															onChange={(e) =>
+																setFieldValue(
+																	'picturePath',
+																	e.currentTarget.files[0]
+																)
+															}
+														/>
+													</label>
+												</>
+											) : (
+												<>
+													<label
+														htmlFor='picturePath'
+														style={{ cursor: 'pointer' }}
+													>
+														<Box
+															display='flex'
+															justifyContent='space-between'
+															alignItems='center'
+															// cursor='pointer'
+														>
+															<Typography variant='body2'>
+																{values.picturePath.name}
+															</Typography>
+															<Box
+																sx={{
+																	cursor: 'pointer',
+																	mr: '20px',
+																}}
+															>
+																<EditOutlinedIcon color='blue' />
+															</Box>
+															<Input
+																type='file'
+																name='picturePath'
+																id='picturePath'
+																accept='.png,.jpeg,.jpg'
+																style={{ display: 'none' }}
+																onChange={(e) =>
+																	setFieldValue(
+																		'picturePath',
+																		e.currentTarget.files[0]
+																	)
+																}
+															/>
+														</Box>
+													</label>
+												</>
+											)}
+										</Box>
+									</Box>
+
 									<TextField
 										label='First Name'
 										onBlur={handleBlur}
@@ -366,15 +377,10 @@ const ProfileScreen = () => {
 										}
 										sx={{ gridColumn: 'span 4' }}
 									/>
+								</Box>
 
-									<Box
-										gridColumn='span 4'
-										textAlign='center'
-										mt='25px'
-										mb='15px'
-									>
-										<ButtonComponent>UPDATE</ButtonComponent>
-									</Box>
+								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
+									<ButtonComponent>UPDATE</ButtonComponent>
 								</Box>
 							</form>
 						)}
