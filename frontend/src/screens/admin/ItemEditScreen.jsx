@@ -41,10 +41,6 @@ const ItemEditScreen = () => {
 		error,
 	} = useGetItemDetailsQuery(itemId);
 
-	const { refetch: itemListRefetch } = useGetItemsQuery();
-
-	// console.log(items);
-
 	const [updateItem, { isLoading: loadingUpdate }] = useUpdateItemMutation();
 
 	// For item Image Upload
@@ -53,6 +49,9 @@ const ItemEditScreen = () => {
 
 	// Fo delete Item
 	const [deleteItem] = useDeleteItemMutation();
+
+	// After delete item, back to itemsList need refetch
+	const { refetch: itemListRefetch } = useGetItemsQuery();
 
 	const [itemImage, setItemImage] = useState(items && items.image);
 

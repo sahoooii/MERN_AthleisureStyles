@@ -19,6 +19,7 @@ import {
 } from '../../slices/itemsApiSlice';
 import FormComponent from '../../components/auth/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
+import Loader from '../../components/Utils/Loader';
 
 const ItemEditScreen = () => {
 	const initialItemsValues = {
@@ -77,7 +78,7 @@ const ItemEditScreen = () => {
 
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
-	const [createItem] = useCreateItemMutation();
+	const [createItem, { isLoading }] = useCreateItemMutation();
 
 	// For item Image Upload
 	const [uploadItemImag] = useUploadItemImagMutation();
@@ -108,7 +109,6 @@ const ItemEditScreen = () => {
 
 			toast.success('Item updated successfully');
 
-			// refetch();
 			navigate('/admin/itemslist');
 		} catch (error) {
 			toast.error(error?.data?.message || error.error);
@@ -121,6 +121,8 @@ const ItemEditScreen = () => {
 				<Typography variant='h3' fontFamily='Play' textAlign='center' mb='30px'>
 					Create <b>Item</b>
 				</Typography>
+
+				{isLoading && <Loader />}
 
 				<Formik
 					initialValues={initialItemsValues}

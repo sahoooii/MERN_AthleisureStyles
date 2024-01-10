@@ -67,13 +67,12 @@ const ItemsListScreen = () => {
 				mb='20px'
 			>
 				<Typography variant='h3'>
-					Items <b>Edit</b>
+					Items <b>List</b>
 				</Typography>
 				<Box sx={{ width: { sm: '30%', md: '20%' } }}>
 					<Link to='/admin/item'>
 						<ButtonComponent
 							backgroundColor={shades.neutral[600]}
-							// onClick={createItemHandler}
 						>
 							<EditNoteOutlinedIcon sx={{ fontSize: '20px', mr: '5px' }} />{' '}
 							CREATE ITEM
