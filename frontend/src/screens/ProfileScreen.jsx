@@ -18,12 +18,13 @@ import {
 	useGetProfileDetailsQuery,
 } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
-import FormComponent from '../components/auth/FormComponent';
+import FormComponent from '../components/FormUi/FormComponent';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { shades } from '../theme';
 
 const ProfileScreen = () => {
 	const { palette } = useTheme();
@@ -44,19 +45,6 @@ const ProfileScreen = () => {
 		picturePath: '',
 	};
 
-	// For profile image validation
-	// const MAX_FILE_SIZE = 819200; //800MB
-	// const validFileExtensions = {
-	// 	image: ['jpg', 'png', 'jpeg', 'webp'],
-	// };
-
-	// function isValidFileType(fileName, fileType) {
-	// 	return (
-	// 		fileName &&
-	// 		validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1
-	// 	);
-	// }
-
 	const updateSchema = yup.object().shape({
 		firstName: yup.string().required('Please enter your first name'),
 		lastName: yup.string().required('Please enter your last name'),
@@ -74,14 +62,6 @@ const ProfileScreen = () => {
 			.oneOf([yup.ref('password')], 'Password does not match')
 			.required('Please enter your confirm password'),
 		picturePath: yup.string().notRequired(),
-		// .test('is-valid-type', 'Not a valid image type', (value) =>
-		// 	isValidFileType(value && value.name.toLowerCase(), 'image')
-		// )
-		// .test(
-		// 	'is-valid-size',
-		// 	'Max allowed size is 800MB',
-		// 	(value) => value && value.size <= MAX_FILE_SIZE
-		// ),
 	});
 
 	// Get user profile details
@@ -167,8 +147,15 @@ const ProfileScreen = () => {
 	return (
 		<FormComponent>
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-				<Typography variant='h3' fontFamily='Play' textAlign='center' mb='15px'>
-					User <b>Profile</b>
+				<Typography
+					variant='h3'
+					fontWeight='bold'
+					fontFamily='Play'
+					mb='15px'
+					textAlign='center'
+					color={shades.neutral[700]}
+				>
+					User Profile
 				</Typography>
 
 				{loadingProfile ? (

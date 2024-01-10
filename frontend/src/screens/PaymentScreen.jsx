@@ -6,7 +6,7 @@ import { shades } from '../theme';
 import { savePaymentMethod } from '../slices/cartSlice';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
-import FormComponent from '../components/auth/FormComponent';
+import FormComponent from '../components/FormUi/FormComponent';
 
 const PaymentScreen = () => {
 	const [paymentMethod, setPaymentMethod] = useState('PayPal');

@@ -20,7 +20,7 @@ import {
 	useDeleteItemMutation,
 	useGetItemsQuery,
 } from '../../slices/itemsApiSlice';
-import FormComponent from '../../components/auth/FormComponent';
+import FormComponent from '../../components/FormUi/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';

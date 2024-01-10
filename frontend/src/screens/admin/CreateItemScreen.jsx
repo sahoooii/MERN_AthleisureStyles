@@ -17,7 +17,7 @@ import {
 	useCreateItemMutation,
 	useUploadItemImagMutation,
 } from '../../slices/itemsApiSlice';
-import FormComponent from '../../components/auth/FormComponent';
+import FormComponent from '../../components/FormUi/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 

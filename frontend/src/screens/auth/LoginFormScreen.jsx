@@ -12,10 +12,11 @@ import {
 } from '@mui/material';
 import { useLoginMutation } from '../../slices/usersApiSlice';
 import { setCredentials } from '../../slices/authSlice';
-import FormComponent from '../../components/auth/FormComponent';
+import FormComponent from '../../components/FormUi/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 import { toast } from 'react-toastify';
+import { shades } from '../../theme';
 
 const initialLoginValues = { email: '', password: '' };
 
@@ -72,7 +73,7 @@ const LoginFormScreen = () => {
 					fontSize='32px'
 					fontWeight='bold'
 					fontFamily='Play'
-					textAlign='center'
+					color={shades.neutral[700]}
 					mb='10px'
 				>
 					LOGIN
