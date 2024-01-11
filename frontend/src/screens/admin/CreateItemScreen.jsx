@@ -17,7 +17,7 @@ import {
 	useCreateItemMutation,
 	useUploadItemImagMutation,
 } from '../../slices/itemsApiSlice';
-import FormComponent from '../../components/FormUi/FormComponent';
+import FormComponentTop from '../../components/FormUi/FormComponentTop';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 
@@ -117,7 +117,7 @@ const ItemEditScreen = () => {
 
 	return (
 		<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-			<FormComponent title="Let's Make SHOPAHOLIC ITEM">
+			<FormComponentTop title="Make A SHOPAHOLIC ITEM">
 				<Typography variant='h3' fontFamily='Play' textAlign='center' mb='30px'>
 					Create <b>Item</b>
 				</Typography>
@@ -342,7 +342,7 @@ const ItemEditScreen = () => {
 						</Typography>
 					</Link>
 				</Box>
-			</FormComponent>
+			</FormComponentTop>
 		</Box>
 	);
 };

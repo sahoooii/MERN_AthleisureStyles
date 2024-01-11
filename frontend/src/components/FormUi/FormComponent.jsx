@@ -14,7 +14,6 @@ const FormComponent = ({ title, children }) => {
 		<Box>
 			<Box
 				width={isMdScreens ? '80%' : '95%'}
-				// p='1.5rem'
 				m='1rem auto'
 				borderRadius='0.8rem'
 				backgroundColor={shades.blue[600]}
@@ -70,28 +69,40 @@ const FormComponent = ({ title, children }) => {
 									xs: '100px',
 									sm: '150px',
 								},
-								gap: {xs: 4, sm: 6}
+								gap: { xs: 4, sm: 6 },
 							}}
 						>
 							{isSmScreens ? (
-								<Box>
-									<img src={storeLogoSM} alt='storeLogoSM' />
-								</Box>
+								<>
+									<Box>
+										<img src={storeLogoSM} alt='storeLogoSM' />
+									</Box>
+									<Box width='40%'>
+										<Typography
+											fontWeight='bold'
+											variant='h3'
+											color={shades.babyPink[300]}
+										>
+											{title}
+										</Typography>
+									</Box>
+								</>
 							) : (
-								<Box>
-									<img src={storeLogoXS} alt='storeLogoXS' />
-								</Box>
+								<>
+									<Box>
+										<img src={storeLogoXS} alt='storeLogoXS' />
+									</Box>
+									<Box sx={{ width: { xs: '80%', sm: '40%' } }}>
+										<Typography
+											fontWeight='bold'
+											variant='h4'
+											color={shades.babyPink[300]}
+										>
+											{title}
+										</Typography>
+									</Box>
+								</>
 							)}
-
-							<Box sx={{ width: { xs: '80%', sm: '40%' } }}>
-								<Typography
-									fontWeight='bold'
-									variant='h4'
-									color={shades.babyPink[300]}
-								>
-									{title}
-								</Typography>
-							</Box>
 						</Box>
 
 						<Box

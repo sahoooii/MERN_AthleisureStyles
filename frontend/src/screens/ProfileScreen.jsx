@@ -24,7 +24,6 @@ import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { shades } from '../theme';
 
 const ProfileScreen = () => {
 	const { palette } = useTheme();
@@ -145,9 +144,9 @@ const ProfileScreen = () => {
 	};
 
 	return (
-		<FormComponent>
+		<FormComponent title='Edit Your Profile'>
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-				<Typography
+				{/* <Typography
 					variant='h3'
 					fontWeight='bold'
 					fontFamily='Play'
@@ -156,7 +155,7 @@ const ProfileScreen = () => {
 					color={shades.neutral[700]}
 				>
 					User Profile
-				</Typography>
+				</Typography> */}
 
 				{loadingProfile ? (
 					<Loader />
@@ -189,7 +188,7 @@ const ProfileScreen = () => {
 									display='flex'
 									justifyContent='center'
 									alignItems='center'
-									m='20px 0 15px 0'
+									mb='20px'
 								>
 									{loadingProfileImage && <Loader />}
 									<Avatar
