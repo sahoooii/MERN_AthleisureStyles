@@ -46,6 +46,15 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				method: 'POST',
 			}),
 		}),
+		// Admin
+		getUsers: builder.query({
+			query: () => ({
+				url: USERS_URL,
+				method: 'GET',
+			}),
+			providesTags: ['Users'],
+			keepUnusedDataFor: 5,
+		}),
 	}),
 });
 
@@ -56,4 +65,5 @@ export const {
 	useGetProfileDetailsQuery,
 	useUpdateProfileMutation,
 	useLogoutMutation,
+	useGetUsersQuery,
 } = usersApiSlice;
