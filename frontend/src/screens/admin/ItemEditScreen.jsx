@@ -11,14 +11,16 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { DeleteSweepOutlined, EditOutlined } from '@mui/icons-material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
 	useUpdateItemMutation,
 	useGetItemDetailsQuery,
 	useUploadItemImagMutation,
+	useDeleteItemMutation,
+	useGetItemsQuery,
 } from '../../slices/itemsApiSlice';
-import FormComponent from '../../components/auth/FormComponent';
+import  FormComponentTop from '../../components/FormUi/FormComponentTop';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
@@ -39,13 +41,17 @@ const ItemEditScreen = () => {
 		error,
 	} = useGetItemDetailsQuery(itemId);
 
-	// console.log(items);
-
 	const [updateItem, { isLoading: loadingUpdate }] = useUpdateItemMutation();
 
 	// For item Image Upload
 	const [uploadItemImag, { isLoading: loadingUpload }] =
 		useUploadItemImagMutation();
+
+	// Fo delete Item
+	const [deleteItem] = useDeleteItemMutation();
+
+	// After delete item, back to itemsList need refetch
+	const { refetch: itemListRefetch } = useGetItemsQuery();
 
 	const [itemImage, setItemImage] = useState(items && items.image);
 
@@ -82,6 +88,21 @@ const ItemEditScreen = () => {
 			setItemImage(items.image);
 		}
 	}, [items]);
+
+	const deleteHandler = async (id) => {
+		if (window.confirm('Would you like to delete this item ?')) {
+			try {
+				await deleteItem(id);
+
+				toast.success('Item deleted successfully');
+
+				itemListRefetch();
+				navigate('/admin/itemslist');
+			} catch (err) {
+				toast.error(err?.data?.message || err.error);
+			}
+		}
+	};
 
 	const submitHandler = async (values, onSubmitProps) => {
 		// console.log('values:', values);
@@ -150,10 +171,10 @@ const ItemEditScreen = () => {
 
 	return (
 		<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-			<FormComponent>
-				<Typography variant='h3' fontFamily='Play' textAlign='center' mb='15px'>
+			< FormComponentTop title='Edit This Item'>
+				{/* <Typography variant='h3' fontFamily='Play' textAlign='center' mb='15px'>
 					Edit <b>Items</b>
-				</Typography>
+				</Typography> */}
 
 				{isLoading ? (
 					<Loader />
@@ -189,7 +210,7 @@ const ItemEditScreen = () => {
 									display='flex'
 									justifyContent='center'
 									alignItems='center'
-									m='20px 0 15px 0'
+									mb='15px'
 								>
 									<img
 										htmlFor='image'
@@ -256,7 +277,7 @@ const ItemEditScreen = () => {
 															mr: '20px',
 														}}
 													>
-														<EditOutlinedIcon color='blue' />
+														<EditOutlined color='blue' />
 													</Box>
 													<Input
 														type='file'
@@ -367,7 +388,12 @@ const ItemEditScreen = () => {
 									alignItems='center'
 								>
 									<ButtonComponent type='submit'>UPDATE</ButtonComponent>
-									<ButtonComponent backgroundColor={shades.neutral[500]}>
+									<ButtonComponent
+										backgroundColor={shades.neutral[500]}
+										type='button'
+										onClick={() => deleteHandler(itemId)}
+									>
+										<DeleteSweepOutlined sx={{ mr: '5px' }} />
 										DELETE
 									</ButtonComponent>
 								</Box>
@@ -394,7 +420,7 @@ const ItemEditScreen = () => {
 						</Typography>
 					</Link>
 				</Box>
-			</FormComponent>
+			</ FormComponentTop>
 		</Box>
 	);
 };

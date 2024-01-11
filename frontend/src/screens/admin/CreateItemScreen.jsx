@@ -17,8 +17,9 @@ import {
 	useCreateItemMutation,
 	useUploadItemImagMutation,
 } from '../../slices/itemsApiSlice';
-import FormComponent from '../../components/auth/FormComponent';
+import FormComponentTop from '../../components/FormUi/FormComponentTop';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
+import Loader from '../../components/Utils/Loader';
 
 const ItemEditScreen = () => {
 	const initialItemsValues = {
@@ -77,7 +78,7 @@ const ItemEditScreen = () => {
 
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
-	const [createItem] = useCreateItemMutation();
+	const [createItem, { isLoading }] = useCreateItemMutation();
 
 	// For item Image Upload
 	const [uploadItemImag] = useUploadItemImagMutation();
@@ -108,7 +109,6 @@ const ItemEditScreen = () => {
 
 			toast.success('Item updated successfully');
 
-			// refetch();
 			navigate('/admin/itemslist');
 		} catch (error) {
 			toast.error(error?.data?.message || error.error);
@@ -117,10 +117,12 @@ const ItemEditScreen = () => {
 
 	return (
 		<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-			<FormComponent title="Let's Make SHOPAHOLIC ITEM">
+			<FormComponentTop title="Make A SHOPAHOLIC ITEM">
 				<Typography variant='h3' fontFamily='Play' textAlign='center' mb='30px'>
 					Create <b>Item</b>
 				</Typography>
+
+				{isLoading && <Loader />}
 
 				<Formik
 					initialValues={initialItemsValues}
@@ -340,7 +342,7 @@ const ItemEditScreen = () => {
 						</Typography>
 					</Link>
 				</Box>
-			</FormComponent>
+			</FormComponentTop>
 		</Box>
 	);
 };

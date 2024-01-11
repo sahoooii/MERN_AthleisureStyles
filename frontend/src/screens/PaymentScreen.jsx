@@ -6,7 +6,7 @@ import { shades } from '../theme';
 import { savePaymentMethod } from '../slices/cartSlice';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
-import FormComponent from '../components/auth/FormComponent';
+import FormComponent from '../components/FormUi/FormComponent';
 
 const PaymentScreen = () => {
 	const [paymentMethod, setPaymentMethod] = useState('PayPal');
@@ -40,7 +40,7 @@ const PaymentScreen = () => {
 
 			<Box mt='40px'>
 				<FormComponent title='Select Method'>
-					<Typography sx={{ mb: '15px', textAlign: 'center' }} variant='h3'>
+					<Typography sx={{ m: '20px 15px', textAlign: 'center' }} variant='h3'>
 						Payment Method
 					</Typography>
 
@@ -61,7 +61,7 @@ const PaymentScreen = () => {
 						</Box>
 
 						<Box
-							mb='20px'
+							mb='40px'
 							display='flex'
 							justifyContent='space-between'
 							gap='15px'

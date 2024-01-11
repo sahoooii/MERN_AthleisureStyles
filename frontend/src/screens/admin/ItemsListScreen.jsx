@@ -14,31 +14,14 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
-import {
-	useCreateItemMutation,
-	useGetItemsQuery,
-} from '../../slices/itemsApiSlice';
-import { toast } from 'react-toastify';
+import { useGetItemsQuery } from '../../slices/itemsApiSlice';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 
 const ItemsListScreen = () => {
-	const { data: items, isLoading, error, refetch } = useGetItemsQuery();
-
-	const [createItem, { isLoading: loadingCreate }] = useCreateItemMutation();
-
-	const createItemHandler = async () => {
-		if (window.confirm('Do you want to create new Item ?')) {
-			try {
-				await createItem();
-				refetch();
-			} catch (err) {
-				toast.error(err?.data?.message || err.error);
-			}
-		}
-	};
+	const { data: items, isLoading, error } = useGetItemsQuery();
 
 	const columns = [
 		{ id: 'id', label: 'ID', minWidth: 150 },
@@ -84,13 +67,12 @@ const ItemsListScreen = () => {
 				mb='20px'
 			>
 				<Typography variant='h3'>
-					Items <b>Edit</b>
+					Items <b>List</b>
 				</Typography>
 				<Box sx={{ width: { sm: '30%', md: '20%' } }}>
 					<Link to='/admin/item'>
 						<ButtonComponent
 							backgroundColor={shades.neutral[600]}
-							// onClick={createItemHandler}
 						>
 							<EditNoteOutlinedIcon sx={{ fontSize: '20px', mr: '5px' }} />{' '}
 							CREATE ITEM

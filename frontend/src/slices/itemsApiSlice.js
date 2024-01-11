@@ -40,6 +40,12 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				body: data,
 			}),
 		}),
+		deleteItem: builder.mutation({
+			query: (itemId) => ({
+				url: `${ITEMS_URL}/${itemId}`,
+				method: 'DELETE',
+			}),
+		}),
 	}),
 });
 
@@ -49,4 +55,5 @@ export const {
 	useCreateItemMutation,
 	useUpdateItemMutation,
 	useUploadItemImagMutation,
+	useDeleteItemMutation,
 } = itemsApiSlice;

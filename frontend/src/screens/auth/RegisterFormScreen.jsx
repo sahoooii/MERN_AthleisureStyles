@@ -16,11 +16,12 @@ import {
 } from '../../slices/usersApiSlice';
 import { setCredentials } from '../../slices/authSlice';
 import { toast } from 'react-toastify';
-import FormComponent from '../../components/auth/FormComponent';
+import FormComponent from '../../components/FormUi/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { shades } from '../../theme';
 
 const initialRegisterValues = {
 	firstName: '',
@@ -141,8 +142,8 @@ const RegisterFormScreen = () => {
 					fontSize='32px'
 					fontWeight='bold'
 					fontFamily='Play'
-					textAlign='center'
 					mb='15px'
+					color={shades.neutral[700]}
 				>
 					REGISTER
 				</Typography>
