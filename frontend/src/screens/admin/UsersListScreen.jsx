@@ -102,7 +102,7 @@ const UsersListScreen = () => {
 												gap: 8,
 											}}
 										>
-											<Link to={`admin/user/${user._id}/edit`}>
+											<Link to={`/admin/user/${user._id}/edit`}>
 												<img
 													src={user.picturePath}
 													alt={`${user.firstName} ${user.lastName}`}
@@ -114,7 +114,7 @@ const UsersListScreen = () => {
 													}}
 												/>
 											</Link>
-											<Link to={`admin/user/${user._id}/edit`}>{user._id}</Link>
+											<Link to={`/admin/user/${user._id}/edit`}>{user._id}</Link>
 										</StyledTableCell>
 										<StyledTableCell>
 											{user && `${user.firstName} ${user.lastName}`}

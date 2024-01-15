@@ -103,8 +103,11 @@ const OrderListScreen = () => {
 											<Link to={`/order/${order._id}`}>{order._id}</Link>
 										</StyledTableCell>
 										<StyledTableCell>
-											{order.user &&
-												`${order.user.firstName} ${order.user.lastName}`}
+											{order.user ? (
+												`${order.user.firstName} ${order.user.lastName}`
+											) : (
+												<Typography>DELETED ACCOUNT</Typography>
+											)}
 										</StyledTableCell>
 										<StyledTableCell align='right'>
 											{order.createdAt.substring(0, 10)}
