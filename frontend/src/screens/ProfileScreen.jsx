@@ -16,17 +16,21 @@ import {
 	useUploadProfileImageMutation,
 	useUpdateProfileMutation,
 	useGetProfileDetailsQuery,
+	useDeleteUserMutation,
 } from '../slices/usersApiSlice';
-import { setCredentials } from '../slices/authSlice';
+import { logout, setCredentials } from '../slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 import FormComponent from '../components/FormUi/FormComponent';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { DeleteSweepOutlined, EditOutlined } from '@mui/icons-material';
+import { shades } from '../theme';
 
 const ProfileScreen = () => {
 	const { palette } = useTheme();
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { userInfo } = useSelector((state) => state.auth);
 
@@ -71,12 +75,16 @@ const ProfileScreen = () => {
 		error,
 	} = useGetProfileDetailsQuery();
 
+	// console.log(userProfile);
+
 	const [updateProfile, { isLoading: loadingUpdateProfile }] =
 		useUpdateProfileMutation();
 
 	// For profile Image Upload
 	const [uploadProfileImage, { isLoading: loadingProfileImage }] =
 		useUploadProfileImageMutation();
+
+	const [deleteUser] = useDeleteUserMutation();
 
 	useEffect(() => {
 		if (userProfile) {
@@ -139,6 +147,22 @@ const ProfileScreen = () => {
 				refetch();
 			} catch (error) {
 				toast.error(error?.data?.message || error.error);
+			}
+		}
+	};
+
+	const deleteHandler = async (id) => {
+		if (window.confirm('Would you like to delete your account ?')) {
+			try {
+				await deleteUser(id);
+				// Clear localStorage userInfo
+				dispatch(logout());
+
+				toast.success('Your account deleted successfully');
+
+				navigate('/register');
+			} catch (err) {
+				toast.error(err?.data?.message || err.error);
 			}
 		}
 	};
@@ -277,7 +301,7 @@ const ProfileScreen = () => {
 																	mr: '20px',
 																}}
 															>
-																<EditOutlinedIcon color='blue' />
+																<EditOutlined color='blue' />
 															</Box>
 															<Input
 																type='file'
@@ -365,8 +389,24 @@ const ProfileScreen = () => {
 									/>
 								</Box>
 
-								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
-									<ButtonComponent>UPDATE</ButtonComponent>
+								<Box
+									mt='20px'
+									gap='20px'
+									display='flex'
+									justifyContent='space-between'
+									alignItems='center'
+								>
+									<ButtonComponent type='submit'>UPDATE</ButtonComponent>
+									{!userProfile.isAdmin && (
+										<ButtonComponent
+											backgroundColor={shades.neutral[500]}
+											type='button'
+											onClick={() => deleteHandler(userProfile._id)}
+										>
+											<DeleteSweepOutlined sx={{ mr: '5px' }} />
+											DELETE
+										</ButtonComponent>
+									)}
 								</Box>
 							</form>
 						)}
