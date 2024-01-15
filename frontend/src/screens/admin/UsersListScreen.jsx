@@ -23,11 +23,11 @@ const UsersListScreen = () => {
 	// console.log(users);
 
 	const columns = [
-		{ id: 'id', label: 'ID', minWidth: 150 },
-		{ id: 'user', label: 'USER NAME', minWidth: 120 },
-		{ id: 'email', label: 'E-MAIL', minWidth: 120 },
-		{ id: 'admin', label: 'ADMIN', minWidth: 120 },
-		{ id: 'create_date', label: 'CREATE DATE', minWidth: 120, align: 'right' },
+		{ id: 'user', label: 'USER', minWidth: 160 },
+		{ id: 'user_name', label: 'USER NAME', minWidth: 140 },
+		{ id: 'email', label: 'E-MAIL', minWidth: 140 },
+		{ id: 'status', label: 'STATUS', minWidth: 130 },
+		{ id: 'create_at', label: 'CREATE AT', minWidth: 120, align: 'right' },
 	];
 
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -37,6 +37,7 @@ const UsersListScreen = () => {
 		},
 		[`&.${tableCellClasses.body}`]: {
 			fontSize: 14,
+			padding: '12px 6px',
 		},
 	}));
 
@@ -93,16 +94,45 @@ const UsersListScreen = () => {
 							<TableBody>
 								{users.map((user) => (
 									<StyledTableRow key={user._id} hover>
-										<StyledTableCell>
-											<Link to={`/user/${user._id}`}>{user._id}</Link>
+										<StyledTableCell
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												justifyContent: 'space-around',
+												gap: 8,
+											}}
+										>
+											<Link to={`admin/user/${user._id}/edit`}>
+												<img
+													src={user.picturePath}
+													alt={`${user.firstName} ${user.lastName}`}
+													width='55px'
+													height='70px'
+													style={{
+														borderRadius: '3px',
+														objectFit: 'cover',
+													}}
+												/>
+											</Link>
+											<Link to={`admin/user/${user._id}/edit`}>{user._id}</Link>
 										</StyledTableCell>
 										<StyledTableCell>
 											{user && `${user.firstName} ${user.lastName}`}
 										</StyledTableCell>
-										<StyledTableCell>{user.email}</StyledTableCell>
-										{/* Later */}
-										<StyledTableCell>{user.isAdmin}</StyledTableCell>
-										<StyledTableCell align='right'>
+										<StyledTableCell>
+											<Link to={`mailto:${user.email}`}>{user.email}</Link>
+										</StyledTableCell>
+										<StyledTableCell>
+											{user.isAdmin ? (
+												<Message severity='error'>ADMIN</Message>
+											) : (
+												<Message severity='success'>MEMBER</Message>
+											)}
+										</StyledTableCell>
+										<StyledTableCell
+											align='right'
+											style={{ paddingRight: '20px' }}
+										>
 											{user.createdAt.substring(0, 10)}
 										</StyledTableCell>
 									</StyledTableRow>

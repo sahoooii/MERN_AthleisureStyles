@@ -5,6 +5,7 @@ import storeLogo from '../../assets/logo/athleisureLogo.png';
 import storeLogoXS from '../../assets/logo/athleisureLogoXS.png';
 import storeLogoSM from '../../assets/logo/athleisureLogoSM.png';
 import { shades } from '../../theme';
+import { Link } from 'react-router-dom';
 
 const FormComponent = ({ title, children }) => {
 	const isMdScreens = useMediaQuery('(min-width:900px)');
@@ -38,12 +39,14 @@ const FormComponent = ({ title, children }) => {
 								{title}
 							</Typography>
 							<Box display='flex' alignItems='center'>
-								<img
-									src={storeLogo}
-									alt='storeLogo'
-									width='80%'
-									height='auto'
-								/>
+								<Link to='/'>
+									<img
+										src={storeLogo}
+										alt='storeLogo'
+										width='80%'
+										height='auto'
+									/>
+								</Link>
 							</Box>
 						</Box>
 
