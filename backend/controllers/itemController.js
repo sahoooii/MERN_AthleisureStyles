@@ -23,6 +23,15 @@ const getItemById = asyncHandler(async (req, res) => {
 	}
 });
 
+// Admin
+// @desc Fetch All Items
+// @route GET /api/items/itemslist
+// @access  Private/Admin
+const getItemsByAdmin = asyncHandler(async (req, res) => {
+	const items = await Item.find({});
+	res.json(items);
+});
+
 // @desc Create a sample Item
 // @route POST /api/items
 // @access Private/Admin
@@ -122,4 +131,11 @@ const deleteItem = asyncHandler(async (req, res) => {
 	}
 });
 
-export { getItems, getItemById, createItem, updateItem, deleteItem };
+export {
+	getItems,
+	getItemById,
+	getItemsByAdmin,
+	createItem,
+	updateItem,
+	deleteItem,
+};

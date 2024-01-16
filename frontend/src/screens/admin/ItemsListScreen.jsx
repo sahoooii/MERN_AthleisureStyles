@@ -14,14 +14,18 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
-import { useGetItemsQuery } from '../../slices/itemsApiSlice';
+import { useGetItemsByAdminQuery } from '../../slices/itemsApiSlice';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
+import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 
 const ItemsListScreen = () => {
-	const { data: items, isLoading, error } = useGetItemsQuery();
+	const { data: items, isLoading, error } = useGetItemsByAdminQuery();
+
+	const { data: userProfile, isLoading: loadingProfile } =
+		useGetProfileDetailsQuery();
 
 	const columns = [
 		{ id: 'item', label: 'ITEM', minWidth: 160 },
@@ -68,14 +72,18 @@ const ItemsListScreen = () => {
 				<Typography variant='h3'>
 					Items <b>List</b>
 				</Typography>
-				<Box sx={{ width: { sm: '30%', md: '20%' } }}>
-					<Link to='/admin/item'>
-						<ButtonComponent backgroundColor={shades.neutral[600]}>
-							<EditNoteOutlinedIcon sx={{ fontSize: '20px', mr: '5px' }} />{' '}
-							CREATE ITEM
-						</ButtonComponent>
-					</Link>
-				</Box>
+
+				{/* Only create admin User */}
+				{!loadingProfile && userProfile.isAdmin && (
+					<Box sx={{ width: { sm: '30%', md: '20%' } }}>
+						<Link to='/admin/create'>
+							<ButtonComponent backgroundColor={shades.neutral[600]}>
+								<EditNoteOutlinedIcon sx={{ fontSize: '20px', mr: '5px' }} />{' '}
+								CREATE ITEM
+							</ButtonComponent>
+						</Link>
+					</Box>
+				)}
 			</Box>
 
 			{isLoading ? (

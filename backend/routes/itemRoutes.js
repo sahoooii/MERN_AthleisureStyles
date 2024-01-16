@@ -2,6 +2,7 @@ import express from 'express';
 import {
 	getItems,
 	getItemById,
+	getItemsByAdmin,
 	createItem,
 	updateItem,
 	deleteItem,
@@ -11,6 +12,7 @@ import { protect, admin } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 router.route('/').get(getItems).post(protect, admin, createItem);
+router.get('/itemslist', protect, admin, getItemsByAdmin);
 router
 	.route('/:id')
 	.get(getItemById)

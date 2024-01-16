@@ -173,7 +173,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 			email: updatedUser.email,
 			picturePath: updatedUser.picturePath,
 			wishlist: updatedUser.wishlist,
-			isAdmin: updatedUser.isAdmin,
 		});
 	} else {
 		res.status(404);
@@ -198,7 +197,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 		res.status(200).json({ message: 'User Deleted' });
 	} else {
 		res.status(404);
-		throw new Error('Item Not Found');
+		throw new Error('User Not Found');
 	}
 });
 
@@ -241,23 +240,23 @@ const updateUser = asyncHandler(async (req, res) => {
 		user.picturePath = req.body.picturePath || user.picturePath;
 		user.wishlist = req.body.wishlist || user.wishlist;
 
-		const updatedUser = user.save();
+		const updatedUser = await user.save();
 
 		res.status(200).json({
 			_id: updatedUser._id,
 			firstName: updatedUser.firstName,
 			lastName: updatedUser.lastName,
+			isAdmin: updatedUser.isAdmin,
 			email: updatedUser.email,
 			picturePath: updatedUser.picturePath,
 			wishlist: updatedUser.wishlist,
-			isAdmin: updatedUser.isAdmin,
 		});
 	} else {
 		res.status(404);
 		throw new Error('User Not Found');
 	}
 
-	res.send('Update user by Admin');
+	res.send('Updated user by Admin');
 });
 
 // @desc Delete user
@@ -277,7 +276,7 @@ const deleteUserByAdmin = asyncHandler(async (req, res) => {
 		res.status(200).json({ message: 'User Deleted' });
 	} else {
 		res.status(404);
-		throw new Error('Item Not Found');
+		throw new Error('User Not Found');
 	}
 });
 

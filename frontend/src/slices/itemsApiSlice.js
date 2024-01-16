@@ -17,9 +17,16 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			keepUnusedDataFor: 5,
 		}),
+		getItemsByAdmin: builder.query({
+			query: () => ({
+				url: `${ITEMS_URL}/itemslist`,
+			}),
+			providesTags: ['Items'],
+			keepUnusedDataFor: 5,
+		}),
 		createItem: builder.mutation({
 			query: (data) => ({
-				url: ITEMS_URL,
+				url: `${ITEMS_URL}`,
 				method: 'POST',
 				body: data,
 			}),
@@ -45,6 +52,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				url: `${ITEMS_URL}/${itemId}`,
 				method: 'DELETE',
 			}),
+			invalidatesTags: ['Items'],
 		}),
 	}),
 });
@@ -52,6 +60,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 export const {
 	useGetItemsQuery,
 	useGetItemDetailsQuery,
+	useGetItemsByAdminQuery,
 	useCreateItemMutation,
 	useUpdateItemMutation,
 	useUploadItemImagMutation,

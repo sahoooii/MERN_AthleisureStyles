@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
 	Box,
 	Typography,
@@ -10,15 +10,17 @@ import {
 	TextField,
 	Avatar,
 	Input,
+	FormControlLabel,
+	Checkbox,
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import {
+	useGetUsersQuery,
 	useGetUserDetailsQuery,
-	useUpdateProfileMutation,
+	useUpdateUserProfileMutation,
 	useUploadProfileImageMutation,
-	useDeleteUserMutation,
+	useDeleteUserByAdminMutation,
 } from '../../slices/usersApiSlice';
-import { logout, setCredentials } from '../../slices/authSlice';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import FormComponent from '../../components/FormUi/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
@@ -31,16 +33,12 @@ import { shades } from '../../theme';
 const UserProfileEditScreen = () => {
 	const { palette } = useTheme();
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
-	const { userInfo } = useSelector((state) => state.auth);
 
 	const { id: userId } = useParams();
 
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
-	const [profilePic, setProfilePic] = useState(userInfo.picturePath);
-
-	// Get user profile details
+	// Get each user profile details
 	const {
 		data: userProfile,
 		isLoading: loadingProfile,
@@ -50,19 +48,27 @@ const UserProfileEditScreen = () => {
 
 	// console.log(userProfile);
 
-	const [updateProfile, { isLoading: loadingUpdateProfile }] =
-		useUpdateProfileMutation();
+	const [updateUserProfile, { isLoading: loadingUpdateProfile }] =
+		useUpdateUserProfileMutation();
 
 	// For profile Image Upload
 	const [uploadProfileImage, { isLoading: loadingProfileImage }] =
 		useUploadProfileImageMutation();
 
-	const [deleteUser] = useDeleteUserMutation();
+	// Get users list
+	const { refetch: usersListRefetch } = useGetUsersQuery();
+
+	const [deleteUserByAdmin] = useDeleteUserByAdminMutation();
+
+	const [profilePic, setProfilePic] = useState(
+		userProfile && userProfile.picturePath
+	);
 
 	const initialRegisterValues = userProfile && {
 		firstName: userProfile.firstName ? userProfile.firstName : '',
 		lastName: userProfile.lastName ? userProfile.lastName : '',
 		email: userProfile.email ? userProfile.email : '',
+		isAdmin: userProfile.isAdmin ? userProfile.isAdmin : false,
 		password: '',
 		confirmPassword: '',
 		// initialValuesは空にしておく
@@ -77,6 +83,7 @@ const UserProfileEditScreen = () => {
 			.string()
 			.email('Invalid email.')
 			.required('Please enter your email'),
+		isAdmin: yup.boolean().notRequired(),
 		password: yup
 			.string()
 			.min(6, 'Password must contain at least 6 characters')
@@ -95,8 +102,7 @@ const UserProfileEditScreen = () => {
 	}, [userProfile]);
 
 	const submitHandler = async (values, onSubmitProps) => {
-		// console.log(values);
-		const { firstName, lastName, email, password } = values;
+		const { firstName, lastName, email, password, isAdmin } = values;
 
 		// When not change profilePic
 		if (
@@ -107,19 +113,21 @@ const UserProfileEditScreen = () => {
 			values.password
 		) {
 			try {
-				const response = await updateProfile({
-					_id: userInfo._id,
+				await updateUserProfile({
+					userId,
 					firstName,
 					lastName,
 					email,
 					password,
-					picturePath: userInfo.picturePath,
+					isAdmin,
+					picturePath: userProfile.picturePath,
 				}).unwrap();
 
-				dispatch(setCredentials(response));
+				refetch();
+
 				toast.success('Profile updated successfully');
 
-				refetch();
+				navigate('/admin/userslist');
 			} catch (error) {
 				toast.error(error?.data?.message || error.error);
 			}
@@ -134,19 +142,21 @@ const UserProfileEditScreen = () => {
 			try {
 				const imageData = await uploadProfileImage(formData).unwrap();
 
-				const response = await updateProfile({
-					_id: userInfo._id,
+				await updateUserProfile({
+					userId,
 					firstName,
 					lastName,
 					email,
 					password,
+					isAdmin,
 					picturePath: imageData.picturePath,
 				}).unwrap();
 
-				dispatch(setCredentials(response));
+				refetch();
+
 				toast.success('Profile updated successfully');
 
-				refetch();
+				navigate('/admin/userslist');
 			} catch (error) {
 				toast.error(error?.data?.message || error.error);
 			}
@@ -156,13 +166,11 @@ const UserProfileEditScreen = () => {
 	const deleteHandler = async (id) => {
 		if (window.confirm('Would you like to delete your account ?')) {
 			try {
-				await deleteUser(id);
-				// Clear localStorage userInfo
-				dispatch(logout());
-
+				await deleteUserByAdmin(id);
 				toast.success('Your account deleted successfully');
 
-				navigate('/register');
+				usersListRefetch();
+				navigate('/admin/userslist');
 			} catch (err) {
 				toast.error(err?.data?.message || err.error);
 			}
@@ -172,17 +180,6 @@ const UserProfileEditScreen = () => {
 	return (
 		<FormComponent title='Edit Your Profile'>
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-				{/* <Typography
-					variant='h3'
-					fontWeight='bold'
-					fontFamily='Play'
-					mb='15px'
-					textAlign='center'
-					color={shades.neutral[700]}
-				>
-					User Profile
-				</Typography> */}
-
 				{loadingProfile ? (
 					<Loader />
 				) : error ? (
@@ -390,6 +387,20 @@ const UserProfileEditScreen = () => {
 										sx={{ gridColumn: 'span 4' }}
 									/>
 								</Box>
+
+								<FormControlLabel
+									label='Admin User'
+									control={
+										<Checkbox
+											checked={values.isAdmin}
+											id='isAdmin'
+											name='isAdmin'
+											onChange={(e) =>
+												setFieldValue('isAdmin', e.currentTarget.checked)
+											}
+										/>
+									}
+								/>
 
 								<Box
 									mt='20px'
