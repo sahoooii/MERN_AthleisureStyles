@@ -19,6 +19,6 @@ router
 	.get(getItemById)
 	.put(protect, admin, updateItem)
 	.delete(protect, admin, deleteItem);
-router.route('/:id/review').post(protect, createItemReview);
+router.route('/:id/reviews').post(protect, createItemReview);
 
 export default router;

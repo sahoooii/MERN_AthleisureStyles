@@ -149,12 +149,12 @@ const createItemReview = asyncHandler(async (req, res) => {
 			res.status(400);
 			throw new Error('This Item already Reviewed');
 		}
-		const review = await Item.create({
+		const review = {
 			name: `${req.user.firstName} ${req.user.lastName} `,
 			user: req.user._id,
 			rating: Number(rating),
 			comment,
-		});
+		};
 
 		item.reviews.push(review);
 

@@ -22,7 +22,12 @@ const ItemDetailsScreen = () => {
 	// Count quantity
 	const [quantity, setQuantity] = useState(1);
 
-	const { data: item, isLoading, error } = useGetItemDetailsQuery(itemId);
+	const {
+		data: item,
+		isLoading,
+		refetch,
+		error,
+	} = useGetItemDetailsQuery(itemId);
 
 	const addToCartHandler = () => {
 		dispatch(addToCart({ ...item, quantity }));
@@ -200,7 +205,7 @@ const ItemDetailsScreen = () => {
 					</Box>
 
 					{/* Tabs */}
-					<ItemDetailsTabs item={item} />
+					<ItemDetailsTabs item={item} refetch={refetch} />
 				</Box>
 			)}
 		</>

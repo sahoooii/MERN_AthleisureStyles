@@ -4,15 +4,20 @@ import {
 	AccordionDetails,
 	AccordionSummary,
 	Box,
+	Divider,
+	Stack,
 	Tab,
 	Tabs,
 	Typography,
 	useMediaQuery,
 } from '@mui/material';
+import { useGetItemDetailsQuery } from '../../slices/itemsApiSlice';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ReviewForm from './ReviewForm';
+import Message from '../Utils/Message';
+import RatingLogic from '../Utils/RatingLogic';
 
-const ItemDetailsTabs = ({ item }) => {
+const ItemDetailsTabs = ({ item, refetch }) => {
 	const isNonMediumScreen = useMediaQuery('(min-width:900px)');
 
 	// For tabs
@@ -20,6 +25,8 @@ const ItemDetailsTabs = ({ item }) => {
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
+
+	// console.log(item);
 
 	return (
 		<>
@@ -47,56 +54,84 @@ const ItemDetailsTabs = ({ item }) => {
 					columnGap='40px'
 					sx={{ display: { md: 'flex' } }}
 				>
+					{/* For Tab */}
 					{value === 'reviews' && (
 						<>
-							{item.numReviews > 0 ? (
-								<Box flex='1 1 40%' mb='20px'>
-									{isNonMediumScreen ? (
-										<Box>
-											<Typography variant='p' sx={{ fontSize: { sm: '14px' } }}>
-												{/* Add Star Average */}
-												{item.numReviews} Reviews
-											</Typography>
-											<Box mt='10px'>
-												<Typography variant='p' sx={{ lineHeight: 2 }}>
-													Show Reviews... Something reviews coming soon. random
-													text text text Show Reviews... Something reviews
-													coming soon.
-												</Typography>
-											</Box>
-										</Box>
-									) : (
-										<Box mt='10px'>
-											<Accordion>
-												<AccordionSummary
-													expandIcon={<ExpandMoreIcon />}
-													aria-controls='panel1a-content'
-													id={item._id}
+							<Box flex='1 1 40%' mb='20px'>
+								{item.reviews.length === 0 && (
+									<Box mt='20px'>
+										<Message>No Reviews Yet</Message>
+									</Box>
+								)}
+
+								{item.reviews.map((review) => (
+									<Box key={review._id}>
+										{isNonMediumScreen ? (
+											<Box>
+												<Typography
+													variant='p'
+													sx={{ fontSize: { sm: '14px' } }}
 												>
-													<Typography variant='h4' sx={{ marginBottom: '0' }}>
-														{item.numReviews} Reviews:
+													{/* Add Star Average */}
+													{item.numReviews} Reviews
+												</Typography>
+
+												<Stack mt='10px' spacing={1}>
+													<Box
+														display='flex'
+														alignItems='center'
+														gap={8}
+													>
+														<Typography variant='p' sx={{ lineHeight: 2 }}>
+															<b>{review.name}</b>
+														</Typography>
+														<RatingLogic rating={review.rating}></RatingLogic>
+													</Box>
+													<Typography variant='subtitle2'>
+														{review.createdAt.substring(0, 10)}
 													</Typography>
-												</AccordionSummary>
-												<AccordionDetails>
-													<Typography variant='p' sx={{ lineHeight: 2 }}>
-														Show Reviews... Something reviews coming soon.
-														random text text text Show Reviews... Something
-														reviews coming soon.
+													<Typography variant='subtitle1'>
+														{review.comment}
 													</Typography>
-												</AccordionDetails>
-											</Accordion>
-										</Box>
-									)}
-								</Box>
-							) : (
-								<Box flex='1 1 40%' mt='32px'>
-									<Typography variant='p' sx={{ fontSize: { sm: '14px' } }}>
-										No Reviews Yet
-									</Typography>
-								</Box>
-							)}
-							{/* Write a Review */}
-							<ReviewForm item={item} />
+												</Stack>
+												<Divider sx={{ mt: '10px' }} />
+											</Box>
+										) : (
+											<Box mt='10px'>
+												<Accordion>
+													<AccordionSummary
+														expandIcon={<ExpandMoreIcon />}
+														aria-controls='panel1a-content'
+														id={review._id}
+													>
+														<Typography variant='h4' sx={{ marginBottom: '0' }}>
+															{item.numReviews} Reviews:
+														</Typography>
+													</AccordionSummary>
+
+													<AccordionDetails>
+														<Box mt='10px'>
+															<Typography variant='p' sx={{ lineHeight: 2 }}>
+																<b>{review.name}</b>
+															</Typography>
+															<RatingLogic rating={review.rating}></RatingLogic>
+															<Typography variant='subtitle2'>
+																{review.createdAt.substring(0, 10)}
+															</Typography>
+															<Typography variant='subtitle1'>
+																{review.comment}
+															</Typography>
+														</Box>
+													</AccordionDetails>
+												</Accordion>
+											</Box>
+										)}
+									</Box>
+								))}
+							</Box>
+
+							{/* Create a Review */}
+							<ReviewForm />
 						</>
 					)}
 				</Box>
