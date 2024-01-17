@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useSelector } from 'react-redux';
 import {
 	Box,
 	Typography,

@@ -19,7 +19,7 @@ const getItemById = asyncHandler(async (req, res) => {
 		return res.json(item);
 	} else {
 		res.status(404);
-		throw new Error('Resource Not Found');
+		throw new Error('Item Not Found');
 	}
 });
 
@@ -131,6 +131,50 @@ const deleteItem = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Review a Item
+// @route POST /api/items/:id/review
+// @access Private
+const createItemReview = asyncHandler(async (req, res) => {
+	const { rating, comment } = req.body;
+
+	const item = await Item.findById(req.params.id);
+
+	// Only one review for a item,  each person
+	if (item) {
+		const alreadyReviewed = item.reviews.find(
+			(review) => review.user.toString() === req.user._id.toString()
+		);
+
+		if (alreadyReviewed) {
+			res.status(400);
+			throw new Error('This Item already Reviewed');
+		}
+		const review = await Item.create({
+			name: `${req.user.firstName} ${req.user.lastName} `,
+			user: req.user._id,
+			rating: Number(rating),
+			comment,
+		});
+
+		item.reviews.push(review);
+
+		item.numReviews = item.reviews.length;
+
+		// Average rate calculation
+		// 3 4 1 / 3
+		item.rating =
+			item.reviews.reduce((acc, item) => acc + item.rating, 0) /
+			item.reviews.length;
+
+		await item.save();
+
+		res.status(201).json({ message: 'Review added Successfully' });
+	} else {
+		res.status(404);
+		throw new Error('Item Not Found');
+	}
+});
+
 export {
 	getItems,
 	getItemById,
@@ -138,4 +182,5 @@ export {
 	createItem,
 	updateItem,
 	deleteItem,
+	createItemReview,
 };

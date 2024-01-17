@@ -26,13 +26,13 @@ import ButtonComponent from '../../components/Utils/ButtonComponent';
 const ReviewForm = ({ item }) => {
 	// For Review form
 	const initialReviewValue = {
-		rate: '',
+		rating: '',
 		comment: '',
 	};
 
 	// For Validation
 	const reviewValidationSchema = yup.object().shape({
-		rate: yup.string().required('Please rating this item'),
+		rating: yup.string().required('Please rating this item'),
 		comment: yup.string().required('Let us know, something your comment'),
 	});
 
@@ -75,14 +75,14 @@ const ReviewForm = ({ item }) => {
 										<FormControl>
 											<TextField
 												select
-												id='rate'
-												name='rate'
+												id='rating'
+												name='rating'
 												label='Rating This Item'
-												value={values.rate}
+												value={values.rating}
 												onChange={handleChange}
 												onBlur={handleBlur}
-												error={Boolean(touched.rate) && Boolean(errors.rate)}
-												helperText={touched.rate && errors.rate}
+												error={Boolean(touched.rating) && Boolean(errors.rating)}
+												helperText={touched.rating && errors.rating}
 											>
 												<MenuItem value={1}>
 													<Box display='flex' alignItems='center'>
