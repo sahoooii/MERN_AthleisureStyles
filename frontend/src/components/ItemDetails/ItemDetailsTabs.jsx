@@ -6,16 +6,20 @@ import {
 	Avatar,
 	Box,
 	Divider,
+	Grid,
+	IconButton,
 	Stack,
 	Tab,
 	Tabs,
 	Typography,
 	useMediaQuery,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useDeleteReviewMutation } from '../../slices/itemsApiSlice';
+import { Close, ExpandMore } from '@mui/icons-material';
 import ReviewForm from './ReviewForm';
 import Message from '../Utils/Message';
 import RatingLogic from '../Utils/RatingLogic';
+import { useSelector } from 'react-redux';
 
 const ItemDetailsTabs = ({ item }) => {
 	const isNonMediumScreen = useMediaQuery('(min-width:900px)');
@@ -25,6 +29,13 @@ const ItemDetailsTabs = ({ item }) => {
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
+
+	const { userInfo } = useSelector((state) => state.auth);
+
+	const [deleteReview, isLoading, fetch] = useDeleteReviewMutation();
+
+	// console.log('item:', item);
+	// console.log('userInfo:', userInfo);
 
 	return (
 		<>
@@ -70,18 +81,34 @@ const ItemDetailsTabs = ({ item }) => {
 										{item.reviews.map((review) => (
 											<Box key={review._id}>
 												<Stack mt='10px' spacing={1.5}>
-													<Box display='flex' alignItems='center' gap={8}>
-														<Avatar src={review.image} />
-														<Typography variant='p' sx={{ lineHeight: 2 }}>
-															<b>{review.name}</b>
-														</Typography>
-													</Box>
-													<Box display='flex' alignItems='center' gap={6}>
-														<Typography variant='subtitle2'>
-															{review.createdAt.substring(0, 10)}
-														</Typography>
-														<RatingLogic rating={review.rating}></RatingLogic>
-													</Box>
+													<Grid container display='flex' alignItems='center'>
+														<Grid item xs={3}>
+															<Avatar src={review.image} />
+														</Grid>
+														<Grid item xs={3}>
+															<Typography variant='p' sx={{ lineHeight: 2 }}>
+																<b>{review.name}</b>
+															</Typography>
+														</Grid>
+														<Grid item xs={6} textAlign='right'>
+															{userInfo && userInfo._id === review.user && (
+																<IconButton sx={{ mb: '15px' }}>
+																	<Close />
+																</IconButton>
+															)}
+														</Grid>
+													</Grid>
+
+													<Grid container display='flex' alignItems='center'>
+														<Grid item xs={3}>
+															<Typography variant='subtitle2'>
+																{review.createdAt.substring(0, 10)}
+															</Typography>
+														</Grid>
+														<Grid item xs={8}>
+															<RatingLogic rating={review.rating}></RatingLogic>
+														</Grid>
+													</Grid>
 													<Typography variant='subtitle1'>
 														{review.comment}
 													</Typography>
@@ -94,7 +121,7 @@ const ItemDetailsTabs = ({ item }) => {
 									<Box mt='10px'>
 										<Accordion>
 											<AccordionSummary
-												expandIcon={<ExpandMoreIcon />}
+												expandIcon={<ExpandMore />}
 												aria-controls='review-content'
 												id='review-header'
 											>
@@ -109,30 +136,56 @@ const ItemDetailsTabs = ({ item }) => {
 
 											<AccordionDetails>
 												{item.reviews.map((review) => (
-													<Box mt='10px' key={review._id}>
-														<Stack mt='10px' spacing={1}>
-															<Box display='flex' alignItems='center' gap={8}>
-																<Avatar src={review.image} />
+													<Grid mt='10px' key={review._id}>
+														<Stack mt='10px' spacing={1.5}>
+															<Grid
+																container
+																display='flex'
+																alignItems='center'
+															>
+																<Grid item xs={3}>
+																	<Avatar src={review.image} />
+																</Grid>
+																<Grid item xs={3}>
+																	<Typography
+																		variant='p'
+																		sx={{ lineHeight: 2 }}
+																	>
+																		<b>{review.name}</b>
+																	</Typography>
+																</Grid>
+																<Grid item xs={6} textAlign='right'>
+																	{userInfo && userInfo._id === review.user && (
+																		<IconButton sx={{ mb: '15px' }}>
+																			<Close />
+																		</IconButton>
+																	)}
+																</Grid>
+															</Grid>
 
-																<Typography variant='p' sx={{ lineHeight: 2 }}>
-																	<b>{review.name}</b>
-																</Typography>
-															</Box>
-															<Box display='flex' alignItems='center' gap={6}>
-																<Typography variant='subtitle2'>
-																	{review.createdAt.substring(0, 10)}
-																</Typography>
-																<RatingLogic
-																	rating={review.rating}
-																></RatingLogic>
-															</Box>
+															<Grid
+																container
+																display='flex'
+																alignItems='center'
+															>
+																<Grid item xs={3}>
+																	<Typography variant='subtitle2'>
+																		{review.createdAt.substring(0, 10)}
+																	</Typography>
+																</Grid>
+																<Grid item xs={8}>
+																	<RatingLogic
+																		rating={review.rating}
+																	></RatingLogic>
+																</Grid>
+															</Grid>
 															<Typography variant='subtitle1'>
 																{review.comment}
 															</Typography>
 
 															<Divider sx={{ mt: '10px' }} />
 														</Stack>
-													</Box>
+													</Grid>
 												))}
 											</AccordionDetails>
 										</Accordion>

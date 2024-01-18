@@ -83,9 +83,7 @@ const ReviewForm = () => {
 						aria-controls='panel1a-content'
 						id={item._id}
 					>
-						<Typography variant='h4'>
-							Write a Review:
-						</Typography>
+						<Typography variant='h4'>Write a Review:</Typography>
 					</AccordionSummary>
 
 					{loadingCreateReview && <Loader />}

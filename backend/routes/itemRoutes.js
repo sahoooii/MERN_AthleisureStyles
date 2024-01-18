@@ -7,6 +7,7 @@ import {
 	updateItem,
 	deleteItem,
 	createItemReview,
+	deleteItemReview,
 } from '../controllers/itemController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -19,6 +20,9 @@ router
 	.get(getItemById)
 	.put(protect, admin, updateItem)
 	.delete(protect, admin, deleteItem);
-router.route('/:id/reviews').post(protect, createItemReview);
+router
+	.route('/:id/reviews')
+	.post(protect, createItemReview)
+	.delete(protect, deleteItemReview);
 
 export default router;

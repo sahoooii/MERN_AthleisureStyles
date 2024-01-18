@@ -145,6 +145,8 @@ const createItemReview = asyncHandler(async (req, res) => {
 			(review) => review.user.toString() === req.user._id.toString()
 		);
 
+		console.log(alreadyReviewed);
+
 		if (alreadyReviewed) {
 			res.status(400);
 			throw new Error('This Item already Reviewed');
@@ -176,6 +178,45 @@ const createItemReview = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Delete item review
+// @route DELETE /api/items/:id/review
+// @access Private ? admin
+const deleteItemReview = asyncHandler(async (req, res) => {
+	const item = await Item.findById(req.params.id);
+
+	if (item) {
+		// Check include user info in reviews array
+		const userCheck = item.reviews.find(
+			(review) => review.user.toString() === req.user._id.toString()
+		);
+
+		if (userCheck) {
+			item.reviews.map((review) => {
+				//check the same person or not
+				if (userCheck._id === review._id) {
+					review.deleteOne({ _id: review._id });
+				}
+			});
+
+			item.numReviews = item.reviews.length;
+
+			item.rating =
+				item.reviews.reduce((acc, item) => acc + item.rating, 0) /
+				item.reviews.length;
+
+			await item.save();
+
+			res.status(201).json({ message: 'Review Deleted Successfully' });
+		} else {
+			res.status(404);
+			throw new Error("You can't delete other user's review");
+		}
+	} else {
+		res.status(404);
+		throw new Error('Item Not Found');
+	}
+});
+
 export {
 	getItems,
 	getItemById,
@@ -184,4 +225,5 @@ export {
 	updateItem,
 	deleteItem,
 	createItemReview,
+	deleteItemReview,
 };
