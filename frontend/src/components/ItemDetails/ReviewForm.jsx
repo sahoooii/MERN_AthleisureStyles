@@ -83,7 +83,7 @@ const ReviewForm = () => {
 						aria-controls='panel1a-content'
 						id={item._id}
 					>
-						<Typography variant='h4' sx={{ marginBottom: '0' }}>
+						<Typography variant='h4'>
 							Write a Review:
 						</Typography>
 					</AccordionSummary>
@@ -107,7 +107,7 @@ const ReviewForm = () => {
 								<form onSubmit={handleSubmit}>
 									{userInfo ? (
 										<Stack spacing={2}>
-											{/* Select Reviews */}
+											{/* Select Rating */}
 											<FormControl>
 												<TextField
 													select

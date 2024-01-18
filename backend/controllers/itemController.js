@@ -152,6 +152,7 @@ const createItemReview = asyncHandler(async (req, res) => {
 		const review = {
 			name: `${req.user.firstName} ${req.user.lastName} `,
 			user: req.user._id,
+			image: req.user.picturePath,
 			rating: Number(rating),
 			comment,
 		};

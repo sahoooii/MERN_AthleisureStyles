@@ -25,7 +25,6 @@ const ItemDetailsScreen = () => {
 	const {
 		data: item,
 		isLoading,
-		refetch,
 		error,
 	} = useGetItemDetailsQuery(itemId);
 
@@ -205,7 +204,7 @@ const ItemDetailsScreen = () => {
 					</Box>
 
 					{/* Tabs */}
-					<ItemDetailsTabs item={item} refetch={refetch} />
+					<ItemDetailsTabs item={item} />
 				</Box>
 			)}
 		</>
