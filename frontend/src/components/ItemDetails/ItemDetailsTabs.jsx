@@ -14,15 +14,23 @@ import {
 	Typography,
 	useMediaQuery,
 } from '@mui/material';
-import { useDeleteReviewMutation } from '../../slices/itemsApiSlice';
+import {
+	useDeleteReviewMutation,
+	useGetItemDetailsQuery,
+} from '../../slices/itemsApiSlice';
 import { Close, ExpandMore } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 import ReviewForm from './ReviewForm';
 import Message from '../Utils/Message';
 import RatingLogic from '../Utils/RatingLogic';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import Loader from '../Utils/Loader';
 
-const ItemDetailsTabs = ({ item }) => {
+const ItemDetailsTabs = () => {
 	const isNonMediumScreen = useMediaQuery('(min-width:900px)');
+
+	const { itemId } = useParams();
 
 	// For tabs
 	const [value, setValue] = useState('description');
@@ -32,10 +40,25 @@ const ItemDetailsTabs = ({ item }) => {
 
 	const { userInfo } = useSelector((state) => state.auth);
 
-	const [deleteReview, isLoading, fetch] = useDeleteReviewMutation();
+	const { data: item, refetch, isLoading } = useGetItemDetailsQuery(itemId);
+
+	const [deleteReview] = useDeleteReviewMutation();
 
 	// console.log('item:', item);
-	// console.log('userInfo:', userInfo);
+
+	const deleteHandler = async (id) => {
+		if (window.confirm('Would you like to delete this review ?')) {
+			try {
+				await deleteReview(id);
+
+				toast.success('Review deleted successfully');
+
+				refetch();
+			} catch (err) {
+				toast.error(err?.data?.message || err.error);
+			}
+		}
+	};
 
 	return (
 		<>
@@ -63,7 +86,9 @@ const ItemDetailsTabs = ({ item }) => {
 					sx={{ display: { md: 'flex' } }}
 				>
 					{/* For Tab */}
-					{value === 'reviews' && (
+					{value === 'reviews' && isLoading ? (
+						<Loader />
+					) : (
 						<>
 							<Box flex='1 1 40%' mb='20px'>
 								{isNonMediumScreen ? (
@@ -92,7 +117,10 @@ const ItemDetailsTabs = ({ item }) => {
 														</Grid>
 														<Grid item xs={6} textAlign='right'>
 															{userInfo && userInfo._id === review.user && (
-																<IconButton sx={{ mb: '15px' }}>
+																<IconButton
+																	sx={{ mb: '15px' }}
+																	onClick={() => deleteHandler(itemId)}
+																>
 																	<Close />
 																</IconButton>
 															)}

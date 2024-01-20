@@ -183,26 +183,30 @@ const createItemReview = asyncHandler(async (req, res) => {
 // @access Private ? admin
 const deleteItemReview = asyncHandler(async (req, res) => {
 	const item = await Item.findById(req.params.id);
+	const reviews = item.reviews;
 
-	if (item) {
+	if (reviews) {
 		// Check include user info in reviews array
-		const userCheck = item.reviews.find(
+		const userCheck = reviews.find(
 			(review) => review.user.toString() === req.user._id.toString()
 		);
+		// console.log('userCheck', userCheck);
 
 		if (userCheck) {
-			item.reviews.map((review) => {
-				//check the same person or not
+			reviews.map((review) => {
+				//check the comment ID same person or not
 				if (userCheck._id === review._id) {
 					review.deleteOne({ _id: review._id });
 				}
 			});
 
 			item.numReviews = item.reviews.length;
+			console.log('item.numReviews', item.numReviews);
 
 			item.rating =
+				item.reviews.length > 0 &&
 				item.reviews.reduce((acc, item) => acc + item.rating, 0) /
-				item.reviews.length;
+					item.reviews.length;
 
 			await item.save();
 
@@ -213,8 +217,41 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 		}
 	} else {
 		res.status(404);
-		throw new Error('Item Not Found');
+		throw new Error('No Reviews');
 	}
+
+	// 	const item = await Item.findById(req.params.id);
+	// 	const reviews = item.reviews;
+
+	// 	const userCheck = reviews.find(
+	// 		(review) => review.user.toString() === req.user._id.toString()
+	// 	);
+
+	// 	console.log('userCheck', userCheck);
+
+	// 	reviews.map(async (review) => {
+	// 		if (reviews && userCheck._id === review._id) {
+	// 			try {
+	// 				// Check comment ID
+	// 				let reviews = await Item.findByIdAndUpdate(
+	// 					item._id,
+	// 					{
+	// 						$pull: { reviews: review._id },
+	// 					},
+	// 					{ new: true }
+	// 				);
+	// 				// Item dataが全部取得できている、pullされていない
+	// 				res.status(200).json(reviews);
+	// 			} catch (error) {
+	// 				res.status(400);
+	// 				throw new Error('Failed to remove review');
+	// 			}
+	// 		} else {
+	// 			res.status(404);
+	// 			throw new Error('Review Not Found');
+	// 		}
+	// 	});
+	// });
 });
 
 export {

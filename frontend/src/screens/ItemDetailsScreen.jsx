@@ -22,11 +22,7 @@ const ItemDetailsScreen = () => {
 	// Count quantity
 	const [quantity, setQuantity] = useState(1);
 
-	const {
-		data: item,
-		isLoading,
-		error,
-	} = useGetItemDetailsQuery(itemId);
+	const { data: item, isLoading, error } = useGetItemDetailsQuery(itemId);
 
 	const addToCartHandler = () => {
 		dispatch(addToCart({ ...item, quantity }));
@@ -81,11 +77,15 @@ const ItemDetailsScreen = () => {
 
 								{/* Reviews */}
 								<Box display='flex' alignItems='center' mb='12px'>
-									{item.rating && <RatingLogic rating={item.rating} />}
-									{item.numReviews > 0 && (
+									{item.rating > 0 && <RatingLogic rating={item.rating} />}
+									{item.numReviews > 0 ? (
 										<Typography variant='span' ml='8px'>
 											{item.numReviews} Reviews
 										</Typography>
+									) : (
+										<Box sx={{ width: { xs: '90%', sm: '70%', md: '50%' } }}>
+											<Message severity='info'>No Reviews Yet</Message>
+										</Box>
 									)}
 								</Box>
 
@@ -204,7 +204,7 @@ const ItemDetailsScreen = () => {
 					</Box>
 
 					{/* Tabs */}
-					<ItemDetailsTabs item={item} />
+					<ItemDetailsTabs />
 				</Box>
 			)}
 		</>
