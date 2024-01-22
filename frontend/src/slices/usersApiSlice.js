@@ -52,6 +52,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				method: 'DELETE',
 			}),
 		}),
+		addToWishList: builder.mutation({
+			query: (data) => ({
+				url: `${USERS_URL}/wishlist`,
+				method: 'PUT',
+				body: data,
+			}),
+			invalidatesTags: ['Users'],
+		}),
 		// Admin
 		getUsers: builder.query({
 			query: () => ({
@@ -92,6 +100,7 @@ export const {
 	useGetProfileDetailsQuery,
 	useUpdateProfileMutation,
 	useLogoutMutation,
+	useAddToWishListMutation,
 	useGetUsersQuery,
 	useDeleteUserMutation,
 	useDeleteUserByAdminMutation,

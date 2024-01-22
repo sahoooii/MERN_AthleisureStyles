@@ -6,12 +6,17 @@ import { shades } from '../theme';
 import { useGetItemDetailsQuery } from '../slices/itemsApiSlice';
 import { addToCart } from '../slices/cartSlice';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import RatingLogic from '../components/Utils/RatingLogic';
 import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import OnlyLeftMessage from '../components/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
+import {
+	useAddToWishListMutation,
+	useGetProfileDetailsQuery,
+} from '../slices/usersApiSlice';
 
 const ItemDetailsScreen = () => {
 	const dispatch = useDispatch();
@@ -22,7 +27,29 @@ const ItemDetailsScreen = () => {
 	// Count quantity
 	const [quantity, setQuantity] = useState(1);
 
+	const [isWishList, setIsWishlist] = useState(false);
+
 	const { data: item, isLoading, error } = useGetItemDetailsQuery(itemId);
+
+	const { data: user, refetch } = useGetProfileDetailsQuery();
+	// console.log(user.wishlist);
+
+	const [addToWishList, { isLoading: loadingWishlist }] =
+		useAddToWishListMutation();
+
+	const addToWishListHandler = async () => {
+		try {
+			// console.log(user.wishlist);
+			const isAdded = user.wishlist.find((list) => list === itemId);
+			console.log(isAdded);
+			// await addToWishList({ _id: itemId });
+			// toast.success('Added to Wishlist');
+
+			refetch();
+		} catch (error) {
+			toast.error(error?.data?.message || error.error);
+		}
+	};
 
 	const addToCartHandler = () => {
 		dispatch(addToCart({ ...item, quantity }));
@@ -194,7 +221,10 @@ const ItemDetailsScreen = () => {
 											alignItems: 'center',
 											marginLeft: '8px',
 											'&:hover': { color: 'red' },
+											// color: {setIsWishlist && 'red'}
 										}}
+										// {setIsWishlist ? 'red' : ''}
+										onClick={addToWishListHandler}
 									>
 										<FavoriteBorderOutlined />
 									</IconButton>

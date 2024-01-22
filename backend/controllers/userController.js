@@ -80,7 +80,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 // @desc  User wishList
-// @route POST /api/users/wishlist
+// @route POST /api/users/:id/wishlist
 // @access Private
 const addToWishList = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user._id);

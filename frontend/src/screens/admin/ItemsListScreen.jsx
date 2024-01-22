@@ -23,6 +23,7 @@ import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 
 const ItemsListScreen = () => {
 	const { data: items, isLoading, error } = useGetItemsByAdminQuery();
+	// console.log(items);
 
 	const { data: userProfile, isLoading: loadingProfile } =
 		useGetProfileDetailsQuery();

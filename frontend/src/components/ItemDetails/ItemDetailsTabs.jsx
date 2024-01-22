@@ -184,7 +184,10 @@ const ItemDetailsTabs = () => {
 																</Grid>
 																<Grid item xs={6} textAlign='right'>
 																	{userInfo && userInfo._id === review.user && (
-																		<IconButton sx={{ mb: '15px' }}>
+																		<IconButton
+																			sx={{ mb: '15px' }}
+																			onClick={() => deleteHandler(itemId)}
+																		>
 																			<Close />
 																		</IconButton>
 																	)}

@@ -145,16 +145,17 @@ const createItemReview = asyncHandler(async (req, res) => {
 			(review) => review.user.toString() === req.user._id.toString()
 		);
 
-		console.log(alreadyReviewed);
-
 		if (alreadyReviewed) {
 			res.status(400);
 			throw new Error('This Item already Reviewed');
 		}
+
+		// console.log(req.user);
 		const review = {
 			name: `${req.user.firstName} ${req.user.lastName} `,
 			user: req.user._id,
 			image: req.user.picturePath,
+			isAdmin: req.user.isAdmin,
 			rating: Number(rating),
 			comment,
 		};
@@ -179,8 +180,8 @@ const createItemReview = asyncHandler(async (req, res) => {
 });
 
 // @desc Delete item review
-// @route DELETE /api/items/:id/review
-// @access Private ? admin
+// @route DELETE /api/items/:id/reviews
+// @access Private
 const deleteItemReview = asyncHandler(async (req, res) => {
 	const item = await Item.findById(req.params.id);
 	const reviews = item.reviews;
@@ -194,14 +195,15 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 
 		if (userCheck) {
 			reviews.map((review) => {
+				// console.log('review', review);
 				//check the comment ID same person or not
 				if (userCheck._id === review._id) {
+					// console.log('review._id', review._id);
 					review.deleteOne({ _id: review._id });
 				}
 			});
 
 			item.numReviews = item.reviews.length;
-			console.log('item.numReviews', item.numReviews);
 
 			item.rating =
 				item.reviews.length > 0 &&
@@ -219,39 +221,16 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 		res.status(404);
 		throw new Error('No Reviews');
 	}
+});
 
-	// 	const item = await Item.findById(req.params.id);
-	// 	const reviews = item.reviews;
+// @desc GET item reviews
+// @route GET /api/items/reviews
+// @access Private/admin
+const getItemReviews = asyncHandler(async (req, res) => {
+	const items = await Item.findById(req.params._id);
 
-	// 	const userCheck = reviews.find(
-	// 		(review) => review.user.toString() === req.user._id.toString()
-	// 	);
-
-	// 	console.log('userCheck', userCheck);
-
-	// 	reviews.map(async (review) => {
-	// 		if (reviews && userCheck._id === review._id) {
-	// 			try {
-	// 				// Check comment ID
-	// 				let reviews = await Item.findByIdAndUpdate(
-	// 					item._id,
-	// 					{
-	// 						$pull: { reviews: review._id },
-	// 					},
-	// 					{ new: true }
-	// 				);
-	// 				// Item dataが全部取得できている、pullされていない
-	// 				res.status(200).json(reviews);
-	// 			} catch (error) {
-	// 				res.status(400);
-	// 				throw new Error('Failed to remove review');
-	// 			}
-	// 		} else {
-	// 			res.status(404);
-	// 			throw new Error('Review Not Found');
-	// 		}
-	// 	});
-	// });
+	console.log(items);
+	res.json(items);
 });
 
 export {
@@ -263,4 +242,5 @@ export {
 	deleteItem,
 	createItemReview,
 	deleteItemReview,
+	getItemReviews,
 };
