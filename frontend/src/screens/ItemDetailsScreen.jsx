@@ -3,7 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { IconButton, Box, Typography, Button } from '@mui/material';
 import { FavoriteBorderOutlined, Add, Remove } from '@mui/icons-material';
 import { shades } from '../theme';
-import { useGetItemDetailsQuery } from '../slices/itemsApiSlice';
+import {
+	useAddToWishListMutation,
+	useGetItemDetailsQuery,
+} from '../slices/itemsApiSlice';
 import { addToCart } from '../slices/cartSlice';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -13,10 +16,7 @@ import ButtonComponent from '../components/Utils/ButtonComponent';
 import OnlyLeftMessage from '../components/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
-import {
-	useAddToWishListMutation,
-	useGetProfileDetailsQuery,
-} from '../slices/usersApiSlice';
+import { useGetProfileDetailsQuery } from '../slices/usersApiSlice';
 
 const ItemDetailsScreen = () => {
 	const dispatch = useDispatch();
@@ -27,25 +27,23 @@ const ItemDetailsScreen = () => {
 	// Count quantity
 	const [quantity, setQuantity] = useState(1);
 
-	const [isWishList, setIsWishlist] = useState(false);
-
 	const { data: item, isLoading, error } = useGetItemDetailsQuery(itemId);
 
 	const { data: user, refetch } = useGetProfileDetailsQuery();
-	// console.log(user.wishlist);
+	// console.log('1stUser:', user);
 
 	const [addToWishList, { isLoading: loadingWishlist }] =
 		useAddToWishListMutation();
 
-	const addToWishListHandler = async () => {
+	const addToWishListHandler = async (itemId) => {
 		try {
-			// console.log(user.wishlist);
-			const isAdded = user.wishlist.find((list) => list === itemId);
-			console.log(isAdded);
-			// await addToWishList({ _id: itemId });
+			await addToWishList({ userId: user._id, itemId: itemId }).unwrap();
+			// console.log('_id:', user._id);
+			// console.log('itemId:', itemId);
 			// toast.success('Added to Wishlist');
 
 			refetch();
+			// console.log('ResultUser:', user);
 		} catch (error) {
 			toast.error(error?.data?.message || error.error);
 		}
@@ -56,6 +54,14 @@ const ItemDetailsScreen = () => {
 
 		navigate('/cart');
 	};
+
+	const isAdded = Boolean(
+		user &&
+			user.wishlist.find((id) => {
+				return id === itemId;
+			})
+	);
+	// console.log('isAdded:', isAdded);
 
 	return (
 		<>
@@ -216,15 +222,15 @@ const ItemDetailsScreen = () => {
 									>
 										ADD TO CART
 									</ButtonComponent>
+
 									<IconButton
 										sx={{
 											alignItems: 'center',
 											marginLeft: '8px',
 											'&:hover': { color: 'red' },
-											// color: {setIsWishlist && 'red'}
+											color: isAdded && 'red',
 										}}
-										// {setIsWishlist ? 'red' : ''}
-										onClick={addToWishListHandler}
+										onClick={() => addToWishListHandler(itemId)}
 									>
 										<FavoriteBorderOutlined />
 									</IconButton>

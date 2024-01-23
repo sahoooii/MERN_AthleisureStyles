@@ -31,6 +31,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				url: `${USERS_URL}/profile`,
 				method: 'GET',
 			}),
+			providesTags: ['Users'],
 			keepUnusedDataFor: 5,
 		}),
 		updateProfile: builder.mutation({
@@ -51,14 +52,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				url: `${USERS_URL}/${userId}`,
 				method: 'DELETE',
 			}),
-		}),
-		addToWishList: builder.mutation({
-			query: (data) => ({
-				url: `${USERS_URL}/wishlist`,
-				method: 'PUT',
-				body: data,
-			}),
-			invalidatesTags: ['Users'],
 		}),
 		// Admin
 		getUsers: builder.query({
@@ -100,7 +93,6 @@ export const {
 	useGetProfileDetailsQuery,
 	useUpdateProfileMutation,
 	useLogoutMutation,
-	useAddToWishListMutation,
 	useGetUsersQuery,
 	useDeleteUserMutation,
 	useDeleteUserByAdminMutation,

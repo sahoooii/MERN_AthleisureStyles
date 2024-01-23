@@ -1,5 +1,6 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Item from '../models/itemModel.js';
+import User from '../models/userModel.js';
 
 // @desc Fetch All Items
 // @route GET /api/items
@@ -131,6 +132,49 @@ const deleteItem = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc  User wishList
+// @route PUT /api/items/:id/wishlist
+// @access Private
+const addToWishList = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user._id);
+	const { _id: userId } = user;
+	const { itemId } = req.body;
+
+	try {
+		const alreadyAdded = user.wishlist.find((id) => id.toString() === itemId);
+		if (alreadyAdded) {
+			let user = await User.findByIdAndUpdate(
+				userId ,
+				{
+					$pull: { wishlist: itemId },
+				},
+				{
+					new: true,
+				}
+			);
+			res.status(200).json(user);
+		} else {
+			let user = await User.findByIdAndUpdate(
+				userId ,
+				{
+					$push: { wishlist: itemId },
+				},
+				{
+					new: true,
+				}
+			);
+			res.status(200).json(user);
+		}
+	} catch (error) {
+		res.status(400);
+		throw new Error('Failed to add to wishlist');
+	}
+	// } else {
+	// 	res.status(404);
+	// 	throw new Error('User Not Found');
+	// }
+});
+
 // @desc Review a Item
 // @route POST /api/items/:id/review
 // @access Private
@@ -240,6 +284,7 @@ export {
 	createItem,
 	updateItem,
 	deleteItem,
+	addToWishList,
 	createItemReview,
 	deleteItemReview,
 	getItemReviews,

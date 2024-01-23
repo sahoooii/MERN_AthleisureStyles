@@ -3,7 +3,7 @@ import {
 	loginUser,
 	registerUser,
 	logoutUser,
-	addToWishList,
+	// addToWishList,
 	getUserProfile,
 	updateUserProfile,
 	getUsers,
@@ -20,7 +20,7 @@ const router = express.Router();
 router.route('/').post(registerUser).get(protect, admin, getUsers);
 router.post('/logout', logoutUser);
 router.post('/login', loginUser);
-router.put('/wishlist', protect, addToWishList);
+// router.put('/wishlist', protect, addToWishList);
 router
 	.route('/profile')
 	.get(protect, getUserProfile)

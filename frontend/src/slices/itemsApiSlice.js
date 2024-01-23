@@ -54,6 +54,14 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Items'],
 		}),
+		addToWishList: builder.mutation({
+			query: (data) => ({
+				url: `${ITEMS_URL}/${data.itemId}/wishlist`,
+				method: 'PUT',
+				body: data,
+			}),
+			invalidatesTags: ['Users'],
+		}),
 		createReview: builder.mutation({
 			query: (data) => ({
 				url: `${ITEMS_URL}/${data.itemId}/reviews`,
@@ -80,6 +88,7 @@ export const {
 	useUpdateItemMutation,
 	useUploadItemImagMutation,
 	useDeleteItemMutation,
+	useAddToWishListMutation,
 	useCreateReviewMutation,
 	useDeleteReviewMutation,
 } = itemsApiSlice;
