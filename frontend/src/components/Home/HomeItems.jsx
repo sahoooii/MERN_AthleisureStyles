@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
 	IconButton,
@@ -13,25 +13,40 @@ import {
 	AccordionDetails,
 	useMediaQuery,
 } from '@mui/material';
+import { Favorite, ExpandMore } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-// import axios from 'axios';
-import { useGetItemsQuery } from '../../slices/itemsApiSlice';
-import { FavoriteBorder } from '@mui/icons-material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {
+	useAddToWishListMutation,
+	useGetItemsQuery,
+} from '../../slices/itemsApiSlice';
+import { toast } from 'react-toastify';
 import RatingLogic from '../Utils/RatingLogic';
 import Loader from '../Utils/Loader';
 import Message from '../Utils/Message';
 import { shades } from '../../theme';
+import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 
 const HomeItems = () => {
-	const { data: items, isLoading, error } = useGetItemsQuery();
-	// console.log(items);
-
 	const navigate = useNavigate();
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
-	// Edit later
-	const handleLike = () => {};
+	const { data: items, isLoading, error } = useGetItemsQuery();
+	// console.log(items);
+	const { data: user, refetch } = useGetProfileDetailsQuery();
+	// console.log('user:', user);
+
+	const [addToWishList] = useAddToWishListMutation();
+
+	const addToWishListHandler = async (itemId) => {
+		try {
+			user &&
+				(await addToWishList({ userId: user._id, itemId: itemId }).unwrap());
+
+			refetch();
+		} catch (error) {
+			toast.error(error?.data?.message || error.error);
+		}
+	};
 
 	return (
 		<>
@@ -122,13 +137,34 @@ const HomeItems = () => {
 								<Box display='flex' justifyContent='space-between'>
 									<Typography variant='h3'>${item.price}</Typography>
 
-									{/* Will edit later */}
-									<IconButton
-										aria-label='add to favorites'
-										onClick={handleLike}
-									>
-										<FavoriteBorder />
-									</IconButton>
+									{/* Add To Wishlist */}
+									{Boolean(
+										user &&
+											user.wishlist.find((id) => {
+												return id === item._id;
+											})
+									) ? (
+										<IconButton
+											aria-label='add to favorites'
+											sx={{
+												'&:hover': { color: '#FF0461' },
+												color: '#FF0461',
+											}}
+											onClick={() => addToWishListHandler(item._id)}
+										>
+											<Favorite />
+										</IconButton>
+									) : (
+										<IconButton
+											aria-label='add to favorites'
+											sx={{
+												'&:hover': { color: '#FF0461' },
+											}}
+											onClick={() => addToWishListHandler(item._id)}
+										>
+											<Favorite />
+										</IconButton>
+									)}
 								</Box>
 							</CardContent>
 
@@ -137,7 +173,7 @@ const HomeItems = () => {
 								<CardActions disableSpacing sx={{ paddingTop: '0' }}>
 									<Accordion>
 										<AccordionSummary
-											expandIcon={<ExpandMoreIcon />}
+											expandIcon={<ExpandMore />}
 											aria-controls='panel1a-content'
 											id={item._id}
 										>

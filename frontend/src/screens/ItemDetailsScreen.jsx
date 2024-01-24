@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { IconButton, Box, Typography, Button } from '@mui/material';
-import { FavoriteBorderOutlined, Add, Remove } from '@mui/icons-material';
+import { Add, Remove, Favorite } from '@mui/icons-material';
 import { shades } from '../theme';
 import {
 	useAddToWishListMutation,
@@ -32,36 +32,32 @@ const ItemDetailsScreen = () => {
 	const { data: user, refetch } = useGetProfileDetailsQuery();
 	// console.log('1stUser:', user);
 
-	const [addToWishList, { isLoading: loadingWishlist }] =
-		useAddToWishListMutation();
+	const [addToWishList] = useAddToWishListMutation();
 
 	const addToWishListHandler = async (itemId) => {
 		try {
 			await addToWishList({ userId: user._id, itemId: itemId }).unwrap();
-			// console.log('_id:', user._id);
-			// console.log('itemId:', itemId);
 			// toast.success('Added to Wishlist');
 
 			refetch();
-			// console.log('ResultUser:', user);
 		} catch (error) {
 			toast.error(error?.data?.message || error.error);
 		}
 	};
 
-	const addToCartHandler = () => {
-		dispatch(addToCart({ ...item, quantity }));
-
-		navigate('/cart');
-	};
-
-	const isAdded = Boolean(
+	const isLiked = Boolean(
 		user &&
 			user.wishlist.find((id) => {
 				return id === itemId;
 			})
 	);
 	// console.log('isAdded:', isAdded);
+
+	const addToCartHandler = () => {
+		dispatch(addToCart({ ...item, quantity }));
+
+		navigate('/cart');
+	};
 
 	return (
 		<>
@@ -223,16 +219,17 @@ const ItemDetailsScreen = () => {
 										ADD TO CART
 									</ButtonComponent>
 
+									{/* Add to Wishlist */}
 									<IconButton
 										sx={{
 											alignItems: 'center',
 											marginLeft: '8px',
-											'&:hover': { color: 'red' },
-											color: isAdded && 'red',
+											'&:hover': { color: '#FF0461' },
+											color: isLiked && '#FF0461',
 										}}
 										onClick={() => addToWishListHandler(itemId)}
 									>
-										<FavoriteBorderOutlined />
+										<Favorite />
 									</IconButton>
 								</Box>
 							</Box>
