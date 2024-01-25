@@ -25,10 +25,7 @@ import {
 	ListAltOutlined,
 	PostAddOutlined,
 } from '@mui/icons-material';
-import {
-	useGetProfileDetailsQuery,
-	useLogoutMutation,
-} from '../../slices/usersApiSlice';
+import { useLogoutMutation } from '../../slices/usersApiSlice';
 import { logout } from '../../slices/authSlice';
 import { resetCart } from '../../slices/cartSlice';
 
@@ -49,13 +46,12 @@ const SideMenuAnimation = ({ style, width, height }) => {
 	`;
 
 	const [logoutApiCall] = useLogoutMutation();
-	const { data: user, refetch } = useGetProfileDetailsQuery();
 
 	const logoutHandler = async () => {
 		try {
 			// For server
 			await logoutApiCall().unwrap();
-			// user && refetch();
+
 			// Clear localStorage userInfo and cart
 			dispatch(logout());
 			dispatch(resetCart());

@@ -114,7 +114,7 @@ const ProfileScreen = () => {
 					picturePath: userInfo.picturePath,
 				}).unwrap();
 
-				dispatch(setCredentials(response));
+				dispatch(setCredentials({ ...response }));
 				toast.success('Profile updated successfully');
 
 				refetch();
@@ -141,7 +141,7 @@ const ProfileScreen = () => {
 					picturePath: imageData.picturePath,
 				}).unwrap();
 
-				dispatch(setCredentials(response));
+				dispatch(setCredentials({ ...response }));
 				toast.success('Profile updated successfully');
 
 				refetch();

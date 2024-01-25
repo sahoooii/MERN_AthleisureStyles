@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
 	IconButton,
@@ -25,22 +25,47 @@ import Loader from '../Utils/Loader';
 import Message from '../Utils/Message';
 import { shades } from '../../theme';
 import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCredentials } from '../../slices/authSlice';
 
 const HomeItems = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
+	const { userInfo } = useSelector((state) => state.auth);
+
 	const { data: items, isLoading, error } = useGetItemsQuery();
-	// console.log(items);
+
+	// will decide delete or not for not logged in
+	// useEffect(() => {
+	// 	if (!userInfo) {
+	// 		navigate('/login');
+	// 	}
+	// }, [userInfo, navigate]);
+
 	const { data: user, refetch } = useGetProfileDetailsQuery();
-	// console.log('user:', user);
+
+	// Check logged out user
+	useEffect(() => {
+		if (userInfo) {
+			refetch();
+		} else {
+			navigate('/login');
+		}
+	}, [userInfo, refetch, navigate]);
 
 	const [addToWishList] = useAddToWishListMutation();
 
 	const addToWishListHandler = async (itemId) => {
 		try {
-			user &&
-				(await addToWishList({ userId: user._id, itemId: itemId }).unwrap());
+			const response = await addToWishList({
+				userId: user._id,
+				itemId: itemId,
+			}).unwrap();
+
+			dispatch(setCredentials({ ...response }));
 
 			refetch();
 		} catch (error) {
@@ -156,6 +181,7 @@ const HomeItems = () => {
 										</IconButton>
 									) : (
 										<IconButton
+											disabled={!userInfo}
 											aria-label='add to favorites'
 											sx={{
 												'&:hover': { color: '#FF0461' },

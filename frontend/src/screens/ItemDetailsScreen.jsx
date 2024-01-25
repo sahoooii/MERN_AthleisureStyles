@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { IconButton, Box, Typography, Button } from '@mui/material';
 import { Add, Remove, Favorite } from '@mui/icons-material';
@@ -8,7 +8,7 @@ import {
 	useGetItemDetailsQuery,
 } from '../slices/itemsApiSlice';
 import { addToCart } from '../slices/cartSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import RatingLogic from '../components/Utils/RatingLogic';
 import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
@@ -17,6 +17,7 @@ import OnlyLeftMessage from '../components/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
 import { useGetProfileDetailsQuery } from '../slices/usersApiSlice';
+import { setCredentials } from '../slices/authSlice';
 
 const ItemDetailsScreen = () => {
 	const dispatch = useDispatch();
@@ -29,14 +30,28 @@ const ItemDetailsScreen = () => {
 
 	const { data: item, isLoading, error } = useGetItemDetailsQuery(itemId);
 
+	const { userInfo } = useSelector((state) => state.auth);
+
 	const { data: user, refetch } = useGetProfileDetailsQuery();
-	// console.log('1stUser:', user);
+
+	useEffect(() => {
+		if (userInfo) {
+			refetch();
+		} else {
+			navigate('/login');
+		}
+	}, [userInfo, refetch, navigate]);
 
 	const [addToWishList] = useAddToWishListMutation();
 
 	const addToWishListHandler = async (itemId) => {
 		try {
-			await addToWishList({ userId: user._id, itemId: itemId }).unwrap();
+			const response = await addToWishList({
+				userId: user._id,
+				itemId: itemId,
+			}).unwrap();
+
+			dispatch(setCredentials({ ...response }));
 			// toast.success('Added to Wishlist');
 
 			refetch();
@@ -44,6 +59,7 @@ const ItemDetailsScreen = () => {
 			toast.error(error?.data?.message || error.error);
 		}
 	};
+	// console.log('2:', userInfo);
 
 	const isLiked = Boolean(
 		user &&
@@ -221,6 +237,7 @@ const ItemDetailsScreen = () => {
 
 									{/* Add to Wishlist */}
 									<IconButton
+										disabled={!userInfo}
 										sx={{
 											alignItems: 'center',
 											marginLeft: '8px',
