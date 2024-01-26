@@ -115,7 +115,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 		user.picturePath = req.body.picturePath || user.picturePath;
 		user.picturePath = req.body.picturePath || user.picturePath;
 		user.isAdmin = req.body.isAdmin || user.isAdmin;
-		user.wishlist = req.body.wishlist || user.wishlist;
+		// user.wishlist = req.body.wishlist || user.wishlist;
 
 		// Password was hashed, that's why separated
 		if (req.body.password) {
@@ -131,7 +131,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 			email: updatedUser.email,
 			picturePath: updatedUser.picturePath,
 			isAdmin: updatedUser.isAdmin,
-			wishlist: updatedUser.wishlist,
+			// wishlist: updatedUser.wishlist,
 		});
 	} else {
 		res.status(404);

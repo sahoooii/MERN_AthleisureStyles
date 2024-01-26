@@ -1,6 +1,54 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
+const wishlistSchema = new mongoose.Schema(
+	{
+		item: {
+			type: mongoose.Schema.Types.ObjectId,
+			// required: true,
+			ref: 'Item',
+		},
+		name: {
+			type: String,
+			required: true,
+		},
+		image: {
+			type: String,
+			required: true,
+		},
+		brand: {
+			type: String,
+			required: true,
+		},
+		category: {
+			type: String,
+			required: true,
+		},
+		description: {
+			type: String,
+			required: true,
+		},
+		rating: {
+			type: Number,
+			required: true,
+			default: 0,
+		},
+		price: {
+			type: Number,
+			required: true,
+			default: 0,
+		},
+		countInStock: {
+			type: Number,
+			required: true,
+			default: 0,
+		},
+	},
+	{
+		timestamps: true,
+	}
+);
+
 const userSchema = new mongoose.Schema(
 	{
 		firstName: {
@@ -20,7 +68,6 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		// isPicturePath: { type: Boolean },
 		picturePath: {
 			// data: Buffer,
 			// contentType: String,
@@ -32,7 +79,8 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			default: false,
 		},
-		wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
+		// wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
+		wishlist: [wishlistSchema],
 	},
 	{
 		timestamps: true,

@@ -139,40 +139,43 @@ const addToWishList = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user._id);
 	const { _id: userId } = user;
 	const { itemId } = req.body;
+	const item = await Item.findById(itemId);
 
 	try {
-		const alreadyAdded = user.wishlist.find((id) => id.toString() === itemId);
+		const alreadyAdded = user.wishlist.find(
+			(list) => list._id.toString() === itemId
+		);
+		console.log('alreadyAdded:', alreadyAdded);
+
 		if (alreadyAdded) {
 			let user = await User.findByIdAndUpdate(
-				userId ,
+				userId,
 				{
-					$pull: { wishlist: itemId },
+					$pull: { wishlist: alreadyAdded },
 				},
 				{
 					new: true,
 				}
 			);
+
 			res.status(200).json(user);
 		} else {
 			let user = await User.findByIdAndUpdate(
-				userId ,
+				userId,
 				{
-					$push: { wishlist: itemId },
+					$push: { wishlist: item },
 				},
 				{
 					new: true,
 				}
 			);
+
 			res.status(200).json(user);
 		}
 	} catch (error) {
 		res.status(400);
 		throw new Error('Failed to add to wishlist');
 	}
-	// } else {
-	// 	res.status(404);
-	// 	throw new Error('User Not Found');
-	// }
 });
 
 // @desc Review a Item
@@ -273,7 +276,7 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 const getItemReviews = asyncHandler(async (req, res) => {
 	const items = await Item.findById(req.params._id);
 
-	console.log(items);
+	// console.log(items);
 	res.json(items);
 });
 

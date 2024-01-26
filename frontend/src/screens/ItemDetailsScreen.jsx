@@ -34,6 +34,8 @@ const ItemDetailsScreen = () => {
 
 	const { data: user, refetch } = useGetProfileDetailsQuery();
 
+	console.log('user:', user);
+
 	useEffect(() => {
 		if (userInfo) {
 			refetch();
@@ -63,6 +65,8 @@ const ItemDetailsScreen = () => {
 
 	const isLiked = Boolean(
 		user &&
+			user.wishlist &&
+			user.wishlist.length > 0 &&
 			user.wishlist.find((id) => {
 				return id === itemId;
 			})

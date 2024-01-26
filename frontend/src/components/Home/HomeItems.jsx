@@ -165,6 +165,8 @@ const HomeItems = () => {
 									{/* Add To Wishlist */}
 									{Boolean(
 										user &&
+											user.wishlist &&
+											user.wishlist.length > 0 &&
 											user.wishlist.find((id) => {
 												return id === item._id;
 											})
