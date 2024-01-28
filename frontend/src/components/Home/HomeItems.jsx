@@ -25,11 +25,9 @@ import Loader from '../Utils/Loader';
 import Message from '../Utils/Message';
 import { shades } from '../../theme';
 import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCredentials } from '../../slices/authSlice';
+import { useSelector } from 'react-redux';
 
 const HomeItems = () => {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -38,40 +36,35 @@ const HomeItems = () => {
 
 	const { data: items, isLoading, error } = useGetItemsQuery();
 
-	// will decide delete or not for not logged in
-	// useEffect(() => {
-	// 	if (!userInfo) {
-	// 		navigate('/login');
-	// 	}
-	// }, [userInfo, navigate]);
-
 	const { data: user, refetch } = useGetProfileDetailsQuery();
-
-	// Check logged out user
-	useEffect(() => {
-		if (userInfo) {
-			refetch();
-		} else {
-			navigate('/login');
-		}
-	}, [userInfo, refetch, navigate]);
 
 	const [addToWishList] = useAddToWishListMutation();
 
 	const addToWishListHandler = async (itemId) => {
+		const alreadyAdded =
+			user && user.wishlist.find((list) => list._id.toString() === itemId);
+
 		try {
-			const response = await addToWishList({
+			await addToWishList({
 				userId: user._id,
 				itemId: itemId,
+				alreadyAdded: alreadyAdded,
 			}).unwrap();
-
-			dispatch(setCredentials({ ...response }));
 
 			refetch();
 		} catch (error) {
 			toast.error(error?.data?.message || error.error);
 		}
 	};
+
+	// Check logged out user
+	useEffect(() => {
+		if (userInfo) {
+			refetch();
+			// } else {
+			// 	navigate('/login');
+		}
+	}, [userInfo, refetch, navigate]);
 
 	return (
 		<>
@@ -166,9 +159,9 @@ const HomeItems = () => {
 									{Boolean(
 										user &&
 											user.wishlist &&
-											user.wishlist.length > 0 &&
-											user.wishlist.find((id) => {
-												return id === item._id;
+											// user.wishlist.length > 0 &&
+											user.wishlist.find((list) => {
+												return list._id === item._id;
 											})
 									) ? (
 										<IconButton

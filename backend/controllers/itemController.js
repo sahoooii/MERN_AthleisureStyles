@@ -140,12 +140,13 @@ const addToWishList = asyncHandler(async (req, res) => {
 	const { _id: userId } = user;
 	const { itemId } = req.body;
 	const item = await Item.findById(itemId);
+	// console.log('item:', item);
 
 	try {
 		const alreadyAdded = user.wishlist.find(
 			(list) => list._id.toString() === itemId
 		);
-		console.log('alreadyAdded:', alreadyAdded);
+		// console.log('alreadyAdded:', alreadyAdded);
 
 		if (alreadyAdded) {
 			let user = await User.findByIdAndUpdate(
@@ -158,7 +159,7 @@ const addToWishList = asyncHandler(async (req, res) => {
 				}
 			);
 
-			res.status(200).json(user);
+			res.status(200).json({ user });
 		} else {
 			let user = await User.findByIdAndUpdate(
 				userId,
@@ -170,7 +171,7 @@ const addToWishList = asyncHandler(async (req, res) => {
 				}
 			);
 
-			res.status(200).json(user);
+			res.status(200).json({ user });
 		}
 	} catch (error) {
 		res.status(400);

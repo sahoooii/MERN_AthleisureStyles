@@ -17,7 +17,6 @@ import OnlyLeftMessage from '../components/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
 import { useGetProfileDetailsQuery } from '../slices/usersApiSlice';
-import { setCredentials } from '../slices/authSlice';
 
 const ItemDetailsScreen = () => {
 	const dispatch = useDispatch();
@@ -29,12 +28,37 @@ const ItemDetailsScreen = () => {
 	const [quantity, setQuantity] = useState(1);
 
 	const { data: item, isLoading, error } = useGetItemDetailsQuery(itemId);
-
+	// console.log('item:', item);
 	const { userInfo } = useSelector((state) => state.auth);
 
 	const { data: user, refetch } = useGetProfileDetailsQuery();
+	// console.log('user:', user);
 
-	console.log('user:', user);
+	const [addToWishList] = useAddToWishListMutation();
+
+	const alreadyAdded =
+		user && user.wishlist.find((list) => list._id.toString() === itemId);
+	// console.log('alreadyAdded:', alreadyAdded);
+
+	const addToWishListHandler = async (itemId) => {
+		try {
+			await addToWishList({
+				userId: user._id,
+				itemId: itemId,
+				alreadyAdded: alreadyAdded,
+			}).unwrap();
+
+			refetch();
+		} catch (error) {
+			toast.error(error?.data?.message || error.error);
+		}
+	};
+
+	const addToCartHandler = () => {
+		dispatch(addToCart({ ...item, quantity }));
+
+		navigate('/cart');
+	};
 
 	useEffect(() => {
 		if (userInfo) {
@@ -43,41 +67,6 @@ const ItemDetailsScreen = () => {
 			navigate('/login');
 		}
 	}, [userInfo, refetch, navigate]);
-
-	const [addToWishList] = useAddToWishListMutation();
-
-	const addToWishListHandler = async (itemId) => {
-		try {
-			const response = await addToWishList({
-				userId: user._id,
-				itemId: itemId,
-			}).unwrap();
-
-			dispatch(setCredentials({ ...response }));
-			// toast.success('Added to Wishlist');
-
-			refetch();
-		} catch (error) {
-			toast.error(error?.data?.message || error.error);
-		}
-	};
-	// console.log('2:', userInfo);
-
-	const isLiked = Boolean(
-		user &&
-			user.wishlist &&
-			user.wishlist.length > 0 &&
-			user.wishlist.find((id) => {
-				return id === itemId;
-			})
-	);
-	// console.log('isAdded:', isAdded);
-
-	const addToCartHandler = () => {
-		dispatch(addToCart({ ...item, quantity }));
-
-		navigate('/cart');
-	};
 
 	return (
 		<>
@@ -246,7 +235,7 @@ const ItemDetailsScreen = () => {
 											alignItems: 'center',
 											marginLeft: '8px',
 											'&:hover': { color: '#FF0461' },
-											color: isLiked && '#FF0461',
+											color: alreadyAdded && '#FF0461',
 										}}
 										onClick={() => addToWishListHandler(itemId)}
 									>

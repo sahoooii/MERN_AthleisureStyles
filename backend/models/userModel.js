@@ -3,6 +3,11 @@ import bcrypt from 'bcryptjs';
 
 const wishlistSchema = new mongoose.Schema(
 	{
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: 'User',
+		},
 		item: {
 			type: mongoose.Schema.Types.ObjectId,
 			// required: true,
