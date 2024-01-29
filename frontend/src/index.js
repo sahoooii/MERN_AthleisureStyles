@@ -32,6 +32,9 @@ import OrderListScreen from './screens/admin/OrderListScreen';
 import ItemsListScreen from './screens/admin/ItemsListScreen';
 import CreateItemScreen from './screens/admin/CreateItemScreen';
 import ItemEditScreen from './screens/admin/ItemEditScreen';
+import UsersListScreen from './screens/admin/UsersListScreen';
+import UserProfileEditScreen from './screens/admin/UserProfileEditScreen';
+import WishlistScreen from './screens/WishlistScreen';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -51,14 +54,20 @@ const router = createBrowserRouter(
 				<Route path='/profile' element={<ProfileScreen />} />
 				<Route path='/orderhistory' element={<OrderHistoryScreen />} />
 				<Route path='/notpaidorder' element={<NotPaidOrderHistoryScreen />} />
+				<Route path='/wishlist' element={<WishlistScreen />} />
 			</Route>
 
 			{/* Admin Route only admin can see these */}
 			<Route path='/' element={<AdminRoute />}>
 				<Route path='/admin/orderlist' element={<OrderListScreen />} />
 				<Route path='/admin/itemslist' element={<ItemsListScreen />} />
-				<Route path='/admin/item' element={<CreateItemScreen />} />
+				<Route path='/admin/create' element={<CreateItemScreen />} />
 				<Route path='/admin/item/:id/edit' element={<ItemEditScreen />} />
+				<Route path='/admin/userslist' element={<UsersListScreen />} />
+				<Route
+					path='/admin/user/:id/edit'
+					element={<UserProfileEditScreen />}
+				/>
 			</Route>
 		</Route>
 	)

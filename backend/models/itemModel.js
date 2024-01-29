@@ -11,9 +11,19 @@ const reviewSchema = mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		image: {
+			type: String,
+			required: true,
+		},
+		isAdmin: {
+			type: Boolean,
+			required: true,
+			default: false,
+		},
 		rating: {
 			type: Number,
 			required: true,
+			default: 0,
 		},
 		comment: {
 			type: String,

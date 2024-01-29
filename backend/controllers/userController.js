@@ -79,50 +79,6 @@ const logoutUser = asyncHandler(async (req, res) => {
 	res.status(200).json({ message: 'Successfully Logged Out' });
 });
 
-// @desc  User wishList
-// @route POST /api/users/wishlist
-// @access Private
-const addToWishList = asyncHandler(async (req, res) => {
-	const user = await User.findById(req.user._id);
-	const { _id } = user;
-	const { itemId } = req.body;
-
-	if (user) {
-		try {
-			const alreadyAdded = user.wishlist.find((id) => id.toString() === itemId);
-			if (alreadyAdded) {
-				let user = await User.findByIdAndUpdate(
-					_id,
-					{
-						$pull: { wishlist: itemId },
-					},
-					{
-						new: true,
-					}
-				);
-				res.status(200).json(user);
-			} else {
-				let user = await User.findByIdAndUpdate(
-					_id,
-					{
-						$push: { wishlist: itemId },
-					},
-					{
-						new: true,
-					}
-				);
-				res.status(200).json(user);
-			}
-		} catch (error) {
-			res.status(400);
-			throw new Error('Failed to add to wishlist');
-		}
-	} else {
-		res.status(404);
-		throw new Error('User Not Found');
-	}
-});
-
 // @desc Get user profile
 // @route GET /api/users/profile
 // @access Private
@@ -157,7 +113,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 		user.lastName = req.body.lastName || user.lastName;
 		user.email = req.body.email || user.email;
 		user.picturePath = req.body.picturePath || user.picturePath;
-		user.wishlist = req.body.wishlist || user.wishlist;
+		user.picturePath = req.body.picturePath || user.picturePath;
+		user.isAdmin = req.body.isAdmin || user.isAdmin;
+		// user.wishlist = req.body.wishlist || user.wishlist;
 
 		// Password was hashed, that's why separated
 		if (req.body.password) {
@@ -172,9 +130,30 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 			lastName: updatedUser.lastName,
 			email: updatedUser.email,
 			picturePath: updatedUser.picturePath,
-			wishlist: updatedUser.wishlist,
 			isAdmin: updatedUser.isAdmin,
+			// wishlist: updatedUser.wishlist,
 		});
+	} else {
+		res.status(404);
+		throw new Error('User Not Found');
+	}
+});
+
+// @desc Delete user
+// @route DELETE /api/users/:id
+// @access Private
+const deleteUser = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.params.id);
+
+	if (user) {
+		// Admin user can't delete
+		if (user.isAdmin) {
+			res.status(400);
+			throw new Error('Can not Delete Admin User');
+		}
+		await User.deleteOne({ _id: user._id });
+
+		res.status(200).json({ message: 'User Deleted' });
 	} else {
 		res.status(404);
 		throw new Error('User Not Found');
@@ -187,39 +166,91 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route GET /api/users
 // @access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-	res.send('Get users by Admin');
+	const users = await User.find({});
+
+	res.status(200).json(users);
 });
 
 // @desc Get user by ID
 // @route GET /api/users/:id
 // @access Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
-	res.send('Get user by ID Admin');
+	const user = await User.findById(req.params.id).select('-password');
+
+	if (user) {
+		res.status(200).json(user);
+	} else {
+		res.status(404);
+		throw new Error('User Not Found');
+	}
 });
 
 // @desc Update user
 // @route PUT /api/users/:id
 // @access Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
-	res.send('Update user by Admin');
+	const user = await User.findById(req.params.id);
+
+	if (user) {
+		user.firstName = req.body.firstName || user.firstName;
+		user.lastName = req.body.lastName || user.lastName;
+		user.isAdmin = Boolean(req.body.isAdmin);
+		user.email = req.body.email || user.email;
+		user.picturePath = req.body.picturePath || user.picturePath;
+		user.wishlist = req.body.wishlist || user.wishlist;
+
+		const updatedUser = await user.save();
+
+		res.status(200).json({
+			_id: updatedUser._id,
+			firstName: updatedUser.firstName,
+			lastName: updatedUser.lastName,
+			isAdmin: updatedUser.isAdmin,
+			email: updatedUser.email,
+			picturePath: updatedUser.picturePath,
+			wishlist: updatedUser.wishlist,
+		});
+	} else {
+		res.status(404);
+		throw new Error('User Not Found');
+	}
+
+	res.send('Updated user by Admin');
 });
 
 // @desc Delete user
 // @route DELETE /api/users/:id
 // @access Private/Admin
-const deleteUser = asyncHandler(async (req, res) => {
-	res.send('Delete user by Admin');
+const deleteUserByAdmin = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.params.id);
+
+	if (user) {
+		// Admin user can't delete
+		if (user.isAdmin) {
+			res.status(400);
+			throw new Error('Can not Delete Admin User');
+		}
+		await User.deleteOne({ _id: user._id });
+
+		res.status(200).json({ message: 'User Deleted' });
+	} else {
+		res.status(404);
+		throw new Error('User Not Found');
+	}
 });
+
+// delete user own account
 
 export {
 	loginUser,
 	registerUser,
 	logoutUser,
-	addToWishList,
+	// addToWishList,
 	getUserProfile,
 	updateUserProfile,
 	getUsers,
 	getUserById,
 	updateUser,
 	deleteUser,
+	deleteUserByAdmin,
 };

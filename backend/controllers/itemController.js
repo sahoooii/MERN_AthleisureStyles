@@ -1,5 +1,6 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Item from '../models/itemModel.js';
+import User from '../models/userModel.js';
 
 // @desc Fetch All Items
 // @route GET /api/items
@@ -19,8 +20,17 @@ const getItemById = asyncHandler(async (req, res) => {
 		return res.json(item);
 	} else {
 		res.status(404);
-		throw new Error('Resource Not Found');
+		throw new Error('Item Not Found');
 	}
+});
+
+// Admin
+// @desc Fetch All Items
+// @route GET /api/items/itemslist
+// @access  Private/Admin
+const getItemsByAdmin = asyncHandler(async (req, res) => {
+	const items = await Item.find({});
+	res.json(items);
 });
 
 // @desc Create a sample Item
@@ -122,4 +132,164 @@ const deleteItem = asyncHandler(async (req, res) => {
 	}
 });
 
-export { getItems, getItemById, createItem, updateItem, deleteItem };
+// @desc  User wishList
+// @route PUT /api/items/:id/wishlist
+// @access Private
+const addToWishList = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user._id);
+	const { _id: userId } = user;
+	const { itemId } = req.body;
+	const item = await Item.findById(itemId);
+	// console.log('item:', item);
+
+	try {
+		const alreadyAdded = user.wishlist.find(
+			(list) => list._id.toString() === itemId
+		);
+		// console.log('alreadyAdded:', alreadyAdded);
+
+		if (alreadyAdded) {
+			let user = await User.findByIdAndUpdate(
+				userId,
+				{
+					$pull: { wishlist: alreadyAdded },
+				},
+				{
+					new: true,
+				}
+			);
+
+			res.status(200).json({ user });
+		} else {
+			let user = await User.findByIdAndUpdate(
+				userId,
+				{
+					$push: { wishlist: item },
+				},
+				{
+					new: true,
+				}
+			);
+
+			res.status(200).json({ user });
+		}
+	} catch (error) {
+		res.status(400);
+		throw new Error('Failed to add to wishlist');
+	}
+});
+
+// @desc Review a Item
+// @route POST /api/items/:id/review
+// @access Private
+const createItemReview = asyncHandler(async (req, res) => {
+	const { rating, comment } = req.body;
+
+	const item = await Item.findById(req.params.id);
+
+	// Only one review for a item,  each person
+	if (item) {
+		const alreadyReviewed = item.reviews.find(
+			(review) => review.user.toString() === req.user._id.toString()
+		);
+
+		if (alreadyReviewed) {
+			res.status(400);
+			throw new Error('This Item already Reviewed');
+		}
+
+		// console.log(req.user);
+		const review = {
+			name: `${req.user.firstName} ${req.user.lastName} `,
+			user: req.user._id,
+			image: req.user.picturePath,
+			isAdmin: req.user.isAdmin,
+			rating: Number(rating),
+			comment,
+		};
+
+		item.reviews.push(review);
+
+		item.numReviews = item.reviews.length;
+
+		// Average rate calculation
+		// 3 4 1 / 3
+		item.rating =
+			item.reviews.reduce((acc, item) => acc + item.rating, 0) /
+			item.reviews.length;
+
+		await item.save();
+
+		res.status(201).json({ message: 'Review added Successfully' });
+	} else {
+		res.status(404);
+		throw new Error('Item Not Found');
+	}
+});
+
+// @desc Delete item review
+// @route DELETE /api/items/:id/reviews
+// @access Private
+const deleteItemReview = asyncHandler(async (req, res) => {
+	const item = await Item.findById(req.params.id);
+	const reviews = item.reviews;
+
+	if (reviews) {
+		// Check include user info in reviews array
+		const userCheck = reviews.find(
+			(review) => review.user.toString() === req.user._id.toString()
+		);
+		// console.log('userCheck', userCheck);
+
+		if (userCheck) {
+			reviews.map((review) => {
+				// console.log('review', review);
+				//check the comment ID same person or not
+				if (userCheck._id === review._id) {
+					// console.log('review._id', review._id);
+					review.deleteOne({ _id: review._id });
+				}
+			});
+
+			item.numReviews = item.reviews.length;
+
+			item.rating =
+				item.reviews.length > 0 &&
+				item.reviews.reduce((acc, item) => acc + item.rating, 0) /
+					item.reviews.length;
+
+			await item.save();
+
+			res.status(201).json({ message: 'Review Deleted Successfully' });
+		} else {
+			res.status(404);
+			throw new Error("You can't delete other user's review");
+		}
+	} else {
+		res.status(404);
+		throw new Error('No Reviews');
+	}
+});
+
+// @desc GET item reviews
+// @route GET /api/items/reviews
+// @access Private/admin
+const getItemReviews = asyncHandler(async (req, res) => {
+	const items = await Item.findById(req.params._id);
+
+	// console.log(items);
+	res.json(items);
+});
+
+export {
+	getItems,
+	getItemById,
+	getItemsByAdmin,
+	createItem,
+	updateItem,
+	deleteItem,
+	addToWishList,
+	createItemReview,
+	deleteItemReview,
+	getItemReviews,
+};

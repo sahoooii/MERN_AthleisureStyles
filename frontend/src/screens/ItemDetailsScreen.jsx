@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { IconButton, Box, Typography, Button } from '@mui/material';
-import { FavoriteBorderOutlined, Add, Remove } from '@mui/icons-material';
+import { Add, Remove, Favorite } from '@mui/icons-material';
 import { shades } from '../theme';
-import { useGetItemDetailsQuery } from '../slices/itemsApiSlice';
+import {
+	useAddToWishListMutation,
+	useGetItemDetailsQuery,
+} from '../slices/itemsApiSlice';
 import { addToCart } from '../slices/cartSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import RatingLogic from '../components/Utils/RatingLogic';
 import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import OnlyLeftMessage from '../components/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
+import { useGetProfileDetailsQuery } from '../slices/usersApiSlice';
 
 const ItemDetailsScreen = () => {
 	const dispatch = useDispatch();
@@ -23,12 +28,45 @@ const ItemDetailsScreen = () => {
 	const [quantity, setQuantity] = useState(1);
 
 	const { data: item, isLoading, error } = useGetItemDetailsQuery(itemId);
+	// console.log('item:', item);
+	const { userInfo } = useSelector((state) => state.auth);
+
+	const { data: user, refetch } = useGetProfileDetailsQuery();
+	// console.log('user:', user);
+
+	const [addToWishList] = useAddToWishListMutation();
+
+	const alreadyAdded =
+		user && user.wishlist.find((list) => list._id.toString() === itemId);
+	// console.log('alreadyAdded:', alreadyAdded);
+
+	const addToWishListHandler = async (itemId) => {
+		try {
+			await addToWishList({
+				userId: user._id,
+				itemId: itemId,
+				alreadyAdded: alreadyAdded,
+			}).unwrap();
+
+			refetch();
+		} catch (error) {
+			toast.error(error?.data?.message || error.error);
+		}
+	};
 
 	const addToCartHandler = () => {
 		dispatch(addToCart({ ...item, quantity }));
 
 		navigate('/cart');
 	};
+
+	useEffect(() => {
+		if (userInfo) {
+			refetch();
+		} else {
+			navigate('/login');
+		}
+	}, [userInfo, refetch, navigate]);
 
 	return (
 		<>
@@ -77,11 +115,15 @@ const ItemDetailsScreen = () => {
 
 								{/* Reviews */}
 								<Box display='flex' alignItems='center' mb='12px'>
-									{item.rating && <RatingLogic rating={item.rating} />}
-									{item.numReviews > 0 && (
+									{item.rating > 0 && <RatingLogic rating={item.rating} />}
+									{item.numReviews > 0 ? (
 										<Typography variant='span' ml='8px'>
 											{item.numReviews} Reviews
 										</Typography>
+									) : (
+										<Box sx={{ width: { xs: '90%', sm: '70%', md: '50%' } }}>
+											<Message severity='info'>No Reviews Yet</Message>
+										</Box>
 									)}
 								</Box>
 
@@ -185,14 +227,19 @@ const ItemDetailsScreen = () => {
 									>
 										ADD TO CART
 									</ButtonComponent>
+
+									{/* Add to Wishlist */}
 									<IconButton
+										disabled={!userInfo}
 										sx={{
 											alignItems: 'center',
 											marginLeft: '8px',
-											'&:hover': { color: 'red' },
+											'&:hover': { color: '#FF0461' },
+											color: alreadyAdded && '#FF0461',
 										}}
+										onClick={() => addToWishListHandler(itemId)}
 									>
-										<FavoriteBorderOutlined />
+										<Favorite />
 									</IconButton>
 								</Box>
 							</Box>
@@ -200,7 +247,7 @@ const ItemDetailsScreen = () => {
 					</Box>
 
 					{/* Tabs */}
-					<ItemDetailsTabs item={item} />
+					<ItemDetailsTabs />
 				</Box>
 			)}
 		</>

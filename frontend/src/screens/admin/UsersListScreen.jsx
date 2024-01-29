@@ -12,28 +12,22 @@ import {
 	styled,
 	tableCellClasses,
 } from '@mui/material';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Link } from 'react-router-dom';
-import { useGetOrdersQuery } from '../../slices/ordersApiSlice';
+import { useGetUsersQuery } from '../../slices/usersApiSlice';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 
-const OrderListScreen = () => {
-	const { data: orders, isLoading, error } = useGetOrdersQuery();
+const UsersListScreen = () => {
+	const { data: users, isLoading, error } = useGetUsersQuery();
+	// console.log(users);
 
 	const columns = [
-		{ id: 'id', label: 'ID', minWidth: 150 },
-		{ id: 'user', label: 'USER NAME', minWidth: 120 },
-		{ id: 'order_date', label: 'ORDER DATE', minWidth: 120, align: 'right' },
-		{ id: 'total_price', label: '$ TOTAL', minWidth: 120, align: 'right' },
-		{ id: 'paid_at', label: 'PAID AT', minWidth: 120, align: 'right' },
-		{
-			id: 'delivered_at',
-			label: 'DELIVERED AT',
-			minWidth: 120,
-			align: 'right',
-		},
+		{ id: 'user', label: 'USER', minWidth: 160 },
+		{ id: 'user_name', label: 'USER NAME', minWidth: 140 },
+		{ id: 'email', label: 'E-MAIL', minWidth: 140 },
+		{ id: 'status', label: 'STATUS', minWidth: 130 },
+		{ id: 'create_at', label: 'CREATE AT', minWidth: 120, align: 'right' },
 	];
 
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -43,6 +37,7 @@ const OrderListScreen = () => {
 		},
 		[`&.${tableCellClasses.body}`]: {
 			fontSize: 14,
+			padding: '12px 6px',
 		},
 	}));
 
@@ -64,7 +59,7 @@ const OrderListScreen = () => {
 			}}
 		>
 			<Typography variant='h3' sx={{ mb: '20px' }}>
-				All <b>Orders</b>
+				All <b>Users</b>
 			</Typography>
 
 			{isLoading ? (
@@ -97,37 +92,48 @@ const OrderListScreen = () => {
 							</TableHead>
 
 							<TableBody>
-								{orders.map((order) => (
-									<StyledTableRow key={order._id} hover>
-										<StyledTableCell>
-											<Link to={`/order/${order._id}`}>{order._id}</Link>
+								{users.map((user) => (
+									<StyledTableRow key={user._id} hover>
+										<StyledTableCell
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												justifyContent: 'space-around',
+												gap: 8,
+											}}
+										>
+											<Link to={`/admin/user/${user._id}/edit`}>
+												<img
+													src={user.picturePath}
+													alt={`${user.firstName} ${user.lastName}`}
+													width='55px'
+													height='70px'
+													style={{
+														borderRadius: '3px',
+														objectFit: 'cover',
+													}}
+												/>
+											</Link>
+											<Link to={`/admin/user/${user._id}/edit`}>{user._id}</Link>
 										</StyledTableCell>
 										<StyledTableCell>
-											{order.user ? (
-												`${order.user.firstName} ${order.user.lastName}`
+											{user && `${user.firstName} ${user.lastName}`}
+										</StyledTableCell>
+										<StyledTableCell>
+											<Link to={`mailto:${user.email}`}>{user.email}</Link>
+										</StyledTableCell>
+										<StyledTableCell>
+											{user.isAdmin ? (
+												<Message severity='error'>ADMIN</Message>
 											) : (
-												<Typography>DELETED ACCOUNT</Typography>
+												<Message severity='success'>MEMBER</Message>
 											)}
 										</StyledTableCell>
-										<StyledTableCell align='right'>
-											{order.createdAt.substring(0, 10)}
-										</StyledTableCell>
-										<StyledTableCell align='right'>
-											$ {order.totalPrice}
-										</StyledTableCell>
-										<StyledTableCell align='right'>
-											{order.isPaid ? (
-												order.paidAt.substring(0, 10)
-											) : (
-												<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
-											)}
-										</StyledTableCell>
-										<StyledTableCell align='right'>
-											{order.isDelivered ? (
-												order.deliveredAt.substring(0, 10)
-											) : (
-												<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
-											)}
+										<StyledTableCell
+											align='right'
+											style={{ paddingRight: '20px' }}
+										>
+											{user.createdAt.substring(0, 10)}
 										</StyledTableCell>
 									</StyledTableRow>
 								))}
@@ -140,4 +146,4 @@ const OrderListScreen = () => {
 	);
 };
 
-export default OrderListScreen;
+export default UsersListScreen;

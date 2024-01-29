@@ -14,22 +14,26 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
-import { useGetItemsQuery } from '../../slices/itemsApiSlice';
+import { useGetItemsByAdminQuery } from '../../slices/itemsApiSlice';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
+import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 
 const ItemsListScreen = () => {
-	const { data: items, isLoading, error } = useGetItemsQuery();
+	const { data: items, isLoading, error } = useGetItemsByAdminQuery();
+	// console.log(items);
+
+	const { data: userProfile, isLoading: loadingProfile } =
+		useGetProfileDetailsQuery();
 
 	const columns = [
-		{ id: 'id', label: 'ID', minWidth: 150 },
-		{ id: 'item_name', label: 'ITEM NAME', minWidth: 120 },
-		{ id: 'price', label: '$ PRICE', minWidth: 110, align: 'right' },
-		{ id: 'item_image', label: 'ITEM IMAGE', minWidth: 120, align: 'center' },
+		{ id: 'item', label: 'ITEM', minWidth: 160 },
+		{ id: 'item_name', label: 'ITEM NAME', minWidth: 140 },
 		{ id: 'brand', label: 'BRAND', minWidth: 130 },
 		{ id: 'category', label: 'CATEGORY', minWidth: 120 },
+		{ id: 'price', label: '$ PRICE', minWidth: 110, align: 'right' },
 	];
 
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -39,7 +43,7 @@ const ItemsListScreen = () => {
 		},
 		[`&.${tableCellClasses.body}`]: {
 			fontSize: 14,
-			padding: '8px 16px',
+			padding: '12px 6px',
 		},
 	}));
 
@@ -69,16 +73,18 @@ const ItemsListScreen = () => {
 				<Typography variant='h3'>
 					Items <b>List</b>
 				</Typography>
-				<Box sx={{ width: { sm: '30%', md: '20%' } }}>
-					<Link to='/admin/item'>
-						<ButtonComponent
-							backgroundColor={shades.neutral[600]}
-						>
-							<EditNoteOutlinedIcon sx={{ fontSize: '20px', mr: '5px' }} />{' '}
-							CREATE ITEM
-						</ButtonComponent>
-					</Link>
-				</Box>
+
+				{/* Only create admin User */}
+				{!loadingProfile && userProfile.isAdmin && (
+					<Box sx={{ width: { sm: '30%', md: '20%' } }}>
+						<Link to='/admin/create'>
+							<ButtonComponent backgroundColor={shades.neutral[600]}>
+								<EditNoteOutlinedIcon sx={{ fontSize: '20px', mr: '5px' }} />{' '}
+								CREATE ITEM
+							</ButtonComponent>
+						</Link>
+					</Box>
+				)}
 			</Box>
 
 			{isLoading ? (
@@ -113,30 +119,39 @@ const ItemsListScreen = () => {
 							<TableBody>
 								{items.map((item) => (
 									<StyledTableRow key={item._id} hover>
-										<StyledTableCell>
+										<StyledTableCell
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												justifyContent: 'space-around',
+												gap: 8,
+											}}
+										>
+											<Link to={`/admin/item/${item._id}/edit`}>
+												<img
+													src={item.image}
+													alt={item.name}
+													width='55px'
+													height='70px'
+													style={{
+														borderRadius: '3px',
+														objectFit: 'cover',
+													}}
+												/>
+											</Link>
 											<Link to={`/admin/item/${item._id}/edit`}>
 												{item._id}
 											</Link>
 										</StyledTableCell>
 										<StyledTableCell>{item.name}</StyledTableCell>
-										<StyledTableCell align='right'>
-											$ {item.price}
-										</StyledTableCell>
-
-										<StyledTableCell align='center'>
-											<img
-												src={item.image}
-												alt={item.name}
-												width='55px'
-												height='70px'
-												style={{
-													borderRadius: '3px',
-													objectFit: 'cover',
-												}}
-											/>
-										</StyledTableCell>
 										<StyledTableCell>{item.brand}</StyledTableCell>
 										<StyledTableCell>{item.category}</StyledTableCell>
+										<StyledTableCell
+											align='right'
+											style={{ paddingRight: '20px' }}
+										>
+											$ {item.price}
+										</StyledTableCell>
 									</StyledTableRow>
 								))}
 							</TableBody>

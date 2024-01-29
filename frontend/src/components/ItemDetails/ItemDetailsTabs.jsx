@@ -3,22 +3,61 @@ import {
 	Accordion,
 	AccordionDetails,
 	AccordionSummary,
+	Avatar,
 	Box,
+	Divider,
+	Grid,
+	IconButton,
+	Stack,
 	Tab,
 	Tabs,
 	Typography,
 	useMediaQuery,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {
+	useDeleteReviewMutation,
+	useGetItemDetailsQuery,
+} from '../../slices/itemsApiSlice';
+import { Close, ExpandMore } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 import ReviewForm from './ReviewForm';
+import Message from '../Utils/Message';
+import RatingLogic from '../Utils/RatingLogic';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import Loader from '../Utils/Loader';
 
-const ItemDetailsTabs = ({ item }) => {
+const ItemDetailsTabs = () => {
 	const isNonMediumScreen = useMediaQuery('(min-width:900px)');
+
+	const { itemId } = useParams();
 
 	// For tabs
 	const [value, setValue] = useState('description');
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
+	};
+
+	const { userInfo } = useSelector((state) => state.auth);
+
+	const { data: item, refetch, isLoading } = useGetItemDetailsQuery(itemId);
+
+	const [deleteReview] = useDeleteReviewMutation();
+
+	// console.log('item:', item);
+
+	const deleteHandler = async (id) => {
+		if (window.confirm('Would you like to delete this review ?')) {
+			try {
+				await deleteReview(id);
+
+				toast.success('Review deleted successfully');
+
+				refetch();
+			} catch (err) {
+				toast.error(err?.data?.message || err.error);
+			}
+		}
 	};
 
 	return (
@@ -41,63 +80,158 @@ const ItemDetailsTabs = ({ item }) => {
 				)}
 				{/* Reviews */}
 				<Box
-					// display='flex'
 					flexWrap='wrap'
 					width='100%'
 					columnGap='40px'
 					sx={{ display: { md: 'flex' } }}
 				>
-					{value === 'reviews' && (
-						<>
-							{item.numReviews > 0 ? (
+					{/* For Tab */}
+					{isLoading ? (
+						<Loader />
+					) : (
+						value === 'reviews' && (
+							<>
 								<Box flex='1 1 40%' mb='20px'>
 									{isNonMediumScreen ? (
-										<Box>
-											<Typography variant='p' sx={{ fontSize: { sm: '14px' } }}>
-												{/* Add Star Average */}
-												{item.numReviews} Reviews
-											</Typography>
-											<Box mt='10px'>
-												<Typography variant='p' sx={{ lineHeight: 2 }}>
-													Show Reviews... Something reviews coming soon. random
-													text text text Show Reviews... Something reviews
-													coming soon.
+										<>
+											{item.reviews.length === 0 ? (
+												<Box mt='20px'>
+													<Message>No Reviews Yet</Message>
+												</Box>
+											) : (
+												<Typography variant='h4' mb='15px'>
+													{item.numReviews} Reviews
 												</Typography>
-											</Box>
-										</Box>
+											)}
+
+											{item.reviews.map((review) => (
+												<Box key={review._id}>
+													<Stack mt='10px' spacing={1.5}>
+														<Grid container display='flex' alignItems='center'>
+															<Grid item xs={3}>
+																<Avatar src={review.image} />
+															</Grid>
+															<Grid item xs={3}>
+																<Typography variant='p' sx={{ lineHeight: 2 }}>
+																	<b>{review.name}</b>
+																</Typography>
+															</Grid>
+															<Grid item xs={6} textAlign='right'>
+																{userInfo && userInfo._id === review.user && (
+																	<IconButton
+																		sx={{ mb: '15px' }}
+																		onClick={() => deleteHandler(itemId)}
+																	>
+																		<Close />
+																	</IconButton>
+																)}
+															</Grid>
+														</Grid>
+
+														<Grid container display='flex' alignItems='center'>
+															<Grid item xs={3}>
+																<Typography variant='subtitle2'>
+																	{review.createdAt.substring(0, 10)}
+																</Typography>
+															</Grid>
+															<Grid item xs={8}>
+																<RatingLogic
+																	rating={review.rating}
+																></RatingLogic>
+															</Grid>
+														</Grid>
+														<Typography variant='subtitle1'>
+															{review.comment}
+														</Typography>
+													</Stack>
+													<Divider sx={{ mt: '10px' }} />
+												</Box>
+											))}
+										</>
 									) : (
 										<Box mt='10px'>
 											<Accordion>
 												<AccordionSummary
-													expandIcon={<ExpandMoreIcon />}
-													aria-controls='panel1a-content'
-													id={item._id}
+													expandIcon={<ExpandMore />}
+													aria-controls='review-content'
+													id='review-header'
 												>
-													<Typography variant='h4' sx={{ marginBottom: '0' }}>
-														{item.numReviews} Reviews:
-													</Typography>
+													{item.reviews.length === 0 ? (
+														<Typography variant='h4'>No Reviews Yet</Typography>
+													) : (
+														<Typography variant='h4'>
+															{item.numReviews} Reviews
+														</Typography>
+													)}
 												</AccordionSummary>
+
 												<AccordionDetails>
-													<Typography variant='p' sx={{ lineHeight: 2 }}>
-														Show Reviews... Something reviews coming soon.
-														random text text text Show Reviews... Something
-														reviews coming soon.
-													</Typography>
+													{item.reviews.map((review) => (
+														<Grid mt='10px' key={review._id}>
+															<Stack mt='10px' spacing={1.5}>
+																<Grid
+																	container
+																	display='flex'
+																	alignItems='center'
+																>
+																	<Grid item xs={3}>
+																		<Avatar src={review.image} />
+																	</Grid>
+																	<Grid item xs={3}>
+																		<Typography
+																			variant='p'
+																			sx={{ lineHeight: 2 }}
+																		>
+																			<b>{review.name}</b>
+																		</Typography>
+																	</Grid>
+																	<Grid item xs={6} textAlign='right'>
+																		{userInfo &&
+																			userInfo._id === review.user && (
+																				<IconButton
+																					sx={{ mb: '15px' }}
+																					onClick={() => deleteHandler(itemId)}
+																				>
+																					<Close />
+																				</IconButton>
+																			)}
+																	</Grid>
+																</Grid>
+
+																<Grid
+																	container
+																	display='flex'
+																	alignItems='center'
+																>
+																	<Grid item xs={3}>
+																		<Typography variant='subtitle2'>
+																			{review.createdAt.substring(0, 10)}
+																		</Typography>
+																	</Grid>
+																	<Grid item xs={8}>
+																		<RatingLogic
+																			rating={review.rating}
+																		></RatingLogic>
+																	</Grid>
+																</Grid>
+																<Typography variant='subtitle1'>
+																	{review.comment}
+																</Typography>
+
+																<Divider sx={{ mt: '10px' }} />
+															</Stack>
+														</Grid>
+													))}
 												</AccordionDetails>
 											</Accordion>
 										</Box>
 									)}
 								</Box>
-							) : (
-								<Box flex='1 1 40%' mt='32px'>
-									<Typography variant='p' sx={{ fontSize: { sm: '14px' } }}>
-										No Reviews Yet
-									</Typography>
-								</Box>
-							)}
-							{/* Write a Review */}
-							<ReviewForm item={item} />
-						</>
+
+								{/* Create a Review */}
+								<ReviewForm />
+							</>
+						)
 					)}
 				</Box>
 			</Box>

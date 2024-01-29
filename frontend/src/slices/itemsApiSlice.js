@@ -17,9 +17,16 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			keepUnusedDataFor: 5,
 		}),
+		getItemsByAdmin: builder.query({
+			query: () => ({
+				url: `${ITEMS_URL}/itemslist`,
+			}),
+			providesTags: ['Items'],
+			keepUnusedDataFor: 5,
+		}),
 		createItem: builder.mutation({
 			query: (data) => ({
-				url: ITEMS_URL,
+				url: `${ITEMS_URL}`,
 				method: 'POST',
 				body: data,
 			}),
@@ -45,6 +52,30 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				url: `${ITEMS_URL}/${itemId}`,
 				method: 'DELETE',
 			}),
+			invalidatesTags: ['Items'],
+		}),
+		addToWishList: builder.mutation({
+			query: (data) => ({
+				url: `${ITEMS_URL}/${data.itemId}/wishlist`,
+				method: 'PUT',
+				body: data,
+			}),
+			invalidatesTags: ['Users'],
+		}),
+		createReview: builder.mutation({
+			query: (data) => ({
+				url: `${ITEMS_URL}/${data.itemId}/reviews`,
+				method: 'POST',
+				body: data,
+			}),
+			invalidatesTags: ['Items'],
+		}),
+		deleteReview: builder.mutation({
+			query: (itemId) => ({
+				url: `${ITEMS_URL}/${itemId}/reviews`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: ['Items'],
 		}),
 	}),
 });
@@ -52,8 +83,12 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 export const {
 	useGetItemsQuery,
 	useGetItemDetailsQuery,
+	useGetItemsByAdminQuery,
 	useCreateItemMutation,
 	useUpdateItemMutation,
 	useUploadItemImagMutation,
 	useDeleteItemMutation,
+	useAddToWishListMutation,
+	useCreateReviewMutation,
+	useDeleteReviewMutation,
 } = itemsApiSlice;

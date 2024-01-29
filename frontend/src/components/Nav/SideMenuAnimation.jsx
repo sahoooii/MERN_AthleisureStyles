@@ -51,6 +51,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 		try {
 			// For server
 			await logoutApiCall().unwrap();
+
 			// Clear localStorage userInfo and cart
 			dispatch(logout());
 			dispatch(resetCart());
@@ -326,7 +327,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 														whileInView='visible'
 													>
 														<Link
-															// to='/profile'
+															to='/admin/userslist'
 															style={{ textDecoration: 'none' }}
 															onClick={() => setOpen(!open)}
 														>
