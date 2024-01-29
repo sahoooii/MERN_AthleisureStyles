@@ -111,12 +111,12 @@ const ItemDetailsTabs = () => {
 															<Grid item xs={3}>
 																<Avatar src={review.image} />
 															</Grid>
-															<Grid item xs={3}>
-																<Typography variant='p' sx={{ lineHeight: 2 }}>
+															<Grid item xs={7}>
+																<Typography variant='p'>
 																	<b>{review.name}</b>
 																</Typography>
 															</Grid>
-															<Grid item xs={6} textAlign='right'>
+															<Grid item xs={2} textAlign='right'>
 																{userInfo && userInfo._id === review.user && (
 																	<IconButton
 																		sx={{ mb: '15px' }}
@@ -177,7 +177,7 @@ const ItemDetailsTabs = () => {
 																	<Grid item xs={3}>
 																		<Avatar src={review.image} />
 																	</Grid>
-																	<Grid item xs={3}>
+																	<Grid item xs={7}>
 																		<Typography
 																			variant='p'
 																			sx={{ lineHeight: 2 }}
@@ -185,7 +185,7 @@ const ItemDetailsTabs = () => {
 																			<b>{review.name}</b>
 																		</Typography>
 																	</Grid>
-																	<Grid item xs={6} textAlign='right'>
+																	<Grid item xs={2} textAlign='right'>
 																		{userInfo &&
 																			userInfo._id === review.user && (
 																				<IconButton
