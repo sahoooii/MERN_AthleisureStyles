@@ -142,7 +142,7 @@ const HomeItems = () => {
 
 								{/* Rating */}
 								<Box display='flex' alignItems='center' marginBottom='5px'>
-									<RatingLogic rating={item.rating} />
+									{item.rating > 0 && <RatingLogic rating={item.rating} />}
 									{item.numReviews > 0 && (
 										<Typography variant='subtitle2' ml='8px'>
 											{item.numReviews} Reviews

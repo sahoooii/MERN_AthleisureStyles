@@ -121,7 +121,7 @@ const OrderHistoryScreen = () => {
 																{/* )} */}
 															</Grid>
 															<Grid item sm={5} sx={{ mb: '12px' }}>
-																{orders.isDelivered && (
+																{order.isDelivered && (
 																	<Message severity='success'>
 																		{/* Replace */}
 																		DELIVERED AT{' '}
@@ -237,7 +237,7 @@ const OrderHistoryScreen = () => {
 																{/* )} */}
 															</Grid>
 															<Grid item xs={12} sx={{ mb: '12px' }}>
-																{orders.isDelivered && (
+																{order.isDelivered && (
 																	<Message severity='success'>
 																		{/* Replace */}
 																		DELIVERED AT
