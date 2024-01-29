@@ -41,10 +41,10 @@ const HomeItems = () => {
 	const [addToWishList] = useAddToWishListMutation();
 
 	const addToWishListHandler = async (itemId) => {
-		const alreadyAdded =
-			user && user.wishlist.find((list) => list._id.toString() === itemId);
-
 		try {
+			const alreadyAdded =
+				user && user.wishlist.find((list) => list._id.toString() === itemId);
+
 			await addToWishList({
 				userId: user._id,
 				itemId: itemId,
@@ -61,10 +61,8 @@ const HomeItems = () => {
 	useEffect(() => {
 		if (userInfo) {
 			refetch();
-			// } else {
-			// 	navigate('/login');
 		}
-	}, [userInfo, refetch, navigate]);
+	}, [userInfo, refetch]);
 
 	return (
 		<>
@@ -157,9 +155,9 @@ const HomeItems = () => {
 
 									{/* Add To Wishlist */}
 									{Boolean(
-										user &&
+										userInfo &&
+											user &&
 											user.wishlist &&
-											// user.wishlist.length > 0 &&
 											user.wishlist.find((list) => {
 												return list._id === item._id;
 											})

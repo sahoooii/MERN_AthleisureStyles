@@ -6,50 +6,47 @@ import {
 	Typography,
 	Grid,
 	Stack,
-	Select,
-	InputLabel,
-	FormControl,
-	MenuItem,
-	Card,
-	CardContent,
-	CardActions,
 	useMediaQuery,
 } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
-import { addToCart, removeFromCart } from '../slices/cartSlice';
-import ButtonComponent from '../components/Utils/ButtonComponent';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Favorite } from '@mui/icons-material';
 import Message from '../components/Utils/Message';
-import CloseIcon from '@mui/icons-material/Close';
-import {
-	useAddToWishListMutation,
-	useGetItemDetailsQuery,
-} from '../slices/itemsApiSlice';
+import { useAddToWishListMutation } from '../slices/itemsApiSlice';
 import { useGetProfileDetailsQuery } from '../slices/usersApiSlice';
-import RatingLogic from '../components/Utils/RatingLogic';
+import OnlyLeftMessage from '../components/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
 
 const WishlistScreen = () => {
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
-
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
-	const { userInfo } = useSelector((state) => state.auth);
-
 	const { data: user, isLoading, refetch } = useGetProfileDetailsQuery();
-	// console.log(user && user.wishlist.map((id) => id));
+	// console.log(user);
 
-	const [
-		addToWishList,
-		{ isLoading: loadingWishlist, refetch: refetchWishlist },
-	] = useAddToWishListMutation();
+	const [addToWishList] = useAddToWishListMutation();
 
-	// const {
-	// 	data: item,
-	// 	isLoading: itemLoading,
-	// 	error,
-	// } = useGetItemDetailsQuery(itemId);
+	const removeFromWishList = async (itemId) => {
+		try {
+			const alreadyAdded =
+				user && user.wishlist.find((list) => list._id.toString() === itemId);
+
+			if (
+				window.confirm(
+					'Would you like to remove this item from your Wishlist ?'
+				)
+			) {
+				await addToWishList({
+					userId: user._id,
+					itemId: itemId,
+					alreadyAdded: alreadyAdded,
+				}).unwrap();
+
+				refetch();
+			}
+		} catch (error) {
+			toast.error(error?.data?.message || error.error);
+		}
+	};
 
 	return (
 		<Box margin='0 auto' sx={{ width: { xs: '95%', sm: '80%' } }}>
@@ -66,51 +63,52 @@ const WishlistScreen = () => {
 						<Grid item md={12} xs={12}>
 							<Box>
 								<Box mb='30px'>
-									<Typography variant='h3'>Your Wishlist</Typography>
+									<Typography variant='h3'>
+										Your <b>Wishlist</b>
+									</Typography>
 								</Box>
 
 								{/* Shopping Cart */}
 								<Box>
-									{user.wishlist.map((wishlist) => (
-										<Box key={wishlist._id}>
+									{user.wishlist.map((list) => (
+										<Box key={list._id}>
 											<Grid container m='15px 0'>
-												{/* <Grid item sm={4} xs={5}>
+												<Grid item sm={4} xs={5}>
 													{isNonMobileScreen ? (
 														<img
-															src={item.image}
-															alt={item.name}
+															src={list.image}
+															alt={list.name}
 															width='123px'
-															height='164px'
+															height='174px'
 															style={{
 																borderRadius: '3px',
 															}}
 														/>
 													) : (
 														<img
-															src={item.image}
-															alt={item.name}
-															width='100px'
-															height='140px'
+															src={list.image}
+															alt={list.name}
+															width='110px'
+															height='150px'
 															style={{
 																borderRadius: '3px',
 															}}
 														/>
 													)}
-												</Grid> */}
-												{/* <Grid
+												</Grid>
+
+												<Grid
 													item
 													sm={7}
 													xs={6}
 													sx={{
-														mt: { sm: '12px', xs: '8px' },
-														mb: '10px',
 														display: 'flex',
 														alignItems: 'center',
 													}}
 												>
-													<Stack spacing={2} sx={{ alignContent: 'center' }}>
+													<Stack spacing={1} sx={{ alignContent: 'center' }}>
 														<Link
-															to={`/item/${item._id}`}
+															to={`/item/${list._id}`}
 															style={{ textDecoration: 'underline' }}
 														>
 															<Typography
@@ -118,43 +116,72 @@ const WishlistScreen = () => {
 																fontWeight='bold'
 																color='secondary'
 															>
-																{item.name}
+																{list.name}
 															</Typography>
 														</Link>
 
-														{isNonMobileScreen && (
-															<Box display='flex' alignItems='center' mb='12px'>
-																{item.rating > 0 && (
-																	<RatingLogic rating={item.rating} />
-																)}
-																{item.numReviews > 0 ? (
-																	<Typography variant='span' ml='8px'>
-																		{item.numReviews} Reviews
-																	</Typography>
-																) : (
-																	<Box>
-																		<Message severity='info'>
-																			No Reviews Yet
-																		</Message>
-																	</Box>
-																)}
+														<Box>
+															<Typography as='span' variant='h4' mr='3px'>
+																Brand:
+															</Typography>
+															<Typography as='span' variant='h4'>
+																{list.brand}
+															</Typography>
+														</Box>
+
+														{isNonMobileScreen ? (
+															<Typography variant='h3' fontWeight='bold'>
+																${list.price}
+															</Typography>
+														) : (
+															<Box
+																display='flex'
+																alignItems='center'
+																justifyContent='space-between'
+															>
+																<Typography variant='h3' fontWeight='bold'>
+																	${list.price}
+																</Typography>
+
+																<IconButton
+																	sx={{
+																		'&:hover': { color: '#FF0461' },
+																		// mr: '30px',
+																	}}
+																	onClick={() => removeFromWishList(list._id)}
+																>
+																	<Favorite />
+																</IconButton>
 															</Box>
 														)}
 
-														<Typography variant='h3' fontWeight='bold'>
-															${item.price}
-														</Typography>
+														{list.countInStock <= 0 && (
+															<Typography variant='h4' color='red'>
+																Out Of Stock
+															</Typography>
+														)}
+														{/* Stock Alert */}
+														{list.countInStock <= 5 &&
+															list.countInStock > 0 && (
+																<OnlyLeftMessage item={list}>
+																	{`Only ${list.countInStock} Left!!`}
+																</OnlyLeftMessage>
+															)}
 													</Stack>
-												</Grid> */}
-												{/* Delete Items Button */}
-												<Grid item xs={1} sm={1}>
-													<IconButton
-														// onClick={() => removeFromCartHandler(item._id)}
-													>
-														<CloseIcon />
-													</IconButton>
 												</Grid>
+												{/* Remove from Wishlist*/}
+												{isNonMobileScreen && (
+													<Grid item sm={1}>
+														<IconButton
+															sx={{ '&:hover': { color: '#FF0461' } }}
+															onClick={() => removeFromWishList(list._id)}
+														>
+															<Favorite />
+														</IconButton>
+													</Grid>
+												)}
 											</Grid>
+
 											<Divider />
 										</Box>
 									))}
