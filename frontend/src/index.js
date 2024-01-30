@@ -35,6 +35,7 @@ import ItemEditScreen from './screens/admin/ItemEditScreen';
 import UsersListScreen from './screens/admin/UsersListScreen';
 import UserProfileEditScreen from './screens/admin/UserProfileEditScreen';
 import WishlistScreen from './screens/WishlistScreen';
+import ReviewsEditScreen from './screens/admin/ReviewsEditScreen';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -68,6 +69,7 @@ const router = createBrowserRouter(
 					path='/admin/user/:id/edit'
 					element={<UserProfileEditScreen />}
 				/>
+				<Route path='/admin/item/:id/reviews' element={<ReviewsEditScreen />} />
 			</Route>
 		</Route>
 	)

@@ -34,6 +34,7 @@ const ItemsListScreen = () => {
 		{ id: 'brand', label: 'BRAND', minWidth: 130 },
 		{ id: 'category', label: 'CATEGORY', minWidth: 120 },
 		{ id: 'price', label: '$ PRICE', minWidth: 110, align: 'right' },
+		{ id: 'reviews', label: 'REVIEWS', minWidth: 110, align: 'right' },
 	];
 
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -139,7 +140,10 @@ const ItemsListScreen = () => {
 													}}
 												/>
 											</Link>
-											<Link to={`/admin/item/${item._id}/edit`}>
+											<Link
+												to={`/admin/item/${item._id}/edit`}
+												style={{ textDecoration: 'underline' }}
+											>
 												{item._id}
 											</Link>
 										</StyledTableCell>
@@ -151,6 +155,21 @@ const ItemsListScreen = () => {
 											style={{ paddingRight: '20px' }}
 										>
 											$ {item.price}
+										</StyledTableCell>
+										<StyledTableCell
+											align='right'
+											style={{ paddingRight: '20px' }}
+										>
+											{item.reviews.length > 0 ? (
+												<Link
+													to={`/admin/item/${item._id}/reviews`}
+													style={{ textDecoration: 'underline' }}
+												>
+													{item.reviews.length} Reviews
+												</Link>
+											) : (
+												<>{item.reviews.length} Reviews</>
+											)}
 										</StyledTableCell>
 									</StyledTableRow>
 								))}

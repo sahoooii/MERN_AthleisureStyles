@@ -146,7 +146,7 @@ const addToWishList = asyncHandler(async (req, res) => {
 		const alreadyAdded = user.wishlist.find(
 			(list) => list._id.toString() === itemId
 		);
-		// console.log('alreadyAdded:', alreadyAdded);
+		console.log('alreadyAdded:', alreadyAdded);
 
 		if (alreadyAdded) {
 			let user = await User.findByIdAndUpdate(
@@ -262,7 +262,7 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 
 			res.status(201).json({ message: 'Review Deleted Successfully' });
 		} else {
-			res.status(404);
+			res.status(400);
 			throw new Error("You can't delete other user's review");
 		}
 	} else {
@@ -272,13 +272,77 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 });
 
 // @desc GET item reviews
-// @route GET /api/items/reviews
+// @route DELETE /api/items/:id/admin/reviews
 // @access Private/admin
 const getItemReviews = asyncHandler(async (req, res) => {
-	const items = await Item.findById(req.params._id);
+	const item = await Item.findById(req.params.id);
+	const reviews = item.reviews;
 
-	// console.log(items);
-	res.json(items);
+	if (reviews) {
+		return res.json(item);
+	} else {
+		res.status(404);
+		throw new Error('Review Not Found');
+	}
+});
+
+// @desc DELETE item reviews By admin
+// @route DELETE /api/items/:id/admin/reviews
+// @access Private/admin
+const deleteItemReviewByAdmin = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user._id);
+	const { isAdmin } = user;
+
+	const { reviewId } = req.body;
+	const item = await Item.findById(req.params.id);
+	const { _id: itemId } = item;
+
+	console.log('item:', item);
+	console.log('reviewId:', reviewId);
+	console.log('itemId:', itemId);
+
+	const reviews = item.reviews;
+	console.log('reviews:', reviews);
+	try {
+		const deleteReviewId = reviews.find(
+			(review) => review._id.toString() === reviewId
+		);
+
+		console.log('deleteReviewId:', deleteReviewId);
+
+		if (isAdmin) {
+			// reviews.map(async (review) => {
+			// 	await review.deleteOne({ _id: deleteReviewId });
+			// });
+			// await review.deleteOne({ _id: review._id });
+			let item = await Item.findByIdAndUpdate(
+				itemId,
+				{
+					$pull: { reviews: deleteItemReview },
+				},
+				{
+					new: true,
+				}
+			);
+
+			item.numReviews = item.reviews.length;
+
+			item.rating =
+				item.reviews.length > 0 &&
+				item.reviews.reduce((acc, item) => acc + item.rating, 0) /
+					item.reviews.length;
+
+			res.status(200).json({ item });
+
+			// console.log('item:', item);
+		} else {
+			res.status(404);
+			throw new Error('OnlyAdmin User');
+		}
+	} catch (error) {
+		res.status(400);
+		throw new Error('Failed to delete this Review');
+	}
 });
 
 export {
@@ -292,4 +356,5 @@ export {
 	createItemReview,
 	deleteItemReview,
 	getItemReviews,
+	deleteItemReviewByAdmin,
 };

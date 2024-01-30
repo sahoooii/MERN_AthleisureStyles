@@ -77,6 +77,20 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Items'],
 		}),
+		getItemsReviewsByAdmin: builder.query({
+			query: (data) => ({
+				url: `${ITEMS_URL}/${data._id}/admin/reviews`,
+			}),
+			providesTags: ['Items'],
+			keepUnusedDataFor: 5,
+		}),
+		deleteItemsReviewsByAdmin: builder.mutation({
+			query: (data) => ({
+				url: `${ITEMS_URL}/${data._id}/admin/reviews`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: ['Items'],
+		}),
 	}),
 });
 
