@@ -260,9 +260,9 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 
 			await item.save();
 
-			res.status(201).json({ message: 'Review Deleted Successfully' });
+			res.status(200).json({ message: 'Review Deleted Successfully' });
 		} else {
-			res.status(400);
+			res.status(401);
 			throw new Error("You can't delete other user's review");
 		}
 	} else {
@@ -286,39 +286,32 @@ const getItemReviews = asyncHandler(async (req, res) => {
 	}
 });
 
-// @desc DELETE item reviews By admin
-// @route DELETE /api/items/:id/admin/reviews
+// @desc Update item reviews By admin
+// @route PUT /api/items/:id/admin/reviews
 // @access Private/admin
-const deleteItemReviewByAdmin = asyncHandler(async (req, res) => {
+const updateItemReviewByAdmin = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user._id);
 	const { isAdmin } = user;
 
 	const { reviewId } = req.body;
+
 	const item = await Item.findById(req.params.id);
 	const { _id: itemId } = item;
 
-	console.log('item:', item);
-	console.log('reviewId:', reviewId);
-	console.log('itemId:', itemId);
-
 	const reviews = item.reviews;
-	console.log('reviews:', reviews);
+
 	try {
-		const deleteReviewId = reviews.find(
+		const deleteReview = reviews.find(
 			(review) => review._id.toString() === reviewId
 		);
 
-		console.log('deleteReviewId:', deleteReviewId);
+		// console.log('deleteReviewId:', deleteReview);
 
 		if (isAdmin) {
-			// reviews.map(async (review) => {
-			// 	await review.deleteOne({ _id: deleteReviewId });
-			// });
-			// await review.deleteOne({ _id: review._id });
 			let item = await Item.findByIdAndUpdate(
 				itemId,
 				{
-					$pull: { reviews: deleteItemReview },
+					$pull: { reviews: deleteReview },
 				},
 				{
 					new: true,
@@ -332,11 +325,11 @@ const deleteItemReviewByAdmin = asyncHandler(async (req, res) => {
 				item.reviews.reduce((acc, item) => acc + item.rating, 0) /
 					item.reviews.length;
 
-			res.status(200).json({ item });
+			await item.save();
 
-			// console.log('item:', item);
+			res.status(200).json({ item });
 		} else {
-			res.status(404);
+			res.status(401);
 			throw new Error('OnlyAdmin User');
 		}
 	} catch (error) {
@@ -356,5 +349,5 @@ export {
 	createItemReview,
 	deleteItemReview,
 	getItemReviews,
-	deleteItemReviewByAdmin,
+	updateItemReviewByAdmin,
 };

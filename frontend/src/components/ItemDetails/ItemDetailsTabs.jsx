@@ -44,8 +44,6 @@ const ItemDetailsTabs = () => {
 
 	const [deleteReview] = useDeleteReviewMutation();
 
-	// console.log('item:', item);
-
 	const deleteHandler = async (id) => {
 		if (window.confirm('Would you like to delete this review ?')) {
 			try {
