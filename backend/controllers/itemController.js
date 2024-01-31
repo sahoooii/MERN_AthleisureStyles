@@ -291,7 +291,7 @@ const getItemReviews = asyncHandler(async (req, res) => {
 // @access Private/admin
 const updateItemReviewByAdmin = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user._id);
-	const { isAdmin } = user;
+	// const { isAdmin } = user;
 
 	const { reviewId } = req.body;
 
@@ -307,7 +307,7 @@ const updateItemReviewByAdmin = asyncHandler(async (req, res) => {
 
 		// console.log('deleteReviewId:', deleteReview);
 
-		if (isAdmin) {
+		if (user.isAdmin) {
 			let item = await Item.findByIdAndUpdate(
 				itemId,
 				{

@@ -114,13 +114,23 @@ const UsersListScreen = () => {
 													}}
 												/>
 											</Link>
-											<Link to={`/admin/user/${user._id}/edit`}>{user._id}</Link>
+											<Link
+												to={`/admin/user/${user._id}/edit`}
+												style={{ textDecoration: 'underline' }}
+											>
+												{user._id}
+											</Link>
 										</StyledTableCell>
 										<StyledTableCell>
 											{user && `${user.firstName} ${user.lastName}`}
 										</StyledTableCell>
 										<StyledTableCell>
-											<Link to={`mailto:${user.email}`}>{user.email}</Link>
+											<Link
+												to={`mailto:${user.email}`}
+												style={{ textDecoration: 'underline' }}
+											>
+												{user.email}
+											</Link>
 										</StyledTableCell>
 										<StyledTableCell>
 											{user.isAdmin ? (
