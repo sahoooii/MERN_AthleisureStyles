@@ -11,7 +11,6 @@ import {
 	Typography,
 	styled,
 	tableCellClasses,
-	Grid,
 	IconButton,
 } from '@mui/material';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
@@ -26,6 +25,7 @@ import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
+import RatingLogic from '../../components/Utils/RatingLogic';
 
 const ReviewsEditScreen = () => {
 	const { palette } = useTheme();
@@ -39,6 +39,7 @@ const ReviewsEditScreen = () => {
 		error,
 		refetch,
 	} = useGetReviewsByAdminQuery(itemId);
+	// console.log(item);
 
 	const [updateReviewsByAdmin] = useUpdateReviewByAdminMutation();
 
@@ -67,14 +68,39 @@ const ReviewsEditScreen = () => {
 		}
 	};
 
-	const columns = [
-		{ id: 'user', label: 'USER', minWidth: 160 },
-		{ id: 'user_name', label: 'USER NAME', minWidth: 130 },
-		{ id: 'comment', label: 'COMMENT', minWidth: 150 },
-		{ id: 'rating', label: 'RATING', minWidth: 120, align: 'right' },
-		{ id: 'posted_at', label: 'POSTED AT', minWidth: 120, align: 'right' },
-		{ id: 'delete', label: 'DELETE', minWidth: 80, align: 'right' },
+	// Item col
+	const itemColumns = [
+		{ id: 'item', label: 'Item', minWidth: 280 },
+		{ id: 'brand', label: 'Brand', minWidth: 130 },
+		{ id: 'price', label: 'PRICE', minWidth: 100, align: 'right' },
+		{ id: 'numReviews', label: 'REVIEWS', minWidth: 130, align: 'right' },
+		{ id: 'rating', label: 'RATING', minWidth: 150, align: 'right' },
 	];
+
+	const StyledTableCellItem = styled(TableCell)(({ theme }) => ({
+		[`&.${tableCellClasses.head}`]: {
+			backgroundColor: shades.primary[200],
+			color: 'white',
+		},
+		[`&.${tableCellClasses.body}`]: {
+			fontSize: 14,
+			padding: '12px 16px',
+		},
+	}));
+
+	const StyledTableRowItem = styled(TableRow)(({ theme }) => ({
+		backgroundColor: shades.neutral[200],
+	}));
+
+	// Reviews List
+		const columns = [
+			{ id: 'user', label: 'USER', minWidth: 160 },
+			{ id: 'user_name', label: 'USER NAME', minWidth: 130 },
+			{ id: 'comment', label: 'COMMENT', minWidth: 150 },
+			{ id: 'rating', label: 'RATING', minWidth: 120, align: 'right' },
+			{ id: 'posted_at', label: 'POSTED AT', minWidth: 120, align: 'right' },
+			{ id: 'delete', label: 'DELETE', minWidth: 80, align: 'right' },
+		];
 
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
 		[`&.${tableCellClasses.head}`]: {
@@ -83,7 +109,7 @@ const ReviewsEditScreen = () => {
 		},
 		[`&.${tableCellClasses.body}`]: {
 			fontSize: 14,
-			padding: '12px 6px',
+			padding: '12px 16px',
 		},
 	}));
 
@@ -112,44 +138,79 @@ const ReviewsEditScreen = () => {
 				</Message>
 			) : (
 				<>
-					<Grid
-						container
-						display='flex'
-						alignItems='center'
-						mb='10px'
-						p='6px 12px'
-						sx={{ backgroundColor: shades.neutral[200] }}
-						borderRadius='3px'
-					>
-						<Grid item xs={1}>
-							<img
-								src={item.image}
-								alt={item.name}
-								width='55px'
-								height='70px'
-								style={{
-									borderRadius: '3px',
-									objectFit: 'cover',
-								}}
-							/>
-						</Grid>
-						<Grid item xs={4}>
-							<Typography variant='h4'>{item.name}</Typography>
-						</Grid>
-						<Grid item xs={2}>
-							<Typography variant='h4'>${item.price}</Typography>
-						</Grid>
-						<Grid item xs={2}>
-							<Typography variant='h4' textAlign='end'>
-								{item.rating} STARS
-							</Typography>
-						</Grid>
-						<Grid item xs={3}>
-							<Typography variant='h4' textAlign='end'>
-								{item.reviews.length} Reviews
-							</Typography>
-						</Grid>
-					</Grid>
+					<Paper sx={{ width: '100%', overflow: 'hidden', mb: '20px' }}>
+						<TableContainer>
+							<Table sx={{ minWidth: 654 }}>
+								<TableHead>
+									<TableRow>
+										{itemColumns.map((column) => (
+											<StyledTableCellItem
+												key={column.id}
+												align={column.align}
+												style={{ minWidth: column.minWidth }}
+												sx={{ fontWeight: 'bold' }}
+											>
+												{column.label}
+											</StyledTableCellItem>
+										))}
+									</TableRow>
+								</TableHead>
+
+								<TableBody>
+									<StyledTableRowItem hover>
+										<StyledTableCell
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												// justifyContent: 'space-around',
+												gap: 12,
+											}}
+										>
+											<img
+												src={item.image}
+												alt={item.name}
+												width='55px'
+												height='70px'
+												style={{
+													borderRadius: '3px',
+													objectFit: 'cover',
+												}}
+											/>
+											<Link
+												to={`/admin/item/${itemId}/edit`}
+												style={{ textDecoration: 'underline' }}
+											>
+												<Typography variant='h4'>{item.name}</Typography>
+											</Link>
+										</StyledTableCell>
+										<StyledTableCell>{item.brand}</StyledTableCell>
+										<StyledTableCell align='right'>
+											${item.price}
+										</StyledTableCell>
+										<StyledTableCell align='right'>
+											<Typography variant='h4'>
+												{item.reviews.length} Reviews
+											</Typography>
+										</StyledTableCell>
+										<StyledTableCell>
+											<Box
+												display='flex'
+												alignItems='center'
+												justifyContent='end'
+											>
+												<Typography variant='h4' mr='5px'>
+													{item.rating}
+												</Typography>
+												{item.rating > 0 && (
+													<RatingLogic rating={item.rating} />
+												)}
+											</Box>
+										</StyledTableCell>
+									</StyledTableRowItem>
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</Paper>
 
 					{item.reviews.length === 0 ? (
 						<Message severity='error'>No Reviews</Message>
@@ -212,19 +273,19 @@ const ReviewsEditScreen = () => {
 												<StyledTableCell>{review.comment}</StyledTableCell>
 												<StyledTableCell
 													align='right'
-													style={{ paddingRight: '20px' }}
+													// style={{ paddingRight: '20px' }}
 												>
 													{review.rating} STARS
 												</StyledTableCell>
 												<StyledTableCell
 													align='right'
-													style={{ paddingRight: '20px' }}
+													// style={{ paddingRight: '20px' }}
 												>
 													{review.createdAt.substring(0, 10)}
 												</StyledTableCell>
 												<StyledTableCell
 													align='right'
-													style={{ paddingRight: '20px' }}
+													// style={{ paddingRight: '20px' }}
 												>
 													<IconButton
 														sx={{

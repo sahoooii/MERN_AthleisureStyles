@@ -51,7 +51,10 @@ const ReviewForm = () => {
 	// For Validation
 	const reviewValidationSchema = yup.object().shape({
 		rating: yup.number().required('Please rating this item'),
-		comment: yup.string().required('Let us know, something your comment'),
+		comment: yup
+			.string()
+			.required('Let us know, something your comment')
+			.max(300, 'Comment has a maximum limit of 300 characters.'),
 	});
 
 	const submitHandler = async (values, onSubmitProps) => {

@@ -13,6 +13,7 @@ const OrderHistoryScreen = () => {
 
 	const { data: orders, isLoading, error } = useGetMyOrdersQuery();
 	// console.log(orders);
+
 	return (
 		<Box
 			sx={{
@@ -150,7 +151,7 @@ const OrderHistoryScreen = () => {
 																		height='120px'
 																		style={{
 																			borderRadius: '3px',
-																			objectFit: 'cover'
+																			objectFit: 'cover',
 																		}}
 																	/>
 																</Grid>

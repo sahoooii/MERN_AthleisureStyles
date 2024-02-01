@@ -214,9 +214,10 @@ const createItemReview = asyncHandler(async (req, res) => {
 
 		// Average rate calculation
 		// 3 4 1 / 3
-		item.rating =
+		item.rating = (
 			item.reviews.reduce((acc, item) => acc + item.rating, 0) /
-			item.reviews.length;
+			item.reviews.length
+		).toFixed(1);
 
 		await item.save();
 
@@ -255,8 +256,10 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 
 			item.rating =
 				item.reviews.length > 0 &&
-				item.reviews.reduce((acc, item) => acc + item.rating, 0) /
-					item.reviews.length;
+				(
+					item.reviews.reduce((acc, item) => acc + item.rating, 0) /
+					item.reviews.length
+				).toFixed(1);
 
 			await item.save();
 
@@ -322,8 +325,10 @@ const updateItemReviewByAdmin = asyncHandler(async (req, res) => {
 
 			item.rating =
 				item.reviews.length > 0 &&
-				item.reviews.reduce((acc, item) => acc + item.rating, 0) /
-					item.reviews.length;
+				(
+					item.reviews.reduce((acc, item) => acc + item.rating, 0) /
+					item.reviews.length
+				).toFixed(1);
 
 			await item.save();
 

@@ -20,6 +20,6 @@ export const updateCart = (state) => {
 	).toFixed(2);
 
 	localStorage.setItem('cart', JSON.stringify(state));
-	
+
 	return state;
 };

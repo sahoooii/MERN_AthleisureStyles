@@ -64,7 +64,7 @@ const WishlistScreen = () => {
 							<Box>
 								<Box mb='30px'>
 									<Typography variant='h3'>
-										Your <b>Wishlist</b>
+										Your <b>Wishlist</b> ({user.wishlist.length})
 									</Typography>
 								</Box>
 
@@ -78,7 +78,7 @@ const WishlistScreen = () => {
 														<img
 															src={list.image}
 															alt={list.name}
-															width='123px'
+															width='140px'
 															height='174px'
 															style={{
 																borderRadius: '3px',
