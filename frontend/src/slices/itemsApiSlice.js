@@ -5,8 +5,11 @@ import { apiSlice } from './apiSlice';
 export const itemsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getItems: builder.query({
-			query: () => ({
+			query: ({ pageNumber }) => ({
 				url: ITEMS_URL,
+				params: {
+					pageNumber,
+				},
 			}),
 			providesTags: ['Items'],
 			keepUnusedDataFor: 5,
@@ -18,8 +21,11 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			keepUnusedDataFor: 5,
 		}),
 		getItemsByAdmin: builder.query({
-			query: () => ({
+			query: ({ pageNumber }) => ({
 				url: `${ITEMS_URL}/itemslist`,
+				params: {
+					pageNumber,
+				},
 			}),
 			providesTags: ['Items'],
 			keepUnusedDataFor: 5,

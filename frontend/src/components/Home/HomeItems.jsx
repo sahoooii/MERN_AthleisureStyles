@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
 	IconButton,
 	Typography,
@@ -26,15 +26,17 @@ import Message from '../Utils/Message';
 import { shades } from '../../theme';
 import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 import { useSelector } from 'react-redux';
+import Paginate from '../Utils/Paginate';
 
 const HomeItems = () => {
 	const navigate = useNavigate();
+	const { pageNumber } = useParams();
 
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	const { userInfo } = useSelector((state) => state.auth);
 
-	const { data: items, isLoading, error } = useGetItemsQuery();
+	const { data, isLoading, error } = useGetItemsQuery({ pageNumber });
 
 	const { data: user, refetch } = useGetProfileDetailsQuery();
 
@@ -81,7 +83,7 @@ const HomeItems = () => {
 					rowGap='40px'
 					columnGap='1.33%'
 				>
-					{items.map((item) => (
+					{data.items.map((item) => (
 						<Card
 							key={item._id}
 							sx={{
@@ -210,6 +212,7 @@ const HomeItems = () => {
 					))}
 				</Box>
 			)}
+			{!isLoading && <Paginate pages={data.pages} page={data.page} />}
 		</>
 	);
 };

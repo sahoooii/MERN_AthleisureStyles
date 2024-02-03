@@ -12,7 +12,7 @@ import {
 	styled,
 	tableCellClasses,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import { useGetItemsByAdminQuery } from '../../slices/itemsApiSlice';
 import { shades } from '../../theme';
@@ -20,9 +20,12 @@ import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
+import Paginate from '../../components/Utils/Paginate';
 
 const ItemsListScreen = () => {
-	const { data: items, isLoading, error } = useGetItemsByAdminQuery();
+	const { pageNumber } = useParams();
+
+	const { data, isLoading, error } = useGetItemsByAdminQuery({ pageNumber });
 	// console.log(items);
 
 	const { data: userProfile, isLoading: loadingProfile } =
@@ -80,7 +83,7 @@ const ItemsListScreen = () => {
 						mb='20px'
 					>
 						<Typography variant='h3'>
-							Items <b>List</b> ({items.length})
+							Items <b>List</b> ({data.items.length})
 						</Typography>
 
 						{/* Only create admin User */}
@@ -121,7 +124,7 @@ const ItemsListScreen = () => {
 								</TableHead>
 
 								<TableBody>
-									{items.map((item) => (
+									{data.items.map((item) => (
 										<StyledTableRow key={item._id} hover>
 											<StyledTableCell
 												style={{
@@ -180,6 +183,7 @@ const ItemsListScreen = () => {
 							</Table>
 						</TableContainer>
 					</Paper>
+					<Paginate pages={data.pages} page={data.page} />
 				</>
 			)}
 		</Box>

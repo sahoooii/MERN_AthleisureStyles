@@ -6,8 +6,14 @@ import User from '../models/userModel.js';
 // @route GET /api/items
 // @access Public
 const getItems = asyncHandler(async (req, res) => {
-	const items = await Item.find({});
-	res.json(items);
+	const pageSize = 6;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalItemsCount = await Item.countDocuments();
+
+	const items = await Item.find({})
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });
 });
 
 // @desc Fetch Single Item
@@ -29,8 +35,14 @@ const getItemById = asyncHandler(async (req, res) => {
 // @route GET /api/items/itemslist
 // @access  Private/Admin
 const getItemsByAdmin = asyncHandler(async (req, res) => {
-	const items = await Item.find({});
-	res.json(items);
+	const pageSize = 6;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalItemsCount = await Item.countDocuments();
+
+	const items = await Item.find({})
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });
 });
 
 // @desc Create a sample Item
