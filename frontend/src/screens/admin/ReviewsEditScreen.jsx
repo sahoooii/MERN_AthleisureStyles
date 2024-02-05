@@ -26,20 +26,20 @@ import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 import RatingLogic from '../../components/Utils/RatingLogic';
+import Paginate from '../../components/Utils/Paginate';
 
 const ReviewsEditScreen = () => {
 	const { palette } = useTheme();
 	const { id: itemId } = useParams();
+	const { pageNumber } = useParams();
 
 	const { data: user } = useGetProfileDetailsQuery();
 	// console.log(user);
-	const {
-		data: item,
-		isLoading,
-		error,
-		refetch,
-	} = useGetReviewsByAdminQuery(itemId);
-	// console.log(item);
+	const { data, isLoading, error, refetch } = useGetReviewsByAdminQuery({
+		itemId,
+		pageNumber,
+	});
+	console.log(data);
 
 	const [updateReviewsByAdmin] = useUpdateReviewByAdminMutation();
 
@@ -47,8 +47,10 @@ const ReviewsEditScreen = () => {
 		if (window.confirm('Would you like to delete this review ?')) {
 			try {
 				const deleteReview =
-					item &&
-					item.reviews.find((review) => review._id.toString() === reviewId);
+					data.item &&
+					data.item.reviews.find(
+						(review) => review._id.toString() === reviewId
+					);
 
 				// console.log('deleteReview:', deleteReview);
 
@@ -93,14 +95,14 @@ const ReviewsEditScreen = () => {
 	}));
 
 	// Reviews List
-		const columns = [
-			{ id: 'user', label: 'USER', minWidth: 160 },
-			{ id: 'user_name', label: 'USER NAME', minWidth: 130 },
-			{ id: 'comment', label: 'COMMENT', minWidth: 150 },
-			{ id: 'rating', label: 'RATING', minWidth: 120, align: 'right' },
-			{ id: 'posted_at', label: 'POSTED AT', minWidth: 120, align: 'right' },
-			{ id: 'delete', label: 'DELETE', minWidth: 80, align: 'right' },
-		];
+	const columns = [
+		{ id: 'user', label: 'USER', minWidth: 160 },
+		{ id: 'user_name', label: 'USER NAME', minWidth: 130 },
+		{ id: 'comment', label: 'COMMENT', minWidth: 150 },
+		{ id: 'rating', label: 'RATING', minWidth: 120, align: 'right' },
+		{ id: 'posted_at', label: 'POSTED AT', minWidth: 120, align: 'right' },
+		{ id: 'delete', label: 'DELETE', minWidth: 80, align: 'right' },
+	];
 
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
 		[`&.${tableCellClasses.head}`]: {
@@ -167,8 +169,8 @@ const ReviewsEditScreen = () => {
 											}}
 										>
 											<img
-												src={item.image}
-												alt={item.name}
+												src={data.item.image}
+												alt={data.item.name}
 												width='55px'
 												height='70px'
 												style={{
@@ -180,16 +182,16 @@ const ReviewsEditScreen = () => {
 												to={`/admin/item/${itemId}/edit`}
 												style={{ textDecoration: 'underline' }}
 											>
-												<Typography variant='h4'>{item.name}</Typography>
+												<Typography variant='h4'>{data.item.name}</Typography>
 											</Link>
 										</StyledTableCell>
-										<StyledTableCell>{item.brand}</StyledTableCell>
+										<StyledTableCell>{data.item.brand}</StyledTableCell>
 										<StyledTableCell align='right'>
-											${item.price}
+											${data.item.price}
 										</StyledTableCell>
 										<StyledTableCell align='right'>
 											<Typography variant='h4'>
-												{item.reviews.length} Reviews
+												{/* {item.reviews.length} Reviews */}
 											</Typography>
 										</StyledTableCell>
 										<StyledTableCell>
@@ -199,10 +201,10 @@ const ReviewsEditScreen = () => {
 												justifyContent='end'
 											>
 												<Typography variant='h4' mr='5px'>
-													{item.rating}
+													{data.item.rating}
 												</Typography>
-												{item.rating > 0 && (
-													<RatingLogic rating={item.rating} />
+												{data.item.rating > 0 && (
+													<RatingLogic rating={data.item.rating} />
 												)}
 											</Box>
 										</StyledTableCell>
@@ -212,99 +214,110 @@ const ReviewsEditScreen = () => {
 						</TableContainer>
 					</Paper>
 
-					{item.reviews.length === 0 ? (
+					{data.item.reviews.length === 0 ? (
 						<Message severity='error'>No Reviews</Message>
 					) : (
-						<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-							<TableContainer sx={{ maxHeight: { xs: 500, sm: 800, md: 440 } }}>
-								<Table
-									stickyHeader
-									aria-label='sticky table'
-									sx={{ minWidth: 654 }}
+						<>
+							<Paper sx={{ width: '100%', overflow: 'hidden' }}>
+								<TableContainer
+									sx={{ maxHeight: { xs: 500, sm: 800, md: 440 } }}
 								>
-									<TableHead>
-										<TableRow>
-											{columns.map((column) => (
-												<StyledTableCell
-													key={column.id}
-													align={column.align}
-													style={{ minWidth: column.minWidth }}
-													sx={{ fontWeight: 'bold' }}
-												>
-													{column.label}
-												</StyledTableCell>
-											))}
-										</TableRow>
-									</TableHead>
+									<Table
+										stickyHeader
+										aria-label='sticky table'
+										sx={{ minWidth: 654 }}
+									>
+										<TableHead>
+											<TableRow>
+												{columns.map((column) => (
+													<StyledTableCell
+														key={column.id}
+														align={column.align}
+														style={{ minWidth: column.minWidth }}
+														sx={{ fontWeight: 'bold' }}
+													>
+														{column.label}
+													</StyledTableCell>
+												))}
+											</TableRow>
+										</TableHead>
 
-									<TableBody>
-										{item.reviews.map((review) => (
-											<StyledTableRow key={review._id} hover>
-												<StyledTableCell
-													style={{
-														display: 'flex',
-														alignItems: 'center',
-														justifyContent: 'space-around',
-														gap: 8,
-													}}
-												>
-													<Link to={`/admin/user/${review.user}/edit`}>
-														<img
-															src={review.image}
-															alt={review.name}
-															width='55px'
-															height='70px'
-															style={{
-																borderRadius: '3px',
-																objectFit: 'cover',
-															}}
-														/>
-													</Link>
-													<Link
-														to={`/admin/user/${review.user}/edit`}
-														style={{ textDecoration: 'underline' }}
-													>
-														{review.user}
-													</Link>
-												</StyledTableCell>
-												<StyledTableCell>
-													{review.user && `${review.name}`}
-												</StyledTableCell>
-												<StyledTableCell>{review.comment}</StyledTableCell>
-												<StyledTableCell
-													align='right'
-													// style={{ paddingRight: '20px' }}
-												>
-													{review.rating} STARS
-												</StyledTableCell>
-												<StyledTableCell
-													align='right'
-													// style={{ paddingRight: '20px' }}
-												>
-													{review.createdAt.substring(0, 10)}
-												</StyledTableCell>
-												<StyledTableCell
-													align='right'
-													// style={{ paddingRight: '20px' }}
-												>
-													<IconButton
-														sx={{
-															color: palette.blue.main,
-															'&:hover': {
-																color: palette.blue.light,
-															},
+										<TableBody>
+											{data.item.reviews.map((review) => (
+												<StyledTableRow key={review._id} hover>
+													<StyledTableCell
+														style={{
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'space-around',
+															gap: 8,
 														}}
-														onClick={() => updateReviewHandler(review._id)}
 													>
-														<DeleteForeverOutlinedIcon fontSize='large' />
-													</IconButton>
-												</StyledTableCell>
-											</StyledTableRow>
-										))}
-									</TableBody>
-								</Table>
-							</TableContainer>
-						</Paper>
+														<Link to={`/admin/user/${review.user}/edit`}>
+															<img
+																src={review.image}
+																alt={review.name}
+																width='55px'
+																height='70px'
+																style={{
+																	borderRadius: '3px',
+																	objectFit: 'cover',
+																}}
+															/>
+														</Link>
+														<Link
+															to={`/admin/user/${review.user}/edit`}
+															style={{ textDecoration: 'underline' }}
+														>
+															{review.user}
+														</Link>
+													</StyledTableCell>
+													<StyledTableCell>
+														{review.user && `${review.name}`}
+													</StyledTableCell>
+													<StyledTableCell>{review.comment}</StyledTableCell>
+													<StyledTableCell
+														align='right'
+														// style={{ paddingRight: '20px' }}
+													>
+														{review.rating} STARS
+													</StyledTableCell>
+													<StyledTableCell
+														align='right'
+														// style={{ paddingRight: '20px' }}
+													>
+														{review.createdAt.substring(0, 10)}
+													</StyledTableCell>
+													<StyledTableCell
+														align='right'
+														// style={{ paddingRight: '20px' }}
+													>
+														<IconButton
+															sx={{
+																color: palette.blue.main,
+																'&:hover': {
+																	color: palette.blue.light,
+																},
+															}}
+															onClick={() => updateReviewHandler(review._id)}
+														>
+															<DeleteForeverOutlinedIcon fontSize='large' />
+														</IconButton>
+													</StyledTableCell>
+												</StyledTableRow>
+											))}
+										</TableBody>
+									</Table>
+								</TableContainer>
+							</Paper>
+
+							<Paginate
+								pages={data.pages}
+								page={data.page}
+								menu={`item/${itemId}/reviews`}
+								isAdmin={true}
+							/>
+						</>
 					)}
 
 					<Box gridColumn='span 4' mt='25px'>

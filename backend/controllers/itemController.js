@@ -35,13 +35,16 @@ const getItemById = asyncHandler(async (req, res) => {
 // @route GET /api/items/itemslist
 // @access  Private/Admin
 const getItemsByAdmin = asyncHandler(async (req, res) => {
-	const pageSize = 6;
+	const pageSize = 4;
 	const page = Number(req.query.pageNumber) || 1;
 	const totalItemsCount = await Item.countDocuments();
 
 	const items = await Item.find({})
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
+
+	// console.log('items:', items);
+
 	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });
 });
 
@@ -158,7 +161,7 @@ const addToWishList = asyncHandler(async (req, res) => {
 		const alreadyAdded = user.wishlist.find(
 			(list) => list._id.toString() === itemId
 		);
-		console.log('alreadyAdded:', alreadyAdded);
+		// console.log('alreadyAdded:', alreadyAdded);
 
 		if (alreadyAdded) {
 			let user = await User.findByIdAndUpdate(
@@ -293,8 +296,23 @@ const getItemReviews = asyncHandler(async (req, res) => {
 	const item = await Item.findById(req.params.id);
 	const reviews = item.reviews;
 
+	const pageSize = 2;
+	const page = Number(req.query.pageNumber) || 1;
+
+	const totalReviewCount = reviews.length;
+
+	const review = await Item.findById(req.params.id, 'reviews')
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+	console.log('review:', review);
+
 	if (reviews) {
-		return res.json(item);
+		return res.json({
+			item,
+			page,
+			pages: Math.ceil(totalReviewCount / pageSize),
+		});
+		// return res.json(item);
 	} else {
 		res.status(404);
 		throw new Error('Review Not Found');

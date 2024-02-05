@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, PaginationItem, Pagination, Link } from '@mui/material';
 
 // pages=entire page num page=currentPage
-const Paginate = ({ pages, page, isAdmin = false }) => {
+const Paginate = ({ pages, page, menu, isAdmin = false }) => {
 	return (
 		pages > 1 && (
 			<Box
@@ -19,9 +19,7 @@ const Paginate = ({ pages, page, isAdmin = false }) => {
 						<PaginationItem
 							component={Link}
 							href={
-								!isAdmin
-									? `/page/${item.page}`
-									: `/admin/itemslist/${item.page}`
+								!isAdmin ? `/page/${item.page}` : `/admin/${menu}/${item.page}`
 							}
 							{...item}
 						/>

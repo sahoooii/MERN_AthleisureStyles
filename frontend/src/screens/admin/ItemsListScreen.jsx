@@ -26,7 +26,7 @@ const ItemsListScreen = () => {
 	const { pageNumber } = useParams();
 
 	const { data, isLoading, error } = useGetItemsByAdminQuery({ pageNumber });
-	// console.log(items);
+	// console.log(data && data.items);
 
 	const { data: userProfile, isLoading: loadingProfile } =
 		useGetProfileDetailsQuery();
@@ -64,7 +64,7 @@ const ItemsListScreen = () => {
 	return (
 		<Box
 			sx={{
-				m: { md: '30px auto', xs: '10px auto' },
+				m: { md: '10px auto', xs: '10px auto' },
 				width: '95%',
 			}}
 		>
@@ -83,12 +83,12 @@ const ItemsListScreen = () => {
 						mb='20px'
 					>
 						<Typography variant='h3'>
-							Items <b>List</b> ({data.items.length})
+							Items <b>List</b>
 						</Typography>
 
 						{/* Only create admin User */}
 						{!loadingProfile && userProfile.isAdmin && (
-							<Box sx={{ width: { sm: '30%', md: '20%' } }}>
+							<Box sx={{ width: { sm: '40%', md: '20%' } }}>
 								<Link to='/admin/create'>
 									<ButtonComponent backgroundColor={shades.neutral[600]}>
 										<EditNoteOutlinedIcon
@@ -183,7 +183,12 @@ const ItemsListScreen = () => {
 							</Table>
 						</TableContainer>
 					</Paper>
-					<Paginate pages={data.pages} page={data.page} />
+					<Paginate
+						pages={data.pages}
+						page={data.page}
+						menu='itemslist'
+						isAdmin={true}
+					/>
 				</>
 			)}
 		</Box>

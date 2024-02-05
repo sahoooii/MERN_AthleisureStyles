@@ -12,15 +12,18 @@ import {
 	styled,
 	tableCellClasses,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useGetUsersQuery } from '../../slices/usersApiSlice';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
+import Paginate from '../../components/Utils/Paginate';
 
 const UsersListScreen = () => {
-	const { data: users, isLoading, error } = useGetUsersQuery();
-	// console.log(users);
+	const { pageNumber } = useParams();
+
+	const { data, isLoading, error } = useGetUsersQuery({ pageNumber });
+	// console.log(data && data);
 
 	const columns = [
 		{ id: 'user', label: 'USER', minWidth: 160 },
@@ -67,7 +70,7 @@ const UsersListScreen = () => {
 			) : (
 				<>
 					<Typography variant='h3' sx={{ mb: '20px' }}>
-						All <b>Users</b> ({users.length})
+						All <b>Users</b>
 					</Typography>
 
 					<Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -93,7 +96,7 @@ const UsersListScreen = () => {
 								</TableHead>
 
 								<TableBody>
-									{users.map((user) => (
+									{data.users.map((user) => (
 										<StyledTableRow key={user._id} hover>
 											<StyledTableCell
 												style={{
@@ -152,6 +155,13 @@ const UsersListScreen = () => {
 							</Table>
 						</TableContainer>
 					</Paper>
+
+					<Paginate
+						pages={data.pages}
+						page={data.page}
+						menu='userslist'
+						isAdmin={true}
+					/>
 				</>
 			)}
 		</Box>

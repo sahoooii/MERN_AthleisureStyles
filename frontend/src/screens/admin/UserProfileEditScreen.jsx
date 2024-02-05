@@ -55,7 +55,7 @@ const UserProfileEditScreen = () => {
 		useUploadProfileImageMutation();
 
 	// Get users list
-	const { refetch: usersListRefetch } = useGetUsersQuery();
+	const { refetch: usersListRefetch } = useGetUsersQuery(userId);
 
 	const [deleteUserByAdmin] = useDeleteUserByAdminMutation();
 
