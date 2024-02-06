@@ -13,14 +13,18 @@ import {
 	tableCellClasses,
 } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useGetOrdersQuery } from '../../slices/ordersApiSlice';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
+import Paginate from '../../components/Utils/Paginate';
 
 const OrderListScreen = () => {
-	const { data: orders, isLoading, error } = useGetOrdersQuery();
+	const { pageNumber } = useParams();
+
+	const { data, isLoading, error } = useGetOrdersQuery({ pageNumber });
+	// console.log(data);
 
 	const columns = [
 		{ id: 'id', label: 'ID', minWidth: 150 },
@@ -74,67 +78,86 @@ const OrderListScreen = () => {
 					{error?.data?.message || error.error}
 				</Message>
 			) : (
-				<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-					<TableContainer sx={{ maxHeight: { xs: 500, sm: 800, md: 440 } }}>
-						<Table
-							stickyHeader
-							aria-label='sticky table'
-							sx={{ minWidth: 654 }}
-						>
-							<TableHead>
-								<TableRow>
-									{columns.map((column) => (
-										<StyledTableCell
-											key={column.id}
-											align={column.align}
-											style={{ minWidth: column.minWidth }}
-											sx={{ fontWeight: 'bold' }}
-										>
-											{column.label}
-										</StyledTableCell>
-									))}
-								</TableRow>
-							</TableHead>
+				<>
+					<Paper sx={{ width: '100%', overflow: 'hidden' }}>
+						<TableContainer sx={{ maxHeight: { xs: 500, sm: 800, md: 440 } }}>
+							<Table
+								stickyHeader
+								aria-label='sticky table'
+								sx={{ minWidth: 654 }}
+							>
+								<TableHead>
+									<TableRow>
+										{columns.map((column) => (
+											<StyledTableCell
+												key={column.id}
+												align={column.align}
+												style={{ minWidth: column.minWidth }}
+												sx={{ fontWeight: 'bold' }}
+											>
+												{column.label}
+											</StyledTableCell>
+										))}
+									</TableRow>
+								</TableHead>
 
-							<TableBody>
-								{orders.map((order) => (
-									<StyledTableRow key={order._id} hover>
-										<StyledTableCell>
-											<Link to={`/order/${order._id}`}>{order._id}</Link>
-										</StyledTableCell>
-										<StyledTableCell>
-											{order.user ? (
-												`${order.user.firstName} ${order.user.lastName}`
-											) : (
-												<Typography>DELETED ACCOUNT</Typography>
-											)}
-										</StyledTableCell>
-										<StyledTableCell align='right'>
-											{order.createdAt.substring(0, 10)}
-										</StyledTableCell>
-										<StyledTableCell align='right'>
-											$ {order.totalPrice}
-										</StyledTableCell>
-										<StyledTableCell align='right'>
-											{order.isPaid ? (
-												order.paidAt.substring(0, 10)
-											) : (
-												<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
-											)}
-										</StyledTableCell>
-										<StyledTableCell align='right'>
-											{order.isDelivered ? (
-												order.deliveredAt.substring(0, 10)
-											) : (
-												<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
-											)}
-										</StyledTableCell>
-									</StyledTableRow>
-								))}
-							</TableBody>
-						</Table>
-					</TableContainer>
-				</Paper>
+								<TableBody>
+									{data.orders.map((order) => (
+										<StyledTableRow key={order._id} hover>
+											<StyledTableCell>
+												<Link
+													to={`/order/${order._id}`}
+													style={{ textDecoration: 'underline' }}
+												>
+													{order._id}
+												</Link>
+											</StyledTableCell>
+											<StyledTableCell>
+												{order.user ? (
+													<Link
+														to={`/admin/user/${order.user._id}/edit`}
+														style={{ textDecoration: 'underline' }}
+													>
+														{order.user.firstName} {order.user.lastName}
+													</Link>
+												) : (
+													<Typography>DELETED ACCOUNT</Typography>
+												)}
+											</StyledTableCell>
+											<StyledTableCell align='right'>
+												{order.createdAt.substring(0, 10)}
+											</StyledTableCell>
+											<StyledTableCell align='right'>
+												$ {order.totalPrice}
+											</StyledTableCell>
+											<StyledTableCell align='right'>
+												{order.isPaid ? (
+													order.paidAt.substring(0, 10)
+												) : (
+													<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
+												)}
+											</StyledTableCell>
+											<StyledTableCell align='right'>
+												{order.isDelivered ? (
+													order.deliveredAt.substring(0, 10)
+												) : (
+													<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
+												)}
+											</StyledTableCell>
+										</StyledTableRow>
+									))}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</Paper>
+
+					<Paginate
+						pages={data.pages}
+						page={data.page}
+						menu='orderlist'
+						isAdmin={true}
+					/>
+				</>
 			)}
 		</Box>
 	);

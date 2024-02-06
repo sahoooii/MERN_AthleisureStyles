@@ -148,10 +148,21 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @route GET /api/orders
 // @access Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-	// Get all orders and get id and user name from user collection
-	const orders = await Order.find({}).populate('user', 'id firstName lastName');
+	const pageSize = 7;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalOrdersCount = await Order.countDocuments();
 
-	res.status(200).json(orders);
+	// Get all orders and get id and user name from user collection
+	const orders = await Order.find({})
+		.populate('user', 'id firstName lastName')
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	// console.log('orders', orders);
+
+	res
+		.status(200)
+		.json({ orders, page, pages: Math.ceil(totalOrdersCount / pageSize) });
 });
 
 export {

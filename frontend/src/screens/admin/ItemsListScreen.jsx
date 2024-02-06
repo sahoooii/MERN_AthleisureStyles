@@ -183,6 +183,7 @@ const ItemsListScreen = () => {
 							</Table>
 						</TableContainer>
 					</Paper>
+					
 					<Paginate
 						pages={data.pages}
 						page={data.page}
