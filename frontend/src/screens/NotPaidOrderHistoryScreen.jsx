@@ -1,17 +1,20 @@
 import React from 'react';
 import { Box, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
-import { useGetMyOrdersQuery } from '../slices/ordersApiSlice';
+import { useGetNotPaidOrdersQuery } from '../slices/ordersApiSlice';
 import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
 import { shades } from '../theme';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import { ArrowForwardIosOutlined } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Paginate from '../components/Utils/Paginate';
 
 const NotPaidOrderHistoryScreen = () => {
+	const { pageNumber } = useParams();
+
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
-	const { data: orders, isLoading, error } = useGetMyOrdersQuery();
+	const { data, isLoading, error } = useGetNotPaidOrdersQuery({ pageNumber });
 
 	return (
 		<Box
@@ -32,14 +35,14 @@ const NotPaidOrderHistoryScreen = () => {
 					</Message>
 				) : (
 					<>
-						{orders.length === 0 ? (
+						{data.orders.length === 0 ? (
 							<Message severity='error'>
-								Oh No! You haven't shopping yet!
-								<Link to='/'>- Go Back</Link>
+								You're a Great Shopper!
+								<Link to='/'> - More Shopping ?</Link>
 							</Message>
 						) : isNonMobileScreen ? (
 							<>
-								{orders.map((order) => (
+								{data.orders.map((order) => (
 									<Box key={order._id}>
 										{!order.isPaid && (
 											<Box
@@ -174,11 +177,17 @@ const NotPaidOrderHistoryScreen = () => {
 										)}
 									</Box>
 								))}
+
+								<Paginate
+									menu='/notpaidorders'
+									pages={data.pages}
+									page={data.page}
+								/>
 							</>
 						) : (
 							// Mobile ver.
 							<>
-								{orders.map((order) => (
+								{data.orders.map((order) => (
 									<Box key={order._id}>
 										{!order.isPaid && (
 											<Box
@@ -260,6 +269,12 @@ const NotPaidOrderHistoryScreen = () => {
 										)}
 									</Box>
 								))}
+
+								<Paginate
+									menu='/notpaidorders'
+									pages={data.pages}
+									page={data.page}
+								/>
 							</>
 						)}
 					</>

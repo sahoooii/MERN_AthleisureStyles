@@ -59,7 +59,11 @@ const router = createBrowserRouter(
 					path='/orderhistory/:pageNumber'
 					element={<OrderHistoryScreen />}
 				/>
-				<Route path='/notpaidorder' element={<NotPaidOrderHistoryScreen />} />
+				<Route path='/notpaidorders' element={<NotPaidOrderHistoryScreen />} />
+				<Route
+					path='/notpaidorders/:pageNumber'
+					element={<NotPaidOrderHistoryScreen />}
+				/>
 				<Route path='/wishlist' element={<WishlistScreen />} />
 			</Route>
 

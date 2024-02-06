@@ -15,7 +15,7 @@ const OrderHistoryScreen = () => {
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
 	const { data, isLoading, error } = useGetMyOrdersQuery({ pageNumber });
-	console.log(data);
+	// console.log(data);
 
 	return (
 		<Box

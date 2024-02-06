@@ -260,7 +260,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											whileTap={{ scale: 0.7 }}
 										>
 											<Link
-												to='/notpaidorder'
+												to='/notpaidorders'
 												style={{ textDecoration: 'none' }}
 												onClick={() => setOpen(!open)}
 											>
