@@ -212,7 +212,9 @@ const HomeItems = () => {
 					))}
 				</Box>
 			)}
-			{!isLoading && <Paginate pages={data.pages} page={data.page} />}
+			{!isLoading && (
+				<Paginate menu='/page' pages={data.pages} page={data.page} />
+			)}
 		</>
 	);
 };

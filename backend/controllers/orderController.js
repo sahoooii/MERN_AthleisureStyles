@@ -63,9 +63,20 @@ const deleteMyOrder = asyncHandler(async (req, res) => {
 // @route GET /api/orders/orderhistory
 // @access Private
 const getMyOrders = asyncHandler(async (req, res) => {
-	// look for logged in user orders
-	const orders = await Order.find({ user: req.user._id });
+	const pageSize = 4;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalOrdersCount = await Order.find({
+		user: req.user._id,
+		isPaid: true,
+	}).countDocuments();
+	// console.log('ordersCount:', totalOrdersCount);
 
+	// look for logged in user orders
+	const orders = await Order.find({ user: req.user._id, isPaid: true })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+	res.json({ orders, page, pages: Math.ceil(totalOrdersCount / pageSize) });
+	// console.log('orders:', orders);
 	res.status(200).json(orders);
 });
 

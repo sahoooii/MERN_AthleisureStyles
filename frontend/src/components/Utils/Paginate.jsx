@@ -19,7 +19,9 @@ const Paginate = ({ pages, page, menu, isAdmin = false }) => {
 						<PaginationItem
 							component={Link}
 							href={
-								!isAdmin ? `/page/${item.page}` : `/admin/${menu}/${item.page}`
+								!isAdmin
+									? `${menu}/${item.page}`
+									: `/admin/${menu}/${item.page}`
 							}
 							{...item}
 						/>
