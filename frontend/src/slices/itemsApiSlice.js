@@ -5,8 +5,11 @@ import { apiSlice } from './apiSlice';
 export const itemsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getItems: builder.query({
-			query: () => ({
+			query: ({ pageNumber }) => ({
 				url: ITEMS_URL,
+				params: {
+					pageNumber,
+				},
 			}),
 			providesTags: ['Items'],
 			keepUnusedDataFor: 5,
@@ -14,12 +17,16 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 		getItemDetails: builder.query({
 			query: (itemId) => ({
 				url: `${ITEMS_URL}/${itemId}`,
+				method: 'GET',
 			}),
 			keepUnusedDataFor: 5,
 		}),
 		getItemsByAdmin: builder.query({
-			query: () => ({
+			query: ({ pageNumber }) => ({
 				url: `${ITEMS_URL}/itemslist`,
+				params: {
+					pageNumber,
+				},
 			}),
 			providesTags: ['Items'],
 			keepUnusedDataFor: 5,
@@ -77,6 +84,25 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Items'],
 		}),
+		getReviewsByAdmin: builder.query({
+			query: ({ itemId, pageNumber }) => ({
+				url: `${ITEMS_URL}/${itemId}/admin/reviews`,
+				method: 'GET',
+				params: {
+					pageNumber,
+				},
+			}),
+			providesTags: ['Items'],
+			keepUnusedDataFor: 5,
+		}),
+		updateReviewByAdmin: builder.mutation({
+			query: (data) => ({
+				url: `${ITEMS_URL}/${data.itemId}/admin/reviews`,
+				method: 'PUT',
+				body: data,
+			}),
+			invalidatesTags: ['Items'],
+		}),
 	}),
 });
 
@@ -91,4 +117,6 @@ export const {
 	useAddToWishListMutation,
 	useCreateReviewMutation,
 	useDeleteReviewMutation,
+	useGetReviewsByAdminQuery,
+	useUpdateReviewByAdminMutation,
 } = itemsApiSlice;

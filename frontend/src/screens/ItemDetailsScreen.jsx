@@ -114,10 +114,9 @@ const ItemDetailsScreen = () => {
 								</Typography>
 
 								{/* Reviews */}
-								<Box display='flex' alignItems='center' mb='12px'>
-									{item.rating > 0 && <RatingLogic rating={item.rating} />}
+								<Box mb='6px'>
 									{item.numReviews > 0 ? (
-										<Typography variant='span' ml='8px'>
+										<Typography variant='span'>
 											{item.numReviews} Reviews
 										</Typography>
 									) : (
@@ -126,6 +125,13 @@ const ItemDetailsScreen = () => {
 										</Box>
 									)}
 								</Box>
+
+								{item.rating > 0 && (
+									<Box display='flex' alignItems='center' mb='12px'>
+										<RatingLogic rating={item.rating} />
+										<Typography ml='5px'>{item.rating}</Typography>
+									</Box>
+								)}
 
 								{/* Size Button */}
 								<Box mb='5px' display='flex' alignItems='center'>

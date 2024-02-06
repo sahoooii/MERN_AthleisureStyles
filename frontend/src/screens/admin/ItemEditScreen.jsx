@@ -20,7 +20,7 @@ import {
 	useDeleteItemMutation,
 	useGetItemsQuery,
 } from '../../slices/itemsApiSlice';
-import  FormComponentTop from '../../components/FormUi/FormComponentTop';
+import FormComponentTop from '../../components/FormUi/FormComponentTop';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
@@ -40,6 +40,7 @@ const ItemEditScreen = () => {
 		refetch,
 		error,
 	} = useGetItemDetailsQuery(itemId);
+	// console.log(items);
 
 	const [updateItem, { isLoading: loadingUpdate }] = useUpdateItemMutation();
 
@@ -51,7 +52,7 @@ const ItemEditScreen = () => {
 	const [deleteItem] = useDeleteItemMutation();
 
 	// After delete item, back to itemsList need refetch
-	const { refetch: itemListRefetch } = useGetItemsQuery();
+	const { refetch: itemListRefetch } = useGetItemsQuery(itemId);
 
 	const [itemImage, setItemImage] = useState(items && items.image);
 
@@ -171,11 +172,7 @@ const ItemEditScreen = () => {
 
 	return (
 		<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-			< FormComponentTop title='Edit This Item'>
-				{/* <Typography variant='h3' fontFamily='Play' textAlign='center' mb='15px'>
-					Edit <b>Items</b>
-				</Typography> */}
-
+			<FormComponentTop title='Edit This Item'>
 				{isLoading ? (
 					<Loader />
 				) : error ? (
@@ -420,7 +417,7 @@ const ItemEditScreen = () => {
 						</Typography>
 					</Link>
 				</Box>
-			</ FormComponentTop>
+			</FormComponentTop>
 		</Box>
 	);
 };

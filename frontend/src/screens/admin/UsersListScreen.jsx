@@ -12,15 +12,18 @@ import {
 	styled,
 	tableCellClasses,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useGetUsersQuery } from '../../slices/usersApiSlice';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
+import Paginate from '../../components/Utils/Paginate';
 
 const UsersListScreen = () => {
-	const { data: users, isLoading, error } = useGetUsersQuery();
-	// console.log(users);
+	const { pageNumber } = useParams();
+
+	const { data, isLoading, error } = useGetUsersQuery({ pageNumber });
+	// console.log(data && data);
 
 	const columns = [
 		{ id: 'user', label: 'USER', minWidth: 160 },
@@ -37,7 +40,7 @@ const UsersListScreen = () => {
 		},
 		[`&.${tableCellClasses.body}`]: {
 			fontSize: 14,
-			padding: '12px 6px',
+			padding: '12px 16px',
 		},
 	}));
 
@@ -58,10 +61,6 @@ const UsersListScreen = () => {
 				width: '95%',
 			}}
 		>
-			<Typography variant='h3' sx={{ mb: '20px' }}>
-				All <b>Users</b>
-			</Typography>
-
 			{isLoading ? (
 				<Loader />
 			) : error ? (
@@ -69,78 +68,101 @@ const UsersListScreen = () => {
 					{error?.data?.message || error.error}
 				</Message>
 			) : (
-				<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-					<TableContainer sx={{ maxHeight: { xs: 500, sm: 800, md: 440 } }}>
-						<Table
-							stickyHeader
-							aria-label='sticky table'
-							sx={{ minWidth: 654 }}
-						>
-							<TableHead>
-								<TableRow>
-									{columns.map((column) => (
-										<StyledTableCell
-											key={column.id}
-											align={column.align}
-											style={{ minWidth: column.minWidth }}
-											sx={{ fontWeight: 'bold' }}
-										>
-											{column.label}
-										</StyledTableCell>
-									))}
-								</TableRow>
-							</TableHead>
+				<>
+					<Typography variant='h3' sx={{ mb: '20px' }}>
+						All <b>Users</b>
+					</Typography>
 
-							<TableBody>
-								{users.map((user) => (
-									<StyledTableRow key={user._id} hover>
-										<StyledTableCell
-											style={{
-												display: 'flex',
-												alignItems: 'center',
-												justifyContent: 'space-around',
-												gap: 8,
-											}}
-										>
-											<Link to={`/admin/user/${user._id}/edit`}>
-												<img
-													src={user.picturePath}
-													alt={`${user.firstName} ${user.lastName}`}
-													width='55px'
-													height='70px'
-													style={{
-														borderRadius: '3px',
-														objectFit: 'cover',
-													}}
-												/>
-											</Link>
-											<Link to={`/admin/user/${user._id}/edit`}>{user._id}</Link>
-										</StyledTableCell>
-										<StyledTableCell>
-											{user && `${user.firstName} ${user.lastName}`}
-										</StyledTableCell>
-										<StyledTableCell>
-											<Link to={`mailto:${user.email}`}>{user.email}</Link>
-										</StyledTableCell>
-										<StyledTableCell>
-											{user.isAdmin ? (
-												<Message severity='error'>ADMIN</Message>
-											) : (
-												<Message severity='success'>MEMBER</Message>
-											)}
-										</StyledTableCell>
-										<StyledTableCell
-											align='right'
-											style={{ paddingRight: '20px' }}
-										>
-											{user.createdAt.substring(0, 10)}
-										</StyledTableCell>
-									</StyledTableRow>
-								))}
-							</TableBody>
-						</Table>
-					</TableContainer>
-				</Paper>
+					<Paper sx={{ width: '100%', overflow: 'hidden' }}>
+						<TableContainer sx={{ maxHeight: { xs: 500, sm: 800, md: 440 } }}>
+							<Table
+								stickyHeader
+								aria-label='sticky table'
+								sx={{ minWidth: 654 }}
+							>
+								<TableHead>
+									<TableRow>
+										{columns.map((column) => (
+											<StyledTableCell
+												key={column.id}
+												align={column.align}
+												style={{ minWidth: column.minWidth }}
+												sx={{ fontWeight: 'bold' }}
+											>
+												{column.label}
+											</StyledTableCell>
+										))}
+									</TableRow>
+								</TableHead>
+
+								<TableBody>
+									{data.users.map((user) => (
+										<StyledTableRow key={user._id} hover>
+											<StyledTableCell
+												style={{
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'space-around',
+													gap: 8,
+												}}
+											>
+												<Link to={`/admin/user/${user._id}/edit`}>
+													<img
+														src={user.picturePath}
+														alt={`${user.firstName} ${user.lastName}`}
+														width='55px'
+														height='70px'
+														style={{
+															borderRadius: '3px',
+															objectFit: 'cover',
+														}}
+													/>
+												</Link>
+												<Link
+													to={`/admin/user/${user._id}/edit`}
+													style={{ textDecoration: 'underline' }}
+												>
+													{user._id}
+												</Link>
+											</StyledTableCell>
+											<StyledTableCell>
+												{user && `${user.firstName} ${user.lastName}`}
+											</StyledTableCell>
+											<StyledTableCell>
+												<Link
+													to={`mailto:${user.email}`}
+													style={{ textDecoration: 'underline' }}
+												>
+													{user.email}
+												</Link>
+											</StyledTableCell>
+											<StyledTableCell>
+												{user.isAdmin ? (
+													<Message severity='error'>ADMIN</Message>
+												) : (
+													<Message severity='success'>MEMBER</Message>
+												)}
+											</StyledTableCell>
+											<StyledTableCell
+												align='right'
+												// style={{ paddingRight: '20px' }}
+											>
+												{user.createdAt.substring(0, 10)}
+											</StyledTableCell>
+										</StyledTableRow>
+									))}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</Paper>
+
+					<Paginate
+						pages={data.pages}
+						page={data.page}
+						menu='userslist'
+						isAdmin={true}
+					/>
+				</>
 			)}
 		</Box>
 	);

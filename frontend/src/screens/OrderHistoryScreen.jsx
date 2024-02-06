@@ -6,13 +6,17 @@ import Message from '../components/Utils/Message';
 import { shades } from '../theme';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import { ArrowForwardIosOutlined } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Paginate from '../components/Utils/Paginate';
 
 const OrderHistoryScreen = () => {
+	const { pageNumber } = useParams();
+
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
-	const { data: orders, isLoading, error } = useGetMyOrdersQuery();
-	// console.log(orders);
+	const { data, isLoading, error } = useGetMyOrdersQuery({ pageNumber });
+	// console.log(data);
+
 	return (
 		<Box
 			sx={{
@@ -32,14 +36,14 @@ const OrderHistoryScreen = () => {
 					</Message>
 				) : (
 					<>
-						{orders.length === 0 ? (
+						{data.orders.length === 0 ? (
 							<Message severity='error'>
 								Oh No! You haven't shopping yet!
 								<Link to='/'>- Go Back</Link>
 							</Message>
 						) : isNonMobileScreen ? (
 							<>
-								{orders.map((order) => (
+								{data.orders.map((order) => (
 									<Box key={order._id}>
 										{order.isPaid && (
 											<Box
@@ -113,17 +117,13 @@ const OrderHistoryScreen = () => {
 															columnSpacing={2}
 														>
 															<Grid item sm={5} sx={{ mb: '12px' }}>
-																{/* {order.isPaid && ( */}
 																<Message severity='info'>
-																	{/* Replace */}
 																	PAID AT {order.paidAt.substring(0, 10)}
 																</Message>
-																{/* )} */}
 															</Grid>
 															<Grid item sm={5} sx={{ mb: '12px' }}>
 																{order.isDelivered && (
 																	<Message severity='success'>
-																		{/* Replace */}
 																		DELIVERED AT{' '}
 																		{order.deliveredAt.substring(0, 10)}
 																	</Message>
@@ -150,7 +150,7 @@ const OrderHistoryScreen = () => {
 																		height='120px'
 																		style={{
 																			borderRadius: '3px',
-																			objectFit: 'cover'
+																			objectFit: 'cover',
 																		}}
 																	/>
 																</Grid>
@@ -203,11 +203,17 @@ const OrderHistoryScreen = () => {
 										)}
 									</Box>
 								))}
+
+								<Paginate
+									menu='/orderhistory'
+									pages={data.pages}
+									page={data.page}
+								/>
 							</>
 						) : (
 							// Mobile ver.
 							<>
-								{orders.map((order) => (
+								{data.orders.map((order) => (
 									<Box key={order._id}>
 										{order.isPaid && (
 											<Box
@@ -309,6 +315,12 @@ const OrderHistoryScreen = () => {
 										)}
 									</Box>
 								))}
+
+								<Paginate
+									menu='/orderhistory'
+									pages={data.pages}
+									page={data.page}
+								/>
 							</>
 						)}
 					</>

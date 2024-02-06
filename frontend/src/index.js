@@ -35,11 +35,13 @@ import ItemEditScreen from './screens/admin/ItemEditScreen';
 import UsersListScreen from './screens/admin/UsersListScreen';
 import UserProfileEditScreen from './screens/admin/UserProfileEditScreen';
 import WishlistScreen from './screens/WishlistScreen';
+import ReviewsEditScreen from './screens/admin/ReviewsEditScreen';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path='/' element={<App />}>
 			<Route index={true} path='/' element={<HomeScreen />} />
+			<Route path='/page/:pageNumber' element={<HomeScreen />} />
 			<Route path='/item/:itemId' element={<ItemDetailsScreen />} />
 			<Route path='/cart' element={<CartScreen />} />
 			<Route path='/login' element={<LoginFormScreen />} />
@@ -53,20 +55,45 @@ const router = createBrowserRouter(
 				<Route path='/order/:id' element={<CheckoutScreen />} />
 				<Route path='/profile' element={<ProfileScreen />} />
 				<Route path='/orderhistory' element={<OrderHistoryScreen />} />
-				<Route path='/notpaidorder' element={<NotPaidOrderHistoryScreen />} />
+				<Route
+					path='/orderhistory/:pageNumber'
+					element={<OrderHistoryScreen />}
+				/>
+				<Route path='/notpaidorders' element={<NotPaidOrderHistoryScreen />} />
+				<Route
+					path='/notpaidorders/:pageNumber'
+					element={<NotPaidOrderHistoryScreen />}
+				/>
 				<Route path='/wishlist' element={<WishlistScreen />} />
 			</Route>
 
 			{/* Admin Route only admin can see these */}
 			<Route path='/' element={<AdminRoute />}>
 				<Route path='/admin/orderlist' element={<OrderListScreen />} />
+				<Route
+					path='/admin/orderlist/:pageNumber'
+					element={<OrderListScreen />}
+				/>
 				<Route path='/admin/itemslist' element={<ItemsListScreen />} />
+				<Route
+					path='/admin/itemslist/:pageNumber'
+					element={<ItemsListScreen />}
+				/>
 				<Route path='/admin/create' element={<CreateItemScreen />} />
 				<Route path='/admin/item/:id/edit' element={<ItemEditScreen />} />
 				<Route path='/admin/userslist' element={<UsersListScreen />} />
 				<Route
+					path='/admin/userslist/:pageNumber'
+					element={<UsersListScreen />}
+				/>
+				<Route
 					path='/admin/user/:id/edit'
 					element={<UserProfileEditScreen />}
+				/>
+				<Route path='/admin/item/:id/reviews' element={<ReviewsEditScreen />} />
+				<Route
+					path='/admin/item/:id/reviews/:pageNumber'
+					element={<ReviewsEditScreen />}
 				/>
 			</Route>
 		</Route>

@@ -63,10 +63,43 @@ const deleteMyOrder = asyncHandler(async (req, res) => {
 // @route GET /api/orders/orderhistory
 // @access Private
 const getMyOrders = asyncHandler(async (req, res) => {
-	// look for logged in user orders
-	const orders = await Order.find({ user: req.user._id });
+	const pageSize = 4;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalOrdersCount = await Order.find({
+		user: req.user._id,
+		isPaid: true,
+	}).countDocuments();
+	// console.log('ordersCount:', totalOrdersCount);
 
-	res.status(200).json(orders);
+	// look for logged in user orders
+	const orders = await Order.find({ user: req.user._id, isPaid: true })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res
+		.status(200)
+		.json({ orders, page, pages: Math.ceil(totalOrdersCount / pageSize) });
+});
+
+// @desc Get logged in user orders history
+// @route GET /api/orders/notpaidorders
+// @access Private
+const getNotPaidOrders = asyncHandler(async (req, res) => {
+	const pageSize = 4;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalOrdersCount = await Order.find({
+		user: req.user._id,
+		isPaid: false,
+	}).countDocuments();
+
+	// look for logged in user orders
+	const orders = await Order.find({ user: req.user._id, isPaid: false })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res
+		.status(200)
+		.json({ orders, page, pages: Math.ceil(totalOrdersCount / pageSize) });
 });
 
 // @desc Update order to paid
@@ -148,16 +181,26 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @route GET /api/orders
 // @access Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-	// Get all orders and get id and user name from user collection
-	const orders = await Order.find({}).populate('user', 'id firstName lastName');
+	const pageSize = 7;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalOrdersCount = await Order.countDocuments();
 
-	res.status(200).json(orders);
+	// Get all orders and get id and user name from user collection
+	const orders = await Order.find({})
+		.populate('user', 'id firstName lastName')
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res
+		.status(200)
+		.json({ orders, page, pages: Math.ceil(totalOrdersCount / pageSize) });
 });
 
 export {
 	addOrderItems,
 	deleteMyOrder,
 	getMyOrders,
+	getNotPaidOrders,
 	getOrderById,
 	updateOrderToPaid,
 	updateOrderToDelivered,

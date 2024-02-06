@@ -55,9 +55,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 		}),
 		// Admin
 		getUsers: builder.query({
-			query: () => ({
+			query: ({ pageNumber }) => ({
 				url: USERS_URL,
 				method: 'GET',
+				params: {
+					pageNumber,
+				},
 			}),
 			providesTags: ['Users'],
 			keepUnusedDataFor: 5,

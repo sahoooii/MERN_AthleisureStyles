@@ -38,16 +38,32 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 			keepUnusedDataFor: 5,
 		}),
 		getMyOrders: builder.query({
-			query: () => ({
+			query: ({ pageNumber }) => ({
 				url: `${ORDERS_URL}/orderhistory`,
 				method: 'GET',
+				params: {
+					pageNumber,
+				},
+			}),
+			keepUnusedDataFor: 5,
+		}),
+		getNotPaidOrders: builder.query({
+			query: ({ pageNumber }) => ({
+				url: `${ORDERS_URL}/notpaidorders`,
+				method: 'GET',
+				params: {
+					pageNumber,
+				},
 			}),
 			keepUnusedDataFor: 5,
 		}),
 		getOrders: builder.query({
-			query: () => ({
+			query: ({ pageNumber }) => ({
 				url: ORDERS_URL,
 				method: 'GET',
+				params: {
+					pageNumber,
+				},
 			}),
 			keepUnusedDataFor: 5,
 		}),
@@ -67,6 +83,7 @@ export const {
 	usePayOrderMutation,
 	useGetPayPalClientIdQuery,
 	useGetMyOrdersQuery,
+	useGetNotPaidOrdersQuery,
 	useGetOrdersQuery,
 	useDeliverOrderMutation,
 } = ordersApiSlice;

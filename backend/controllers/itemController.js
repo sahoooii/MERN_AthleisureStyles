@@ -6,8 +6,14 @@ import User from '../models/userModel.js';
 // @route GET /api/items
 // @access Public
 const getItems = asyncHandler(async (req, res) => {
-	const items = await Item.find({});
-	res.json(items);
+	const pageSize = 6;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalItemsCount = await Item.countDocuments();
+
+	const items = await Item.find({})
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });
 });
 
 // @desc Fetch Single Item
@@ -29,8 +35,17 @@ const getItemById = asyncHandler(async (req, res) => {
 // @route GET /api/items/itemslist
 // @access  Private/Admin
 const getItemsByAdmin = asyncHandler(async (req, res) => {
-	const items = await Item.find({});
-	res.json(items);
+	const pageSize = 4;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalItemsCount = await Item.countDocuments();
+
+	const items = await Item.find({})
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	// console.log('items:', items);
+
+	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });
 });
 
 // @desc Create a sample Item
@@ -214,9 +229,10 @@ const createItemReview = asyncHandler(async (req, res) => {
 
 		// Average rate calculation
 		// 3 4 1 / 3
-		item.rating =
+		item.rating = (
 			item.reviews.reduce((acc, item) => acc + item.rating, 0) /
-			item.reviews.length;
+			item.reviews.length
+		).toFixed(1);
 
 		await item.save();
 
@@ -255,14 +271,16 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 
 			item.rating =
 				item.reviews.length > 0 &&
-				item.reviews.reduce((acc, item) => acc + item.rating, 0) /
-					item.reviews.length;
+				(
+					item.reviews.reduce((acc, item) => acc + item.rating, 0) /
+					item.reviews.length
+				).toFixed(1);
 
 			await item.save();
 
-			res.status(201).json({ message: 'Review Deleted Successfully' });
+			res.status(200).json({ message: 'Review Deleted Successfully' });
 		} else {
-			res.status(404);
+			res.status(401);
 			throw new Error("You can't delete other user's review");
 		}
 	} else {
@@ -272,13 +290,87 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 });
 
 // @desc GET item reviews
-// @route GET /api/items/reviews
+// @route DELETE /api/items/:id/admin/reviews
 // @access Private/admin
 const getItemReviews = asyncHandler(async (req, res) => {
-	const items = await Item.findById(req.params._id);
+	const item = await Item.findById(req.params.id);
+	const reviews = item.reviews;
 
-	// console.log(items);
-	res.json(items);
+	const pageSize = 2;
+	const page = Number(req.query.pageNumber) || 1;
+
+	const totalReviewCount = reviews.length;
+
+	const review = await Item.findById(req.params.id, 'reviews')
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+	console.log('review:', review);
+
+	if (reviews) {
+		return res.json({
+			item,
+			page,
+			pages: Math.ceil(totalReviewCount / pageSize),
+		});
+		// return res.json(item);
+	} else {
+		res.status(404);
+		throw new Error('Review Not Found');
+	}
+});
+
+// @desc Update item reviews By admin
+// @route PUT /api/items/:id/admin/reviews
+// @access Private/admin
+const updateItemReviewByAdmin = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user._id);
+	// const { isAdmin } = user;
+
+	const { reviewId } = req.body;
+
+	const item = await Item.findById(req.params.id);
+	const { _id: itemId } = item;
+
+	const reviews = item.reviews;
+
+	try {
+		const deleteReview = reviews.find(
+			(review) => review._id.toString() === reviewId
+		);
+
+		// console.log('deleteReviewId:', deleteReview);
+
+		if (user.isAdmin) {
+			let item = await Item.findByIdAndUpdate(
+				itemId,
+				{
+					$pull: { reviews: deleteReview },
+				},
+				{
+					new: true,
+				}
+			);
+
+			item.numReviews = item.reviews.length;
+
+			item.rating =
+				item.reviews.length > 0 &&
+				(
+					item.reviews.reduce((acc, item) => acc + item.rating, 0) /
+					item.reviews.length
+				).toFixed(1);
+
+			await item.save();
+
+			res.status(200).json({ item });
+		} else {
+			res.status(401);
+			throw new Error('OnlyAdmin User');
+		}
+	} catch (error) {
+		res.status(400);
+		throw new Error('Failed to delete this Review');
+	}
 });
 
 export {
@@ -292,4 +384,5 @@ export {
 	createItemReview,
 	deleteItemReview,
 	getItemReviews,
+	updateItemReviewByAdmin,
 };
