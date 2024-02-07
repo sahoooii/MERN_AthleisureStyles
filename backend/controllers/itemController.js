@@ -156,6 +156,21 @@ const addToWishList = asyncHandler(async (req, res) => {
 	const { itemId } = req.body;
 	const item = await Item.findById(itemId);
 	// console.log('item:', item);
+	// From here
+	const pageSize = 2;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalWishlistCount = user.wishlist.length;
+
+	const paginateUser = await User.aggregate([
+		{
+			$match: { _id: req.user._id },
+		},
+		{ $unwind: '$wishlist' },
+		{ $limit: 2 },
+	]).skip(pageSize * (page - 1));
+
+	console.log('list', paginateUser);
+	// end
 
 	try {
 		const alreadyAdded = user.wishlist.find(
@@ -174,7 +189,13 @@ const addToWishList = asyncHandler(async (req, res) => {
 				}
 			);
 
-			res.status(200).json({ user });
+			// res.status(200).json({ user });
+			res.status(200).json({
+				user,
+				paginateUser,
+				page,
+				pages: Math.ceil(totalWishlistCount / pageSize),
+			});
 		} else {
 			let user = await User.findByIdAndUpdate(
 				userId,
@@ -186,7 +207,13 @@ const addToWishList = asyncHandler(async (req, res) => {
 				}
 			);
 
-			res.status(200).json({ user });
+			// res.status(200).json({ user });
+			res.status(200).json({
+				user,
+				paginateUser,
+				page,
+				pages: Math.ceil(totalWishlistCount / pageSize),
+			});
 		}
 	} catch (error) {
 		res.status(400);
@@ -293,30 +320,46 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 // @route DELETE /api/items/:id/admin/reviews
 // @access Private/admin
 const getItemReviews = asyncHandler(async (req, res) => {
-	const item = await Item.findById(req.params.id);
-	const reviews = item.reviews;
+	const getItem = await Item.findById(req.params.id);
+	const reviews = getItem.reviews;
+	// console.log('item:', item);
 
 	const pageSize = 2;
 	const page = Number(req.query.pageNumber) || 1;
-
 	const totalReviewCount = reviews.length;
 
-	const review = await Item.findById(req.params.id, 'reviews')
-		.limit(pageSize)
-		.skip(pageSize * (page - 1));
-	console.log('review:', review);
+	const item = await Item.aggregate([
+		{
+			$match: { _id: getItem._id },
+		},
+		{ $unwind: '$reviews' },
+		{ $skip: pageSize * (page - 1) },
+		{ $limit: 2 },
+	]);
+
+	console.log('item', item);
 
 	if (reviews) {
+		// return res.json(item);
 		return res.json({
+			getItem,
 			item,
 			page,
 			pages: Math.ceil(totalReviewCount / pageSize),
 		});
-		// return res.json(item);
 	} else {
 		res.status(404);
 		throw new Error('Review Not Found');
 	}
+
+	// const item = await Item.find(
+	// 	{
+	// 		_id: req.params.id,
+	// 	},
+	// 	{ reviews: { $slice: 2 } }
+	// ).skip(pageSize * (page - 1));
+
+	// const review = await Item.findById(req.params.id, 'reviews');
 });
 
 // @desc Update item reviews By admin

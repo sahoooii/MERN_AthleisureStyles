@@ -85,12 +85,9 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			invalidatesTags: ['Items'],
 		}),
 		getReviewsByAdmin: builder.query({
-			query: ({ itemId, pageNumber }) => ({
+			query: (itemId) => ({
 				url: `${ITEMS_URL}/${itemId}/admin/reviews`,
 				method: 'GET',
-				params: {
-					pageNumber,
-				},
 			}),
 			providesTags: ['Items'],
 			keepUnusedDataFor: 5,
