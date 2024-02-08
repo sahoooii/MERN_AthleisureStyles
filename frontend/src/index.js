@@ -66,6 +66,7 @@ const router = createBrowserRouter(
 					element={<NotPaidOrderHistoryScreen />}
 				/>
 				<Route path='/wishlist' element={<WishlistScreen />} />
+				<Route path='/wishlist/:pageNumber' element={<WishlistScreen />} />
 			</Route>
 
 			{/* Admin Route only admin can see these */}

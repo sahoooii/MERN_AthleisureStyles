@@ -22,7 +22,7 @@ const getItems = asyncHandler(async (req, res) => {
 const getItemById = asyncHandler(async (req, res) => {
 	const item = await Item.findById(req.params.id);
 
-	const pageSize = 2;
+	const pageSize = 4;
 	const page = Number(req.query.pageNumber) || 1;
 	const totalReviewCount = item.reviews.length;
 
@@ -176,21 +176,6 @@ const addToWishList = asyncHandler(async (req, res) => {
 	const { itemId } = req.body;
 	const item = await Item.findById(itemId);
 	// console.log('item:', item);
-	// From here
-	const pageSize = 2;
-	const page = Number(req.query.pageNumber) || 1;
-	const totalWishlistCount = user.wishlist.length;
-
-	const paginateUser = await User.aggregate([
-		{
-			$match: { _id: req.user._id },
-		},
-		{ $unwind: '$wishlist' },
-		{ $limit: 2 },
-	]).skip(pageSize * (page - 1));
-
-	console.log('list', paginateUser);
-	// end
 
 	try {
 		const alreadyAdded = user.wishlist.find(
@@ -209,13 +194,7 @@ const addToWishList = asyncHandler(async (req, res) => {
 				}
 			);
 
-			// res.status(200).json({ user });
-			res.status(200).json({
-				user,
-				paginateUser,
-				page,
-				pages: Math.ceil(totalWishlistCount / pageSize),
-			});
+			res.status(200).json({ user });
 		} else {
 			let user = await User.findByIdAndUpdate(
 				userId,
@@ -227,13 +206,7 @@ const addToWishList = asyncHandler(async (req, res) => {
 				}
 			);
 
-			// res.status(200).json({ user });
-			res.status(200).json({
-				user,
-				paginateUser,
-				page,
-				pages: Math.ceil(totalWishlistCount / pageSize),
-			});
+			res.status(200).json({ user });
 		}
 	} catch (error) {
 		res.status(400);
@@ -370,15 +343,6 @@ const getItemReviews = asyncHandler(async (req, res) => {
 		res.status(404);
 		throw new Error('Review Not Found');
 	}
-
-	// const item = await Item.find(
-	// 	{
-	// 		_id: req.params.id,
-	// 	},
-	// 	{ reviews: { $slice: 2 } }
-	// ).skip(pageSize * (page - 1));
-
-	// const review = await Item.findById(req.params.id, 'reviews');
 });
 
 // @desc Update item reviews By admin
