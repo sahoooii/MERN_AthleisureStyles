@@ -31,11 +31,16 @@ import Paginate from '../../components/Utils/Paginate';
 const ReviewsEditScreen = () => {
 	const { palette } = useTheme();
 	const { id: itemId } = useParams();
+	const { pageNumber } = useParams();
+
 
 	const { data: user } = useGetProfileDetailsQuery();
 	// console.log(user);
-	const { data, isLoading, error, refetch } = useGetReviewsByAdminQuery(itemId);
-	console.log(data && data);
+	const { data, isLoading, error, refetch } = useGetReviewsByAdminQuery({
+		itemId,
+		pageNumber,
+	});
+	// console.log(data && data);
 
 	const [updateReviewsByAdmin] = useUpdateReviewByAdminMutation();
 
@@ -43,8 +48,8 @@ const ReviewsEditScreen = () => {
 		if (window.confirm('Would you like to delete this review ?')) {
 			try {
 				const deleteReview =
-					data.getItem &&
-					data.getItem.reviews.find(
+					data.item &&
+					data.item.reviews.find(
 						(review) => review._id.toString() === reviewId
 					);
 
@@ -165,8 +170,8 @@ const ReviewsEditScreen = () => {
 											}}
 										>
 											<img
-												src={data.getItem.image}
-												alt={data.getItem.name}
+												src={data.item.image}
+												alt={data.item.name}
 												width='55px'
 												height='70px'
 												style={{
@@ -178,33 +183,37 @@ const ReviewsEditScreen = () => {
 												to={`/admin/item/${itemId}/edit`}
 												style={{ textDecoration: 'underline' }}
 											>
-												<Typography variant='h4'>
-													{data.getItem.name}
-												</Typography>
+												<Typography variant='h4'>{data.item.name}</Typography>
 											</Link>
 										</StyledTableCell>
-										<StyledTableCell>{data.getItem.brand}</StyledTableCell>
+										<StyledTableCell>{data.item.brand}</StyledTableCell>
 										<StyledTableCell align='right'>
-											${data.getItem.price}
+											${data.item.price}
 										</StyledTableCell>
 										<StyledTableCell align='right'>
-											<Typography variant='h4'>
-												{/* {item.reviews.length} Reviews */}
-											</Typography>
+											{data.item.reviews.length === 0 ? (
+												<Message severity='info'>No Reviews</Message>
+											) : (
+												<Typography variant='h4'>
+													{data.item.reviews.length} Reviews
+												</Typography>
+											)}
 										</StyledTableCell>
 										<StyledTableCell>
-											<Box
-												display='flex'
-												alignItems='center'
-												justifyContent='end'
-											>
-												<Typography variant='h4' mr='5px'>
-													{data.getItem.rating}
-												</Typography>
-												{data.getItem.rating > 0 && (
-													<RatingLogic rating={data.getItem.rating} />
-												)}
-											</Box>
+											{data.item.rating > 0 ? (
+												<Box
+													display='flex'
+													alignItems='center'
+													justifyContent='end'
+												>
+													<Typography variant='h4' mr='5px'>
+														{data.item.rating}
+													</Typography>
+													<RatingLogic rating={data.item.rating} />
+												</Box>
+											) : (
+												<Message severity='info'>No Rating</Message>
+											)}
 										</StyledTableCell>
 									</StyledTableRowItem>
 								</TableBody>
@@ -212,7 +221,7 @@ const ReviewsEditScreen = () => {
 						</TableContainer>
 					</Paper>
 
-					{data.getItem.reviews.length === 0 ? (
+					{data.item.reviews.length === 0 ? (
 						<Message severity='error'>No Reviews</Message>
 					) : (
 						<>
@@ -241,7 +250,7 @@ const ReviewsEditScreen = () => {
 										</TableHead>
 
 										<TableBody>
-											{data.item.map((review) => (
+											{data.paginateItem.map((review) => (
 												<StyledTableRow key={review.reviews._id} hover>
 													<StyledTableCell
 														style={{

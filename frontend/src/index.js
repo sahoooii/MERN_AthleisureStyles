@@ -91,10 +91,10 @@ const router = createBrowserRouter(
 					element={<UserProfileEditScreen />}
 				/>
 				<Route path='/admin/item/:id/reviews' element={<ReviewsEditScreen />} />
-				{/* <Route
+				<Route
 					path='/admin/item/:id/reviews/:pageNumber'
 					element={<ReviewsEditScreen />}
-				/> */}
+				/>
 			</Route>
 		</Route>
 	)
