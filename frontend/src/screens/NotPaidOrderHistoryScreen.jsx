@@ -236,7 +236,7 @@ const NotPaidOrderHistoryScreen = () => {
 																		style={{ textDecoration: 'underline' }}
 																	>
 																		<Typography
-																			variant='h3'
+																			variant='h4'
 																			fontWeight='bold'
 																			color='secondary'
 																			sx={{ cursor: 'pointer' }}

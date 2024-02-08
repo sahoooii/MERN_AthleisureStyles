@@ -7,6 +7,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 		getItems: builder.query({
 			query: ({ pageNumber }) => ({
 				url: ITEMS_URL,
+				method: 'GET',
 				params: {
 					pageNumber,
 				},
@@ -15,9 +16,12 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			keepUnusedDataFor: 5,
 		}),
 		getItemDetails: builder.query({
-			query: (itemId) => ({
+			query: ({ itemId, pageNumber }) => ({
 				url: `${ITEMS_URL}/${itemId}`,
 				method: 'GET',
+				params: {
+					pageNumber,
+				},
 			}),
 			keepUnusedDataFor: 5,
 		}),

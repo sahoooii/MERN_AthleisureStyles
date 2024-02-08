@@ -30,8 +30,8 @@ import Paginate from '../../components/Utils/Paginate';
 
 const ReviewsEditScreen = () => {
 	const { palette } = useTheme();
-	const { id: itemId } = useParams();
-	const { pageNumber } = useParams();
+	const { id: itemId, pageNumber } = useParams();
+	// const { pageNumber } = useParams();
 
 
 	const { data: user } = useGetProfileDetailsQuery();

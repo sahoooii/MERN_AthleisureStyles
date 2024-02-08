@@ -22,8 +22,28 @@ const getItems = asyncHandler(async (req, res) => {
 const getItemById = asyncHandler(async (req, res) => {
 	const item = await Item.findById(req.params.id);
 
+	const pageSize = 2;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalReviewCount = item.reviews.length;
+
+	const paginateItem = await Item.aggregate([
+		{
+			$match: { _id: item._id },
+		},
+		{ $unwind: '$reviews' },
+		{ $skip: pageSize * (page - 1) },
+		{ $limit: pageSize },
+	]);
+
+	// console.log('paginateItem:', paginateItem);
+
 	if (item) {
-		return res.json(item);
+		return res.json({
+			item,
+			paginateItem,
+			page,
+			pages: Math.ceil(totalReviewCount / pageSize),
+		});
 	} else {
 		res.status(404);
 		throw new Error('Item Not Found');
@@ -336,7 +356,7 @@ const getItemReviews = asyncHandler(async (req, res) => {
 		{ $limit: pageSize },
 	]);
 
-	console.log('paginateItem:', paginateItem);
+	// console.log('paginateItem:', paginateItem);
 
 	if (reviews) {
 		// return res.json(item);

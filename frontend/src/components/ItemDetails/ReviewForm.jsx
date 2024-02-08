@@ -33,9 +33,12 @@ import Loader from '../Utils/Loader';
 import Message from '../Utils/Message';
 
 const ReviewForm = () => {
-	const { itemId } = useParams();
+	const { itemId, pageNumber } = useParams();
 
-	const { data: item, refetch } = useGetItemDetailsQuery(itemId);
+	const { refetch } = useGetItemDetailsQuery({
+		itemId,
+		pageNumber,
+	});
 
 	const [createReview, { isLoading: loadingCreateReview }] =
 		useCreateReviewMutation();
@@ -84,7 +87,7 @@ const ReviewForm = () => {
 					<AccordionSummary
 						expandIcon={<ExpandMoreIcon />}
 						aria-controls='panel1a-content'
-						id={item._id}
+						// id={item._id}
 					>
 						<Typography variant='h4'>Write a Review:</Typography>
 					</AccordionSummary>

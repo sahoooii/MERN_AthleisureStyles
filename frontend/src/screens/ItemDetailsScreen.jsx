@@ -22,13 +22,16 @@ const ItemDetailsScreen = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const { itemId } = useParams();
+	const { itemId, pageNumber } = useParams();
 
 	// Count quantity
 	const [quantity, setQuantity] = useState(1);
 
-	const { data: item, isLoading, error } = useGetItemDetailsQuery(itemId);
-	// console.log('item:', item);
+	const { data, isLoading, error } = useGetItemDetailsQuery({
+		itemId,
+		pageNumber,
+	});
+
 	const { userInfo } = useSelector((state) => state.auth);
 
 	const { data: user, refetch } = useGetProfileDetailsQuery();
@@ -55,7 +58,7 @@ const ItemDetailsScreen = () => {
 	};
 
 	const addToCartHandler = () => {
-		dispatch(addToCart({ ...item, quantity }));
+		dispatch(addToCart({ ...data.item, quantity }));
 
 		navigate('/cart');
 	};
@@ -84,8 +87,8 @@ const ItemDetailsScreen = () => {
 						{/* Images */}
 						<Box flex='1 1 40%' sx={{ mb: { sm: '40px' } }}>
 							<img
-								src={item.image}
-								alt={item.name}
+								src={data.item.image}
+								alt={data.item.name}
 								width='100%'
 								height='100%'
 								style={{ objectFit: 'contain' }}
@@ -99,25 +102,25 @@ const ItemDetailsScreen = () => {
 									mb='15px'
 									sx={{ typography: { md: 'h2', xs: 'h3' } }}
 								>
-									{item.name}
+									{data.item.name}
 								</Typography>
 								<Box mb='5px'>
 									<Typography as='span' variant='h4' mr='3px'>
 										Brand:
 									</Typography>
 									<Typography as='span' variant='h4'>
-										{item.brand}
+										{data.item.brand}
 									</Typography>
 								</Box>
 								<Typography variant='h3' mb='18px'>
-									${item.price}
+									${data.item.price}
 								</Typography>
 
 								{/* Reviews */}
 								<Box mb='6px'>
-									{item.numReviews > 0 ? (
+									{data.item.numReviews > 0 ? (
 										<Typography variant='span'>
-											{item.numReviews} Reviews
+											{data.item.numReviews} Reviews
 										</Typography>
 									) : (
 										<Box sx={{ width: { xs: '90%', sm: '70%', md: '50%' } }}>
@@ -126,10 +129,10 @@ const ItemDetailsScreen = () => {
 									)}
 								</Box>
 
-								{item.rating > 0 && (
+								{data.item.rating > 0 && (
 									<Box display='flex' alignItems='center' mb='12px'>
-										<RatingLogic rating={item.rating} />
-										<Typography ml='5px'>{item.rating}</Typography>
+										<RatingLogic rating={data.item.rating} />
+										<Typography ml='5px'>{data.item.rating}</Typography>
 									</Box>
 								)}
 
@@ -158,7 +161,7 @@ const ItemDetailsScreen = () => {
 
 								{/* Stock */}
 								<Box mb='10px'>
-									{item.countInStock <= 0 && (
+									{data.item.countInStock <= 0 && (
 										<Typography variant='h3' color='red'>
 											Out Of Stock
 										</Typography>
@@ -166,7 +169,7 @@ const ItemDetailsScreen = () => {
 								</Box>
 								{/* Stock Alert */}
 								<Box mb='10px'>
-									<OnlyLeftMessage item={item} />
+									<OnlyLeftMessage item={data.item} />
 								</Box>
 
 								{/* Count Button */}
@@ -212,7 +215,8 @@ const ItemDetailsScreen = () => {
 											{quantity}
 										</Typography>
 										{/* When count< 0 and over countInStock add disabled to Add button */}
-										{item.countInStock <= 0 || item.countInStock <= quantity ? (
+										{data.item.countInStock <= 0 ||
+										data.item.countInStock <= quantity ? (
 											<IconButton disabled>
 												<Add />
 											</IconButton>
@@ -228,7 +232,7 @@ const ItemDetailsScreen = () => {
 								<Box display='flex' alignItems='center'>
 									<ButtonComponent
 										width='80%'
-										disabled={item.countInStock <= 0}
+										disabled={data.item.countInStock <= 0}
 										onClick={addToCartHandler}
 									>
 										ADD TO CART
