@@ -101,6 +101,38 @@ const getUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Get user Wishlist
+// @route GET /api/users/wishlist
+// @access Private
+const getUserWishlist = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user._id);
+
+	const pageSize = 4;
+	const page = Number(req.query.pageNumber) || 1;
+	const totalWishlistCount = user.wishlist.length;
+
+	const paginatedUser = await User.aggregate([
+		{
+			$match: { _id: user._id },
+		},
+		{ $unwind: '$wishlist' },
+		{ $skip: pageSize * (page - 1) },
+		{ $limit: pageSize },
+	]);
+
+	if (user) {
+		res.status(200).json({
+			user,
+			paginatedUser,
+			page,
+			pages: Math.ceil(totalWishlistCount / pageSize),
+		});
+	} else {
+		res.status(404);
+		throw new Error('User Not Found');
+	}
+});
+
 // @desc Get user profile
 // @route PUT /api/users/profile
 // @access Private
@@ -252,8 +284,8 @@ export {
 	loginUser,
 	registerUser,
 	logoutUser,
-	// addToWishList,
 	getUserProfile,
+	getUserWishlist,
 	updateUserProfile,
 	getUsers,
 	getUserById,

@@ -43,6 +43,7 @@ const router = createBrowserRouter(
 			<Route index={true} path='/' element={<HomeScreen />} />
 			<Route path='/page/:pageNumber' element={<HomeScreen />} />
 			<Route path='/item/:itemId' element={<ItemDetailsScreen />} />
+			<Route path='/item/:itemId/:pageNumber' element={<ItemDetailsScreen />} />
 			<Route path='/cart' element={<CartScreen />} />
 			<Route path='/login' element={<LoginFormScreen />} />
 			<Route path='/register' element={<RegisterFormScreen />} />
@@ -65,6 +66,7 @@ const router = createBrowserRouter(
 					element={<NotPaidOrderHistoryScreen />}
 				/>
 				<Route path='/wishlist' element={<WishlistScreen />} />
+				<Route path='/wishlist/:pageNumber' element={<WishlistScreen />} />
 			</Route>
 
 			{/* Admin Route only admin can see these */}

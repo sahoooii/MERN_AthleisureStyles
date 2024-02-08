@@ -8,27 +8,31 @@ import {
 	Stack,
 	useMediaQuery,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Favorite } from '@mui/icons-material';
 import Message from '../components/Utils/Message';
 import { useAddToWishListMutation } from '../slices/itemsApiSlice';
-import { useGetProfileDetailsQuery } from '../slices/usersApiSlice';
+import { useGetUserWishlistQuery } from '../slices/usersApiSlice';
 import OnlyLeftMessage from '../components/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
+import Paginate from '../components/Utils/Paginate';
 
 const WishlistScreen = () => {
-	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+	const { pageNumber } = useParams();
 
-	const { data: user, isLoading, refetch } = useGetProfileDetailsQuery();
-	// console.log(user);
+	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+	const { data, isLoading, refetch } = useGetUserWishlistQuery({ pageNumber });
+
+	// console.log(data);
 
 	const [addToWishList] = useAddToWishListMutation();
 
 	const removeFromWishList = async (itemId) => {
 		try {
 			const alreadyAdded =
-				user && user.wishlist.find((list) => list._id.toString() === itemId);
+				data &&
+				data.user.wishlist.find((list) => list._id.toString() === itemId);
 
 			if (
 				window.confirm(
@@ -36,7 +40,7 @@ const WishlistScreen = () => {
 				)
 			) {
 				await addToWishList({
-					userId: user._id,
+					userId: data.user._id,
 					itemId: itemId,
 					alreadyAdded: alreadyAdded,
 				}).unwrap();
@@ -52,7 +56,7 @@ const WishlistScreen = () => {
 		<Box margin='0 auto' sx={{ width: { xs: '95%', sm: '80%' } }}>
 			{isLoading ? (
 				<Loader />
-			) : user.wishlist.length === 0 ? (
+			) : data.user.wishlist.length === 0 ? (
 				<Message severity='error'>
 					Oh No! Your Wishlist is Empty!
 					<Link to='/'> - Go Back</Link>
@@ -63,21 +67,22 @@ const WishlistScreen = () => {
 						<Grid item md={12} xs={12}>
 							<Box>
 								<Box mb='30px'>
-									<Typography variant='h3'>
-										Your <b>Wishlist</b> ({user.wishlist.length})
-									</Typography>
+									<Link to='/wishlist'>
+										<Typography variant='h3'>
+											Your <b>Wishlist</b> ({data.user.wishlist.length})
+										</Typography>
+									</Link>
 								</Box>
 
-								{/* Shopping Cart */}
 								<Box>
-									{user.wishlist.map((list) => (
-										<Box key={list._id}>
+									{data.paginatedUser.map((list) => (
+										<Box key={list.wishlist._id}>
 											<Grid container m='15px 0'>
 												<Grid item sm={4} xs={5}>
 													{isNonMobileScreen ? (
 														<img
-															src={list.image}
-															alt={list.name}
+															src={list.wishlist.image}
+															alt={list.wishlist.name}
 															width='140px'
 															height='174px'
 															style={{
@@ -86,8 +91,8 @@ const WishlistScreen = () => {
 														/>
 													) : (
 														<img
-															src={list.image}
-															alt={list.name}
+															src={list.wishlist.image}
+															alt={list.wishlist.name}
 															width='110px'
 															height='150px'
 															style={{
@@ -108,7 +113,7 @@ const WishlistScreen = () => {
 												>
 													<Stack spacing={1} sx={{ alignContent: 'center' }}>
 														<Link
-															to={`/item/${list._id}`}
+															to={`/item/${list.wishlist._id}`}
 															style={{ textDecoration: 'underline' }}
 														>
 															<Typography
@@ -116,7 +121,7 @@ const WishlistScreen = () => {
 																fontWeight='bold'
 																color='secondary'
 															>
-																{list.name}
+																{list.wishlist.name}
 															</Typography>
 														</Link>
 
@@ -125,13 +130,13 @@ const WishlistScreen = () => {
 																Brand:
 															</Typography>
 															<Typography as='span' variant='h4'>
-																{list.brand}
+																{list.wishlist.brand}
 															</Typography>
 														</Box>
 
 														{isNonMobileScreen ? (
 															<Typography variant='h3' fontWeight='bold'>
-																${list.price}
+																${list.wishlist.price}
 															</Typography>
 														) : (
 															<Box
@@ -140,7 +145,7 @@ const WishlistScreen = () => {
 																justifyContent='space-between'
 															>
 																<Typography variant='h3' fontWeight='bold'>
-																	${list.price}
+																	${list.wishlist.price}
 																</Typography>
 
 																<IconButton
@@ -155,14 +160,14 @@ const WishlistScreen = () => {
 															</Box>
 														)}
 
-														{list.countInStock <= 0 && (
+														{list.wishlist.countInStock <= 0 && (
 															<Typography variant='h4' color='red'>
 																Out Of Stock
 															</Typography>
 														)}
 														{/* Stock Alert */}
-														{list.countInStock <= 5 &&
-															list.countInStock > 0 && (
+														{list.wishlist.countInStock <= 5 &&
+															list.wishlist.countInStock > 0 && (
 																<OnlyLeftMessage item={list}>
 																	{`Only ${list.countInStock} Left!!`}
 																</OnlyLeftMessage>
@@ -174,7 +179,9 @@ const WishlistScreen = () => {
 													<Grid item sm={1}>
 														<IconButton
 															sx={{ '&:hover': { color: '#FF0461' } }}
-															onClick={() => removeFromWishList(list._id)}
+															onClick={() =>
+																removeFromWishList(list.wishlist._id)
+															}
 														>
 															<Favorite />
 														</IconButton>
@@ -186,6 +193,11 @@ const WishlistScreen = () => {
 										</Box>
 									))}
 								</Box>
+								<Paginate
+									menu='/wishlist'
+									pages={data.pages}
+									page={data.page}
+								/>
 							</Box>
 						</Grid>
 					</Grid>

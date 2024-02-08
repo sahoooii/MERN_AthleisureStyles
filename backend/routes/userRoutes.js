@@ -11,6 +11,7 @@ import {
 	updateUser,
 	deleteUser,
 	deleteUserByAdmin,
+	getUserWishlist,
 } from '../controllers/userController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -25,6 +26,9 @@ router
 	.route('/profile')
 	.get(protect, getUserProfile)
 	.put(protect, updateUserProfile);
+
+router.route('/wishlist').get(protect, getUserWishlist);
+
 router
 	.route('/:id')
 	.get(protect, admin, getUserById)

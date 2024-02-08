@@ -30,8 +30,9 @@ import Paginate from '../../components/Utils/Paginate';
 
 const ReviewsEditScreen = () => {
 	const { palette } = useTheme();
-	const { id: itemId } = useParams();
-	const { pageNumber } = useParams();
+	const { id: itemId, pageNumber } = useParams();
+	// const { pageNumber } = useParams();
+
 
 	const { data: user } = useGetProfileDetailsQuery();
 	// console.log(user);
@@ -39,7 +40,7 @@ const ReviewsEditScreen = () => {
 		itemId,
 		pageNumber,
 	});
-	console.log(data);
+	// console.log(data && data);
 
 	const [updateReviewsByAdmin] = useUpdateReviewByAdminMutation();
 
@@ -190,23 +191,29 @@ const ReviewsEditScreen = () => {
 											${data.item.price}
 										</StyledTableCell>
 										<StyledTableCell align='right'>
-											<Typography variant='h4'>
-												{/* {item.reviews.length} Reviews */}
-											</Typography>
+											{data.item.reviews.length === 0 ? (
+												<Message severity='info'>No Reviews</Message>
+											) : (
+												<Typography variant='h4'>
+													{data.item.reviews.length} Reviews
+												</Typography>
+											)}
 										</StyledTableCell>
 										<StyledTableCell>
-											<Box
-												display='flex'
-												alignItems='center'
-												justifyContent='end'
-											>
-												<Typography variant='h4' mr='5px'>
-													{data.item.rating}
-												</Typography>
-												{data.item.rating > 0 && (
+											{data.item.rating > 0 ? (
+												<Box
+													display='flex'
+													alignItems='center'
+													justifyContent='end'
+												>
+													<Typography variant='h4' mr='5px'>
+														{data.item.rating}
+													</Typography>
 													<RatingLogic rating={data.item.rating} />
-												)}
-											</Box>
+												</Box>
+											) : (
+												<Message severity='info'>No Rating</Message>
+											)}
 										</StyledTableCell>
 									</StyledTableRowItem>
 								</TableBody>
@@ -243,8 +250,8 @@ const ReviewsEditScreen = () => {
 										</TableHead>
 
 										<TableBody>
-											{data.item.reviews.map((review) => (
-												<StyledTableRow key={review._id} hover>
+											{data.paginateItem.map((review) => (
+												<StyledTableRow key={review.reviews._id} hover>
 													<StyledTableCell
 														style={{
 															display: 'flex',
@@ -253,10 +260,12 @@ const ReviewsEditScreen = () => {
 															gap: 8,
 														}}
 													>
-														<Link to={`/admin/user/${review.user}/edit`}>
+														<Link
+															to={`/admin/user/${review.reviews.user}/edit`}
+														>
 															<img
-																src={review.image}
-																alt={review.name}
+																src={review.reviews.image}
+																alt={review.reviews.name}
 																width='55px'
 																height='70px'
 																style={{
@@ -266,27 +275,29 @@ const ReviewsEditScreen = () => {
 															/>
 														</Link>
 														<Link
-															to={`/admin/user/${review.user}/edit`}
+															to={`/admin/user/${review.reviews.user}/edit`}
 															style={{ textDecoration: 'underline' }}
 														>
-															{review.user}
+															{review.reviews.user}
 														</Link>
 													</StyledTableCell>
 													<StyledTableCell>
-														{review.user && `${review.name}`}
+														{review.reviews.user && `${review.reviews.name}`}
 													</StyledTableCell>
-													<StyledTableCell>{review.comment}</StyledTableCell>
-													<StyledTableCell
-														align='right'
-														// style={{ paddingRight: '20px' }}
-													>
-														{review.rating} STARS
+													<StyledTableCell>
+														{review.reviews.comment}
 													</StyledTableCell>
 													<StyledTableCell
 														align='right'
 														// style={{ paddingRight: '20px' }}
 													>
-														{review.createdAt.substring(0, 10)}
+														{review.reviews.rating} STARS
+													</StyledTableCell>
+													<StyledTableCell
+														align='right'
+														// style={{ paddingRight: '20px' }}
+													>
+														{review.reviews.createdAt.substring(0, 10)}
 													</StyledTableCell>
 													<StyledTableCell
 														align='right'
@@ -299,7 +310,9 @@ const ReviewsEditScreen = () => {
 																	color: palette.blue.light,
 																},
 															}}
-															onClick={() => updateReviewHandler(review._id)}
+															onClick={() =>
+																updateReviewHandler(review.reviews._id)
+															}
 														>
 															<DeleteForeverOutlinedIcon fontSize='large' />
 														</IconButton>

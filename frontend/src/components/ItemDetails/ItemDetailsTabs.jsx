@@ -26,11 +26,12 @@ import RatingLogic from '../Utils/RatingLogic';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Loader from '../Utils/Loader';
+import Paginate from '../Utils/Paginate';
 
 const ItemDetailsTabs = () => {
-	const isNonMediumScreen = useMediaQuery('(min-width:900px)');
+	const { itemId, pageNumber } = useParams();
 
-	const { itemId } = useParams();
+	const isNonMediumScreen = useMediaQuery('(min-width:900px)');
 
 	// For tabs
 	const [value, setValue] = useState('description');
@@ -40,7 +41,12 @@ const ItemDetailsTabs = () => {
 
 	const { userInfo } = useSelector((state) => state.auth);
 
-	const { data: item, refetch, isLoading } = useGetItemDetailsQuery(itemId);
+	const { data, refetch, isLoading } = useGetItemDetailsQuery({
+		itemId,
+		pageNumber,
+	});
+
+	// console.log(data && data);
 
 	const [deleteReview] = useDeleteReviewMutation();
 
@@ -73,7 +79,7 @@ const ItemDetailsTabs = () => {
 						variant='p'
 						sx={{ lineHeight: { sm: 2 }, fontSize: { sm: '14px' } }}
 					>
-						{item.description}
+						{data.item.description}
 					</Typography>
 				)}
 				{/* Reviews */}
@@ -92,59 +98,66 @@ const ItemDetailsTabs = () => {
 								<Box flex='1 1 40%' mb='20px'>
 									{isNonMediumScreen ? (
 										<>
-											{item.reviews.length === 0 ? (
+											{data.item.reviews.length === 0 ? (
 												<Box mt='20px'>
 													<Message>No Reviews Yet</Message>
 												</Box>
 											) : (
 												<Typography variant='h4' mb='15px'>
-													{item.numReviews} Reviews
+													{data.item.numReviews} Reviews
 												</Typography>
 											)}
 
-											{item.reviews.map((review) => (
-												<Box key={review._id}>
+											{data.paginateItem.map((review) => (
+												<Box key={review.reviews._id}>
 													<Stack mt='10px' spacing={1.5}>
 														<Grid container display='flex' alignItems='center'>
 															<Grid item xs={3}>
-																<Avatar src={review.image} />
+																<Avatar src={review.reviews.image} />
 															</Grid>
 															<Grid item xs={7}>
 																<Typography variant='p'>
-																	<b>{review.name}</b>
+																	<b>{review.reviews.name}</b>
 																</Typography>
 															</Grid>
 															<Grid item xs={2} textAlign='right'>
-																{userInfo && userInfo._id === review.user && (
-																	<IconButton
-																		sx={{ mb: '15px' }}
-																		onClick={() => deleteHandler(itemId)}
-																	>
-																		<Close />
-																	</IconButton>
-																)}
+																{userInfo &&
+																	userInfo._id === review.reviews.user && (
+																		<IconButton
+																			sx={{ mb: '15px' }}
+																			onClick={() => deleteHandler(itemId)}
+																		>
+																			<Close />
+																		</IconButton>
+																	)}
 															</Grid>
 														</Grid>
 
 														<Grid container display='flex' alignItems='center'>
 															<Grid item xs={3}>
 																<Typography variant='subtitle2'>
-																	{review.createdAt.substring(0, 10)}
+																	{review.reviews.createdAt.substring(0, 10)}
 																</Typography>
 															</Grid>
 															<Grid item xs={8}>
 																<RatingLogic
-																	rating={review.rating}
+																	rating={review.reviews.rating}
 																></RatingLogic>
 															</Grid>
 														</Grid>
 														<Typography variant='subtitle1'>
-															{review.comment}
+															{review.reviews.comment}
 														</Typography>
 													</Stack>
 													<Divider sx={{ mt: '10px' }} />
 												</Box>
 											))}
+
+											<Paginate
+												menu={`/item/${itemId}`}
+												pages={data.pages}
+												page={data.page}
+											/>
 										</>
 									) : (
 										<Box mt='10px'>
@@ -154,18 +167,18 @@ const ItemDetailsTabs = () => {
 													aria-controls='review-content'
 													id='review-header'
 												>
-													{item.reviews.length === 0 ? (
+													{data.item.reviews.length === 0 ? (
 														<Typography variant='h4'>No Reviews Yet</Typography>
 													) : (
 														<Typography variant='h4'>
-															{item.numReviews} Reviews
+															{data.item.numReviews} Reviews
 														</Typography>
 													)}
 												</AccordionSummary>
 
 												<AccordionDetails>
-													{item.reviews.map((review) => (
-														<Grid mt='10px' key={review._id}>
+													{data.paginateItem.map((review) => (
+														<Grid mt='10px' key={review.reviews._id}>
 															<Stack mt='10px' spacing={1.5}>
 																<Grid
 																	container
@@ -173,19 +186,19 @@ const ItemDetailsTabs = () => {
 																	alignItems='center'
 																>
 																	<Grid item xs={3}>
-																		<Avatar src={review.image} />
+																		<Avatar src={review.reviews.image} />
 																	</Grid>
 																	<Grid item xs={7}>
 																		<Typography
 																			variant='p'
 																			sx={{ lineHeight: 2 }}
 																		>
-																			<b>{review.name}</b>
+																			<b>{review.reviews.name}</b>
 																		</Typography>
 																	</Grid>
 																	<Grid item xs={2} textAlign='right'>
 																		{userInfo &&
-																			userInfo._id === review.user && (
+																			userInfo._id === review.reviews.user && (
 																				<IconButton
 																					sx={{ mb: '15px' }}
 																					onClick={() => deleteHandler(itemId)}
@@ -203,23 +216,31 @@ const ItemDetailsTabs = () => {
 																>
 																	<Grid item xs={3}>
 																		<Typography variant='subtitle2'>
-																			{review.createdAt.substring(0, 10)}
+																			{review.reviews.createdAt.substring(
+																				0,
+																				10
+																			)}
 																		</Typography>
 																	</Grid>
 																	<Grid item xs={8}>
 																		<RatingLogic
-																			rating={review.rating}
+																			rating={review.reviews.rating}
 																		></RatingLogic>
 																	</Grid>
 																</Grid>
 																<Typography variant='subtitle1'>
-																	{review.comment}
+																	{review.reviews.comment}
 																</Typography>
 
 																<Divider sx={{ mt: '10px' }} />
 															</Stack>
 														</Grid>
 													))}
+													<Paginate
+														menu={`/item/${itemId}`}
+														pages={data.pages}
+														page={data.page}
+													/>
 												</AccordionDetails>
 											</Accordion>
 										</Box>

@@ -34,6 +34,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 			providesTags: ['Users'],
 			keepUnusedDataFor: 5,
 		}),
+		getUserWishlist: builder.query({
+			query: ({ pageNumber }) => ({
+				url: `${USERS_URL}/wishlist`,
+				method: 'GET',
+				params: {
+					pageNumber,
+				},
+			}),
+			providesTags: ['Users'],
+			keepUnusedDataFor: 5,
+		}),
 		updateProfile: builder.mutation({
 			query: (data) => ({
 				url: `${USERS_URL}/profile`,
@@ -94,6 +105,7 @@ export const {
 	useRegisterMutation,
 	useUploadProfileImageMutation,
 	useGetProfileDetailsQuery,
+	useGetUserWishlistQuery,
 	useUpdateProfileMutation,
 	useLogoutMutation,
 	useGetUsersQuery,
