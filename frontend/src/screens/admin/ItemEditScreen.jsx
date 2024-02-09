@@ -15,10 +15,10 @@ import { DeleteSweepOutlined, EditOutlined } from '@mui/icons-material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
 	useUpdateItemMutation,
-	useGetItemDetailsQuery,
 	useUploadItemImagMutation,
 	useDeleteItemMutation,
 	useGetItemsQuery,
+	useGetItemDetailsByAdminQuery,
 } from '../../slices/itemsApiSlice';
 import FormComponentTop from '../../components/FormUi/FormComponentTop';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
@@ -31,6 +31,8 @@ const ItemEditScreen = () => {
 	const { id: itemId } = useParams();
 	const navigate = useNavigate();
 
+	// console.log(itemId);
+
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
 	// Get each item detail
@@ -39,8 +41,7 @@ const ItemEditScreen = () => {
 		isLoading,
 		refetch,
 		error,
-	} = useGetItemDetailsQuery(itemId);
-	// console.log(items);
+	} = useGetItemDetailsByAdminQuery(itemId);
 
 	const [updateItem, { isLoading: loadingUpdate }] = useUpdateItemMutation();
 

@@ -35,6 +35,14 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			providesTags: ['Items'],
 			keepUnusedDataFor: 5,
 		}),
+		getItemDetailsByAdmin: builder.query({
+			query: (itemId) => ({
+				url: `${ITEMS_URL}/${itemId}/admin`,
+				method: 'GET',
+			}),
+			providesTags: ['Items'],
+			keepUnusedDataFor: 5,
+		}),
 		createItem: builder.mutation({
 			query: (data) => ({
 				url: `${ITEMS_URL}`,
@@ -63,7 +71,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				url: `${ITEMS_URL}/${itemId}`,
 				method: 'DELETE',
 			}),
-			invalidatesTags: ['Items'],
+			// invalidatesTags: ['Items'],
 		}),
 		addToWishList: builder.mutation({
 			query: (data) => ({
@@ -114,6 +122,7 @@ export const {
 	useGetItemsQuery,
 	useGetItemDetailsQuery,
 	useGetItemsByAdminQuery,
+	useGetItemDetailsByAdminQuery,
 	useCreateItemMutation,
 	useUpdateItemMutation,
 	useUploadItemImagMutation,

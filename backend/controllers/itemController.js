@@ -35,8 +35,6 @@ const getItemById = asyncHandler(async (req, res) => {
 		{ $limit: pageSize },
 	]);
 
-	// console.log('paginateItem:', paginateItem);
-
 	if (item) {
 		return res.json({
 			item,
@@ -66,6 +64,20 @@ const getItemsByAdmin = asyncHandler(async (req, res) => {
 	// console.log('items:', items);
 
 	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });
+});
+
+// @desc Fetch Single Item
+// @route GET /api/items/:id/admin
+// @access Public
+const getItemDetailsByAdmin = asyncHandler(async (req, res) => {
+	const item = await Item.findById(req.params.id);
+
+	if (item) {
+		return res.json(item);
+	} else {
+		res.status(404);
+		throw new Error('Item Not Found');
+	}
 });
 
 // @desc Create a sample Item
@@ -403,6 +415,7 @@ export {
 	getItems,
 	getItemById,
 	getItemsByAdmin,
+	getItemDetailsByAdmin,
 	createItem,
 	updateItem,
 	deleteItem,

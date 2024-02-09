@@ -11,6 +11,7 @@ import {
 	getItemReviews,
 	addToWishList,
 	updateItemReviewByAdmin,
+	getItemDetailsByAdmin,
 } from '../controllers/itemController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -24,6 +25,7 @@ router
 	.get(getItemById)
 	.put(protect, admin, updateItem)
 	.delete(protect, admin, deleteItem);
+router.route('/:id/admin').get(protect, admin, getItemDetailsByAdmin);
 router
 	.route('/:id/reviews')
 	.post(protect, createItemReview)
