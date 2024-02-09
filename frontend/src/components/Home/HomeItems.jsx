@@ -12,6 +12,7 @@ import {
 	AccordionSummary,
 	AccordionDetails,
 	useMediaQuery,
+	useTheme,
 } from '@mui/material';
 import { Favorite, ExpandMore } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
@@ -29,14 +30,16 @@ import { useSelector } from 'react-redux';
 import Paginate from '../Utils/Paginate';
 
 const HomeItems = () => {
+	const { palette } = useTheme();
+
 	const navigate = useNavigate();
-	const { pageNumber } = useParams();
+	const { pageNumber, keyword } = useParams();
 
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	const { userInfo } = useSelector((state) => state.auth);
 
-	const { data, isLoading, error } = useGetItemsQuery({ pageNumber });
+	const { data, isLoading, error } = useGetItemsQuery({ keyword, pageNumber });
 
 	const { data: user, refetch } = useGetProfileDetailsQuery();
 
@@ -212,8 +215,34 @@ const HomeItems = () => {
 					))}
 				</Box>
 			)}
+
+			<Box m='40px'>
+				{keyword && (
+					<Link to='/'>
+						<Typography
+							variant='h4'
+							sx={{
+								textDecoration: 'underline',
+								color: palette.blue.main,
+								'&:hover': {
+									cursor: 'pointer',
+									color: palette.blue.light,
+								},
+							}}
+						>
+							Back To Items Home?
+						</Typography>
+					</Link>
+				)}
+			</Box>
+
 			{!isLoading && (
-				<Paginate menu='/page' pages={data.pages} page={data.page} />
+				<Paginate
+					menu='/page'
+					pages={data.pages}
+					page={data.page}
+					keyword={keyword ? keyword : ''}
+				/>
 			)}
 		</>
 	);

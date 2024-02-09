@@ -8,9 +8,21 @@ import User from '../models/userModel.js';
 const getItems = asyncHandler(async (req, res) => {
 	const pageSize = 6;
 	const page = Number(req.query.pageNumber) || 1;
-	const totalItemsCount = await Item.countDocuments();
 
-	const items = await Item.find({})
+	// Search
+	const keyword = req.query.keyword
+		? {
+				$or: [
+					{ name: { $regex: req.query.keyword, $options: 'i' } },
+					{ brand: { $regex: req.query.keyword, $options: 'i' } },
+					{ category: { $regex: req.query.keyword, $options: 'i' } },
+				],
+		  }
+		: {};
+
+	const totalItemsCount = await Item.countDocuments({ ...keyword });
+
+	const items = await Item.find({ ...keyword })
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
 	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });

@@ -100,7 +100,7 @@ const Navbar = () => {
 						{/* When not logged in, not showing search display */}
 						{userInfo && (
 							<>
-								<SearchInput label='Search Keyword or Category' />
+								<SearchInput label='Search Keyword of Item' />
 							</>
 						)}
 
