@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
 	IconButton,
@@ -31,11 +31,20 @@ import Paginate from '../Utils/Paginate';
 
 const HomeItems = () => {
 	const { palette } = useTheme();
-
 	const navigate = useNavigate();
-	const { pageNumber, keyword } = useParams();
 
 	const isNonMobile = useMediaQuery('(min-width:600px)');
+
+	const { pageNumber, keyword } = useParams();
+
+	const [getKeyword, setGetKeyword] = useState(keyword || '');
+
+	// Get keyword result
+	useEffect(() => {
+		if (keyword) {
+			setGetKeyword(keyword);
+		}
+	}, [getKeyword, keyword]);
 
 	const { userInfo } = useSelector((state) => state.auth);
 
@@ -78,171 +87,188 @@ const HomeItems = () => {
 					{error?.data?.message || error.error}
 				</Message>
 			) : (
-				<Box
-					margin='0 auto'
-					display='grid'
-					gridTemplateColumns='repeat(auto-fill, 300px)'
-					justifyContent='space-around'
-					rowGap='40px'
-					columnGap='1.33%'
-				>
-					{data.items.map((item) => (
-						<Card
-							key={item._id}
-							sx={{
-								width: 300,
-								maxWidth: '100%',
-								boxShadow: 'md',
-							}}
-						>
-							{item.countInStock === 0 ? (
-								<Box position='relative'>
+				<>
+					<Box m='0 40px 20px 40px'>
+						{keyword && data.items.length > 0 && (
+							<Typography variant='h3' mr='5px'>
+								Search Result of: <b>{getKeyword}</b>
+							</Typography>
+						)}
+						{keyword && data.items.length === 0 && (
+							<Message severity='error'>
+								No Search Results Found of <b>{getKeyword}</b>
+							</Message>
+						)}
+					</Box>
+
+					<Box
+						margin='0 auto'
+						display='grid'
+						gridTemplateColumns='repeat(auto-fill, 300px)'
+						justifyContent='space-around'
+						rowGap='40px'
+						columnGap='1.33%'
+					>
+						{data.items.map((item) => (
+							<Card
+								key={item._id}
+								sx={{
+									width: 300,
+									maxWidth: '100%',
+									boxShadow: 'md',
+								}}
+							>
+								{item.countInStock === 0 ? (
+									<Box position='relative'>
+										<CardMedia
+											component='img'
+											height='400px'
+											width='300px'
+											image={item.image}
+											alt={item.name}
+											style={{
+												cursor: 'pointer',
+												opacity: '0.5',
+												// objectFit: 'cover',
+											}}
+											onClick={() => navigate(`/item/${item._id}`)}
+										/>
+										<Typography
+											variant='h3'
+											color={shades.green[800]}
+											fontWeight='bold'
+											sx={{
+												position: 'absolute',
+												bottom: '25px',
+												left: '25px',
+											}}
+										>
+											Out Of Stock
+										</Typography>
+									</Box>
+								) : (
 									<CardMedia
 										component='img'
 										height='400px'
 										width='300px'
 										image={item.image}
 										alt={item.name}
-										style={{
-											cursor: 'pointer',
-											opacity: '0.5',
-											// objectFit: 'cover',
-										}}
+										style={{ cursor: 'pointer' }}
 										onClick={() => navigate(`/item/${item._id}`)}
 									/>
-									<Typography
-										variant='h3'
-										color={shades.green[800]}
-										fontWeight='bold'
-										sx={{
-											position: 'absolute',
-											bottom: '25px',
-											left: '25px',
-										}}
+								)}
+
+								<CardContent sx={{ paddingBottom: '8px' }}>
+									<Link
+										to={`/item/${item._id}`}
+										style={{ textDecoration: 'none', color: 'inherit' }}
 									>
-										Out Of Stock
-									</Typography>
-								</Box>
-							) : (
-								<CardMedia
-									component='img'
-									height='400px'
-									width='300px'
-									image={item.image}
-									alt={item.name}
-									style={{ cursor: 'pointer' }}
-									onClick={() => navigate(`/item/${item._id}`)}
-								/>
-							)}
-
-							<CardContent sx={{ paddingBottom: '8px' }}>
-								<Link
-									to={`/item/${item._id}`}
-									style={{ textDecoration: 'none', color: 'inherit' }}
-								>
-									<Typography variant='h3' marginBottom='10px'>
-										{item.name}
-									</Typography>
-								</Link>
-
-								{/* Rating */}
-								<Box display='flex' alignItems='center' marginBottom='5px'>
-									{item.rating > 0 && <RatingLogic rating={item.rating} />}
-									{item.numReviews > 0 && (
-										<Typography variant='subtitle2' ml='8px'>
-											{item.numReviews} Reviews
+										<Typography variant='h3' marginBottom='10px'>
+											{item.name}
 										</Typography>
-									)}
-								</Box>
+									</Link>
 
-								<Box display='flex' justifyContent='space-between'>
-									<Typography variant='h3'>${item.price}</Typography>
-
-									{/* Add To Wishlist */}
-									{Boolean(
-										userInfo &&
-											user &&
-											user.wishlist &&
-											user.wishlist.find((list) => {
-												return list._id === item._id;
-											})
-									) ? (
-										<IconButton
-											aria-label='add to favorites'
-											sx={{
-												'&:hover': { color: '#FF0461' },
-												color: '#FF0461',
-											}}
-											onClick={() => addToWishListHandler(item._id)}
-										>
-											<Favorite />
-										</IconButton>
-									) : (
-										<IconButton
-											disabled={!userInfo}
-											aria-label='add to favorites'
-											sx={{
-												'&:hover': { color: '#FF0461' },
-											}}
-											onClick={() => addToWishListHandler(item._id)}
-										>
-											<Favorite />
-										</IconButton>
-									)}
-								</Box>
-							</CardContent>
-
-							{/* Only Mobile Description show up */}
-							{!isNonMobile && (
-								<CardActions disableSpacing sx={{ paddingTop: '0' }}>
-									<Accordion>
-										<AccordionSummary
-											expandIcon={<ExpandMore />}
-											aria-controls='panel1a-content'
-											id={item._id}
-										>
-											<Typography paragraph sx={{ marginBottom: '0' }}>
-												Description:
+									{/* Rating */}
+									<Box display='flex' alignItems='center' marginBottom='5px'>
+										{item.rating > 0 && <RatingLogic rating={item.rating} />}
+										{item.numReviews > 0 && (
+											<Typography variant='subtitle2' ml='8px'>
+												{item.numReviews} Reviews
 											</Typography>
-										</AccordionSummary>
-										<AccordionDetails sx={{ paddingTop: '0' }}>
-											<Typography>{item.description}</Typography>
-										</AccordionDetails>
-									</Accordion>
-								</CardActions>
-							)}
-						</Card>
-					))}
-				</Box>
+										)}
+									</Box>
+
+									<Box display='flex' justifyContent='space-between'>
+										<Typography variant='h3'>${item.price}</Typography>
+
+										{/* Add To Wishlist */}
+										{Boolean(
+											userInfo &&
+												user &&
+												user.wishlist &&
+												user.wishlist.find((list) => {
+													return list._id === item._id;
+												})
+										) ? (
+											<IconButton
+												aria-label='add to favorites'
+												sx={{
+													'&:hover': { color: '#FF0461' },
+													color: '#FF0461',
+												}}
+												onClick={() => addToWishListHandler(item._id)}
+											>
+												<Favorite />
+											</IconButton>
+										) : (
+											<IconButton
+												disabled={!userInfo}
+												aria-label='add to favorites'
+												sx={{
+													'&:hover': { color: '#FF0461' },
+												}}
+												onClick={() => addToWishListHandler(item._id)}
+											>
+												<Favorite />
+											</IconButton>
+										)}
+									</Box>
+								</CardContent>
+
+								{/* Only Mobile Description show up */}
+								{!isNonMobile && (
+									<CardActions disableSpacing sx={{ paddingTop: '0' }}>
+										<Accordion>
+											<AccordionSummary
+												expandIcon={<ExpandMore />}
+												aria-controls='panel1a-content'
+												id={item._id}
+											>
+												<Typography paragraph sx={{ marginBottom: '0' }}>
+													Description:
+												</Typography>
+											</AccordionSummary>
+											<AccordionDetails sx={{ paddingTop: '0' }}>
+												<Typography>{item.description}</Typography>
+											</AccordionDetails>
+										</Accordion>
+									</CardActions>
+								)}
+							</Card>
+						))}
+					</Box>
+				</>
 			)}
 
-			<Box m='40px'>
-				{keyword && (
-					<Link to='/'>
-						<Typography
-							variant='h4'
-							sx={{
-								textDecoration: 'underline',
-								color: palette.blue.main,
-								'&:hover': {
-									cursor: 'pointer',
-									color: palette.blue.light,
-								},
-							}}
-						>
-							Back To Items Home?
-						</Typography>
-					</Link>
-				)}
-			</Box>
-
 			{!isLoading && (
-				<Paginate
-					menu='/page'
-					pages={data.pages}
-					page={data.page}
-					keyword={keyword ? keyword : ''}
-				/>
+				<>
+					<Box m='20px 40px 0px 40px'>
+						{keyword && (
+							<Link to='/'>
+								<Typography
+									variant='h4'
+									sx={{
+										textDecoration: 'underline',
+										color: palette.blue.main,
+										'&:hover': {
+											cursor: 'pointer',
+											color: palette.blue.light,
+										},
+									}}
+								>
+									Back To Items Home?
+								</Typography>
+							</Link>
+						)}
+					</Box>
+
+					<Paginate
+						menu='/page'
+						pages={data.pages}
+						page={data.page}
+						keyword={keyword ? keyword : ''}
+					/>
+				</>
 			)}
 		</>
 	);

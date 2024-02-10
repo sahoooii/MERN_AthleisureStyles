@@ -11,14 +11,25 @@ const SearchInput = ({ label }) => {
 	const [keyword, setKeyword] = useState(urlKeyword || '');
 	const [searchToggle, setSearchToggle] = useState(false);
 
+	// For submit keyword
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (keyword.trim()) {
 			navigate(`/search/${keyword}`);
-
 			setKeyword('');
 		} else {
 			navigate('/');
+		}
+	};
+
+	// For submit keyword and animation toggle
+	const handleSearch = (e) => {
+		e.preventDefault();
+		if (keyword.trim()) {
+			navigate(`/search/${keyword}`);
+			setKeyword('');
+		} else {
+			setSearchToggle(!searchToggle);
 		}
 	};
 
@@ -63,9 +74,9 @@ const SearchInput = ({ label }) => {
 											<InputAdornment
 												position='end'
 												sx={{ cursor: 'pointer' }}
-												onClick={submitHandler}
+												onClick={() => setKeyword('')}
 											>
-												<SearchOutlined />
+												<ClearOutlined />
 											</InputAdornment>
 										),
 									}}
@@ -76,9 +87,9 @@ const SearchInput = ({ label }) => {
 
 					<IconButton
 						sx={{ pl: '0px' }}
-						onClick={() => setSearchToggle(!searchToggle)}
+						onClick={handleSearch}
 					>
-						<ClearOutlined />
+						<SearchOutlined />
 					</IconButton>
 				</>
 			)}
