@@ -8,9 +8,21 @@ import User from '../models/userModel.js';
 const getItems = asyncHandler(async (req, res) => {
 	const pageSize = 6;
 	const page = Number(req.query.pageNumber) || 1;
-	const totalItemsCount = await Item.countDocuments();
 
-	const items = await Item.find({})
+	// Search
+	const keyword = req.query.keyword
+		? {
+				$or: [
+					{ name: { $regex: req.query.keyword, $options: 'i' } },
+					{ brand: { $regex: req.query.keyword, $options: 'i' } },
+					{ category: { $regex: req.query.keyword, $options: 'i' } },
+				],
+		  }
+		: {};
+
+	const totalItemsCount = await Item.countDocuments({ ...keyword });
+
+	const items = await Item.find({ ...keyword })
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
 	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });
@@ -34,8 +46,6 @@ const getItemById = asyncHandler(async (req, res) => {
 		{ $skip: pageSize * (page - 1) },
 		{ $limit: pageSize },
 	]);
-
-	// console.log('paginateItem:', paginateItem);
 
 	if (item) {
 		return res.json({
@@ -66,6 +76,20 @@ const getItemsByAdmin = asyncHandler(async (req, res) => {
 	// console.log('items:', items);
 
 	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });
+});
+
+// @desc Fetch Single Item
+// @route GET /api/items/:id/admin
+// @access Public
+const getItemDetailsByAdmin = asyncHandler(async (req, res) => {
+	const item = await Item.findById(req.params.id);
+
+	if (item) {
+		return res.json(item);
+	} else {
+		res.status(404);
+		throw new Error('Item Not Found');
+	}
 });
 
 // @desc Create a sample Item
@@ -403,6 +427,7 @@ export {
 	getItems,
 	getItemById,
 	getItemsByAdmin,
+	getItemDetailsByAdmin,
 	createItem,
 	updateItem,
 	deleteItem,

@@ -5,10 +5,11 @@ import { apiSlice } from './apiSlice';
 export const itemsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getItems: builder.query({
-			query: ({ pageNumber }) => ({
+			query: ({ keyword, pageNumber }) => ({
 				url: ITEMS_URL,
 				method: 'GET',
 				params: {
+					keyword,
 					pageNumber,
 				},
 			}),
@@ -31,6 +32,14 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				params: {
 					pageNumber,
 				},
+			}),
+			providesTags: ['Items'],
+			keepUnusedDataFor: 5,
+		}),
+		getItemDetailsByAdmin: builder.query({
+			query: (itemId) => ({
+				url: `${ITEMS_URL}/${itemId}/admin`,
+				method: 'GET',
 			}),
 			providesTags: ['Items'],
 			keepUnusedDataFor: 5,
@@ -63,7 +72,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				url: `${ITEMS_URL}/${itemId}`,
 				method: 'DELETE',
 			}),
-			invalidatesTags: ['Items'],
+			// invalidatesTags: ['Items'],
 		}),
 		addToWishList: builder.mutation({
 			query: (data) => ({
@@ -114,6 +123,7 @@ export const {
 	useGetItemsQuery,
 	useGetItemDetailsQuery,
 	useGetItemsByAdminQuery,
+	useGetItemDetailsByAdminQuery,
 	useCreateItemMutation,
 	useUpdateItemMutation,
 	useUploadItemImagMutation,

@@ -26,7 +26,12 @@ const ItemsListScreen = () => {
 	const { pageNumber } = useParams();
 
 	const { data, isLoading, error } = useGetItemsByAdminQuery({ pageNumber });
-	// console.log(data && data.items);
+	// console.log(
+	// 	data &&
+	// 		data.items.map((item) => {
+	// 			return item._id;
+	// 		})
+	// );
 
 	const { data: userProfile, isLoading: loadingProfile } =
 		useGetProfileDetailsQuery();
