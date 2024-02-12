@@ -21,9 +21,11 @@ const HomeCarousel = () => {
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	return (
-		<>
+		// <Box mt='-30px'>
+		<Box>
 			<Carousel
 				infiniteLoop={true}
+				autoPlay={true}
 				showThumbs={false}
 				showIndicators={false}
 				showStatus={false}
@@ -60,15 +62,27 @@ const HomeCarousel = () => {
 			>
 				{Object.values(heroTextureImports).map((texture, index) => (
 					<Box key={`carousel-image-${index}`}>
-						<img
-							src={texture}
-							alt={`carousel-${index}`}
-							style={{ width: '100%', height: '600px', objectFit: 'cover' }}
-						/>
+						{isNonMobile ? (
+							<img
+								src={texture}
+								alt={`carousel-${index}`}
+								style={{ width: '100%', height: '550px', objectFit: 'cover' }}
+							/>
+						) : (
+							<img
+								src={texture}
+								alt={`carousel-${index}`}
+								style={{
+									width: '100%',
+									// height: '550px',
+									objectFit: 'contain',
+								}}
+							/>
+						)}
 					</Box>
 				))}
 			</Carousel>
-		</>
+		</Box>
 	);
 };
 
