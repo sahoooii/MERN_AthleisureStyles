@@ -12,7 +12,7 @@ const HomeTabs = () => {
 	// Get Items from BE
 
 	return (
-		<Box margin='70px auto' sx={{ width: { xs: '100%', sm: '80%' } }}>
+		<Box margin='50px auto' sx={{ width: { xs: '100%', sm: '80%' } }}>
 			<Typography variant='h3' textAlign='center'>
 				Our Featured <b>Products</b>
 			</Typography>

@@ -134,6 +134,8 @@ const SideMenuAnimation = ({ style, width, height }) => {
 				left='0'
 				top='0'
 				overflow='auto'
+				// add or delete
+				onClick={() => setOpen(!open)}
 			/>
 			{/* sideBar */}
 			<Box
@@ -152,6 +154,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 					right='0'
 					bottom='0'
 					backgroundColor='white'
+					zIndex='10'
 					sx={{ width: { xs: 0.7, sm: 'max(350px, 25%)' } }}
 					variants={variants}
 				>
