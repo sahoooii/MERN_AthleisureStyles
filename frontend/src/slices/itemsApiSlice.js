@@ -116,6 +116,13 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Items'],
 		}),
+		getTopRatedItems: builder.query({
+			query: () => ({
+				url: `${ITEMS_URL}/toprated`,
+				method: 'GET',
+			}),
+			keepUnusedDataFor: 5,
+		}),
 	}),
 });
 
@@ -133,4 +140,5 @@ export const {
 	useDeleteReviewMutation,
 	useGetReviewsByAdminQuery,
 	useUpdateReviewByAdminMutation,
+	useGetTopRatedItemsQuery,
 } = itemsApiSlice;

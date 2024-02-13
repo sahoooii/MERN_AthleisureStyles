@@ -9,7 +9,7 @@ const HomeScreen = () => {
 		<Box margin='0 auto' width='100%'>
 			<HomeCarousel />
 			<HomeTabs />
-			<HomeItems />
+			{/* <HomeItems /> */}
 		</Box>
 	);
 };
