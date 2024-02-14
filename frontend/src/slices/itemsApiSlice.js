@@ -123,6 +123,13 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			keepUnusedDataFor: 5,
 		}),
+		getMostReviewedItems: builder.query({
+			query: () => ({
+				url: `${ITEMS_URL}/mostreviewed`,
+				method: 'GET',
+			}),
+			keepUnusedDataFor: 5,
+		}),
 	}),
 });
 
@@ -141,4 +148,5 @@ export const {
 	useGetReviewsByAdminQuery,
 	useUpdateReviewByAdminMutation,
 	useGetTopRatedItemsQuery,
+	useGetMostReviewedItemsQuery,
 } = itemsApiSlice;
