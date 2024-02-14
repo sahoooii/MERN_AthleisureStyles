@@ -423,6 +423,15 @@ const updateItemReviewByAdmin = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Get Top Rated Items
+// @route GET /api/items/toprated
+// @access Public
+const getTopRatedItems = asyncHandler(async (req, res) => {
+	const items = await Item.find({}).sort({ rating: -1 }).limit(6);
+
+	res.status(200).json(items);
+});
+
 export {
 	getItems,
 	getItemById,
@@ -436,4 +445,5 @@ export {
 	deleteItemReview,
 	getItemReviews,
 	updateItemReviewByAdmin,
+	getTopRatedItems,
 };

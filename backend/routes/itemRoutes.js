@@ -12,12 +12,14 @@ import {
 	addToWishList,
 	updateItemReviewByAdmin,
 	getItemDetailsByAdmin,
+	getTopRatedItems,
 } from '../controllers/itemController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.route('/').get(getItems).post(protect, admin, createItem);
+router.route('/toprated').get(getTopRatedItems);
 router.route('/:id/wishlist').put(protect, addToWishList);
 router.route('/itemslist').get(protect, admin, getItemsByAdmin);
 router
