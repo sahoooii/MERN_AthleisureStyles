@@ -11,6 +11,7 @@ import {
 	Typography,
 	styled,
 	tableCellClasses,
+	useTheme,
 } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
@@ -23,6 +24,7 @@ import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 import Paginate from '../../components/Utils/Paginate';
 
 const ItemsListScreen = () => {
+	const { palette } = useTheme();
 	const { pageNumber } = useParams();
 
 	const { data, isLoading, error } = useGetItemsByAdminQuery({ pageNumber });
@@ -195,6 +197,24 @@ const ItemsListScreen = () => {
 						menu='itemslist'
 						isAdmin={true}
 					/>
+
+					<Box mt='20px'>
+						<Link to='/'>
+							<Typography
+								variant='h4'
+								sx={{
+									textDecoration: 'underline',
+									color: palette.blue.main,
+									'&:hover': {
+										cursor: 'pointer',
+										color: palette.blue.light,
+									},
+								}}
+							>
+								Back To Home?
+							</Typography>
+						</Link>
+					</Box>
 				</>
 			)}
 		</Box>

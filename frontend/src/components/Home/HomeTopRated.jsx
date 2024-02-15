@@ -17,7 +17,6 @@ import { Favorite, ExpandMore } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import {
 	useAddToWishListMutation,
-	useGetItemsQuery,
 	useGetTopRatedItemsQuery,
 } from '../../slices/itemsApiSlice';
 import { toast } from 'react-toastify';
@@ -38,7 +37,7 @@ const HomeTopRated = () => {
 
 	const { data, isLoading, error } = useGetTopRatedItemsQuery();
 
-	const { pageNumber, keyword } = useParams();
+	const { keyword } = useParams();
 	const [getKeyword, setGetKeyword] = useState(keyword || '');
 
 	// Get keyword result
@@ -47,8 +46,6 @@ const HomeTopRated = () => {
 			setGetKeyword(keyword);
 		}
 	}, [getKeyword, keyword]);
-
-	useGetItemsQuery({ keyword, pageNumber });
 
 	// For wishlist
 	const { data: user, refetch } = useGetProfileDetailsQuery();

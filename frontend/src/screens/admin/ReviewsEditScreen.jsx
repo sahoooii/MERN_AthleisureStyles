@@ -12,6 +12,7 @@ import {
 	styled,
 	tableCellClasses,
 	IconButton,
+	useTheme,
 } from '@mui/material';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import {
@@ -20,7 +21,6 @@ import {
 } from '../../slices/itemsApiSlice';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useTheme } from '@emotion/react';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';

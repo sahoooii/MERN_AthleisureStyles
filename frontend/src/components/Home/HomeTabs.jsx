@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Tabs, useMediaQuery, Tab } from '@mui/material';
 import HomeItems from './HomeItems';
 import HomeTopRated from './HomeTopRated';
 import HomeMostReviewed from './HomeMostReviewed';
+import { useParams } from 'react-router-dom';
 
 const HomeTabs = () => {
 	const [value, setValue] = useState('all');
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
+	const { keyword } = useParams();
+
+	const [getKeyword, setGetKeyword] = useState(keyword || '');
+
+	// Get keyword result
+	useEffect(() => {
+		if (keyword) {
+			setGetKeyword(keyword);
+		}
+	}, [getKeyword, keyword]);
+
 	// for tabs
 	const handleChange = (event, newValue) => {
-		setValue(newValue);
+		if (keyword) {
+			setValue('all');
+		} else {
+			setValue(newValue);
+		}
 	};
-	// Get Items from BE
 
 	return (
 		<>

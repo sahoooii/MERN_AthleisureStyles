@@ -13,6 +13,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { theme } from './theme';
 import { Provider } from 'react-redux';
+import { HelmetProvider } from 'react-helmet-async';
 import store from './store';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
@@ -43,7 +44,10 @@ const router = createBrowserRouter(
 			<Route index={true} path='/' element={<HomeScreen />} />
 			<Route path='/search/:keyword' element={<HomeScreen />} />
 			<Route path='/page/:pageNumber' element={<HomeScreen />} />
-			<Route path='/search/:keyword/page/:pageNumber' element={<HomeScreen />} />
+			<Route
+				path='/search/:keyword/page/:pageNumber'
+				element={<HomeScreen />}
+			/>
 
 			<Route path='/item/:itemId' element={<ItemDetailsScreen />} />
 			<Route path='/item/:itemId/:pageNumber' element={<ItemDetailsScreen />} />
@@ -108,13 +112,15 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
-		<Provider store={store}>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				<PayPalScriptProvider deferLoading={true}>
-					<RouterProvider router={router} />
-				</PayPalScriptProvider>
-			</ThemeProvider>
-		</Provider>
+		<HelmetProvider>
+			<Provider store={store}>
+				<ThemeProvider theme={theme}>
+					<CssBaseline />
+					<PayPalScriptProvider deferLoading={true}>
+						<RouterProvider router={router} />
+					</PayPalScriptProvider>
+				</ThemeProvider>
+			</Provider>
+		</HelmetProvider>
 	</React.StrictMode>
 );
