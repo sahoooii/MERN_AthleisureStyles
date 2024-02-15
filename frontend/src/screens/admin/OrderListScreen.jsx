@@ -11,6 +11,7 @@ import {
 	Typography,
 	styled,
 	tableCellClasses,
+	useTheme,
 } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Link, useParams } from 'react-router-dom';
@@ -21,6 +22,8 @@ import Message from '../../components/Utils/Message';
 import Paginate from '../../components/Utils/Paginate';
 
 const OrderListScreen = () => {
+	const { palette } = useTheme();
+
 	const { pageNumber } = useParams();
 
 	const { data, isLoading, error } = useGetOrdersQuery({ pageNumber });
@@ -157,6 +160,24 @@ const OrderListScreen = () => {
 						menu='orderlist'
 						isAdmin={true}
 					/>
+
+					<Box mt='20px'>
+						<Link to='/'>
+							<Typography
+								variant='h4'
+								sx={{
+									textDecoration: 'underline',
+									color: palette.blue.main,
+									'&:hover': {
+										cursor: 'pointer',
+										color: palette.blue.light,
+									},
+								}}
+							>
+								Back To Home?
+							</Typography>
+						</Link>
+					</Box>
 				</>
 			)}
 		</Box>

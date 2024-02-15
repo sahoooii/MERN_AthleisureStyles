@@ -7,8 +7,9 @@ import {
 	Grid,
 	Stack,
 	useMediaQuery,
+	useTheme,
 } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Favorite } from '@mui/icons-material';
 import Message from '../components/Utils/Message';
@@ -18,10 +19,10 @@ import OnlyLeftMessage from '../components/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
 import Paginate from '../components/Utils/Paginate';
 import { shades } from '../theme';
-import { useTheme } from '@emotion/react';
 
 const WishlistScreen = () => {
 	const { palette } = useTheme();
+	const navigate = useNavigate();
 	const { pageNumber } = useParams();
 
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
@@ -48,6 +49,8 @@ const WishlistScreen = () => {
 				}).unwrap();
 
 				refetch();
+
+				navigate('/wishlist');
 			}
 		} catch (error) {
 			toast.error(error?.data?.message || error.error);
@@ -75,7 +78,6 @@ const WishlistScreen = () => {
 										</Typography>
 									</Link>
 								</Box>
-
 								<Box>
 									{data.paginatedUser.map((list) => (
 										<Box key={list.wishlist._id}>
@@ -151,7 +153,9 @@ const WishlistScreen = () => {
 																		color: '#FF0461',
 																		// mr: '30px',
 																	}}
-																	onClick={() => removeFromWishList(list._id)}
+																	onClick={() =>
+																		removeFromWishList(list.wishlist._id)
+																	}
 																>
 																	<Favorite />
 																</IconButton>
@@ -189,7 +193,6 @@ const WishlistScreen = () => {
 													</Grid>
 												)}
 											</Grid>
-
 											<Divider />
 										</Box>
 									))}
