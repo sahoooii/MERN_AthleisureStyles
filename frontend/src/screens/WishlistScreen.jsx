@@ -15,7 +15,7 @@ import { Favorite } from '@mui/icons-material';
 import Message from '../components/Utils/Message';
 import { useAddToWishListMutation } from '../slices/itemsApiSlice';
 import { useGetUserWishlistQuery } from '../slices/usersApiSlice';
-import OnlyLeftMessage from '../components/OnlyLeftMessage';
+import OnlyLeftMessage from '../components/Utils/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
 import Paginate from '../components/Utils/Paginate';
 import { shades } from '../theme';
@@ -27,7 +27,6 @@ const WishlistScreen = () => {
 
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 	const { data, isLoading, refetch } = useGetUserWishlistQuery({ pageNumber });
-	// console.log(data);
 
 	const [addToWishList] = useAddToWishListMutation();
 
@@ -128,11 +127,9 @@ const WishlistScreen = () => {
 																{list.wishlist.name}
 															</Typography>
 														</Link>
-
 														<Typography as='span' variant='h4'>
 															{list.wishlist.brand}
 														</Typography>
-
 														{isNonMobileScreen ? (
 															<Typography variant='h3' fontWeight='bold'>
 																${list.wishlist.price}
@@ -162,18 +159,13 @@ const WishlistScreen = () => {
 															</Box>
 														)}
 
+														{/* Stock Alert */}
 														{list.wishlist.countInStock <= 0 && (
 															<Typography variant='h4' color='red'>
 																Out Of Stock
 															</Typography>
 														)}
-														{/* Stock Alert */}
-														{list.wishlist.countInStock <= 5 &&
-															list.wishlist.countInStock > 0 && (
-																<OnlyLeftMessage item={list}>
-																	{`Only ${list.countInStock} Left!!`}
-																</OnlyLeftMessage>
-															)}
+														<OnlyLeftMessage item={list.wishlist} />
 													</Stack>
 												</Grid>
 												{/* Remove from Wishlist*/}

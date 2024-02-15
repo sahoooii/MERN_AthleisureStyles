@@ -13,10 +13,11 @@ import { toast } from 'react-toastify';
 import RatingLogic from '../components/Utils/RatingLogic';
 import ItemDetailsTabs from '../components/ItemDetails/ItemDetailsTabs';
 import ButtonComponent from '../components/Utils/ButtonComponent';
-import OnlyLeftMessage from '../components/OnlyLeftMessage';
+import OnlyLeftMessage from '../components/Utils/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
 import { useGetProfileDetailsQuery } from '../slices/usersApiSlice';
+import Meta from '../components/Utils/Meta';
 
 const ItemDetailsScreen = () => {
 	const dispatch = useDispatch();
@@ -83,6 +84,7 @@ const ItemDetailsScreen = () => {
 				</Box>
 			) : (
 				<Box width='80%' sx={{ m: { md: '50px auto', xs: '20px auto' } }}>
+					<Meta title={data.item.name} description={data.item.description} />
 					<Box display='flex' flexWrap='wrap' columnGap='40px'>
 						{/* Images */}
 						<Box flex='1 1 40%' sx={{ mb: { sm: '40px' } }}>
@@ -167,10 +169,6 @@ const ItemDetailsScreen = () => {
 										</Typography>
 									)}
 								</Box>
-								{/* Stock Alert */}
-								<Box mb='10px'>
-									<OnlyLeftMessage item={data.item} />
-								</Box>
 
 								{/* Count Button */}
 								<Box mb='5px'>
@@ -225,6 +223,10 @@ const ItemDetailsScreen = () => {
 												<Add />
 											</IconButton>
 										)}
+									</Box>
+									{/* Stock Alert */}
+									<Box>
+										<OnlyLeftMessage item={data.item} />
 									</Box>
 								</Box>
 
