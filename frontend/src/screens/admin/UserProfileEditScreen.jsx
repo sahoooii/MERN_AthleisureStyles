@@ -28,6 +28,7 @@ import Message from '../../components/Utils/Message';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { DeleteSweepOutlined, EditOutlined } from '@mui/icons-material';
 import { shades } from '../../theme';
+import Meta from '../../components/Utils/Meta';
 
 const UserProfileEditScreen = () => {
 	const { palette } = useTheme();
@@ -205,6 +206,9 @@ const UserProfileEditScreen = () => {
 						}) => (
 							<form onSubmit={handleSubmit} encType='multipart/form-data'>
 								{loadingUpdateProfile && <Loader />}
+								<Meta
+									title={`${values.firstName} ${values.lastName}'s Profile`}
+								/>
 								{/* Profile Picture */}
 								<Box
 									display='flex'

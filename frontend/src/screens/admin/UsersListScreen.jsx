@@ -19,6 +19,7 @@ import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import Paginate from '../../components/Utils/Paginate';
+import Meta from '../../components/Utils/Meta';
 
 const UsersListScreen = () => {
 	const { palette } = useTheme();
@@ -71,6 +72,8 @@ const UsersListScreen = () => {
 				</Message>
 			) : (
 				<>
+					<Meta title='All Users List' />
+					
 					<Typography variant='h3' sx={{ mb: '20px' }}>
 						All <b>Users</b>
 					</Typography>

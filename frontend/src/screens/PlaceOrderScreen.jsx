@@ -26,6 +26,7 @@ import Loader from '../components/Utils/Loader';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import ButtonComponent from '../components/Utils/ButtonComponent';
+import Meta from '../components/Utils/Meta';
 
 const PlaceOrderScreen = () => {
 	const navigate = useNavigate();
@@ -83,6 +84,7 @@ const PlaceOrderScreen = () => {
 
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '90%', md: '90%' } }}>
+			<Meta title='Place Order' />
 			<CheckoutSteps step={2} />
 
 			{cartItems.length === 0 ? (

@@ -28,6 +28,7 @@ import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 import { useSelector } from 'react-redux';
 import HomeItems from './HomeItems';
 import storeLogo from '../../assets/logo/athleisureLogoXS.png';
+import Meta from '../Utils/Meta';
 
 const HomeTopRated = () => {
 	const navigate = useNavigate();
@@ -90,6 +91,8 @@ const HomeTopRated = () => {
 						<HomeItems />
 					) : (
 						<>
+							<Meta title='Top Rated Six Items' />
+
 							<Box
 								width='60%'
 								m='0 auto'

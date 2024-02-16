@@ -22,6 +22,7 @@ import Message from '../../components/Utils/Message';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 import Paginate from '../../components/Utils/Paginate';
+import Meta from '../../components/Utils/Meta';
 
 const ItemsListScreen = () => {
 	const { palette } = useTheme();
@@ -83,6 +84,8 @@ const ItemsListScreen = () => {
 				</Message>
 			) : (
 				<>
+					<Meta title='All Items List' />
+
 					<Box
 						display='flex'
 						alignItems='center'

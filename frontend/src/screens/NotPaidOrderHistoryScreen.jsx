@@ -8,11 +8,14 @@ import ButtonComponent from '../components/Utils/ButtonComponent';
 import { ArrowForwardIosOutlined } from '@mui/icons-material';
 import { Link, useParams } from 'react-router-dom';
 import Paginate from '../components/Utils/Paginate';
+import { useSelector } from 'react-redux';
+import Meta from '../components/Utils/Meta';
 
 const NotPaidOrderHistoryScreen = () => {
 	const { pageNumber } = useParams();
-
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+
+	const { userInfo } = useSelector((state) => state.auth);
 
 	const { data, isLoading, error } = useGetNotPaidOrdersQuery({ pageNumber });
 
@@ -42,6 +45,10 @@ const NotPaidOrderHistoryScreen = () => {
 							</Message>
 						) : isNonMobileScreen ? (
 							<>
+								<Meta
+									title={`${userInfo.firstName} ${userInfo.lastName}'s Not Paid Orders`}
+								/>
+
 								{data.orders.map((order) => (
 									<Box key={order._id}>
 										{!order.isPaid && (

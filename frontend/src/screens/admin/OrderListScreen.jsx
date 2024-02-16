@@ -20,6 +20,7 @@ import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import Paginate from '../../components/Utils/Paginate';
+import Meta from '../../components/Utils/Meta';
 
 const OrderListScreen = () => {
 	const { palette } = useTheme();
@@ -82,6 +83,7 @@ const OrderListScreen = () => {
 				</Message>
 			) : (
 				<>
+					<Meta title='All Orders List' />
 					<Paper sx={{ width: '100%', overflow: 'hidden' }}>
 						<TableContainer sx={{ maxHeight: { xs: 500, sm: 800, md: 440 } }}>
 							<Table

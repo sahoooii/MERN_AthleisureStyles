@@ -57,6 +57,11 @@ const router = createBrowserRouter(
 
 			{/* Private Route must logged in */}
 			<Route path='/' element={<PrivateRoute />}>
+				{/* <Route path='/item/:itemId' element={<ItemDetailsScreen />} />
+				<Route
+					path='/item/:itemId/:pageNumber'
+					element={<ItemDetailsScreen />}
+				/> */}
 				<Route path='/shipping' element={<ShippingBillingScreen />} />
 				<Route path='/payment' element={<PaymentScreen />} />
 				<Route path='/placeorder' element={<PlaceOrderScreen />} />

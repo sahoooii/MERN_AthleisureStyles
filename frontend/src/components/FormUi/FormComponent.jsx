@@ -33,7 +33,7 @@ const FormComponent = ({ title, children }) => {
 							<Typography
 								fontWeight='bold'
 								variant='h3'
-								sx={{ mb: '3rem', mt: '1.5rem' }}
+								sx={{ m: '1.5rem 0' }}
 								color={shades.babyPink[300]}
 							>
 								{title}
@@ -77,33 +77,25 @@ const FormComponent = ({ title, children }) => {
 						>
 							{isSmScreens ? (
 								<>
-									<Box>
-										<img src={storeLogoSM} alt='storeLogoSM' />
-									</Box>
-									<Box width='40%'>
-										<Typography
-											fontWeight='bold'
-											variant='h3'
-											color={shades.babyPink[300]}
-										>
-											{title}
-										</Typography>
-									</Box>
+									<img src={storeLogoSM} alt='storeLogoSM' />
+									<Typography
+										fontWeight='bold'
+										variant='h3'
+										color={shades.babyPink[300]}
+									>
+										{title}
+									</Typography>
 								</>
 							) : (
 								<>
-									<Box>
-										<img src={storeLogoXS} alt='storeLogoXS' />
-									</Box>
-									<Box sx={{ width: { xs: '80%', sm: '40%' } }}>
-										<Typography
-											fontWeight='bold'
-											variant='h4'
-											color={shades.babyPink[300]}
-										>
-											{title}
-										</Typography>
-									</Box>
+									<img src={storeLogoXS} alt='storeLogoXS' />
+									<Typography
+										fontWeight='bold'
+										variant='h4'
+										color={shades.babyPink[300]}
+									>
+										{title}
+									</Typography>
 								</>
 							)}
 						</Box>
