@@ -20,6 +20,7 @@ import {
 import FormComponentTop from '../../components/FormUi/FormComponentTop';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
+import Meta from '../../components/Utils/Meta';
 
 const ItemEditScreen = () => {
 	const initialItemsValues = {
@@ -117,11 +118,9 @@ const ItemEditScreen = () => {
 
 	return (
 		<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-			<FormComponentTop title="Make A SHOPAHOLIC ITEM">
-				<Typography variant='h3' fontFamily='Play' textAlign='center' mb='30px'>
-					Create <b>Item</b>
-				</Typography>
+			<Meta title='Create A New Item' />
 
+			<FormComponentTop title='Create A New ITEM'>
 				{isLoading && <Loader />}
 
 				<Formik
@@ -142,6 +141,7 @@ const ItemEditScreen = () => {
 						<form onSubmit={handleSubmit} encType='multipart/form-data'>
 							<Box
 								display='grid'
+								mt='10px'
 								gap='20px'
 								gridTemplateColumns='repeat(4, minmax(0, 1fr))'
 								sx={{

@@ -9,10 +9,13 @@ import Shipping from '../components/Checkout/Shipping';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import { saveBillingAddress, saveShippingAddress } from '../slices/cartSlice';
 import { shades } from '../theme';
+import Meta from '../components/Utils/Meta';
 
 const ShippingBillingScreen = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+
+	const { userInfo } = useSelector((state) => state.auth);
 
 	const cart = useSelector((state) => state.cart);
 	const { billingAddress, shippingAddress } = cart;
@@ -131,6 +134,10 @@ const ShippingBillingScreen = () => {
 
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '85%', sm: '80%' } }}>
+			<Meta
+				title={`${userInfo.firstName} ${userInfo.lastName}'s Information`}
+			/>
+
 			<Box sx={{ mt: { sm: '20px' } }}>
 				<CheckoutSteps step={0} />
 			</Box>

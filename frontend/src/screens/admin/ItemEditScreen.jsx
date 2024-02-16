@@ -25,6 +25,7 @@ import ButtonComponent from '../../components/Utils/ButtonComponent';
 import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
+import Meta from '../../components/Utils/Meta';
 
 const ItemEditScreen = () => {
 	const { palette } = useTheme();
@@ -200,6 +201,10 @@ const ItemEditScreen = () => {
 						}) => (
 							<form onSubmit={handleSubmit} encType='multipart/form-data'>
 								{loadingUpdate && <Loader />}
+								<Meta
+									title={`${values.name} Edit`}
+									description={values.descriptions}
+								/>
 
 								{/* Item Image */}
 

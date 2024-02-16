@@ -7,6 +7,7 @@ import { savePaymentMethod } from '../slices/cartSlice';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
 import FormComponent from '../components/FormUi/FormComponent';
+import Meta from '../components/Utils/Meta';
 
 const PaymentScreen = () => {
 	const [paymentMethod, setPaymentMethod] = useState('PayPal');
@@ -36,6 +37,8 @@ const PaymentScreen = () => {
 
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '93%', sm: '80%' } }}>
+			<Meta title='Payment Method' />
+
 			<CheckoutSteps step={1} />
 
 			<Box mt='40px'>

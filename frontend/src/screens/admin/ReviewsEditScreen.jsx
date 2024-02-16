@@ -27,12 +27,12 @@ import Message from '../../components/Utils/Message';
 import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 import RatingLogic from '../../components/Utils/RatingLogic';
 import Paginate from '../../components/Utils/Paginate';
+import Meta from '../../components/Utils/Meta';
 
 const ReviewsEditScreen = () => {
 	const { palette } = useTheme();
 	const { id: itemId, pageNumber } = useParams();
 	// const { pageNumber } = useParams();
-
 
 	const { data: user } = useGetProfileDetailsQuery();
 	// console.log(user);
@@ -141,6 +141,10 @@ const ReviewsEditScreen = () => {
 				</Message>
 			) : (
 				<>
+					<Meta
+						title={`${data.item.name}'s Reviews`}
+						description={data.item.description}
+					/>
 					<Paper sx={{ width: '100%', overflow: 'hidden', mb: '20px' }}>
 						<TableContainer>
 							<Table sx={{ minWidth: 654 }}>

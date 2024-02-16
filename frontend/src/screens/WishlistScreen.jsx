@@ -19,13 +19,17 @@ import OnlyLeftMessage from '../components/Utils/OnlyLeftMessage';
 import Loader from '../components/Utils/Loader';
 import Paginate from '../components/Utils/Paginate';
 import { shades } from '../theme';
+import { useSelector } from 'react-redux';
+import Meta from '../components/Utils/Meta';
 
 const WishlistScreen = () => {
 	const { palette } = useTheme();
 	const navigate = useNavigate();
 	const { pageNumber } = useParams();
-
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+
+	const { userInfo } = useSelector((state) => state.auth);
+
 	const { data, isLoading, refetch } = useGetUserWishlistQuery({ pageNumber });
 
 	const [addToWishList] = useAddToWishListMutation();
@@ -67,6 +71,10 @@ const WishlistScreen = () => {
 				</Message>
 			) : (
 				<Box alignItems='center'>
+					<Meta
+						title={`${userInfo.firstName} ${userInfo.lastName}'s Wishlist`}
+					/>
+
 					<Grid container mt='15px'>
 						<Grid item md={12} xs={12}>
 							<Box>

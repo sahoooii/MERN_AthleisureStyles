@@ -8,14 +8,17 @@ import ButtonComponent from '../components/Utils/ButtonComponent';
 import { ArrowForwardIosOutlined } from '@mui/icons-material';
 import { Link, useParams } from 'react-router-dom';
 import Paginate from '../components/Utils/Paginate';
+import { useSelector } from 'react-redux';
+import Meta from '../components/Utils/Meta';
 
 const OrderHistoryScreen = () => {
 	const { pageNumber } = useParams();
-
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
+	const { userInfo } = useSelector((state) => state.auth);
+
 	const { data, isLoading, error } = useGetMyOrdersQuery({ pageNumber });
-	// console.log(data);
+	// console.log(data && data);
 
 	return (
 		<Box
@@ -36,6 +39,9 @@ const OrderHistoryScreen = () => {
 					</Message>
 				) : (
 					<>
+						<Meta
+							title={`${userInfo.firstName} ${userInfo.lastName}'s Order History`}
+						/>
 						{data.orders.length === 0 ? (
 							<Message severity='error'>
 								Oh No! You haven't shopping yet!

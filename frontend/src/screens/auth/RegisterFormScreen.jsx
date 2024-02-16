@@ -22,6 +22,7 @@ import Loader from '../../components/Utils/Loader';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { shades } from '../../theme';
+import Meta from '../../components/Utils/Meta';
 
 const initialRegisterValues = {
 	firstName: '',
@@ -137,6 +138,8 @@ const RegisterFormScreen = () => {
 
 	return (
 		<FormComponent title='Welcome to Athleisure Styles, For All SHOPAHOLICS!'>
+			<Meta title='Register To Athleisure Styles' />
+
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
 				<Typography
 					fontSize='32px'

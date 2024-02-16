@@ -27,6 +27,7 @@ import Message from '../components/Utils/Message';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { DeleteSweepOutlined, EditOutlined } from '@mui/icons-material';
 import { shades } from '../theme';
+import Meta from '../components/Utils/Meta';
 
 const ProfileScreen = () => {
 	const { palette } = useTheme();
@@ -170,17 +171,6 @@ const ProfileScreen = () => {
 	return (
 		<FormComponent title='Edit Your Profile'>
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-				{/* <Typography
-					variant='h3'
-					fontWeight='bold'
-					fontFamily='Play'
-					mb='15px'
-					textAlign='center'
-					color={shades.neutral[700]}
-				>
-					User Profile
-				</Typography> */}
-
 				{loadingProfile ? (
 					<Loader />
 				) : error ? (
@@ -207,6 +197,7 @@ const ProfileScreen = () => {
 						}) => (
 							<form onSubmit={handleSubmit} encType='multipart/form-data'>
 								{loadingUpdateProfile && <Loader />}
+								<Meta title={`${values.firstName} ${values.lastName} Profile`} />
 								{/* Profile Picture */}
 								<Box
 									display='flex'

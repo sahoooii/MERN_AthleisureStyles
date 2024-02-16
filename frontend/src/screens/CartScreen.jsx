@@ -20,6 +20,7 @@ import { addToCart, removeFromCart } from '../slices/cartSlice';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import Message from '../components/Utils/Message';
 import CloseIcon from '@mui/icons-material/Close';
+import Meta from '../components/Utils/Meta';
 
 const CartScreen = () => {
 	const navigate = useNavigate();
@@ -64,6 +65,10 @@ const CartScreen = () => {
 								<Box mb='30px'>
 									<Typography variant='h3'>Shopping Cart</Typography>
 								</Box>
+
+								<Meta
+									title={`${userInfo.firstName} ${userInfo.lastName}'s Cart`}
+								/>
 
 								{/* Shopping Cart */}
 								<Box>

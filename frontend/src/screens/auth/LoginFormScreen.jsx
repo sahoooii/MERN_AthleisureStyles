@@ -17,6 +17,7 @@ import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 import { toast } from 'react-toastify';
 import { shades } from '../../theme';
+import Meta from '../../components/Utils/Meta';
 
 const initialLoginValues = { email: '', password: '' };
 
@@ -68,6 +69,7 @@ const LoginFormScreen = () => {
 
 	return (
 		<FormComponent title='Welcome to Athleisure Styles, For All SHOPAHOLICS!'>
+			<Meta title='Login To Athleisure Styles' />
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
 				<Typography
 					fontSize='32px'

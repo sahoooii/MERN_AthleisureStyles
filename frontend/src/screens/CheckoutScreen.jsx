@@ -29,6 +29,7 @@ import ButtonComponent from '../components/Utils/ButtonComponent';
 import WavingHandOutlinedIcon from '@mui/icons-material/WavingHandOutlined';
 import { shades } from '../theme';
 import { useSelector } from 'react-redux';
+import Meta from '../components/Utils/Meta';
 
 const CheckoutScreen = () => {
 	const { id: orderId } = useParams();
@@ -161,9 +162,15 @@ const CheckoutScreen = () => {
 			) : (
 				<>
 					{!order.isPaid ? (
-						<CheckoutSteps step={3} />
+						<>
+							<Meta title={`Order No. ${orderId}`} />
+							<CheckoutSteps step={3} />
+						</>
 					) : (
-						<CheckoutSteps step={4} />
+						<>
+							<Meta title={`Order Paid: ${orderId}`} />
+							<CheckoutSteps step={4} />
+						</>
 					)}
 
 					<Box

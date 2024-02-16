@@ -28,6 +28,7 @@ import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 import { useSelector } from 'react-redux';
 import HomeItems from './HomeItems';
 import storeLogo from '../../assets/logo/athleisureLogoXS.png';
+import Meta from '../Utils/Meta';
 
 const HomeMostReviewed = () => {
 	const navigate = useNavigate();
@@ -90,6 +91,8 @@ const HomeMostReviewed = () => {
 						<HomeItems />
 					) : (
 						<>
+						<Meta title='Most Reviewed Six Items' />
+						
 							<Box
 								width='60%'
 								m='0 auto'
