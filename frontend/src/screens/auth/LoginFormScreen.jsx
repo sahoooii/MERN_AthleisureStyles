@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -9,6 +9,8 @@ import {
 	useMediaQuery,
 	useTheme,
 	TextField,
+	Divider,
+	InputAdornment,
 } from '@mui/material';
 import { useLoginMutation } from '../../slices/usersApiSlice';
 import { setCredentials } from '../../slices/authSlice';
@@ -18,6 +20,7 @@ import Loader from '../../components/Utils/Loader';
 import { toast } from 'react-toastify';
 import { shades } from '../../theme';
 import Meta from '../../components/Utils/Meta';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const initialLoginValues = { email: '', password: '' };
 
@@ -36,6 +39,15 @@ const LoginFormScreen = () => {
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	// Show Password
+	const [showPassword, setShowPassword] = useState(false);
+
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+	const handleMouseDownPassword = (event) => {
+		event.preventDefault();
+	};
 
 	const [login, { isLoading }] = useLoginMutation();
 
@@ -68,7 +80,7 @@ const LoginFormScreen = () => {
 	};
 
 	return (
-		<FormComponent title='Welcome to Athleisure Styles, For All SHOPAHOLICS!'>
+		<FormComponent title='Welcome Back to Athleisure Styles !!'>
 			<Meta title='Login To Athleisure Styles' />
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
 				<Typography
@@ -77,9 +89,12 @@ const LoginFormScreen = () => {
 					fontFamily='Play'
 					color={shades.neutral[700]}
 					mb='10px'
+					textAlign='center'
+					sx={{ fontSize: { sm: '32px', xs: '24px' } }}
 				>
-					LOGIN
+					Sign In
 				</Typography>
+				<Divider />
 
 				{isLoading && <Loader />}
 
@@ -100,6 +115,7 @@ const LoginFormScreen = () => {
 						<form onSubmit={handleSubmit}>
 							<Box
 								display='grid'
+								mt='30px'
 								gap='20px'
 								gridTemplateColumns='repeat(4, minmax(0, 1fr))'
 								sx={{
@@ -121,7 +137,7 @@ const LoginFormScreen = () => {
 								/>
 								<TextField
 									label='Password'
-									type='password'
+									type={showPassword ? 'text' : 'password'}
 									onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.password}
@@ -129,10 +145,25 @@ const LoginFormScreen = () => {
 									error={Boolean(touched.password) && Boolean(errors.password)}
 									helperText={touched.password && errors.password}
 									sx={{ gridColumn: 'span 4' }}
+									InputProps={{
+										endAdornment: (
+											<InputAdornment
+												position='end'
+												sx={{ cursor: 'pointer' }}
+												onClick={handleClickShowPassword}
+												onMouseDown={handleMouseDownPassword}
+												edge='end'
+											>
+												{showPassword ? <Visibility /> : <VisibilityOff />}
+											</InputAdornment>
+										),
+									}}
 								/>
 
 								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
-									<ButtonComponent disabled={isLoading}>LOGIN</ButtonComponent>
+									<ButtonComponent disabled={isLoading}>
+										Sign In
+									</ButtonComponent>
 								</Box>
 
 								<Box gridColumn='span 4'>
