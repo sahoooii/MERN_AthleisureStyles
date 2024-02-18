@@ -174,7 +174,7 @@ const ItemEditScreen = () => {
 
 	return (
 		<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-			<FormComponentTop title='Edit This Item'>
+			<FormComponentTop title='Edit Item'>
 				{isLoading ? (
 					<Loader />
 				) : error ? (
@@ -214,6 +214,7 @@ const ItemEditScreen = () => {
 									justifyContent='center'
 									alignItems='center'
 									mb='15px'
+									mt='20px'
 								>
 									<img
 										htmlFor='image'

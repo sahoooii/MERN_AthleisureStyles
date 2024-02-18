@@ -5,7 +5,7 @@ import { shades } from '../../theme';
 
 const FormComponentTop = ({ title, children }) => {
 	const theme = useTheme();
-	const isNonMobileScreens = useMediaQuery('(min-width:1000px)');
+	const isNonMobileScreens = useMediaQuery('(min-width:900px)');
 
 	return (
 		<Box>

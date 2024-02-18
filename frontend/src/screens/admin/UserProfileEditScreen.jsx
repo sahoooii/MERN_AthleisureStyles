@@ -11,6 +11,7 @@ import {
 	Input,
 	FormControlLabel,
 	Checkbox,
+	InputAdornment,
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import {
@@ -26,7 +27,12 @@ import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { DeleteSweepOutlined, EditOutlined } from '@mui/icons-material';
+import {
+	DeleteSweepOutlined,
+	EditOutlined,
+	Visibility,
+	VisibilityOff,
+} from '@mui/icons-material';
 import { shades } from '../../theme';
 import Meta from '../../components/Utils/Meta';
 
@@ -37,6 +43,18 @@ const UserProfileEditScreen = () => {
 	const { id: userId } = useParams();
 
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
+
+	// Show Password
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
+	const handleClickShowConfirmPassword = () =>
+		setShowConfirmPassword((show) => !show);
+
+	const handleMouseDownPassword = (event) => {
+		event.preventDefault();
+	};
 
 	// Get each user profile details
 	const {
@@ -178,7 +196,7 @@ const UserProfileEditScreen = () => {
 	};
 
 	return (
-		<FormComponent title='Edit Your Profile'>
+		<FormComponent title='Edit User Profile'>
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
 				{loadingProfile ? (
 					<Loader />
@@ -362,7 +380,7 @@ const UserProfileEditScreen = () => {
 									/>
 									<TextField
 										label='Password'
-										type='password'
+										type={showPassword ? 'text' : 'password'}
 										onBlur={handleBlur}
 										onChange={handleChange}
 										value={values.password}
@@ -372,10 +390,23 @@ const UserProfileEditScreen = () => {
 										}
 										helperText={touched.password && errors.password}
 										sx={{ gridColumn: 'span 4' }}
+										InputProps={{
+											endAdornment: (
+												<InputAdornment
+													position='end'
+													sx={{ cursor: 'pointer' }}
+													onClick={handleClickShowPassword}
+													onMouseDown={handleMouseDownPassword}
+													edge='end'
+												>
+													{showPassword ? <Visibility /> : <VisibilityOff />}
+												</InputAdornment>
+											),
+										}}
 									/>
 									<TextField
 										label='Confirm Password'
-										type='password'
+										type={showConfirmPassword ? 'text' : 'password'}
 										onBlur={handleBlur}
 										onChange={handleChange}
 										value={values.confirmPassword}
@@ -388,6 +419,23 @@ const UserProfileEditScreen = () => {
 											touched.confirmPassword && errors.confirmPassword
 										}
 										sx={{ gridColumn: 'span 4' }}
+										InputProps={{
+											endAdornment: (
+												<InputAdornment
+													position='end'
+													sx={{ cursor: 'pointer' }}
+													onClick={handleClickShowConfirmPassword}
+													onMouseDown={handleMouseDownPassword}
+													edge='end'
+												>
+													{showConfirmPassword ? (
+														<Visibility />
+													) : (
+														<VisibilityOff />
+													)}
+												</InputAdornment>
+											),
+										}}
 									/>
 								</Box>
 

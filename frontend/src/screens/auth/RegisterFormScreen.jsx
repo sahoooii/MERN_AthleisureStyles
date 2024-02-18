@@ -23,7 +23,6 @@ import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Visibility, VisibilityOff, EditOutlined } from '@mui/icons-material';
-
 import { shades } from '../../theme';
 import Meta from '../../components/Utils/Meta';
 
@@ -155,7 +154,6 @@ const RegisterFormScreen = () => {
 
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
 				<Typography
-					fontSize='32px'
 					fontWeight='bold'
 					fontFamily='Play'
 					color={shades.neutral[700]}
