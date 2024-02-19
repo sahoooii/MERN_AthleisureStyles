@@ -173,8 +173,8 @@ const ItemEditScreen = () => {
 	};
 
 	return (
-		<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
-			<FormComponentTop title='Edit Item'>
+		<FormComponentTop title='Edit Item'>
+			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
 				{isLoading ? (
 					<Loader />
 				) : error ? (
@@ -207,8 +207,6 @@ const ItemEditScreen = () => {
 								/>
 
 								{/* Item Image */}
-
-								{loadingUpload && <Loader />}
 								<Box
 									display='flex'
 									justifyContent='center'
@@ -216,6 +214,7 @@ const ItemEditScreen = () => {
 									mb='15px'
 									mt='20px'
 								>
+									{loadingUpload && <Loader />}
 									<img
 										htmlFor='image'
 										src={itemImage}
@@ -229,77 +228,6 @@ const ItemEditScreen = () => {
 								</Box>
 
 								<Box
-									border={`2px dashed ${palette.green.main}`}
-									p='1rem'
-									sx={{
-										m: '20px 0 20px 0',
-										'&:hover': { cursor: 'pointer' },
-									}}
-								>
-									{!values.image ? (
-										<>
-											<label htmlFor='image'>
-												<Box
-													sx={{
-														display: 'flex',
-														alignItems: 'center',
-														cursor: 'pointer',
-													}}
-												>
-													<AddPhotoAlternateIcon color='action' />
-													<Typography variant='body2' ml='3px'>
-														Change Picture Here
-													</Typography>
-												</Box>
-												<TextField
-													type='file'
-													name='image'
-													id='image'
-													accept='.png,.jpeg,.jpg'
-													style={{ display: 'none' }}
-													onBlur={handleBlur}
-													onChange={(e) =>
-														setFieldValue('image', e.currentTarget.files[0])
-													}
-												/>
-											</label>
-										</>
-									) : (
-										<>
-											<label htmlFor='image' style={{ cursor: 'pointer' }}>
-												<Box
-													display='flex'
-													justifyContent='space-between'
-													alignItems='center'
-												>
-													<Typography variant='body2'>
-														{values.image.name}
-													</Typography>
-													<Box
-														sx={{
-															cursor: 'pointer',
-															mr: '20px',
-														}}
-													>
-														<EditOutlined color='blue' />
-													</Box>
-													<Input
-														type='file'
-														name='image'
-														id='image'
-														accept='.png,.jpeg,.jpg'
-														style={{ display: 'none' }}
-														onChange={(e) =>
-															setFieldValue('image', e.currentTarget.files[0])
-														}
-													/>
-												</Box>
-											</label>
-										</>
-									)}
-								</Box>
-
-								<Box
 									display='grid'
 									gap='20px'
 									gridTemplateColumns='repeat(4, minmax(0, 1fr))'
@@ -309,6 +237,86 @@ const ItemEditScreen = () => {
 										},
 									}}
 								>
+									<Box
+										gridColumn='span 4'
+										border={`1px solid ${palette.neutral.main}`}
+										borderRadius='5px'
+										p='1rem'
+									>
+										<Box
+											border={`2px dashed ${palette.green.main}`}
+											p='1rem'
+											sx={{
+												'&:hover': { cursor: 'pointer' },
+											}}
+										>
+											{!values.image ? (
+												<>
+													<label htmlFor='image'>
+														<Box
+															sx={{
+																display: 'flex',
+																alignItems: 'center',
+																cursor: 'pointer',
+															}}
+														>
+															<AddPhotoAlternateIcon color='action' />
+															<Typography variant='body2' ml='3px'>
+																Change Picture Here
+															</Typography>
+														</Box>
+														<TextField
+															type='file'
+															name='image'
+															id='image'
+															accept='.png,.jpeg,.jpg'
+															style={{ display: 'none' }}
+															onBlur={handleBlur}
+															onChange={(e) =>
+																setFieldValue('image', e.currentTarget.files[0])
+															}
+														/>
+													</label>
+												</>
+											) : (
+												<>
+													<label htmlFor='image' style={{ cursor: 'pointer' }}>
+														<Box
+															display='flex'
+															justifyContent='space-between'
+															alignItems='center'
+														>
+															<Typography variant='body2'>
+																{values.image.name}
+															</Typography>
+															<Box
+																sx={{
+																	cursor: 'pointer',
+																	mr: '20px',
+																}}
+															>
+																<EditOutlined color='blue' />
+															</Box>
+															<Input
+																type='file'
+																name='image'
+																id='image'
+																accept='.png,.jpeg,.jpg'
+																style={{ display: 'none' }}
+																onChange={(e) =>
+																	setFieldValue(
+																		'image',
+																		e.currentTarget.files[0]
+																	)
+																}
+															/>
+														</Box>
+													</label>
+												</>
+											)}
+										</Box>
+									</Box>
+
 									<TextField
 										label='Item Name'
 										autoComplete='off'
@@ -368,7 +376,7 @@ const ItemEditScreen = () => {
 									/>
 									<TextField
 										multiline
-										rows={4}
+										rows={6}
 										name='description'
 										label='Item Description'
 										onBlur={handleBlur}
@@ -424,8 +432,8 @@ const ItemEditScreen = () => {
 						</Typography>
 					</Link>
 				</Box>
-			</FormComponentTop>
-		</Box>
+			</Box>
+		</FormComponentTop>
 	);
 };
 

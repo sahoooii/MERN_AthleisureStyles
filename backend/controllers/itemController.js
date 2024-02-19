@@ -36,18 +36,19 @@ const getItemById = asyncHandler(async (req, res) => {
 
 	const pageSize = 4;
 	const page = Number(req.query.pageNumber) || 1;
-	const totalReviewCount = item.reviews.length;
-
-	const paginateItem = await Item.aggregate([
-		{
-			$match: { _id: item._id },
-		},
-		{ $unwind: '$reviews' },
-		{ $skip: pageSize * (page - 1) },
-		{ $limit: pageSize },
-	]);
 
 	if (item) {
+		const totalReviewCount = item.reviews.length;
+
+		const paginateItem = await Item.aggregate([
+			{
+				$match: { _id: item._id },
+			},
+			{ $unwind: '$reviews' },
+			{ $skip: pageSize * (page - 1) },
+			{ $limit: pageSize },
+		]);
+
 		return res.json({
 			item,
 			paginateItem,
