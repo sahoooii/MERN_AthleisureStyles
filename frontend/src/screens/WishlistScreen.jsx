@@ -94,10 +94,11 @@ const WishlistScreen = () => {
 														<img
 															src={list.wishlist.image}
 															alt={list.wishlist.name}
-															width='130px'
+															width='135px'
 															height='174px'
 															style={{
 																borderRadius: '3px',
+																objectFit: 'cover',
 															}}
 														/>
 													) : (

@@ -61,7 +61,7 @@ const items = [
 	},
 	{
 		name: 'ADICOLOR CREW RED Sweatshirt',
-		image: '/images/adidas/sweatshirt/adidas-res-swt.jpg',
+		image: '/images/adidas/sweatshirt/adidas-red-swt.jpg',
 		description:
 			'A classic pullover sweatshirt. It gives you a street look. You can wear oversized or slim-fit styles',
 		brand: 'adidas',
