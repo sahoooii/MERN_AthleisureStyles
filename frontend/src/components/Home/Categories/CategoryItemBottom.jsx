@@ -1,46 +1,73 @@
 import React from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery } from '@mui/material';
 import { shades } from '../../../theme';
 
 const CategoryItemBottom = ({ item }) => {
-	return (
-		<Box flex={1} m='3px' height='70vh' position='relative'>
-			<img
-				src={item.img}
-				alt={item.title}
-				width='100%'
-				height='100%'
-				style={{ objectFit: 'cover' }}
-			/>
+	const isMdScreen = useMediaQuery('(max-width:900px)');
 
+	return (
+		<>
 			<Box
-				position='absolute'
-				width='100%'
-				height='100%'
-				top='0'
-				left='0'
-				display='flex'
-				alignItems='center'
-				flexDirection='column'
-				justifyContent='center'
+				margin='0 auto'
+				display='grid'
+				justifyContent='space-around'
+				m='3px'
+				position='relative'
+				sx={{
+					gridTemplateColumns: {
+						xs: 'repeat(auto-fill, 350px)',
+						md: 'repeat(auto-fill, 550px)',
+					},
+					'&:hover': { opacity: 0.5 },
+				}}
 			>
-				<Typography variant='h2' color='white' mb='20px'>
-					{item.title}
-				</Typography>
-				<Button
-					sx={{
-						p: '10px',
-						backgroundColor: shades.neutral[700],
-						color: 'white',
-						fontWeight: 600,
-						fontSize: '12px',
-						'&:hover': { backgroundColor: shades.neutral[500] },
-					}}
+				<img
+					src={item.img}
+					alt={item.title}
+					width='100%'
+					height='357px'
+					style={{ objectFit: 'cover' }}
+				/>
+				<Box
+					position='absolute'
+					width='100%'
+					height='100%'
+					top='0'
+					left='0'
+					display='flex'
+					alignItems='center'
+					flexDirection='column'
+					justifyContent='center'
 				>
-					SHOP NOW
-				</Button>
+					{!isMdScreen ? (
+						<Typography variant='h2' color='white' mb='20px'>
+							{item.title}
+						</Typography>
+					) : (
+						<Typography
+							fontSize='28px'
+							fontFamily='Play'
+							color='white'
+							mb='20px'
+						>
+							{item.title}
+						</Typography>
+					)}
+					<Button
+						sx={{
+							p: '10px',
+							backgroundColor: shades.neutral[700],
+							color: 'white',
+							fontWeight: 600,
+							fontSize: '12px',
+							'&:hover': { backgroundColor: shades.neutral[500] },
+						}}
+					>
+						SHOP NOW
+					</Button>
+				</Box>
 			</Box>
-		</Box>
+		</>
 	);
 };
 

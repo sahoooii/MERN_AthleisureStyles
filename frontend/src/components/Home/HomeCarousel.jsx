@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 const HomeCarousel = () => {
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
-	const { keyword } = useParams();
+	const { keyword, pageNumber } = useParams();
 
 	const [getKeyword, setGetKeyword] = useState(keyword || '');
 
@@ -33,8 +33,12 @@ const HomeCarousel = () => {
 	);
 
 	return (
-		<>
-			{!keyword && (
+		<Box mb='40px'>
+			{keyword ? (
+				<></>
+			) : pageNumber ? (
+				<></>
+			) : (
 				<Carousel
 					infiniteLoop={true}
 					autoPlay={true}
@@ -120,7 +124,8 @@ const HomeCarousel = () => {
 										alt={`carousel-${index}`}
 										style={{
 											width: '100%',
-											objectFit: 'contain',
+											objectFit: 'cover',
+											height: '380px',
 											backgroundAttachment: 'fixed',
 										}}
 									/>
@@ -151,7 +156,6 @@ const HomeCarousel = () => {
 												Make Own Your Style
 											</Typography>
 										</Box>
-										{/* </Box> */}
 									</Box>
 								</>
 							)}
@@ -159,7 +163,7 @@ const HomeCarousel = () => {
 					))}
 				</Carousel>
 			)}
-		</>
+		</Box>
 	);
 };
 

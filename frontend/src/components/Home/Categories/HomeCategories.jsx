@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, useMediaQuery } from '@mui/material';
+import { useParams } from 'react-router-dom';
 import CategoryItemTop from './CategoryItemTop';
 import CategoryItemBottom from './CategoryItemBottom';
 
@@ -32,22 +33,36 @@ const HomeCategories = () => {
 		{
 			id: 5,
 			img: '/images/categories/nikeSocks.jpg',
-			title: 'THE PERFECT ACCESSORIES',
+			title: 'PERFECT ACCESSORIES',
 		},
 	];
 
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
+	const { pageNumber, keyword } = useParams();
+	const [getKeyword, setGetKeyword] = useState(keyword || '');
+
+	// Get keyword result
+	useEffect(() => {
+		if (keyword) {
+			setGetKeyword(keyword);
+		}
+	}, [getKeyword, keyword]);
+
 	return (
 		<>
-			{isNonMobile ? (
+			{keyword ? (
+				<></>
+			) : pageNumber ? (
+				<></>
+			) : isNonMobile ? (
 				<>
 					<Box
 						mt='10px'
 						display='flex'
 						alignItems='center'
 						justifyContent='space-between'
-						p='20px 10px 10px 10px'
+						pb='15px'
 					>
 						{categoriesTop.map((item) => (
 							<Box key={`${item.id}-${item.title}`}>
@@ -71,13 +86,12 @@ const HomeCategories = () => {
 			) : (
 				<>
 					<Box
-						mt='10px'
 						alignItems='center'
 						justifyContent='space-between'
-						pb='15px'
+						// pb='15px'
 					>
 						{categoriesTop.map((item) => (
-							<Box key={`${item.id}-${item.title}`}>
+							<Box key={`${item.id}-${item.title}`} columnGap={3}>
 								<CategoryItemTop item={item} />
 							</Box>
 						))}
@@ -91,6 +105,56 @@ const HomeCategories = () => {
 					</Box>
 				</>
 			)}
+			{/* {isNonMobile ? (
+				<>
+					<Box
+						mt='10px'
+						display='flex'
+						alignItems='center'
+						justifyContent='space-between'
+						pb='15px'
+					>
+						{categoriesTop.map((item) => (
+							<Box key={`${item.id}-${item.title}`}>
+								<CategoryItemTop item={item} />
+							</Box>
+						))}
+					</Box>
+					<Box
+						display='flex'
+						alignItems='center'
+						justifyContent='center'
+						p='0 20px'
+					>
+						{categoriesBottom.map((item) => (
+							<Box key={`${item.id}-${item.title}`}>
+								<CategoryItemBottom item={item} />
+							</Box>
+						))}
+					</Box>
+				</>
+			) : (
+				<>
+					<Box
+						alignItems='center'
+						justifyContent='space-between'
+						// pb='15px'
+					>
+						{categoriesTop.map((item) => (
+							<Box key={`${item.id}-${item.title}`} columnGap={3}>
+								<CategoryItemTop item={item} />
+							</Box>
+						))}
+					</Box>
+					<Box alignItems='center' justifyContent='center' pb='15px'>
+						{categoriesBottom.map((item) => (
+							<Box key={`${item.id}-${item.title}`}>
+								<CategoryItemBottom item={item} />
+							</Box>
+						))}
+					</Box>
+				</>
+			)} */}
 		</>
 	);
 };
