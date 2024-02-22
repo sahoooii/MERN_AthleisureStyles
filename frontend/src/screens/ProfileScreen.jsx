@@ -10,6 +10,7 @@ import {
 	TextField,
 	Avatar,
 	Input,
+	InputAdornment,
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import {
@@ -25,7 +26,12 @@ import ButtonComponent from '../components/Utils/ButtonComponent';
 import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { DeleteSweepOutlined, EditOutlined } from '@mui/icons-material';
+import {
+	DeleteSweepOutlined,
+	EditOutlined,
+	Visibility,
+	VisibilityOff,
+} from '@mui/icons-material';
 import { shades } from '../theme';
 import Meta from '../components/Utils/Meta';
 
@@ -33,6 +39,19 @@ const ProfileScreen = () => {
 	const { palette } = useTheme();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+
+	// Show Password
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
+	const handleClickShowConfirmPassword = () =>
+		setShowConfirmPassword((show) => !show);
+
+	const handleMouseDownPassword = (event) => {
+		event.preventDefault();
+	};
+
 	const { userInfo } = useSelector((state) => state.auth);
 
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
@@ -197,7 +216,9 @@ const ProfileScreen = () => {
 						}) => (
 							<form onSubmit={handleSubmit} encType='multipart/form-data'>
 								{loadingUpdateProfile && <Loader />}
-								<Meta title={`${values.firstName} ${values.lastName} Profile`} />
+								<Meta
+									title={`${values.firstName} ${values.lastName} Profile`}
+								/>
 								{/* Profile Picture */}
 								<Box
 									display='flex'
@@ -351,7 +372,7 @@ const ProfileScreen = () => {
 									/>
 									<TextField
 										label='Password'
-										type='password'
+										type={showPassword ? 'text' : 'password'}
 										onBlur={handleBlur}
 										onChange={handleChange}
 										value={values.password}
@@ -361,10 +382,23 @@ const ProfileScreen = () => {
 										}
 										helperText={touched.password && errors.password}
 										sx={{ gridColumn: 'span 4' }}
+										InputProps={{
+											endAdornment: (
+												<InputAdornment
+													position='end'
+													sx={{ cursor: 'pointer' }}
+													onClick={handleClickShowPassword}
+													onMouseDown={handleMouseDownPassword}
+													edge='end'
+												>
+													{showPassword ? <Visibility /> : <VisibilityOff />}
+												</InputAdornment>
+											),
+										}}
 									/>
 									<TextField
 										label='Confirm Password'
-										type='password'
+										type={showConfirmPassword ? 'text' : 'password'}
 										onBlur={handleBlur}
 										onChange={handleChange}
 										value={values.confirmPassword}
@@ -377,6 +411,23 @@ const ProfileScreen = () => {
 											touched.confirmPassword && errors.confirmPassword
 										}
 										sx={{ gridColumn: 'span 4' }}
+										InputProps={{
+											endAdornment: (
+												<InputAdornment
+													position='end'
+													sx={{ cursor: 'pointer' }}
+													onClick={handleClickShowConfirmPassword}
+													onMouseDown={handleMouseDownPassword}
+													edge='end'
+												>
+													{showConfirmPassword ? (
+														<Visibility />
+													) : (
+														<VisibilityOff />
+													)}
+												</InputAdornment>
+											),
+										}}
 									/>
 								</Box>
 

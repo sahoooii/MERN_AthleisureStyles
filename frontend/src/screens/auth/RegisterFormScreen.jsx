@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -9,6 +9,8 @@ import {
 	useMediaQuery,
 	useTheme,
 	TextField,
+	Divider,
+	InputAdornment,
 } from '@mui/material';
 import {
 	useRegisterMutation,
@@ -20,7 +22,7 @@ import FormComponent from '../../components/FormUi/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { Visibility, VisibilityOff, EditOutlined } from '@mui/icons-material';
 import { shades } from '../../theme';
 import Meta from '../../components/Utils/Meta';
 
@@ -83,6 +85,18 @@ const RegisterFormScreen = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
+	// Show Password
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
+	const handleClickShowConfirmPassword = () =>
+		setShowConfirmPassword((show) => !show);
+
+	const handleMouseDownPassword = (event) => {
+		event.preventDefault();
+	};
+
 	const [register, { isLoading }] = useRegisterMutation();
 	const [uploadProfileImage] = useUploadProfileImageMutation();
 
@@ -118,7 +132,6 @@ const RegisterFormScreen = () => {
 				picturePath: imageData.picturePath,
 			}).unwrap();
 
-			// Consider later
 			// const imageData = await uploadProfileImage(formData).unwrap();
 
 			// const data = {
@@ -131,7 +144,6 @@ const RegisterFormScreen = () => {
 			navigate(redirect);
 		} catch (err) {
 			toast.error(err?.data?.message || err.error);
-
 			// onSubmitProps.resetForm();
 		}
 	};
@@ -142,14 +154,16 @@ const RegisterFormScreen = () => {
 
 			<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
 				<Typography
-					fontSize='32px'
 					fontWeight='bold'
 					fontFamily='Play'
-					mb='15px'
 					color={shades.neutral[700]}
+					mb='10px'
+					textAlign='center'
+					sx={{ fontSize: { sm: '32px', xs: '24px' } }}
 				>
-					REGISTER
+					Create Account
 				</Typography>
+				<Divider />
 
 				{isLoading && <Loader />}
 
@@ -171,6 +185,7 @@ const RegisterFormScreen = () => {
 						<form onSubmit={handleSubmit} encType='multipart/form-data'>
 							<Box
 								display='grid'
+								mt='30px'
 								gap='20px'
 								gridTemplateColumns='repeat(4, minmax(0, 1fr))'
 								sx={{
@@ -214,7 +229,7 @@ const RegisterFormScreen = () => {
 								/>
 								<TextField
 									label='Password'
-									type='password'
+									type={showPassword ? 'text' : 'password'}
 									onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.password}
@@ -222,10 +237,23 @@ const RegisterFormScreen = () => {
 									error={Boolean(touched.password) && Boolean(errors.password)}
 									helperText={touched.password && errors.password}
 									sx={{ gridColumn: 'span 4' }}
+									InputProps={{
+										endAdornment: (
+											<InputAdornment
+												position='end'
+												sx={{ cursor: 'pointer' }}
+												onClick={handleClickShowPassword}
+												onMouseDown={handleMouseDownPassword}
+												edge='end'
+											>
+												{showPassword ? <Visibility /> : <VisibilityOff />}
+											</InputAdornment>
+										),
+									}}
 								/>
 								<TextField
 									label='Confirm Password'
-									type='password'
+									type={showConfirmPassword ? 'text' : 'password'}
 									onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.confirmPassword}
@@ -236,8 +264,24 @@ const RegisterFormScreen = () => {
 									}
 									helperText={touched.confirmPassword && errors.confirmPassword}
 									sx={{ gridColumn: 'span 4' }}
+									InputProps={{
+										endAdornment: (
+											<InputAdornment
+												position='end'
+												sx={{ cursor: 'pointer' }}
+												onClick={handleClickShowConfirmPassword}
+												onMouseDown={handleMouseDownPassword}
+												edge='end'
+											>
+												{showConfirmPassword ? (
+													<Visibility />
+												) : (
+													<VisibilityOff />
+												)}
+											</InputAdornment>
+										),
+									}}
 								/>
-
 								{/* Profile Image */}
 								<Box
 									gridColumn='span 4'
@@ -301,7 +345,7 @@ const RegisterFormScreen = () => {
 																cursor: 'pointer',
 															}}
 														>
-															<EditOutlinedIcon color='blue' />
+															<EditOutlined color='blue' />
 														</Box>
 														<input
 															type='file'
@@ -333,11 +377,9 @@ const RegisterFormScreen = () => {
 										</p>
 									)}
 								</Box>
-
 								<Box gridColumn='span 4' textAlign='center' mt='25px' mb='15px'>
 									<ButtonComponent>REGISTER</ButtonComponent>
 								</Box>
-
 								<Box gridColumn='span 4'>
 									<Link
 										to={redirect ? `/login?redirect=${redirect}` : '/login'}
@@ -356,7 +398,7 @@ const RegisterFormScreen = () => {
 												},
 											}}
 										>
-											Already have an account? Login Here
+											Already Member? Sign In Here
 										</Typography>
 									</Link>
 								</Box>

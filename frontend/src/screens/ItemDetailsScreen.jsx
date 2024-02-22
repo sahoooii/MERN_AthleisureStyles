@@ -93,7 +93,7 @@ const ItemDetailsScreen = () => {
 								alt={data.item.name}
 								width='100%'
 								height='100%'
-								style={{ objectFit: 'contain' }}
+								style={{ objectFit: 'cover' }}
 							/>
 						</Box>
 
