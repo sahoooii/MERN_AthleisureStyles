@@ -14,6 +14,7 @@ import {
 	getItemDetailsByAdmin,
 	getTopRatedItems,
 	getMostReviewedItems,
+	getCategoryOfJacket,
 } from '../controllers/itemController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -22,6 +23,7 @@ const router = express.Router();
 router.route('/').get(getItems).post(protect, admin, createItem);
 router.route('/toprated').get(getTopRatedItems);
 router.route('/mostreviewed').get(getMostReviewedItems);
+router.route('/jacket').get(getCategoryOfJacket);
 router.route('/:id/wishlist').put(protect, addToWishList);
 router.route('/itemslist').get(protect, admin, getItemsByAdmin);
 router

@@ -433,10 +433,33 @@ const getTopRatedItems = asyncHandler(async (req, res) => {
 	res.status(200).json(items);
 });
 
+// @desc Get Top Rated Items
+// @route GET /api/items/toprated
+// @access Public
 const getMostReviewedItems = asyncHandler(async (req, res) => {
 	const items = await Item.find({}).sort({ numReviews: -1 }).limit(6);
 
 	res.status(200).json(items);
+});
+
+// @desc Get Top Rated Items
+// @route GET /api/items/jacket
+// @access Public
+const getCategoryOfJacket = asyncHandler(async (req, res) => {
+	const pageSize = 6;
+	const page = Number(req.query.pageNumber) || 1;
+
+	const totalJacketsCount = await Item.find({
+		category: 'jacket',
+	}).countDocuments({});
+
+	const items = await Item.find({ category: 'jacket' })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res
+		.status(200)
+		.json({ items, page, pages: Math.ceil(totalJacketsCount / pageSize) });
 });
 
 export {
@@ -454,4 +477,5 @@ export {
 	updateItemReviewByAdmin,
 	getTopRatedItems,
 	getMostReviewedItems,
+	getCategoryOfJacket,
 };
