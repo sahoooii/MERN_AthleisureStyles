@@ -64,7 +64,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 
 	const variants = {
 		open: {
-			clipPath: 'circle(1200px at  48px -15px)',
+			clipPath: 'circle(1370px at  48px -15px)',
 			transition: {
 				type: 'spring',
 				stiffness: 25,
@@ -198,7 +198,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							<Box display='flex' justifyContent='center' alignItems='center'>
 								<MenuList>
 									<Stack
-										spacing={2.5}
+										spacing={{ xs: 1, sm: 2.5 }}
 										component={motion.div}
 										variants={linksVariants}
 									>
@@ -455,7 +455,12 @@ const SideMenuAnimation = ({ style, width, height }) => {
 								// bottom='100px'
 								left='50%'
 								m='0 auto'
-								sx={{ bottom: userInfo.isAdmin ? '70px' : '100px' }}
+								sx={{
+									bottom: {
+										xs: userInfo.isAdmin ? '80px' : '100px',
+										sm: userInfo.isAdmin ? '110px' : '140px',
+									},
+								}}
 								style={{ transform: 'translateX(-50%)' }}
 							>
 								<IconButton onClick={() => setOpen(!open)}>
