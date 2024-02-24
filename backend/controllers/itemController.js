@@ -6,7 +6,7 @@ import User from '../models/userModel.js';
 // @route GET /api/items
 // @access Public
 const getItems = asyncHandler(async (req, res) => {
-	const pageSize = 6;
+	const pageSize = 12;
 	const page = Number(req.query.pageNumber) || 1;
 
 	// Search
@@ -73,8 +73,6 @@ const getItemsByAdmin = asyncHandler(async (req, res) => {
 	const items = await Item.find({})
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
-
-	// console.log('items:', items);
 
 	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });
 });
@@ -258,7 +256,6 @@ const createItemReview = asyncHandler(async (req, res) => {
 			throw new Error('This Item already Reviewed');
 		}
 
-		// console.log(req.user);
 		const review = {
 			name: `${req.user.firstName} ${req.user.lastName} `,
 			user: req.user._id,
@@ -304,10 +301,8 @@ const deleteItemReview = asyncHandler(async (req, res) => {
 
 		if (userCheck) {
 			reviews.map((review) => {
-				// console.log('review', review);
 				//check the comment ID same person or not
 				if (userCheck._id === review._id) {
-					// console.log('review._id', review._id);
 					review.deleteOne({ _id: review._id });
 				}
 			});
@@ -354,10 +349,7 @@ const getItemReviews = asyncHandler(async (req, res) => {
 		{ $limit: pageSize },
 	]);
 
-	// console.log('paginateItem:', paginateItem);
-
 	if (reviews) {
-		// return res.json(item);
 		return res.json({
 			item,
 			paginateItem,
@@ -375,8 +367,6 @@ const getItemReviews = asyncHandler(async (req, res) => {
 // @access Private/admin
 const updateItemReviewByAdmin = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user._id);
-	// const { isAdmin } = user;
-
 	const { reviewId } = req.body;
 
 	const item = await Item.findById(req.params.id);
@@ -388,8 +378,6 @@ const updateItemReviewByAdmin = asyncHandler(async (req, res) => {
 		const deleteReview = reviews.find(
 			(review) => review._id.toString() === reviewId
 		);
-
-		// console.log('deleteReviewId:', deleteReview);
 
 		if (user.isAdmin) {
 			let item = await Item.findByIdAndUpdate(
@@ -424,6 +412,7 @@ const updateItemReviewByAdmin = asyncHandler(async (req, res) => {
 	}
 });
 
+// Tabs
 // @desc Get Top Rated Items
 // @route GET /api/items/mostreviewed
 // @access Public
@@ -442,7 +431,8 @@ const getMostReviewedItems = asyncHandler(async (req, res) => {
 	res.status(200).json(items);
 });
 
-// @desc Get Top Rated Items
+// Categories
+// @desc Get Category Of Jacket
 // @route GET /api/items/jacket
 // @access Public
 const getCategoryOfJacket = asyncHandler(async (req, res) => {
@@ -462,6 +452,87 @@ const getCategoryOfJacket = asyncHandler(async (req, res) => {
 		.json({ items, page, pages: Math.ceil(totalJacketsCount / pageSize) });
 });
 
+// @desc Get Category Of Top
+// @route GET /api/items/tops
+// @access Public
+const getCategoryOfTop = asyncHandler(async (req, res) => {
+	const pageSize = 6;
+	const page = Number(req.query.pageNumber) || 1;
+
+	const totalTopsCount = await Item.find({
+		category: 'top',
+	}).countDocuments({});
+
+	const items = await Item.find({ category: 'top' })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res
+		.status(200)
+		.json({ items, page, pages: Math.ceil(totalTopsCount / pageSize) });
+});
+
+// @desc Get Category Of Bottom
+// @route GET /api/items/bottoms
+// @access Public
+const getCategoryOfBottom = asyncHandler(async (req, res) => {
+	const pageSize = 6;
+	const page = Number(req.query.pageNumber) || 1;
+
+	const totalBottomsCount = await Item.find({
+		category: 'bottom',
+	}).countDocuments({});
+
+	const items = await Item.find({ category: 'bottom' })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res
+		.status(200)
+		.json({ items, page, pages: Math.ceil(totalBottomsCount / pageSize) });
+});
+
+// @desc Get Category Of Cap
+// @route GET /api/items/caps
+// @access Public
+const getCategoryOfCap = asyncHandler(async (req, res) => {
+	const pageSize = 6;
+	const page = Number(req.query.pageNumber) || 1;
+
+	const totalCapsCount = await Item.find({
+		category: 'cap',
+	}).countDocuments({});
+	console.log(totalCapsCount);
+
+	const items = await Item.find({ category: 'cap' })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res
+		.status(200)
+		.json({ items, page, pages: Math.ceil(totalCapsCount / pageSize) });
+});
+
+// @desc Get Category Of Accessories
+// @route GET /api/items/accessories
+// @access Public
+const getCategoryOfAccessories = asyncHandler(async (req, res) => {
+	const pageSize = 6;
+	const page = Number(req.query.pageNumber) || 1;
+
+	const totalAccessoriesCount = await Item.find({
+		category: 'accessory',
+	}).countDocuments({});
+
+	const items = await Item.find({ category: 'accessory' })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res
+		.status(200)
+		.json({ items, page, pages: Math.ceil(totalAccessoriesCount / pageSize) });
+});
+
 export {
 	getItems,
 	getItemById,
@@ -478,4 +549,8 @@ export {
 	getTopRatedItems,
 	getMostReviewedItems,
 	getCategoryOfJacket,
+	getCategoryOfTop,
+	getCategoryOfBottom,
+	getCategoryOfCap,
+	getCategoryOfAccessories,
 };

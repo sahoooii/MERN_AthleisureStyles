@@ -293,7 +293,7 @@ const items = [
 		description:
 			'The Nike Everyday Plus Cushioned Socks bring comfort to your workout with extra cushioning under the heel and forefoot and a snug, supportive arch band. Sweat-wicking power and breathability up top help keep your feet dry and cool to help push you through that extra set.',
 		brand: 'Nike',
-		category: 'accessories',
+		category: 'accessory',
 		price: 19.99,
 		countInStock: 10,
 		rating: 0,
@@ -305,7 +305,7 @@ const items = [
 		description:
 			'The Nike Everyday Plus Cushioned Socks bring comfort to your workout with extra cushioning under the heel and forefoot and a snug, supportive arch band. Sweat-wicking power and breathability up top help keep your feet dry and cool to help push you through that extra set.',
 		brand: 'Nike',
-		category: 'accessories',
+		category: 'accessory',
 		price: 19.99,
 		countInStock: 10,
 		rating: 0,
@@ -317,7 +317,7 @@ const items = [
 		description:
 			'Your go-to, everyday, soft and reliable socks. Sweat-wicking technology keeps your feet cool and dry while a snug arch band feels supportive. And good vibes with this super cool Jordan Logo!',
 		brand: 'Nike',
-		category: 'accessories',
+		category: 'accessory',
 		price: 22.99,
 		countInStock: 5,
 		rating: 0,
@@ -329,7 +329,7 @@ const items = [
 		description:
 			" Yes! It's time to Back To School!! You need a Spacious BACKPACK WITH A CLASSIC DESIGN huh?",
 		brand: 'JANSPORT',
-		category: 'accessories',
+		category: 'accessory',
 		price: 49.99,
 		countInStock: 5,
 		rating: 0,
@@ -341,7 +341,7 @@ const items = [
 		description:
 			'This Stylish backpack fit anywhere. Pack anything, and it takes you all over the world.',
 		brand: 'KANKEN',
-		category: 'Backpack',
+		category: 'accessory',
 		price: 129.99,
 		countInStock: 8,
 		rating: 0,
@@ -353,7 +353,7 @@ const items = [
 		description:
 			'Keep all your workout gear separated and organized with this stadium backpack. Multiple pockets give you lots of options for carrying electronics, training shoes and water bottles.',
 		brand: 'adidas',
-		category: 'accessories',
+		category: 'accessory',
 		price: 59.99,
 		countInStock: 10,
 		rating: 0,

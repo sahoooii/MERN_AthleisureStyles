@@ -11,7 +11,6 @@ const HomeCategories = () => {
 			img: '/images/categories/theNorthFaceJacket.jpg',
 			title: 'STYLISH JACKET',
 		},
-
 		{
 			id: 2,
 			img: '/images/categories/adidasTop.jpg',
@@ -105,56 +104,6 @@ const HomeCategories = () => {
 					</Box>
 				</>
 			)}
-			{/* {isNonMobile ? (
-				<>
-					<Box
-						mt='10px'
-						display='flex'
-						alignItems='center'
-						justifyContent='space-between'
-						pb='15px'
-					>
-						{categoriesTop.map((item) => (
-							<Box key={`${item.id}-${item.title}`}>
-								<CategoryItemTop item={item} />
-							</Box>
-						))}
-					</Box>
-					<Box
-						display='flex'
-						alignItems='center'
-						justifyContent='center'
-						p='0 20px'
-					>
-						{categoriesBottom.map((item) => (
-							<Box key={`${item.id}-${item.title}`}>
-								<CategoryItemBottom item={item} />
-							</Box>
-						))}
-					</Box>
-				</>
-			) : (
-				<>
-					<Box
-						alignItems='center'
-						justifyContent='space-between'
-						// pb='15px'
-					>
-						{categoriesTop.map((item) => (
-							<Box key={`${item.id}-${item.title}`} columnGap={3}>
-								<CategoryItemTop item={item} />
-							</Box>
-						))}
-					</Box>
-					<Box alignItems='center' justifyContent='center' pb='15px'>
-						{categoriesBottom.map((item) => (
-							<Box key={`${item.id}-${item.title}`}>
-								<CategoryItemBottom item={item} />
-							</Box>
-						))}
-					</Box>
-				</>
-			)} */}
 		</>
 	);
 };

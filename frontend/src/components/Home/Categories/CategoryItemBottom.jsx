@@ -16,7 +16,8 @@ const CategoryItemBottom = ({ item }) => {
 				sx={{
 					gridTemplateColumns: {
 						xs: 'repeat(auto-fill, 350px)',
-						md: 'repeat(auto-fill, 550px)',
+						md: 'repeat(auto-fill, 475px)',
+						lg: 'repeat(auto-fill, 570px)',
 					},
 					'&:hover': { opacity: 0.5 },
 				}}
