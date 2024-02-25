@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Button, Typography, useMediaQuery } from '@mui/material';
 import { shades } from '../../../theme';
+import { Link } from 'react-router-dom';
 
 const CategoryItemTop = ({ item }) => {
 	const isMdScreen = useMediaQuery('(max-width:900px)');
@@ -24,63 +25,65 @@ const CategoryItemTop = ({ item }) => {
 					'&:hover': { opacity: 0.5 },
 				}}
 			>
-				{!isMdScreen ? (
-					<img
-						src={item.img}
-						alt={item.title}
-						width='100%'
-						height='500px'
-						style={{ objectFit: 'cover' }}
-					/>
-				) : (
-					<img
-						src={item.img}
-						alt={item.title}
-						width='100%'
-						height='357px'
-						style={{ objectFit: 'cover' }}
-					/>
-				)}
-				<Box
-					position='absolute'
-					width='100%'
-					height='100%'
-					top='0'
-					left='0'
-					display='flex'
-					alignItems='center'
-					flexDirection='column'
-					justifyContent='center'
-				>
+				<Link to={item.link}>
 					{!isMdScreen ? (
-						<Typography variant='h2' color='white' mb='20px' p='2px'>
-							{item.title}
-						</Typography>
+						<img
+							src={item.img}
+							alt={item.title}
+							width='100%'
+							height='500px'
+							style={{ objectFit: 'cover' }}
+						/>
 					) : (
-						<Typography
-							fontSize='28px'
-							fontFamily='Play'
-							color='white'
-							mb='20px'
-							p='2px'
-						>
-							{item.title}
-						</Typography>
+						<img
+							src={item.img}
+							alt={item.title}
+							width='100%'
+							height='357px'
+							style={{ objectFit: 'cover' }}
+						/>
 					)}
-
-					<Button
-						sx={{
-							p: '10px',
-							backgroundColor: shades.neutral[700],
-							color: 'white',
-							fontWeight: 600,
-							fontSize: '12px',
-							'&:hover': { backgroundColor: shades.neutral[500] },
-						}}
+					<Box
+						position='absolute'
+						width='100%'
+						height='100%'
+						top='0'
+						left='0'
+						display='flex'
+						alignItems='center'
+						flexDirection='column'
+						justifyContent='center'
 					>
-						SHOP NOW
-					</Button>
-				</Box>
+						{!isMdScreen ? (
+							<Typography variant='h2' color='white' mb='20px' p='2px'>
+								{item.title}
+							</Typography>
+						) : (
+							<Typography
+								fontSize='28px'
+								fontFamily='Play'
+								color='white'
+								mb='20px'
+								p='2px'
+							>
+								{item.title}
+							</Typography>
+						)}
+
+						<Button
+							sx={{
+								p: '10px',
+								backgroundColor: shades.neutral[700],
+								color: 'white',
+								fontWeight: 600,
+								fontSize: '12px',
+								'&:hover': { backgroundColor: shades.neutral[500] },
+							}}
+						>
+							SHOP NOW
+						</Button>
+					</Box>
+				</Link>
 			</Box>
 		</>
 	);

@@ -10,16 +10,19 @@ const HomeCategories = () => {
 			id: 1,
 			img: '/images/categories/theNorthFaceJacket.jpg',
 			title: 'STYLISH JACKET',
+			link: '/item/jackets',
 		},
 		{
 			id: 2,
 			img: '/images/categories/adidasTop.jpg',
 			title: 'CLASSIC TOP',
+			link: '/item/tops',
 		},
 		{
 			id: 3,
 			img: '/images/categories/adidasBottom.jpg',
 			title: 'COMFY BOTTOM',
+			link: '/item/bottoms',
 		},
 	];
 
@@ -28,11 +31,13 @@ const HomeCategories = () => {
 			id: 4,
 			img: '/images/categories/cap.jpg',
 			title: 'COOL CAP',
+			link: '/item/caps',
 		},
 		{
 			id: 5,
 			img: '/images/categories/nikeSocks.jpg',
 			title: 'PERFECT ACCESSORIES',
+			link: '/item/accessories',
 		},
 	];
 
