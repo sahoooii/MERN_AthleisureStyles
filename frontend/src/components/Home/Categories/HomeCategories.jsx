@@ -92,7 +92,6 @@ const HomeCategories = () => {
 					<Box
 						alignItems='center'
 						justifyContent='space-between'
-						// pb='15px'
 					>
 						{categoriesTop.map((item) => (
 							<Box key={`${item.id}-${item.title}`} columnGap={3}>

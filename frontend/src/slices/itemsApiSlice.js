@@ -132,11 +132,10 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 		}),
 		// Categories
 		getCategoryOfJacket: builder.query({
-			query: ({ keyword, pageNumber }) => ({
+			query: ({ pageNumber }) => ({
 				url: `${ITEMS_URL}/jackets`,
 				method: 'GET',
 				params: {
-					keyword,
 					pageNumber,
 				},
 			}),
@@ -144,44 +143,40 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			keepUnusedDataFor: 5,
 		}),
 		getCategoryOfTop: builder.query({
-			query: ({ keyword, pageNumber }) => ({
+			query: ({ pageNumber }) => ({
 				url: `${ITEMS_URL}/tops`,
 				method: 'GET',
 				params: {
-					keyword,
 					pageNumber,
 				},
 			}),
 			keepUnusedDataFor: 5,
 		}),
 		getCategoryOfBottom: builder.query({
-			query: ({ keyword, pageNumber }) => ({
+			query: ({ pageNumber }) => ({
 				url: `${ITEMS_URL}/bottoms`,
 				method: 'GET',
 				params: {
-					keyword,
 					pageNumber,
 				},
 			}),
 			keepUnusedDataFor: 5,
 		}),
 		getCategoryOfCap: builder.query({
-			query: ({ keyword, pageNumber }) => ({
+			query: ({ pageNumber }) => ({
 				url: `${ITEMS_URL}/caps`,
 				method: 'GET',
 				params: {
-					keyword,
 					pageNumber,
 				},
 			}),
 			keepUnusedDataFor: 5,
 		}),
 		getCategoryOfAccessory: builder.query({
-			query: ({ keyword, pageNumber }) => ({
+			query: ({ pageNumber }) => ({
 				url: `${ITEMS_URL}/accessories`,
 				method: 'GET',
 				params: {
-					keyword,
 					pageNumber,
 				},
 			}),

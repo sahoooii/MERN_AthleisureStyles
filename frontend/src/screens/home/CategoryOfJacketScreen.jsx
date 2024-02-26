@@ -4,10 +4,9 @@ import { useGetCategoryOfJacketQuery } from '../../slices/itemsApiSlice';
 import Categories from '../../components/Home/Categories/Categories';
 
 const CategoryOfJacketScreen = () => {
-	const { pageNumber, keyword } = useParams();
+	const { pageNumber } = useParams();
 
 	const { data, isLoading, error } = useGetCategoryOfJacketQuery({
-		keyword,
 		pageNumber,
 	});
 
@@ -17,7 +16,9 @@ const CategoryOfJacketScreen = () => {
 				data={data}
 				isLoading={isLoading}
 				error={error}
-				pageNumber={pageNumber}
+				title='Jackets'
+				typography='Jackets'
+				menu='/item/jackets'
 			/>
 		</>
 	);

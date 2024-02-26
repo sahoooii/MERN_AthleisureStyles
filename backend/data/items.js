@@ -209,7 +209,7 @@ const items = [
 		description:
 			'Designed with a large back logo to complement the standout color options, the Pullover Hoodie is an everyday piece meant to keep you comfortable, warm, and inspired. Standard fit and Raglan sleeves for mobility',
 		brand: 'The North Face',
-		category: 'jacket',
+		category: 'top',
 		price: 69.99,
 		countInStock: 5,
 		rating: 0,

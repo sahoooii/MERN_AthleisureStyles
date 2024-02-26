@@ -129,22 +129,28 @@ const HomeItems = () => {
 											style={{
 												cursor: 'pointer',
 												opacity: '0.5',
-												// objectFit: 'cover',
 											}}
 											onClick={() => navigate(`/item/${item._id}`)}
 										/>
-										<Typography
-											variant='h3'
-											color={shades.green[800]}
-											fontWeight='bold'
-											sx={{
-												position: 'absolute',
-												bottom: '25px',
-												left: '25px',
-											}}
+										<Box
+											position='absolute'
+											width='100%'
+											backgroundColor={shades.neutral[700]}
+											bottom='0'
+											left='0'
+											display='flex'
+											alignItems='center'
+											justifyContent='center'
 										>
-											Out Of Stock
-										</Typography>
+											<Typography
+												variant='h3'
+												p='10px 0'
+												color='white'
+												fontWeight='bold'
+											>
+												Out Of Stock
+											</Typography>
+										</Box>
 									</Box>
 								) : (
 									<CardMedia

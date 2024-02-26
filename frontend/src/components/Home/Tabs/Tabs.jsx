@@ -12,31 +12,33 @@ import {
 	AccordionSummary,
 	AccordionDetails,
 	useMediaQuery,
+	Divider,
 } from '@mui/material';
 import { Favorite, ExpandMore } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import {
-	useAddToWishListMutation,
-	useGetMostReviewedItemsQuery,
-} from '../../slices/itemsApiSlice';
+import { useAddToWishListMutation } from '../../../slices/itemsApiSlice';
 import { toast } from 'react-toastify';
-import RatingLogic from '../Utils/RatingLogic';
-import Loader from '../Utils/Loader';
-import Message from '../Utils/Message';
-import { shades } from '../../theme';
-import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
+import RatingLogic from '../../Utils/RatingLogic';
+import Loader from '../../Utils/Loader';
+import Message from '../../Utils/Message';
+import { shades } from '../../../theme';
+import { useGetProfileDetailsQuery } from '../../../slices/usersApiSlice';
 import { useSelector } from 'react-redux';
-import HomeItems from './HomeItems';
-import storeLogo from '../../assets/logo/athleisureLogoXS.png';
-import Meta from '../Utils/Meta';
+import HomeItems from '../HomeItems';
+import Meta from '../../Utils/Meta';
 
-const HomeMostReviewed = () => {
+const Tabs = ({
+	data,
+	isLoading,
+	error,
+	title,
+	typography,
+	typographyBold,
+}) => {
 	const navigate = useNavigate();
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	const { userInfo } = useSelector((state) => state.auth);
-
-	const { data, isLoading, error } = useGetMostReviewedItemsQuery();
 
 	const { keyword } = useParams();
 	const [getKeyword, setGetKeyword] = useState(keyword || '');
@@ -91,34 +93,20 @@ const HomeMostReviewed = () => {
 						<HomeItems />
 					) : (
 						<>
-						<Meta title='Most Reviewed Six Items' />
-						
-							<Box
-								width='60%'
-								m='0 auto'
-								sx={{ width: { md: '70%', xs: '90%' } }}
-							>
-								<Box
-									backgroundColor={shades.blue[600]}
-									mb='30px'
-									p='10px'
-									display='flex'
-									alignItems='center'
-									justifyContent='center'
-									gap={2}
-									borderRadius='1px'
-									style={{ opacity: '0.9' }}
+							<Meta title={title} />
+
+							<Box mb='35px'>
+								<Typography
+									variant='h3'
+									mb='10px'
+									sx={{
+										textAlign: !isNonMobile && 'center',
+										ml: isNonMobile && '40px',
+									}}
 								>
-									<img
-										src={storeLogo}
-										alt='storeLogo'
-										// width='80%'
-										height='auto'
-									/>
-									<Typography variant='h3' textAlign='center' color='white'>
-										Most Reviewed <b>Six</b> Items
-									</Typography>
-								</Box>
+									{typography} <b>{typographyBold}</b>
+								</Typography>
+								<Divider sx={{ ml: '40px', mr: '40px' }} />
 							</Box>
 
 							<Box
@@ -149,22 +137,28 @@ const HomeMostReviewed = () => {
 													style={{
 														cursor: 'pointer',
 														opacity: '0.5',
-														// objectFit: 'cover',
 													}}
 													onClick={() => navigate(`/item/${item._id}`)}
 												/>
-												<Typography
-													variant='h3'
-													color={shades.green[800]}
-													fontWeight='bold'
-													sx={{
-														position: 'absolute',
-														bottom: '25px',
-														left: '25px',
-													}}
+												<Box
+													position='absolute'
+													width='100%'
+													backgroundColor={shades.neutral[700]}
+													bottom='0'
+													left='0'
+													display='flex'
+													alignItems='center'
+													justifyContent='center'
 												>
-													Out Of Stock
-												</Typography>
+													<Typography
+														variant='h3'
+														p='10px 0'
+														color='white'
+														fontWeight='bold'
+													>
+														Out Of Stock
+													</Typography>
+												</Box>
 											</Box>
 										) : (
 											<CardMedia
@@ -271,4 +265,4 @@ const HomeMostReviewed = () => {
 	);
 };
 
-export default HomeMostReviewed;
+export default Tabs;

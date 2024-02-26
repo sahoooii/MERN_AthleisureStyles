@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
 	IconButton,
 	Typography,
@@ -12,7 +12,7 @@ import {
 	AccordionSummary,
 	AccordionDetails,
 	useMediaQuery,
-	useTheme,
+	Divider,
 } from '@mui/material';
 import { Favorite, ExpandMore, Message } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
@@ -23,26 +23,13 @@ import Loader from '../../Utils/Loader';
 import { shades } from '../../../theme';
 import RatingLogic from '../../Utils/RatingLogic';
 import Paginate from '../../Utils/Paginate';
-import {
-	useAddToWishListMutation,
-} from '../../../slices/itemsApiSlice';
+import { useAddToWishListMutation } from '../../../slices/itemsApiSlice';
+import Meta from '../../Utils/Meta';
 
-const Categories = ({ data, isLoading, error, pageNumber }) => {
-	const { palette } = useTheme();
+const Categories = ({ data, isLoading, error, title, typography, menu }) => {
 	const navigate = useNavigate();
 
 	const isNonMobile = useMediaQuery('(min-width:600px)');
-
-	const { keyword } = useParams();
-
-	const [getKeyword, setGetKeyword] = useState(keyword || '');
-
-	// Get keyword result
-	useEffect(() => {
-		if (keyword) {
-			setGetKeyword(keyword);
-		}
-	}, [getKeyword, keyword]);
 
 	const { userInfo } = useSelector((state) => state.auth);
 
@@ -84,17 +71,20 @@ const Categories = ({ data, isLoading, error, pageNumber }) => {
 				</Message>
 			) : (
 				<>
-					<Box m='0 40px 20px 40px'>
-						{keyword && data.items.length > 0 && (
-							<Typography variant='h3' mr='5px'>
-								Search Result of: <b>{getKeyword}</b>
-							</Typography>
-						)}
-						{keyword && data.items.length === 0 && (
-							<Message severity='error'>
-								No Search Results Found of <b>{getKeyword}</b>
-							</Message>
-						)}
+					<Meta title={title} />
+
+					<Box mb='35px'>
+						<Typography
+							variant='h3'
+							mb='10px'
+							sx={{
+								textAlign: !isNonMobile && 'center',
+								ml: isNonMobile && '40px',
+							}}
+						>
+							{typography}
+						</Typography>
+						<Divider sx={{ ml: '40px', mr: '40px' }} />
 					</Box>
 
 					<Box
@@ -129,18 +119,25 @@ const Categories = ({ data, isLoading, error, pageNumber }) => {
 											}}
 											onClick={() => navigate(`/item/${item._id}`)}
 										/>
-										<Typography
-											variant='h3'
-											color={shades.green[800]}
-											fontWeight='bold'
-											sx={{
-												position: 'absolute',
-												bottom: '25px',
-												left: '25px',
-											}}
+										<Box
+											position='absolute'
+											width='100%'
+											backgroundColor={shades.neutral[700]}
+											bottom='0'
+											left='0'
+											display='flex'
+											alignItems='center'
+											justifyContent='center'
 										>
-											Out Of Stock
-										</Typography>
+											<Typography
+												variant='h3'
+												p='10px 0'
+												color='white'
+												fontWeight='bold'
+											>
+												Out Of Stock
+											</Typography>
+										</Box>
 									</Box>
 								) : (
 									<CardMedia
@@ -238,32 +235,7 @@ const Categories = ({ data, isLoading, error, pageNumber }) => {
 
 			{!isLoading && (
 				<>
-					<Box m='20px 40px 0px 40px'>
-						{keyword && (
-							<Link to='/'>
-								<Typography
-									variant='h4'
-									sx={{
-										textDecoration: 'underline',
-										color: palette.blue.main,
-										'&:hover': {
-											cursor: 'pointer',
-											color: palette.blue.light,
-										},
-									}}
-								>
-									Back to All Items ?
-								</Typography>
-							</Link>
-						)}
-					</Box>
-
-					<Paginate
-						menu='/page'
-						pages={data.pages}
-						page={data.page}
-						keyword={keyword ? keyword : ''}
-					/>
+					<Paginate menu={menu} pages={data.pages} page={data.page} />
 				</>
 			)}
 		</>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Tabs, useMediaQuery, Tab } from '@mui/material';
-import HomeItems from './HomeItems';
-import HomeTopRated from './HomeTopRated';
-import HomeMostReviewed from './HomeMostReviewed';
+import HomeItems from '../HomeItems';
 import { useParams } from 'react-router-dom';
+import MostReviewedScreen from '../../../screens/home/MostReviewedScreen'
+import TopRatedScreen from '../../../screens/home/TopRatedScreen'
 
 const HomeTabs = () => {
 	const [value, setValue] = useState('all');
@@ -59,8 +59,8 @@ const HomeTabs = () => {
 			</Box>
 
 			{value === 'all' && <HomeItems />}
-			{value === 'mostReviewed' && <HomeMostReviewed />}
-			{value === 'topRated' && <HomeTopRated />}
+			{value === 'mostReviewed' && <MostReviewedScreen /> }
+			{value === 'topRated' && <TopRatedScreen />}
 		</>
 	);
 };
