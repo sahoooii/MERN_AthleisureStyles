@@ -55,7 +55,7 @@ const ItemsListScreen = () => {
 		},
 		[`&.${tableCellClasses.body}`]: {
 			fontSize: 14,
-			padding: '12px 16px',
+			padding: '8px 14px',
 		},
 	}));
 

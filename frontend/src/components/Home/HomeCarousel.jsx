@@ -32,6 +32,10 @@ const HomeCarousel = () => {
 		require.context('../../assets/carousel', false, /\.(png|jpe?g|svg)$/)
 	);
 
+	const heroMobileTextureImports = importAllImages(
+		require.context('../../assets/carousel/mobile', false, /\.(png|jpe?g|svg)$/)
+	);
+
 	return (
 		<Box mb='40px'>
 			{keyword ? (
@@ -76,89 +80,60 @@ const HomeCarousel = () => {
 						</IconButton>
 					)}
 				>
-					{Object.values(heroTextureImports).map((texture, index, message) => (
+					{/* Images */}
+					{Object.values(
+						isNonMobile ? heroTextureImports : heroMobileTextureImports
+					).map((texture, index, message) => (
 						<Box key={`carousel-image-${index}`}>
 							{isNonMobile ? (
-								<>
-									<img
-										src={texture}
-										alt={`carousel-${index}`}
-										style={{
-											width: '100%',
-											height: '550px',
-											objectFit: 'cover',
-											backgroundAttachment: 'fixed',
-										}}
-									/>
-									{/* Subtitle on image */}
-									<Box
-										color='white'
-										padding='20px'
-										borderRadius='1px'
-										textAlign='left'
-										backgroundColor={shades.blue[700]}
-										position='absolute'
-										bottom='20%'
-										right='4%'
-										style={{ opacity: '0.8' }}
-									>
-										<Box>
-											<Typography variant='h3' textAlign='center' mb='10px'>
-												- Just Like This Taste of Styles -
-											</Typography>
-											<Typography
-												variant='h4'
-												textAlign='center'
-												color={shades.babyPink[400]}
-												fontWeight='bold'
-											>
-												Make Own Your Style
-											</Typography>
-										</Box>
-									</Box>
-								</>
+								<img
+									src={texture}
+									alt={`carousel-${index}`}
+									style={{
+										width: '100%',
+										height: '550px',
+										objectFit: 'cover',
+										backgroundAttachment: 'fixed',
+									}}
+								/>
 							) : (
-								<>
-									<img
-										src={texture}
-										alt={`carousel-${index}`}
-										style={{
-											width: '100%',
-											objectFit: 'cover',
-											height: '380px',
-											backgroundAttachment: 'fixed',
-										}}
-									/>
-
-									{/* Subtitle on image */}
-									<Box
-										color='white'
-										padding='12px'
-										borderRadius='1px'
-										textAlign='left'
-										backgroundColor={shades.blue[700]}
-										position='absolute'
-										bottom='10%'
-										right='8%'
-										maxWidth='200px'
-										style={{ opacity: '0.8' }}
-									>
-										<Box>
-											<Typography variant='h4' textAlign='center' mb='4px'>
-												- Just Like This <br /> Taste of Styles -
-											</Typography>
-											<Typography
-												variant='body2'
-												textAlign='center'
-												color={shades.babyPink[400]}
-												fontWeight='bold'
-											>
-												Make Own Your Style
-											</Typography>
-										</Box>
-									</Box>
-								</>
+								<img
+									src={texture}
+									alt={`carousel-${index}`}
+									style={{
+										width: '100%',
+										height: '480px',
+										objectFit: 'cover',
+										backgroundAttachment: 'fixed',
+									}}
+								/>
 							)}
+							{/* Subtitle on image */}
+							<Box
+								color='white'
+								padding={isNonMobile ? '20px' : '15px 12px'}
+								borderRadius='1px'
+								textAlign='left'
+								backgroundColor={shades.blue[700]}
+								position='absolute'
+								bottom={isNonMobile ? '20%' : '10%'}
+								right='4%'
+								style={{ opacity: '0.7' }}
+							>
+								<Box>
+									<Typography variant='h3' textAlign='center' mb='10px'>
+										- Just Like This Taste of Styles -
+									</Typography>
+									<Typography
+										variant='h4'
+										textAlign='center'
+										color={shades.babyPink[400]}
+										fontWeight='bold'
+									>
+										Make Own Your Style
+									</Typography>
+								</Box>
+							</Box>
 						</Box>
 					))}
 				</Carousel>

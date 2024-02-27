@@ -66,7 +66,7 @@ const WishlistScreen = () => {
 				<Loader />
 			) : data.user.wishlist.length === 0 ? (
 				<Message severity='error'>
-					Oh No! Your Wishlist is Empty!
+					Oh No! You must find a favorite one!
 					<Link to='/'> - Go Back</Link>
 				</Message>
 			) : (
@@ -95,7 +95,7 @@ const WishlistScreen = () => {
 															src={list.wishlist.image}
 															alt={list.wishlist.name}
 															width='135px'
-															height='174px'
+															height='170px'
 															style={{
 																borderRadius: '3px',
 																objectFit: 'cover',
@@ -105,10 +105,11 @@ const WishlistScreen = () => {
 														<img
 															src={list.wishlist.image}
 															alt={list.wishlist.name}
-															width='110px'
+															width='115px'
 															height='150px'
 															style={{
 																borderRadius: '3px',
+																objectFit: 'cover',
 															}}
 														/>
 													)}

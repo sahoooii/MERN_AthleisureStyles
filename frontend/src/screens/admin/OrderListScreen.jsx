@@ -84,77 +84,84 @@ const OrderListScreen = () => {
 			) : (
 				<>
 					<Meta title='All Orders List' />
-					<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-						<TableContainer sx={{ maxHeight: { xs: 500, sm: 800, md: 440 } }}>
-							<Table
-								stickyHeader
-								aria-label='sticky table'
-								sx={{ minWidth: 654 }}
-							>
-								<TableHead>
-									<TableRow>
-										{columns.map((column) => (
-											<StyledTableCell
-												key={column.id}
-												align={column.align}
-												style={{ minWidth: column.minWidth }}
-												sx={{ fontWeight: 'bold' }}
-											>
-												{column.label}
-											</StyledTableCell>
-										))}
-									</TableRow>
-								</TableHead>
-
-								<TableBody>
-									{data.orders.map((order) => (
-										<StyledTableRow key={order._id} hover>
-											<StyledTableCell>
-												<Link
-													to={`/order/${order._id}`}
-													style={{ textDecoration: 'underline' }}
+					{data.orders.length === 0 ? (
+						<Message severity='error'>
+							Oh No! No one shopping yet!
+							<Link to='/'>- Go Back</Link>
+						</Message>
+					) : (
+						<Paper sx={{ width: '100%', overflow: 'hidden' }}>
+							<TableContainer sx={{ maxHeight: { xs: 500, sm: 800, md: 440 } }}>
+								<Table
+									stickyHeader
+									aria-label='sticky table'
+									sx={{ minWidth: 654 }}
+								>
+									<TableHead>
+										<TableRow>
+											{columns.map((column) => (
+												<StyledTableCell
+													key={column.id}
+													align={column.align}
+													style={{ minWidth: column.minWidth }}
+													sx={{ fontWeight: 'bold' }}
 												>
-													{order._id}
-												</Link>
-											</StyledTableCell>
-											<StyledTableCell>
-												{order.user ? (
+													{column.label}
+												</StyledTableCell>
+											))}
+										</TableRow>
+									</TableHead>
+
+									<TableBody>
+										{data.orders.map((order) => (
+											<StyledTableRow key={order._id} hover>
+												<StyledTableCell>
 													<Link
-														to={`/admin/user/${order.user._id}/edit`}
+														to={`/order/${order._id}`}
 														style={{ textDecoration: 'underline' }}
 													>
-														{order.user.firstName} {order.user.lastName}
+														{order._id}
 													</Link>
-												) : (
-													<Typography>DELETED ACCOUNT</Typography>
-												)}
-											</StyledTableCell>
-											<StyledTableCell align='right'>
-												{order.createdAt.substring(0, 10)}
-											</StyledTableCell>
-											<StyledTableCell align='right'>
-												$ {order.totalPrice}
-											</StyledTableCell>
-											<StyledTableCell align='right'>
-												{order.isPaid ? (
-													order.paidAt.substring(0, 10)
-												) : (
-													<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
-												)}
-											</StyledTableCell>
-											<StyledTableCell align='right'>
-												{order.isDelivered ? (
-													order.deliveredAt.substring(0, 10)
-												) : (
-													<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
-												)}
-											</StyledTableCell>
-										</StyledTableRow>
-									))}
-								</TableBody>
-							</Table>
-						</TableContainer>
-					</Paper>
+												</StyledTableCell>
+												<StyledTableCell>
+													{order.user ? (
+														<Link
+															to={`/admin/user/${order.user._id}/edit`}
+															style={{ textDecoration: 'underline' }}
+														>
+															{order.user.firstName} {order.user.lastName}
+														</Link>
+													) : (
+														<Typography>DELETED ACCOUNT</Typography>
+													)}
+												</StyledTableCell>
+												<StyledTableCell align='right'>
+													{order.createdAt.substring(0, 10)}
+												</StyledTableCell>
+												<StyledTableCell align='right'>
+													$ {order.totalPrice}
+												</StyledTableCell>
+												<StyledTableCell align='right'>
+													{order.isPaid ? (
+														order.paidAt.substring(0, 10)
+													) : (
+														<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
+													)}
+												</StyledTableCell>
+												<StyledTableCell align='right'>
+													{order.isDelivered ? (
+														order.deliveredAt.substring(0, 10)
+													) : (
+														<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
+													)}
+												</StyledTableCell>
+											</StyledTableRow>
+										))}
+									</TableBody>
+								</Table>
+							</TableContainer>
+						</Paper>
+					)}
 
 					<Paginate
 						pages={data.pages}

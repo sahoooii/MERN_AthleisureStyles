@@ -198,7 +198,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 // @route GET /api/users
 // @access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-	const pageSize = 4;
+	const pageSize = 8;
 	const page = Number(req.query.pageNumber) || 1;
 	const totalUsersCount = await User.countDocuments();
 

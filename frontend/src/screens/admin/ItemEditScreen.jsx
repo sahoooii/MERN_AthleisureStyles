@@ -212,7 +212,6 @@ const ItemEditScreen = () => {
 									justifyContent='center'
 									alignItems='center'
 									mb='15px'
-									mt='20px'
 								>
 									{loadingUpload && <Loader />}
 									<img
@@ -221,8 +220,8 @@ const ItemEditScreen = () => {
 										alt={values.name}
 										style={{
 											width: 150,
-											height: 180,
-											objectFit: 'contain',
+											height: 200,
+											objectFit: 'cover',
 										}}
 									/>
 								</Box>

@@ -43,7 +43,7 @@ const UsersListScreen = () => {
 		},
 		[`&.${tableCellClasses.body}`]: {
 			fontSize: 14,
-			padding: '12px 16px',
+			padding: '8px 14px',
 		},
 	}));
 
@@ -73,7 +73,7 @@ const UsersListScreen = () => {
 			) : (
 				<>
 					<Meta title='All Users List' />
-					
+
 					<Typography variant='h3' sx={{ mb: '20px' }}>
 						All <b>Users</b>
 					</Typography>

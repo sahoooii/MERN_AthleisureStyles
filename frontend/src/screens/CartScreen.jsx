@@ -79,10 +79,11 @@ const CartScreen = () => {
 													<img
 														src={item.image}
 														alt={item.name}
-														width='123px'
-														height='164px'
+														width='120px'
+														height='160px'
 														style={{
 															borderRadius: '3px',
+															objectFit: 'cover',
 														}}
 													/>
 												</Grid>

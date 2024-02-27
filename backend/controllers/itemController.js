@@ -66,7 +66,7 @@ const getItemById = asyncHandler(async (req, res) => {
 // @route GET /api/items/itemslist
 // @access  Private/Admin
 const getItemsByAdmin = asyncHandler(async (req, res) => {
-	const pageSize = 4;
+	const pageSize = 8;
 	const page = Number(req.query.pageNumber) || 1;
 	const totalItemsCount = await Item.countDocuments();
 

@@ -186,6 +186,7 @@ const PlaceOrderScreen = () => {
 														height='120px'
 														style={{
 															borderRadius: '3px',
+															objectFit: 'cover',
 														}}
 													/>
 												</Grid>
