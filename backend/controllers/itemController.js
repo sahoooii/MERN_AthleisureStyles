@@ -502,7 +502,6 @@ const getCategoryOfCap = asyncHandler(async (req, res) => {
 	const totalCapsCount = await Item.find({
 		category: 'cap',
 	}).countDocuments({});
-	console.log(totalCapsCount);
 
 	const items = await Item.find({ category: 'cap' })
 		.limit(pageSize)

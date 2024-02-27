@@ -262,7 +262,7 @@ const HomeItems = () => {
 										},
 									}}
 								>
-									Back to All Items ?
+									Back to Home ?
 								</Typography>
 							</Link>
 						)}
