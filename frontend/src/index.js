@@ -17,7 +17,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import store from './store';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
-import HomeScreen from './screens/HomeScreen';
+import HomeScreen from './screens/home/HomeScreen';
 import ItemDetailsScreen from './screens/ItemDetailsScreen';
 import CartScreen from './screens/CartScreen';
 import LoginFormScreen from './screens/auth/LoginFormScreen';
@@ -37,6 +37,11 @@ import UsersListScreen from './screens/admin/UsersListScreen';
 import UserProfileEditScreen from './screens/admin/UserProfileEditScreen';
 import WishlistScreen from './screens/WishlistScreen';
 import ReviewsEditScreen from './screens/admin/ReviewsEditScreen';
+import CategoryOfJacketScreen from './screens/home/CategoryOfJacketScreen';
+import CategoryOfTopScreen from './screens/home/CategoryOfTopScreen';
+import CategoryOfBottomScreen from './screens/home/CategoryOfBottomScreen';
+import CategoryOfCapScreen from './screens/home/CategoryOfCapScreen';
+import CategoryOfAccessoryScreen from './screens/home/CategoryOfAccessoryScreen';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -48,6 +53,26 @@ const router = createBrowserRouter(
 				path='/search/:keyword/page/:pageNumber'
 				element={<HomeScreen />}
 			/>
+			{/* Category */}
+			<Route path='/item/jackets' element={<CategoryOfJacketScreen />} />
+			<Route
+				path='/item/jackets/:pageNumber'
+				element={<CategoryOfJacketScreen />}
+			/>
+			<Route path='/item/tops' element={<CategoryOfTopScreen />} />
+			<Route path='/item/tops/:pageNumber' element={<CategoryOfTopScreen />} />
+			<Route path='/item/bottoms' element={<CategoryOfBottomScreen />} />
+			<Route
+				path='/item/bottoms/:pageNumber'
+				element={<CategoryOfBottomScreen />}
+			/>
+			<Route path='/item/caps' element={<CategoryOfCapScreen />} />
+			<Route path='/item/caps/:pageNumber' element={<CategoryOfCapScreen />} />
+			<Route path='/item/accessories' element={<CategoryOfAccessoryScreen />} />
+			<Route
+				path='/item/accessories/:pageNumber'
+				element={<CategoryOfAccessoryScreen />}
+			/>
 
 			<Route path='/item/:itemId' element={<ItemDetailsScreen />} />
 			<Route path='/item/:itemId/:pageNumber' element={<ItemDetailsScreen />} />
@@ -57,11 +82,6 @@ const router = createBrowserRouter(
 
 			{/* Private Route must logged in */}
 			<Route path='/' element={<PrivateRoute />}>
-				{/* <Route path='/item/:itemId' element={<ItemDetailsScreen />} />
-				<Route
-					path='/item/:itemId/:pageNumber'
-					element={<ItemDetailsScreen />}
-				/> */}
 				<Route path='/shipping' element={<ShippingBillingScreen />} />
 				<Route path='/payment' element={<PaymentScreen />} />
 				<Route path='/placeorder' element={<PlaceOrderScreen />} />

@@ -14,6 +14,11 @@ import {
 	getItemDetailsByAdmin,
 	getTopRatedItems,
 	getMostReviewedItems,
+	getCategoryOfJacket,
+	getCategoryOfTop,
+	getCategoryOfBottom,
+	getCategoryOfCap,
+	getCategoryOfAccessories,
 } from '../controllers/itemController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -22,6 +27,13 @@ const router = express.Router();
 router.route('/').get(getItems).post(protect, admin, createItem);
 router.route('/toprated').get(getTopRatedItems);
 router.route('/mostreviewed').get(getMostReviewedItems);
+
+router.route('/jackets').get(getCategoryOfJacket);
+router.route('/tops').get(getCategoryOfTop);
+router.route('/bottoms').get(getCategoryOfBottom);
+router.route('/caps').get(getCategoryOfCap);
+router.route('/accessories').get(getCategoryOfAccessories);
+
 router.route('/:id/wishlist').put(protect, addToWishList);
 router.route('/itemslist').get(protect, admin, getItemsByAdmin);
 router

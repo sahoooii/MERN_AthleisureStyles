@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
 	IconButton,
 	Typography,
@@ -12,43 +12,26 @@ import {
 	AccordionSummary,
 	AccordionDetails,
 	useMediaQuery,
-	useTheme,
+	Divider,
 } from '@mui/material';
-import { Favorite, ExpandMore } from '@mui/icons-material';
+import { Favorite, ExpandMore, Message } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import {
-	useAddToWishListMutation,
-	useGetItemsQuery,
-} from '../../slices/itemsApiSlice';
 import { toast } from 'react-toastify';
-import RatingLogic from '../Utils/RatingLogic';
-import Loader from '../Utils/Loader';
-import Message from '../Utils/Message';
-import { shades } from '../../theme';
-import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 import { useSelector } from 'react-redux';
-import Paginate from '../Utils/Paginate';
+import { useGetProfileDetailsQuery } from '../../../slices/usersApiSlice';
+import Loader from '../../Utils/Loader';
+import { shades } from '../../../theme';
+import RatingLogic from '../../Utils/RatingLogic';
+import Paginate from '../../Utils/Paginate';
+import { useAddToWishListMutation } from '../../../slices/itemsApiSlice';
+import Meta from '../../Utils/Meta';
 
-const HomeItems = () => {
-	const { palette } = useTheme();
+const Categories = ({ data, isLoading, error, title, typography, menu }) => {
 	const navigate = useNavigate();
 
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
-	const { pageNumber, keyword } = useParams();
-
-	const [getKeyword, setGetKeyword] = useState(keyword || '');
-
-	// Get keyword result
-	useEffect(() => {
-		if (keyword) {
-			setGetKeyword(keyword);
-		}
-	}, [getKeyword, keyword]);
-
 	const { userInfo } = useSelector((state) => state.auth);
-
-	const { data, isLoading, error } = useGetItemsQuery({ keyword, pageNumber });
 
 	const { data: user, refetch } = useGetProfileDetailsQuery();
 
@@ -88,17 +71,20 @@ const HomeItems = () => {
 				</Message>
 			) : (
 				<>
-					<Box m='0 40px 20px 40px'>
-						{keyword && data.items.length > 0 && (
-							<Typography variant='h3' mr='5px'>
-								Search Result of: <b>{getKeyword}</b>
-							</Typography>
-						)}
-						{keyword && data.items.length === 0 && (
-							<Message severity='error'>
-								No Search Results Found of <b>{getKeyword}</b>
-							</Message>
-						)}
+					<Meta title={title} />
+
+					<Box mb='35px'>
+						<Typography
+							variant='h3'
+							mb='10px'
+							sx={{
+								textAlign: !isNonMobile && 'center',
+								ml: isNonMobile && '40px',
+							}}
+						>
+							{typography}
+						</Typography>
+						<Divider sx={{ ml: '40px', mr: '40px' }} />
 					</Box>
 
 					<Box
@@ -129,6 +115,7 @@ const HomeItems = () => {
 											style={{
 												cursor: 'pointer',
 												opacity: '0.5',
+												// objectFit: 'cover',
 											}}
 											onClick={() => navigate(`/item/${item._id}`)}
 										/>
@@ -248,36 +235,11 @@ const HomeItems = () => {
 
 			{!isLoading && (
 				<>
-					<Box m='20px 40px 0px 40px'>
-						{keyword && (
-							<Link to='/'>
-								<Typography
-									variant='h4'
-									sx={{
-										textDecoration: 'underline',
-										color: palette.blue.main,
-										'&:hover': {
-											cursor: 'pointer',
-											color: palette.blue.light,
-										},
-									}}
-								>
-									Back to Home ?
-								</Typography>
-							</Link>
-						)}
-					</Box>
-
-					<Paginate
-						menu='/page'
-						pages={data.pages}
-						page={data.page}
-						keyword={keyword ? keyword : ''}
-					/>
+					<Paginate menu={menu} pages={data.pages} page={data.page} />
 				</>
 			)}
 		</>
 	);
 };
 
-export default HomeItems;
+export default Categories;

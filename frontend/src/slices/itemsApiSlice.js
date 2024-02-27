@@ -130,6 +130,58 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			keepUnusedDataFor: 5,
 		}),
+		// Categories
+		getCategoryOfJacket: builder.query({
+			query: ({ pageNumber }) => ({
+				url: `${ITEMS_URL}/jackets`,
+				method: 'GET',
+				params: {
+					pageNumber,
+				},
+			}),
+			// providesTags: ['Items'],
+			keepUnusedDataFor: 5,
+		}),
+		getCategoryOfTop: builder.query({
+			query: ({ pageNumber }) => ({
+				url: `${ITEMS_URL}/tops`,
+				method: 'GET',
+				params: {
+					pageNumber,
+				},
+			}),
+			keepUnusedDataFor: 5,
+		}),
+		getCategoryOfBottom: builder.query({
+			query: ({ pageNumber }) => ({
+				url: `${ITEMS_URL}/bottoms`,
+				method: 'GET',
+				params: {
+					pageNumber,
+				},
+			}),
+			keepUnusedDataFor: 5,
+		}),
+		getCategoryOfCap: builder.query({
+			query: ({ pageNumber }) => ({
+				url: `${ITEMS_URL}/caps`,
+				method: 'GET',
+				params: {
+					pageNumber,
+				},
+			}),
+			keepUnusedDataFor: 5,
+		}),
+		getCategoryOfAccessory: builder.query({
+			query: ({ pageNumber }) => ({
+				url: `${ITEMS_URL}/accessories`,
+				method: 'GET',
+				params: {
+					pageNumber,
+				},
+			}),
+			keepUnusedDataFor: 5,
+		}),
 	}),
 });
 
@@ -149,4 +201,9 @@ export const {
 	useUpdateReviewByAdminMutation,
 	useGetTopRatedItemsQuery,
 	useGetMostReviewedItemsQuery,
+	useGetCategoryOfJacketQuery,
+	useGetCategoryOfTopQuery,
+	useGetCategoryOfBottomQuery,
+	useGetCategoryOfCapQuery,
+	useGetCategoryOfAccessoryQuery,
 } = itemsApiSlice;
