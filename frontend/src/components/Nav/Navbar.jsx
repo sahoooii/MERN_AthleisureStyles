@@ -19,7 +19,6 @@ import { shades } from '../../theme';
 import { useSelector } from 'react-redux';
 import storeLogo from '../../assets/logo/athleisureLogoMini.png';
 import { styled } from '@mui/material/styles';
-import Footer from '../Footer';
 import SearchInput from './SearchInput';
 import SideMenuAnimation from './SideMenuAnimation';
 
@@ -145,7 +144,7 @@ const Navbar = () => {
 							</Box>
 						</Box>
 					</Box>
-					<Footer />
+					{/* <Footer /> */}
 				</Box>
 			) : (
 				<>
