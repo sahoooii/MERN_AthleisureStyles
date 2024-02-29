@@ -7,11 +7,10 @@ import {
 	TextField,
 	InputAdornment,
 } from '@mui/material';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import { SendOutlined, ContactMailOutlined } from '@mui/icons-material';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import { shades } from '../../theme';
 
 const HomeNewsLetter = () => {
 	const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -41,19 +40,24 @@ const HomeNewsLetter = () => {
 	return (
 		isNonMobile && (
 			<Box
-				height='40vh'
 				display='flex'
-				alignItems='center'
-				justifyContent='center'
+				// alignItems='center'
+				// justifyContent='center'
 				flexDirection='column'
-				backgroundColor={shades.babyPink[100]}
+				m='20px 0'
 			>
-				<Typography variant='h1' fontSize='70px' mb='20px'>
+				<Typography variant='h3' fontWeight={300} mb='20px'>
 					News Letter
 				</Typography>
-				<Typography variant='h3' fontSize='24px' fontWeight='300' mb='20px'>
-					Join US to Athleisure Family
-				</Typography>
+				<Box mb='30px' display='flex' alignItems='center'>
+					<ContactMailOutlined />
+					<Typography
+						variant='h4'
+						sx={{ ml: '10px', fontSize: { md: '16px' } }}
+					>
+						Join US to Athleisure Family
+					</Typography>
+				</Box>
 
 				<Formik
 					initialValues={initialRegisterValues}
@@ -85,15 +89,25 @@ const HomeNewsLetter = () => {
 									name='email'
 									error={Boolean(touched.email) && Boolean(errors.email)}
 									helperText={touched.email && errors.email}
-									sx={{ width: '300px' }}
+									sx={{
+										width: {
+											sm: '200px',
+											md: '250px',
+											lg: '280px',
+											input: { color: 'white' },
+											color: 'white',
+										},
+									}}
+									color='blue'
 									InputProps={{
 										style: {
 											borderRadius: '10px',
+											color: 'white',
 										},
 										endAdornment: (
 											<InputAdornment position='end'>
 												<IconButton type='submit' sx={{ color: 'teal' }}>
-													<SendOutlinedIcon />
+													<SendOutlined />
 												</IconButton>
 											</InputAdornment>
 										),

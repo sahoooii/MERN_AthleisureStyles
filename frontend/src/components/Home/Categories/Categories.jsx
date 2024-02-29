@@ -208,7 +208,6 @@ const Categories = ({ data, isLoading, error, title, typography, menu }) => {
 									</Box>
 								</CardContent>
 
-								{/* Only Mobile Description show up */}
 								{!isNonMobile && (
 									<CardActions disableSpacing sx={{ paddingTop: '0' }}>
 										<Accordion>

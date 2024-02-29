@@ -4,7 +4,6 @@ import HomeTabs from '../../components/Home/Tabs/HomeTabs';
 import HomeCarousel from '../../components/Home/HomeCarousel';
 import Meta from '../../components/Utils/Meta';
 import HomeCategories from '../../components/Home/Categories/HomeCategories';
-import HomeNewsLetter from '../../components/Home/HomeNewsLetter';
 
 const HomeScreen = () => {
 	return (
@@ -13,7 +12,6 @@ const HomeScreen = () => {
 			<HomeCarousel />
 			<HomeCategories />
 			<HomeTabs />
-			<HomeNewsLetter />
 		</Box>
 	);
 };
