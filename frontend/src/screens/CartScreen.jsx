@@ -162,6 +162,7 @@ const CartScreen = () => {
 							xs={12}
 							sx={{
 								mt: { xs: '25px', md: '35px' },
+								// mb: { xs: '80px', sm: '0' },
 							}}
 						>
 							<Card>

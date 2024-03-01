@@ -177,8 +177,8 @@ const Navbar = () => {
 					{/*  Mobile ver. Bottom Footer */}
 					<AppBar
 						position='fixed'
-						// color='babyBlue'
-						sx={{ top: 'auto', bottom: 0, backgroundColor: shades.blue[700] }}
+						color='babyBlue'
+						sx={{ top: 'auto', bottom: 0 }}
 					>
 						<Toolbar>
 							<Link to='/'>
