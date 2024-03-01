@@ -29,6 +29,7 @@ const ItemEditScreen = () => {
 		image: '',
 		brand: '',
 		category: '',
+		code: '',
 		countInStock: '',
 		description: '',
 	};
@@ -65,6 +66,7 @@ const ItemEditScreen = () => {
 			),
 		brand: yup.string().required('Please enter item brand name'),
 		category: yup.string().required('Please enter item category'),
+		code: yup.number().required('Please enter item code'),
 		countInStock: yup
 			.number()
 			.required('Please enter item stock')
@@ -86,7 +88,8 @@ const ItemEditScreen = () => {
 
 	const submitHandler = async (values, onSubmitProps) => {
 		// console.log('values:', values);
-		const { name, price, brand, category, countInStock, description } = values;
+		const { name, price, brand, category, code, countInStock, description } =
+			values;
 
 		const formData = new FormData();
 		for (let value in values) {
@@ -103,6 +106,7 @@ const ItemEditScreen = () => {
 				price,
 				brand,
 				category,
+				code,
 				countInStock,
 				description,
 				image: imageData.image,
@@ -186,16 +190,6 @@ const ItemEditScreen = () => {
 									sx={{ gridColumn: 'span 2' }}
 								/>
 								<TextField
-									label='Item Brand'
-									onBlur={handleBlur}
-									onChange={handleChange}
-									value={values.brand}
-									name='brand'
-									error={Boolean(touched.brand) && Boolean(errors.brand)}
-									helperText={touched.brand && errors.brand}
-									sx={{ gridColumn: 'span 4' }}
-								/>
-								<TextField
 									label='Item Category'
 									onBlur={handleBlur}
 									onChange={handleChange}
@@ -203,6 +197,27 @@ const ItemEditScreen = () => {
 									name='category'
 									error={Boolean(touched.category) && Boolean(errors.category)}
 									helperText={touched.category && errors.category}
+									sx={{ gridColumn: 'span 2' }}
+								/>
+								<TextField
+									label='Code No.'
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.code}
+									name='code'
+									error={Boolean(touched.code) && Boolean(errors.code)}
+									helperText={touched.code && errors.code}
+									sx={{ gridColumn: 'span 2' }}
+								/>
+
+								<TextField
+									label='Item Brand'
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.brand}
+									name='brand'
+									error={Boolean(touched.brand) && Boolean(errors.brand)}
+									helperText={touched.brand && errors.brand}
 									sx={{ gridColumn: 'span 4' }}
 								/>
 								<TextField

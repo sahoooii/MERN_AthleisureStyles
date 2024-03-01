@@ -10,6 +10,7 @@ const items = [
 		countInStock: 10,
 		rating: 0,
 		numReviews: 0,
+		code: 1,
 	},
 	{
 		name: 'ADICOLOR Classics Red TRACK JACKET',
@@ -22,6 +23,7 @@ const items = [
 		countInStock: 0,
 		rating: 0,
 		numReviews: 0,
+		code: 2,
 	},
 	{
 		name: 'adidas TREFOIL Gray Sweat Pants',
@@ -34,6 +36,7 @@ const items = [
 		countInStock: 4,
 		rating: 0,
 		numReviews: 0,
+		code: 3,
 	},
 	{
 		name: 'adidas 3-STRIPES Shorts',
@@ -46,6 +49,7 @@ const items = [
 		countInStock: 2,
 		rating: 0,
 		numReviews: 0,
+		code: 4,
 	},
 	{
 		name: 'ADICOLOR TREFOIL White Hoodie',
@@ -58,6 +62,7 @@ const items = [
 		countInStock: 3,
 		rating: 0,
 		numReviews: 0,
+		code: 5,
 	},
 	{
 		name: 'ADICOLOR CREW RED Sweatshirt',
@@ -70,6 +75,7 @@ const items = [
 		countInStock: 7,
 		rating: 0,
 		numReviews: 0,
+		code: 6,
 	},
 	{
 		name: 'Adidas CLASSICS White TREFOIL TEE',
@@ -82,6 +88,7 @@ const items = [
 		countInStock: 3,
 		rating: 0,
 		numReviews: 0,
+		code: 7,
 	},
 	{
 		name: 'Adidas CLASSICS Red TREFOIL TEE',
@@ -94,6 +101,7 @@ const items = [
 		countInStock: 0,
 		rating: 0,
 		numReviews: 0,
+		code: 8,
 	},
 	{
 		name: 'Nike Oversized White Jacket',
@@ -106,6 +114,7 @@ const items = [
 		countInStock: 10,
 		rating: 0,
 		numReviews: 0,
+		code: 9,
 	},
 	{
 		name: 'Nike Sportswear Wind Runner Jacket',
@@ -118,6 +127,7 @@ const items = [
 		countInStock: 7,
 		rating: 0,
 		numReviews: 0,
+		code: 10,
 	},
 	{
 		name: 'Nike CLASSICS Black Hoodie',
@@ -130,6 +140,7 @@ const items = [
 		countInStock: 8,
 		rating: 0,
 		numReviews: 0,
+		code: 11,
 	},
 	{
 		name: 'Nike CLASSICS MOS Sweatshirt',
@@ -142,6 +153,7 @@ const items = [
 		countInStock: 8,
 		rating: 0,
 		numReviews: 0,
+		code: 12,
 	},
 	{
 		name: 'Nike CLASSICS Black Sweat Pants',
@@ -154,6 +166,7 @@ const items = [
 		countInStock: 10,
 		rating: 0,
 		numReviews: 0,
+		code: 13,
 	},
 	{
 		name: 'Nike SPORTS WEAR Black Nylon Pants',
@@ -166,6 +179,7 @@ const items = [
 		countInStock: 8,
 		rating: 0,
 		numReviews: 0,
+		code: 14,
 	},
 	{
 		name: 'Nike SPORTS WEAR Khaki Swoosh logo Shorts',
@@ -178,6 +192,7 @@ const items = [
 		countInStock: 5,
 		rating: 0,
 		numReviews: 0,
+		code: 15,
 	},
 	{
 		name: 'The North Face Black Down Parka',
@@ -190,6 +205,7 @@ const items = [
 		countInStock: 10,
 		rating: 0,
 		numReviews: 0,
+		code: 16,
 	},
 	{
 		name: 'The North Face GORE-TEX Red Mountain Jacket',
@@ -202,6 +218,7 @@ const items = [
 		countInStock: 8,
 		rating: 0,
 		numReviews: 0,
+		code: 17,
 	},
 	{
 		name: 'The North Face Pullover Hoodie',
@@ -214,6 +231,7 @@ const items = [
 		countInStock: 5,
 		rating: 0,
 		numReviews: 0,
+		code: 18,
 	},
 	{
 		name: 'adidas CLASSICS Black Knit Cap',
@@ -226,6 +244,7 @@ const items = [
 		countInStock: 2,
 		rating: 0,
 		numReviews: 0,
+		code: 19,
 	},
 	{
 		name: 'Columbia Basic Daily Cap',
@@ -238,6 +257,7 @@ const items = [
 		countInStock: 25,
 		rating: 0,
 		numReviews: 0,
+		code: 20,
 	},
 	{
 		name: 'Supreme Denim $ Cap',
@@ -250,6 +270,7 @@ const items = [
 		countInStock: 5,
 		rating: 0,
 		numReviews: 0,
+		code: 21,
 	},
 	{
 		name: 'Lululemon Hawaii Aloha Exclusive Pink Cap',
@@ -262,6 +283,7 @@ const items = [
 		countInStock: 2,
 		rating: 0,
 		numReviews: 0,
+		code: 22,
 	},
 	{
 		name: 'Patagonia Simple Logo Trucker Cap',
@@ -274,6 +296,7 @@ const items = [
 		countInStock: 10,
 		rating: 0,
 		numReviews: 0,
+		code: 23,
 	},
 	{
 		name: 'The NORTH FACE Logo Box Pom Yellow and Black Knit Cap',
@@ -286,6 +309,7 @@ const items = [
 		countInStock: 8,
 		rating: 0,
 		numReviews: 0,
+		code: 24,
 	},
 	{
 		name: 'Nike Dri-FIT Black Crew Socks',
@@ -298,6 +322,7 @@ const items = [
 		countInStock: 10,
 		rating: 0,
 		numReviews: 0,
+		code: 25,
 	},
 	{
 		name: 'Nike Dri-FIT White Crew Socks',
@@ -310,6 +335,7 @@ const items = [
 		countInStock: 10,
 		rating: 0,
 		numReviews: 0,
+		code: 26,
 	},
 	{
 		name: 'Nike Jordan White Crew Socks',
@@ -322,6 +348,7 @@ const items = [
 		countInStock: 5,
 		rating: 0,
 		numReviews: 0,
+		code: 27,
 	},
 	{
 		name: 'JANSPORT Back To School Black Backpack',
@@ -334,6 +361,7 @@ const items = [
 		countInStock: 5,
 		rating: 0,
 		numReviews: 0,
+		code: 28,
 	},
 	{
 		name: 'KANKEN Stylish Greenish Backpack',
@@ -346,6 +374,7 @@ const items = [
 		countInStock: 8,
 		rating: 0,
 		numReviews: 0,
+		code: 29,
 	},
 	{
 		name: 'adidas red  Stadium Backpack',
@@ -358,6 +387,7 @@ const items = [
 		countInStock: 10,
 		rating: 0,
 		numReviews: 0,
+		code: 30,
 	},
 ];
 

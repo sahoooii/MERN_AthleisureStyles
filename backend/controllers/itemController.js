@@ -23,6 +23,7 @@ const getItems = asyncHandler(async (req, res) => {
 	const totalItemsCount = await Item.countDocuments({ ...keyword });
 
 	const items = await Item.find({ ...keyword })
+		.sort({ code: 1 })
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
 	res.json({ items, page, pages: Math.ceil(totalItemsCount / pageSize) });
@@ -101,6 +102,7 @@ const createItem = asyncHandler(async (req, res) => {
 		image,
 		brand,
 		category,
+		code,
 		description,
 		countInStock,
 		numReviews,
@@ -113,6 +115,7 @@ const createItem = asyncHandler(async (req, res) => {
 		image,
 		brand,
 		category,
+		code,
 		description,
 		countInStock,
 		numReviews,
@@ -127,6 +130,7 @@ const createItem = asyncHandler(async (req, res) => {
 			image: item.image,
 			brand: item.brand,
 			category: item.category,
+			code: item.code,
 			description: item.description,
 			countInStock: item.countInStock,
 			numReviews: item.numReviews,
@@ -141,8 +145,16 @@ const createItem = asyncHandler(async (req, res) => {
 // @route PUT /api/items/:id
 // @access Private/Admin
 const updateItem = asyncHandler(async (req, res) => {
-	const { name, price, image, brand, category, countInStock, description } =
-		req.body;
+	const {
+		name,
+		price,
+		image,
+		brand,
+		category,
+		code,
+		countInStock,
+		description,
+	} = req.body;
 
 	const item = await Item.findById(req.params.id);
 
@@ -153,6 +165,7 @@ const updateItem = asyncHandler(async (req, res) => {
 		item.image = image || item.image;
 		item.brand = brand || item.brand;
 		item.category = category || item.category;
+		item.code = code || item.code;
 		item.countInStock = countInStock || item.countInStock;
 		item.description = description || item.description;
 
@@ -165,6 +178,7 @@ const updateItem = asyncHandler(async (req, res) => {
 			image: updatedItem.image,
 			brand: updatedItem.brand,
 			category: updatedItem.category,
+			code: updatedItem.code,
 			countInStock: updatedItem.countInStock,
 			description: updatedItem.description,
 		});
