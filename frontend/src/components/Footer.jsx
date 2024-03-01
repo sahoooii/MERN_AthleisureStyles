@@ -8,6 +8,7 @@ import {
 	EmailOutlined,
 } from '@mui/icons-material';
 import { shades } from '../theme';
+import HomeNewsLetter from './Home/HomeNewsLetter';
 
 const Footer = () => {
 	const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -17,13 +18,14 @@ const Footer = () => {
 	// Only over SM Screen
 	return (
 		isNonMobile && (
-			// container
 			<Box
 				component='footer'
+				color='white'
 				sx={{
-					height: '300px',
-					color: 'neutral',
-					backgroundColor: shades.blue[300],
+					backgroundColor: shades.blue[700],
+					pb: '40px',
+					position: 'absolute',
+					bottom: 0,
 				}}
 			>
 				<Box display='flex'>
@@ -32,7 +34,7 @@ const Footer = () => {
 						<img
 							src={storeLogo}
 							alt='storeLogo'
-							style={{ width: '120px', height: 'auto' }}
+							style={{ width: '110px', height: 'auto' }}
 						/>
 						<Typography variant='h4' m='20px 0'>
 							We sell Sports and Fashion mixed styles, which we call Athleisure
@@ -49,16 +51,38 @@ const Footer = () => {
 						>
 							<IconButton
 								sx={{
-									width: ' 40px',
+									width: '40px',
 									height: '40px',
+									color: shades.blue[400],
+									'&:hover': {
+										opacity: 0.5,
+									},
 								}}
 							>
 								<Instagram />
 							</IconButton>
-							<IconButton>
+							<IconButton
+								sx={{
+									width: '40px',
+									height: '40px',
+									color: shades.blue[400],
+									'&:hover': {
+										opacity: 0.5,
+									},
+								}}
+							>
 								<Facebook />
 							</IconButton>
-							<IconButton>
+							<IconButton
+								sx={{
+									width: '40px',
+									height: '40px',
+									color: shades.blue[400],
+									'&:hover': {
+										opacity: 0.5,
+									},
+								}}
+							>
 								<Twitter />
 							</IconButton>
 						</Box>
@@ -89,14 +113,16 @@ const Footer = () => {
 						{/* Payment */}
 					</Box>
 					{/* Right NewsLetter */}
-					<Box flex={1}></Box>
+					<Box flex={1} p='20px'>
+						<HomeNewsLetter />
+					</Box>
 				</Box>
+
 				<Box
 					sx={{
 						textAlign: 'center',
 						justifyContent: 'center',
 						width: '100%',
-						margin: 'auto',
 						alignItems: 'center',
 					}}
 				>

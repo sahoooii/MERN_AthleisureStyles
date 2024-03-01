@@ -4,7 +4,7 @@ import { shades } from '../../../theme';
 import { Link } from 'react-router-dom';
 
 const CategoryItemBottom = ({ item }) => {
-	const isMdScreen = useMediaQuery('(max-width:900px)');
+	const isMdScreen = useMediaQuery('(min-width:900px)');
 
 	return (
 		<>

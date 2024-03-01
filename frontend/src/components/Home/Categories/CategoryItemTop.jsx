@@ -4,7 +4,7 @@ import { shades } from '../../../theme';
 import { Link } from 'react-router-dom';
 
 const CategoryItemTop = ({ item }) => {
-	const isMdScreen = useMediaQuery('(max-width:900px)');
+	const isMdScreen = useMediaQuery('(min-width:900px)');
 
 	return (
 		<>
@@ -26,7 +26,7 @@ const CategoryItemTop = ({ item }) => {
 				}}
 			>
 				<Link to={item.link}>
-					{!isMdScreen ? (
+					{isMdScreen ? (
 						<img
 							src={item.img}
 							alt={item.title}
@@ -54,7 +54,7 @@ const CategoryItemTop = ({ item }) => {
 						flexDirection='column'
 						justifyContent='center'
 					>
-						{!isMdScreen ? (
+						{isMdScreen ? (
 							<Typography variant='h2' color='white' mb='20px' p='2px'>
 								{item.title}
 							</Typography>
