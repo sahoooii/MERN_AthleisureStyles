@@ -7,7 +7,11 @@ import Footer from './components/Footer';
 
 function App() {
 	return (
-		<div className='app'>
+		<Box
+			className='app'
+			minHeight='100vh'
+			sx={{ position: { sm: 'relative' }, pb: { sm: '350px' } }}
+		>
 			<Navbar />
 			<Box pt='120px'>
 				<Container sx={{ mb: { xs: '120px', sm: '100px' } }}>
@@ -16,7 +20,7 @@ function App() {
 			</Box>
 			<Footer />
 			<ToastContainer />
-		</div>
+		</Box>
 	);
 }
 

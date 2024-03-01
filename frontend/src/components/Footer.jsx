@@ -18,13 +18,14 @@ const Footer = () => {
 	// Only over SM Screen
 	return (
 		isNonMobile && (
-			// container
 			<Box
 				component='footer'
 				color='white'
 				sx={{
 					backgroundColor: shades.blue[700],
 					pb: '40px',
+					position: 'absolute',
+					bottom: 0,
 				}}
 			>
 				<Box display='flex'>
@@ -50,16 +51,38 @@ const Footer = () => {
 						>
 							<IconButton
 								sx={{
-									width: ' 40px',
+									width: '40px',
 									height: '40px',
+									color: shades.blue[400],
+									'&:hover': {
+										opacity: 0.5,
+									},
 								}}
 							>
 								<Instagram />
 							</IconButton>
-							<IconButton>
+							<IconButton
+								sx={{
+									width: '40px',
+									height: '40px',
+									color: shades.blue[400],
+									'&:hover': {
+										opacity: 0.5,
+									},
+								}}
+							>
 								<Facebook />
 							</IconButton>
-							<IconButton>
+							<IconButton
+								sx={{
+									width: '40px',
+									height: '40px',
+									color: shades.blue[400],
+									'&:hover': {
+										opacity: 0.5,
+									},
+								}}
+							>
 								<Twitter />
 							</IconButton>
 						</Box>
