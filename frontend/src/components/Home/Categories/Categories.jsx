@@ -94,6 +94,7 @@ const Categories = ({ data, isLoading, error, title, typography, menu }) => {
 						justifyContent='space-around'
 						rowGap='40px'
 						columnGap='1.33%'
+						pb='30px'
 					>
 						{data.items.map((item) => (
 							<Card

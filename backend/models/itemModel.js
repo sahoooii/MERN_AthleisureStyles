@@ -83,6 +83,10 @@ const itemSchema = new mongoose.Schema(
 			required: true,
 			default: 0,
 		},
+		code: {
+			type: Number,
+			required: true,
+		},
 	},
 	{
 		timestamps: true,

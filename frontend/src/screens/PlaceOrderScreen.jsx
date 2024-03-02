@@ -128,7 +128,7 @@ const PlaceOrderScreen = () => {
 									</Grid>
 
 									<Grid item xs={1}>
-										<Link to='/checkout'>
+										<Link to='/shipping'>
 											<IconButton>
 												<EditOutlinedIcon />
 											</IconButton>
@@ -155,7 +155,7 @@ const PlaceOrderScreen = () => {
 									</Grid>
 
 									<Grid item xs={1}>
-										<Link to='/checkout'>
+										<Link to='/shipping'>
 											<IconButton>
 												<EditOutlinedIcon />
 											</IconButton>

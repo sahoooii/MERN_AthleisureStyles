@@ -42,7 +42,7 @@ const CategoryItemBottom = ({ item }) => {
 						flexDirection='column'
 						justifyContent='center'
 					>
-						{!isMdScreen ? (
+						{isMdScreen ? (
 							<Typography variant='h2' color='white' mb='20px'>
 								{item.title}
 							</Typography>

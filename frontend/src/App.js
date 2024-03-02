@@ -9,11 +9,13 @@ function App() {
 	return (
 		<Box
 			className='app'
-			minHeight='100vh'
-			sx={{ position: { sm: 'relative' }, pb: { sm: '350px' } }}
+			sx={{
+				position: { sm: 'relative' },
+				minHeight: { sm: '100vh' },
+			}}
 		>
 			<Navbar />
-			<Box pt='120px'>
+			<Box pt='120px' sx={{ pb: { sm: '350px' } }}>
 				<Container sx={{ mb: { xs: '120px', sm: '100px' } }}>
 					<Outlet />
 				</Container>

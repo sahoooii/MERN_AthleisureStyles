@@ -29,12 +29,7 @@ const ItemsListScreen = () => {
 	const { pageNumber } = useParams();
 
 	const { data, isLoading, error } = useGetItemsByAdminQuery({ pageNumber });
-	// console.log(
-	// 	data &&
-	// 		data.items.map((item) => {
-	// 			return item._id;
-	// 		})
-	// );
+	// console.log(data && data.items);
 
 	const { data: userProfile, isLoading: loadingProfile } =
 		useGetProfileDetailsQuery();
@@ -44,6 +39,7 @@ const ItemsListScreen = () => {
 		{ id: 'item_name', label: 'ITEM NAME', minWidth: 140 },
 		{ id: 'brand', label: 'BRAND', minWidth: 130 },
 		{ id: 'category', label: 'CATEGORY', minWidth: 120 },
+		{ id: 'code', label: 'CODE', minWidth: 100, align: 'right' },
 		{ id: 'price', label: '$ PRICE', minWidth: 110, align: 'right' },
 		{ id: 'reviews', label: 'REVIEWS', minWidth: 110, align: 'right' },
 	];
@@ -103,7 +99,7 @@ const ItemsListScreen = () => {
 									<ButtonComponent backgroundColor={shades.neutral[600]}>
 										<EditNoteOutlinedIcon
 											sx={{ fontSize: '20px', mr: '5px' }}
-										/>{' '}
+										/>
 										CREATE ITEM
 									</ButtonComponent>
 								</Link>
@@ -166,6 +162,9 @@ const ItemsListScreen = () => {
 											<StyledTableCell>{item.name}</StyledTableCell>
 											<StyledTableCell>{item.brand}</StyledTableCell>
 											<StyledTableCell>{item.category}</StyledTableCell>
+											<StyledTableCell align='right'>
+												{item.code}
+											</StyledTableCell>
 											<StyledTableCell
 												align='right'
 												// style={{ paddingRight: '20px' }}

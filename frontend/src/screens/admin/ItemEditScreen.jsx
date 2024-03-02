@@ -64,6 +64,7 @@ const ItemEditScreen = () => {
 		image: '',
 		brand: items.brand ? items.brand : '',
 		category: items.category ? items.category : '',
+		code: items.code ? items.code : '',
 		countInStock: items.countInStock ? items.countInStock : '',
 		description: items.description ? items.description : '',
 	};
@@ -77,6 +78,7 @@ const ItemEditScreen = () => {
 		image: yup.string().notRequired(),
 		brand: yup.string().required('Please enter item brand name'),
 		category: yup.string().required('Please enter item category'),
+		code: yup.number().required('Please enter item code'),
 		countInStock: yup
 			.number()
 			.required('Please enter item stock')
@@ -109,7 +111,8 @@ const ItemEditScreen = () => {
 
 	const submitHandler = async (values, onSubmitProps) => {
 		// console.log('values:', values);
-		const { name, price, brand, category, countInStock, description } = values;
+		const { name, price, brand, category, code, countInStock, description } =
+			values;
 
 		// When not change itemImage
 		if (
@@ -118,6 +121,7 @@ const ItemEditScreen = () => {
 			values.price &&
 			values.brand &&
 			values.category &&
+			values.code &&
 			values.countInStock
 		) {
 			try {
@@ -128,6 +132,7 @@ const ItemEditScreen = () => {
 					image: items.image,
 					brand,
 					category,
+					code,
 					countInStock,
 					description,
 				}).unwrap();
@@ -158,6 +163,7 @@ const ItemEditScreen = () => {
 					image: imageData.image,
 					brand,
 					category,
+					code,
 					countInStock,
 					description,
 				}).unwrap();
@@ -339,6 +345,29 @@ const ItemEditScreen = () => {
 										// inputProps={{ style: { textAlign: 'right' } }}
 									/>
 									<TextField
+										label='Item Category'
+										onBlur={handleBlur}
+										onChange={handleChange}
+										value={values.category}
+										name='category'
+										error={
+											Boolean(touched.category) && Boolean(errors.category)
+										}
+										helperText={touched.category && errors.category}
+										sx={{ gridColumn: 'span 2' }}
+									/>
+									<TextField
+										label='Item Code'
+										onBlur={handleBlur}
+										onChange={handleChange}
+										value={values.code}
+										name='code'
+										error={Boolean(touched.code) && Boolean(errors.code)}
+										helperText={touched.code && errors.code}
+										sx={{ gridColumn: 'span 2' }}
+									/>
+
+									<TextField
 										label='Item Stock'
 										onBlur={handleBlur}
 										onChange={handleChange}
@@ -359,18 +388,6 @@ const ItemEditScreen = () => {
 										name='brand'
 										error={Boolean(touched.brand) && Boolean(errors.brand)}
 										helperText={touched.brand && errors.brand}
-										sx={{ gridColumn: 'span 4' }}
-									/>
-									<TextField
-										label='Item Category'
-										onBlur={handleBlur}
-										onChange={handleChange}
-										value={values.category}
-										name='category'
-										error={
-											Boolean(touched.category) && Boolean(errors.category)
-										}
-										helperText={touched.category && errors.category}
 										sx={{ gridColumn: 'span 4' }}
 									/>
 									<TextField

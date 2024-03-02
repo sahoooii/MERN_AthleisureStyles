@@ -279,6 +279,7 @@ const OrderHistoryScreen = () => {
 																		height='100px'
 																		style={{
 																			borderRadius: '3px',
+																			objectFit: 'cover',
 																		}}
 																	/>
 																</Grid>
