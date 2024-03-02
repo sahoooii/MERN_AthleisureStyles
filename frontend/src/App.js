@@ -9,8 +9,10 @@ function App() {
 	return (
 		<Box
 			className='app'
-			minHeight='100vh'
-			sx={{ position: { sm: 'relative' } }}
+			sx={{
+				position: { sm: 'relative' },
+				minHeight: { sm: '100vh' },
+			}}
 		>
 			<Navbar />
 			<Box pt='120px' sx={{ pb: { sm: '350px' } }}>

@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { IconButton, Box, Typography, Button } from '@mui/material';
+import {
+	IconButton,
+	Box,
+	Typography,
+	Button,
+	useMediaQuery,
+} from '@mui/material';
 import { Add, Remove, Favorite } from '@mui/icons-material';
 import { shades } from '../theme';
 import {
@@ -22,6 +28,8 @@ import Meta from '../components/Utils/Meta';
 const ItemDetailsScreen = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	const { itemId, pageNumber } = useParams();
 
@@ -88,13 +96,23 @@ const ItemDetailsScreen = () => {
 					<Box display='flex' flexWrap='wrap' columnGap='40px'>
 						{/* Images */}
 						<Box flex='1 1 40%' sx={{ mb: { sm: '40px' } }}>
-							<img
-								src={data.item.image}
-								alt={data.item.name}
-								width='100%'
-								height='100%'
-								style={{ objectFit: 'cover' }}
-							/>
+							{isNonMobile ? (
+								<img
+									src={data.item.image}
+									alt={data.item.name}
+									width='100%'
+									height='100%'
+									style={{ objectFit: 'cover' }}
+								/>
+							) : (
+								<img
+									src={data.item.image}
+									alt={data.item.name}
+									height='400px'
+									width='100%'
+									style={{ objectFit: 'cover' }}
+								/>
+							)}
 						</Box>
 
 						{/* Right Side over mobile */}
