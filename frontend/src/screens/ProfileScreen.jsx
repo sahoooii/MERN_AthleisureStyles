@@ -138,6 +138,7 @@ const ProfileScreen = () => {
 				toast.success('Profile updated successfully');
 
 				refetch();
+				navigate('/');
 			} catch (error) {
 				toast.error(error?.data?.message || error.error);
 			}
@@ -165,6 +166,7 @@ const ProfileScreen = () => {
 				toast.success('Profile updated successfully');
 
 				refetch();
+				navigate('/');
 			} catch (error) {
 				toast.error(error?.data?.message || error.error);
 			}
@@ -372,6 +374,7 @@ const ProfileScreen = () => {
 									/>
 									<TextField
 										label='Password'
+										autoComplete='off'
 										type={showPassword ? 'text' : 'password'}
 										onBlur={handleBlur}
 										onChange={handleChange}
@@ -398,6 +401,7 @@ const ProfileScreen = () => {
 									/>
 									<TextField
 										label='Confirm Password'
+										autoComplete='off'
 										type={showConfirmPassword ? 'text' : 'password'}
 										onBlur={handleBlur}
 										onChange={handleChange}

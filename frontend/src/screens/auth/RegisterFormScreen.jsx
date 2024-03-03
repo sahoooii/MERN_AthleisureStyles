@@ -229,6 +229,7 @@ const RegisterFormScreen = () => {
 								/>
 								<TextField
 									label='Password'
+									autoComplete='off'
 									type={showPassword ? 'text' : 'password'}
 									onBlur={handleBlur}
 									onChange={handleChange}
@@ -253,6 +254,7 @@ const RegisterFormScreen = () => {
 								/>
 								<TextField
 									label='Confirm Password'
+									autoComplete='off'
 									type={showConfirmPassword ? 'text' : 'password'}
 									onBlur={handleBlur}
 									onChange={handleChange}
