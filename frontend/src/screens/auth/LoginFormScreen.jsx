@@ -137,6 +137,7 @@ const LoginFormScreen = () => {
 								/>
 								<TextField
 									label='Password'
+									autoComplete='off'
 									type={showPassword ? 'text' : 'password'}
 									onBlur={handleBlur}
 									onChange={handleChange}
