@@ -74,7 +74,7 @@ const ItemEditScreen = () => {
 		price: yup
 			.number()
 			.required('Please enter item price')
-			.min(0, 'Please enter positive number or 0'),
+			.min(1, 'Please enter positive number or 1'),
 		image: yup.string().notRequired(),
 		brand: yup.string().required('Please enter item brand name'),
 		category: yup.string().required('Please enter item category'),
@@ -85,7 +85,10 @@ const ItemEditScreen = () => {
 			.integer()
 			.min(0, 'Please enter positive number or 0'),
 		// .test('is-valid-num', 'Not Valid Number', (value) => value >= 0),
-		description: yup.string().required('Please enter item description'),
+		description: yup
+			.string()
+			.min(50, 'Description must contain at least 50 characters')
+			.required('Please enter item description'),
 	});
 
 	useEffect(() => {
@@ -211,7 +214,6 @@ const ItemEditScreen = () => {
 									title={`${values.name} Edit`}
 									description={values.descriptions}
 								/>
-
 								{/* Item Image */}
 								<Box
 									display='flex'
@@ -231,7 +233,6 @@ const ItemEditScreen = () => {
 										}}
 									/>
 								</Box>
-
 								<Box
 									display='grid'
 									gap='20px'
@@ -321,7 +322,6 @@ const ItemEditScreen = () => {
 											)}
 										</Box>
 									</Box>
-
 									<TextField
 										label='Item Name'
 										autoComplete='off'
@@ -366,9 +366,8 @@ const ItemEditScreen = () => {
 										helperText={touched.code && errors.code}
 										sx={{ gridColumn: 'span 2' }}
 									/>
-
 									<TextField
-										label='Item Stock'
+										label={values.countInStock === '' ? 'Out of Stock' : 'Item Stock'}
 										onBlur={handleBlur}
 										onChange={handleChange}
 										value={values.countInStock}
@@ -406,7 +405,6 @@ const ItemEditScreen = () => {
 										sx={{ gridColumn: 'span 4' }}
 									/>
 								</Box>
-
 								{/* Buttons */}
 								<Box
 									mt='20px'
