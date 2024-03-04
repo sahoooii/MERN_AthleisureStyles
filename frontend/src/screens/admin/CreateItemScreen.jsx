@@ -52,7 +52,7 @@ const ItemEditScreen = () => {
 		price: yup
 			.number()
 			.required('Please enter item price')
-			.min(0, 'Please enter positive number or 0'),
+			.min(1, 'Please enter positive number or 1'),
 		image: yup
 			.mixed()
 			.required('Please upload item image')
@@ -72,8 +72,10 @@ const ItemEditScreen = () => {
 			.required('Please enter item stock')
 			.integer()
 			.min(0, 'Please enter positive number or 0'),
-		// .test('is-valid-num', 'Not Valid Number', (value) => value >= 0),
-		description: yup.string().required('Please enter item description'),
+		description: yup
+			.string()
+			.min(50, 'Description must contain at least 50 characters')
+			.required('Please enter item description'),
 	});
 
 	const { palette } = useTheme();

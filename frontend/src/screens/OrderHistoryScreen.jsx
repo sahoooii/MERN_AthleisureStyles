@@ -153,7 +153,7 @@ const OrderHistoryScreen = () => {
 																		src={item.image}
 																		alt={item.name}
 																		width='100px'
-																		height='120px'
+																		height='130px'
 																		style={{
 																			borderRadius: '3px',
 																			objectFit: 'cover',
@@ -169,7 +169,10 @@ const OrderHistoryScreen = () => {
 																			variant='h3'
 																			fontWeight='bold'
 																			color='secondary'
-																			sx={{ cursor: 'pointer' }}
+																			sx={{
+																				cursor: 'pointer',
+																				fontSize: { xs: '14px', sm: '18px' },
+																			}}
 																		>
 																			{item.name}
 																		</Typography>
@@ -276,7 +279,7 @@ const OrderHistoryScreen = () => {
 																		src={item.image}
 																		alt={item.name}
 																		width='80px'
-																		height='100px'
+																		height='105px'
 																		style={{
 																			borderRadius: '3px',
 																			objectFit: 'cover',

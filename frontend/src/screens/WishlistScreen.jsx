@@ -130,6 +130,7 @@ const WishlistScreen = () => {
 															style={{ textDecoration: 'underline' }}
 														>
 															<Typography
+																variant='h3'
 																sx={{ fontSize: { xs: '14px', sm: '18px' } }}
 																fontWeight='bold'
 																color='secondary'
