@@ -91,7 +91,12 @@ const ItemDetailsScreen = () => {
 					</Message>
 				</Box>
 			) : (
-				<Box width='80%' sx={{ m: { md: '50px auto', xs: '20px auto' } }}>
+				<Box
+					sx={{
+						m: { md: '50px auto', xs: '20px auto' },
+						width: { xs: '80%', sm: '90%', md: '80%' },
+					}}
+				>
 					<Meta title={data.item.name} description={data.item.description} />
 					<Box display='flex' flexWrap='wrap' columnGap='40px'>
 						{/* Images */}

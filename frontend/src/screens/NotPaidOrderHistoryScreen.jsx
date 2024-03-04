@@ -144,7 +144,10 @@ const NotPaidOrderHistoryScreen = () => {
 																			variant='h3'
 																			fontWeight='bold'
 																			color='secondary'
-																			sx={{ cursor: 'pointer' }}
+																			sx={{
+																				cursor: 'pointer',
+																				fontSize: { xs: '14px', sm: '18px' },
+																			}}
 																		>
 																			{item.name}
 																		</Typography>
