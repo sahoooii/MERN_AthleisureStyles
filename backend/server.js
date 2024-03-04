@@ -24,10 +24,6 @@ app.use(express.urlencoded({ extended: true }));
 // To allow to access cookie.request
 app.use(cookieParser());
 
-app.get('/', (req, res) => {
-	res.send('API is running...');
-});
-
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/profileupload', profileImageUploadRoutes);
@@ -50,6 +46,21 @@ app.use(
 	'/uploads/itemImages',
 	express.static(path.join(__dirname, '/uploads/itemImages'))
 );
+
+// Production ver
+if (process.env.NODE_ENV === 'production') {
+	// Set static folder
+	app.use(express.static(path.join(__dirname, '/frontend/build')));
+
+	// Any route that is not api will be redirected to index.html
+	app.get('*', (req, res) =>
+		res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+	);
+} else {
+	app.get('/', (req, res) => {
+		res.send('API is running...');
+	});
+}
 
 // error handling
 app.use(notFound);
