@@ -126,10 +126,7 @@ const HomeItems = () => {
 											width='300px'
 											image={item.image}
 											alt={item.name}
-											style={{
-												cursor: 'pointer',
-												opacity: '0.5',
-											}}
+											sx={{ opacity: '0.5', cursor: 'pointer' }}
 											onClick={() => navigate(`/item/${item._id}`)}
 										/>
 										<Box
