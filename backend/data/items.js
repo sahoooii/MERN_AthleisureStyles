@@ -26,32 +26,6 @@ const items = [
 		code: 2,
 	},
 	{
-		name: 'adidas TREFOIL Gray Sweat Pants',
-		image: '/images/adidas/bottom/adidas-pants.jpg',
-		description:
-			'Comfort and step up your loungewear. Crafted from a soft fleece, these pants fit close to the body but still give you enough room to move freely',
-		brand: 'adidas',
-		category: 'bottom',
-		price: 69.99,
-		countInStock: 4,
-		rating: 0,
-		numReviews: 0,
-		code: 3,
-	},
-	{
-		name: 'adidas 3-STRIPES Shorts',
-		image: '/images/adidas/bottom/adidas-blk-shorts.jpg',
-		description:
-			'SHORTS FOR EVERYDAY COMFORT. This is for a morning run, afternoon workout or evening with friends, stay comfortable all day thanks the casual fit and soft feel. The adidas Badge of Sport and 3-Stripes keep your look on point for any activity.',
-		brand: 'adidas',
-		category: 'bottom',
-		price: 39.99,
-		countInStock: 2,
-		rating: 0,
-		numReviews: 0,
-		code: 4,
-	},
-	{
 		name: 'ADICOLOR TREFOIL White Hoodie',
 		image: '/images/adidas/sweatshirt/adidas-wht-swt.jpg',
 		description:
@@ -62,7 +36,7 @@ const items = [
 		countInStock: 3,
 		rating: 0,
 		numReviews: 0,
-		code: 5,
+		code: 3,
 	},
 	{
 		name: 'ADICOLOR CREW RED Sweatshirt',
@@ -75,7 +49,7 @@ const items = [
 		countInStock: 7,
 		rating: 0,
 		numReviews: 0,
-		code: 6,
+		code: 4,
 	},
 	{
 		name: 'Adidas CLASSICS White TREFOIL TEE',
@@ -88,7 +62,7 @@ const items = [
 		countInStock: 3,
 		rating: 0,
 		numReviews: 0,
-		code: 7,
+		code: 5,
 	},
 	{
 		name: 'Adidas CLASSICS Red TREFOIL TEE',
@@ -99,6 +73,32 @@ const items = [
 		category: 'top',
 		price: 49.99,
 		countInStock: 0,
+		rating: 0,
+		numReviews: 0,
+		code: 6,
+	},
+	{
+		name: 'adidas TREFOIL Gray Sweat Pants',
+		image: '/images/adidas/bottom/adidas-pants.jpg',
+		description:
+			'Comfort and step up your loungewear. Crafted from a soft fleece, these pants fit close to the body but still give you enough room to move freely',
+		brand: 'adidas',
+		category: 'bottom',
+		price: 69.99,
+		countInStock: 4,
+		rating: 0,
+		numReviews: 0,
+		code: 7,
+	},
+	{
+		name: 'adidas 3-STRIPES Shorts',
+		image: '/images/adidas/bottom/adidas-blk-shorts.jpg',
+		description:
+			'SHORTS FOR EVERYDAY COMFORT. This is for a morning run, afternoon workout or evening with friends, stay comfortable all day thanks the casual fit and soft feel. The adidas Badge of Sport and 3-Stripes keep your look on point for any activity.',
+		brand: 'adidas',
+		category: 'bottom',
+		price: 39.99,
+		countInStock: 2,
 		rating: 0,
 		numReviews: 0,
 		code: 8,

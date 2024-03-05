@@ -123,7 +123,7 @@ const HomeItems = () => {
 										position='relative'
 										style={{
 											cursor: 'pointer',
-											opacity: '0.7',
+											opacity: '0.6',
 										}}
 									>
 										<CardMedia
