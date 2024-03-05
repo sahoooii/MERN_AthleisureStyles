@@ -158,7 +158,9 @@ const CheckoutScreen = () => {
 			) : loadingDelete ? (
 				<Loader />
 			) : error ? (
-				<Message severity={error}>{error.data.message}</Message>
+				<Message severity={error}>
+					{error?.data?.message || error.error}
+				</Message>
 			) : (
 				<>
 					{!order.isPaid ? (

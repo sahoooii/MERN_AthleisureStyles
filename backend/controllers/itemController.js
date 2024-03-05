@@ -72,6 +72,7 @@ const getItemsByAdmin = asyncHandler(async (req, res) => {
 	const totalItemsCount = await Item.countDocuments();
 
 	const items = await Item.find({})
+		.sort({ code: 1 })
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
 

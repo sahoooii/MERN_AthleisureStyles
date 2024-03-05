@@ -298,7 +298,9 @@ const PlaceOrderScreen = () => {
 										</Typography>
 
 										<Typography>
-											{error && <Message severity='error'>{error}</Message>}
+											{error && (
+												<Message severity='error'>{error.data.message}</Message>
+											)}
 										</Typography>
 
 										{isLoading && <Loader />}

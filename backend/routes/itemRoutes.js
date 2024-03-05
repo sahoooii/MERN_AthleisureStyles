@@ -21,6 +21,7 @@ import {
 	getCategoryOfAccessories,
 } from '../controllers/itemController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
+import checkObjectId from '../middleware/checkObjectId.js';
 
 const router = express.Router();
 
@@ -34,21 +35,23 @@ router.route('/bottoms').get(getCategoryOfBottom);
 router.route('/caps').get(getCategoryOfCap);
 router.route('/accessories').get(getCategoryOfAccessories);
 
-router.route('/:id/wishlist').put(protect, addToWishList);
+router.route('/:id/wishlist').put(protect, checkObjectId, addToWishList);
 router.route('/itemslist').get(protect, admin, getItemsByAdmin);
 router
 	.route('/:id')
-	.get(getItemById)
-	.put(protect, admin, updateItem)
-	.delete(protect, admin, deleteItem);
-router.route('/:id/admin').get(protect, admin, getItemDetailsByAdmin);
+	.get(checkObjectId, getItemById)
+	.put(protect, admin, checkObjectId, updateItem)
+	.delete(protect, admin, checkObjectId, deleteItem);
+router
+	.route('/:id/admin')
+	.get(protect, admin, checkObjectId, getItemDetailsByAdmin);
 router
 	.route('/:id/reviews')
-	.post(protect, createItemReview)
-	.delete(protect, deleteItemReview);
+	.post(protect, checkObjectId, createItemReview)
+	.delete(protect, checkObjectId, deleteItemReview);
 router
 	.route('/:id/admin/reviews')
-	.get(protect, admin, getItemReviews)
-	.put(protect, admin, updateItemReviewByAdmin);
+	.get(protect, admin, checkObjectId, getItemReviews)
+	.put(protect, admin, checkObjectId, updateItemReviewByAdmin);
 
 export default router;
