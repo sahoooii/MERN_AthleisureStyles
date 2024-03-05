@@ -119,14 +119,23 @@ const HomeItems = () => {
 								}}
 							>
 								{item.countInStock === 0 ? (
-									<Box position='relative'>
+									<Box
+										position='relative'
+										style={{
+											cursor: 'pointer',
+											opacity: '0.7',
+										}}
+									>
 										<CardMedia
 											component='img'
 											height='400px'
 											width='300px'
 											image={item.image}
 											alt={item.name}
-											sx={{ opacity: '0.5', cursor: 'pointer' }}
+											// style={{
+											// 	cursor: 'pointer',
+											// 	opacity: '0.7',
+											// }}
 											onClick={() => navigate(`/item/${item._id}`)}
 										/>
 										<Box
