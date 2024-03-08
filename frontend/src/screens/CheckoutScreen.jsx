@@ -114,7 +114,7 @@ const CheckoutScreen = () => {
 	function onApprove(data, actions) {
 		return actions.order.capture().then(async function (details) {
 			try {
-				await payOrder({ orderId, details });
+				await payOrder({ orderId, details }).unwrap();
 				// To mark paid
 				refetch();
 
@@ -150,6 +150,7 @@ const CheckoutScreen = () => {
 				return orderId;
 			});
 	}
+	// console.log(order && order);
 
 	return (
 		<Box m='0 auto' sx={{ width: { xs: '90%', md: '90%' } }}>
@@ -305,18 +306,18 @@ const CheckoutScreen = () => {
 													</Grid>
 													<Grid item sm={7} xs={5}>
 														<Stack spacing={2}>
-															{/* <Link
-															to={`/item/${item._id}`}
-															style={{ textDecoration: 'underline' }}
-														> */}
-															<Typography
-																sx={{ fontSize: { xs: '12px', sm: '16px' } }}
-																fontWeight='bold'
-																color='secondary'
+															<Link
+																to={`/item/${item.item}`}
+																style={{ textDecoration: 'underline' }}
 															>
-																{item.name}
-															</Typography>
-															{/* </Link> */}
+																<Typography
+																	sx={{ fontSize: { xs: '12px', sm: '16px' } }}
+																	fontWeight='bold'
+																	color='secondary'
+																>
+																	{item.name}
+																</Typography>
+															</Link>
 															<Typography variant='h4' fontWeight='bold'>
 																${item.price}
 															</Typography>
