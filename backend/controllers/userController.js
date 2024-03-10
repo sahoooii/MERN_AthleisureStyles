@@ -71,10 +71,6 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route POST /api/users/logout
 // @access Private
 const logoutUser = asyncHandler(async (req, res) => {
-	// res.cookie('jwt', '', {
-	// 	httpOnly: true,
-	// 	expires: new Date(0),
-	// });
 	res.clearCookie('jwt');
 
 	res.status(200).json({ message: 'Successfully Logged Out' });
@@ -144,11 +140,22 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 	if (user) {
 		user.firstName = req.body.firstName || user.firstName;
 		user.lastName = req.body.lastName || user.lastName;
-		user.email = req.body.email || user.email;
-		user.picturePath = req.body.picturePath || user.picturePath;
+		// user.email = req.body.email || user.email;
 		user.picturePath = req.body.picturePath || user.picturePath;
 		user.isAdmin = req.body.isAdmin || user.isAdmin;
-		// user.wishlist = req.body.wishlist || user.wishlist;
+
+		// email duplicate validate
+		const email = req.body.email;
+		const userExists = await User.findOne({ email });
+		// Same person check, if don't change email, just use own email
+		if (user.email === req.body.email) {
+			user.email = user.email;
+		} else if (userExists) {
+			res.status(400);
+			throw new Error('This Email is already in use');
+		} else {
+			user.email = req.body.email || user.email;
+		}
 
 		// Password was hashed, that's why separated
 		if (req.body.password) {
@@ -164,7 +171,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 			email: updatedUser.email,
 			picturePath: updatedUser.picturePath,
 			isAdmin: updatedUser.isAdmin,
-			// wishlist: updatedUser.wishlist,
 		});
 	} else {
 		res.status(404);
@@ -235,9 +241,26 @@ const updateUser = asyncHandler(async (req, res) => {
 		user.firstName = req.body.firstName || user.firstName;
 		user.lastName = req.body.lastName || user.lastName;
 		user.isAdmin = Boolean(req.body.isAdmin);
-		user.email = req.body.email || user.email;
+		// user.email = req.body.email || user.email;
 		user.picturePath = req.body.picturePath || user.picturePath;
-		user.wishlist = req.body.wishlist || user.wishlist;
+
+		// email duplicate validate
+		const email = req.body.email;
+		const userExists = await User.findOne({ email });
+		// Same person check, if don't change email, just use own email
+		if (user.email === req.body.email) {
+			user.email = user.email;
+		} else if (userExists) {
+			res.status(400);
+			throw new Error('This Email is already in use');
+		} else {
+			user.email = req.body.email || user.email;
+		}
+
+		// Password was hashed, that's why separated
+		if (req.body.password) {
+			user.password = req.body.password;
+		}
 
 		const updatedUser = await user.save();
 
@@ -248,7 +271,6 @@ const updateUser = asyncHandler(async (req, res) => {
 			isAdmin: updatedUser.isAdmin,
 			email: updatedUser.email,
 			picturePath: updatedUser.picturePath,
-			wishlist: updatedUser.wishlist,
 		});
 	} else {
 		res.status(404);

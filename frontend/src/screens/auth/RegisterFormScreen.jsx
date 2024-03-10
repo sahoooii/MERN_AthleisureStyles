@@ -114,16 +114,24 @@ const RegisterFormScreen = () => {
 
 	// Profile image upload and register
 	const submitHandler = async (values, onSubmitProps) => {
-		const { firstName, lastName, email, password } = values;
+		const { firstName, lastName, email, password, picturePath } = values;
 		const formData = new FormData();
 		for (let value in values) {
 			formData.append(value, values[value]);
 		}
 		// picture path
 		formData.append('picturePath', values.picturePath.name);
+		console.log('picturePath:', picturePath);
+		// 1704103921000
+		// lastModifiedDate
+		// name:"shokota-hakama.JPG"
 		try {
 			const imageData = await uploadProfileImage(formData).unwrap();
+			console.log('imageData:', imageData);
+			// message: 'Image uploaded successfully';
+			// picturePath: '/uploads/profileImages/picturePath-1709886731822.jpg';
 
+			// if error!だったら写真を保存できるようにしたい
 			const response = await register({
 				firstName,
 				lastName,
