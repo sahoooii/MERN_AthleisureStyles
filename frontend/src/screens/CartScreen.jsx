@@ -67,7 +67,11 @@ const CartScreen = () => {
 								</Box>
 
 								<Meta
-									title={`${userInfo.firstName} ${userInfo.lastName}'s Cart`}
+									title={
+										userInfo
+											? `${userInfo.firstName} ${userInfo.lastName}'s Cart`
+											: 'Your Shopping Cart'
+									}
 								/>
 
 								{/* Shopping Cart */}
