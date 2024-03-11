@@ -247,6 +247,7 @@ const updateUser = asyncHandler(async (req, res) => {
 		// email duplicate validate
 		const email = req.body.email;
 		const userExists = await User.findOne({ email });
+
 		// Same person check, if don't change email, just use own email
 		if (user.email === req.body.email) {
 			user.email = user.email;

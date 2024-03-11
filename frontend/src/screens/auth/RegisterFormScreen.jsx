@@ -113,25 +113,19 @@ const RegisterFormScreen = () => {
 	}, [userInfo, redirect, navigate]);
 
 	// Profile image upload and register
-	const submitHandler = async (values, onSubmitProps) => {
-		const { firstName, lastName, email, password, picturePath } = values;
+	const submitHandler = async (values) => {
+		const { firstName, lastName, email, password } = values;
+
 		const formData = new FormData();
 		for (let value in values) {
 			formData.append(value, values[value]);
 		}
 		// picture path
 		formData.append('picturePath', values.picturePath.name);
-		console.log('picturePath:', picturePath);
-		// 1704103921000
-		// lastModifiedDate
-		// name:"shokota-hakama.JPG"
+
 		try {
 			const imageData = await uploadProfileImage(formData).unwrap();
-			console.log('imageData:', imageData);
-			// message: 'Image uploaded successfully';
-			// picturePath: '/uploads/profileImages/picturePath-1709886731822.jpg';
 
-			// if error!だったら写真を保存できるようにしたい
 			const response = await register({
 				firstName,
 				lastName,
@@ -140,19 +134,11 @@ const RegisterFormScreen = () => {
 				picturePath: imageData.picturePath,
 			}).unwrap();
 
-			// const imageData = await uploadProfileImage(formData).unwrap();
-
-			// const data = {
-			// 	...response,
-			// 	picturePath: imageData.picturePath,
-			// };
-			// await register(data);
 			dispatch(setCredentials({ ...response }));
 
 			navigate(redirect);
 		} catch (err) {
 			toast.error(err?.data?.message || err.error);
-			// onSubmitProps.resetForm();
 		}
 	};
 

@@ -82,7 +82,7 @@ const userSchema = new mongoose.Schema(
 			// data: Buffer,
 			// contentType: String,
 			type: String,
-			// required: true,
+			required: true,
 		},
 		isAdmin: {
 			type: Boolean,
