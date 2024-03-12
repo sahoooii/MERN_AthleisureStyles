@@ -75,10 +75,8 @@ const ItemDetailsScreen = () => {
 	useEffect(() => {
 		if (userInfo) {
 			refetch();
-		} else {
-			navigate('/login');
 		}
-	}, [userInfo, refetch, navigate]);
+	}, [userInfo, refetch]);
 
 	return (
 		<>

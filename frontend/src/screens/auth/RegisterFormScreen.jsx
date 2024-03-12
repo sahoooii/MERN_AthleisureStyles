@@ -113,14 +113,16 @@ const RegisterFormScreen = () => {
 	}, [userInfo, redirect, navigate]);
 
 	// Profile image upload and register
-	const submitHandler = async (values, onSubmitProps) => {
+	const submitHandler = async (values) => {
 		const { firstName, lastName, email, password } = values;
+
 		const formData = new FormData();
 		for (let value in values) {
 			formData.append(value, values[value]);
 		}
 		// picture path
 		formData.append('picturePath', values.picturePath.name);
+
 		try {
 			const imageData = await uploadProfileImage(formData).unwrap();
 
@@ -132,19 +134,11 @@ const RegisterFormScreen = () => {
 				picturePath: imageData.picturePath,
 			}).unwrap();
 
-			// const imageData = await uploadProfileImage(formData).unwrap();
-
-			// const data = {
-			// 	...response,
-			// 	picturePath: imageData.picturePath,
-			// };
-			// await register(data);
 			dispatch(setCredentials({ ...response }));
 
 			navigate(redirect);
 		} catch (err) {
 			toast.error(err?.data?.message || err.error);
-			// onSubmitProps.resetForm();
 		}
 	};
 

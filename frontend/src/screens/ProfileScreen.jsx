@@ -126,7 +126,7 @@ const ProfileScreen = () => {
 		) {
 			try {
 				const response = await updateProfile({
-					_id: userInfo._id,
+					// _id: userInfo._id,
 					firstName,
 					lastName,
 					email,

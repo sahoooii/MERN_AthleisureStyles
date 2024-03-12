@@ -275,13 +275,7 @@ const PlaceOrderScreen = () => {
 										</Typography>
 
 										<Typography variant='h3'>
-											Items: $
-											{cartItems
-												.reduce(
-													(acc, item) => acc + item.quantity * item.price,
-													0
-												)
-												.toFixed(2)}
+											Items: $ {cart.itemsPrice}
 										</Typography>
 										<Stack spacing={0}>
 											<Typography variant='subtitle1'>
