@@ -102,7 +102,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 	return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Encrypt password using bcrypt before save
+// Encrypt password using bcrypt before save for register
 userSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) {
 		next();
