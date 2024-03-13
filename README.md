@@ -1,7 +1,6 @@
 # Athleisure Styles <br />MERN E-Commerce Platform
 
-<img src="https://img.shields.io/badge/-MONGODB-00800.svg?logo=mongodb&style=flat&logoColor=fff">
-<img src="https://img.shields.io/badge/-Express-000000.svg?logo=express&style=flat&logoColor=FF0">
+<img src="https://img.shields.io/badge/-MONGODB-00800.svg?logo=mongodb&style=flat&logoColor=fff"><img src="https://img.shields.io/badge/-Express-000000.svg?logo=express&style=flat&logoColor=FF0">
 <img src="https://img.shields.io/badge/-React-555.svg?logo=react&style=flat">
 <img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=flat&logoColor=ff0">
 
