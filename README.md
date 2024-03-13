@@ -18,6 +18,14 @@
 ### DEMO PC Version.
 ![pc](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/def87834-d35c-4f06-915e-770f436f0826)
 
+### PC Version. Menu
+![withMenu](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/45e2cfbb-01ba-436a-9689-9c821ee97460)
+
+### Mobile Version.
+
+![mobile](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/c1761916-6f69-486d-94db-399ccb951a91)
+
+
 #### Describe
 
 This project is an eCommerce platform built with the MERN stack and Redux and using Material UI. This one is my first piece of the MERN stack original project. It's took almost half a year since I started it. <br />
