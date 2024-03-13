@@ -2,8 +2,17 @@
 
 <img src="https://img.shields.io/badge/-MONGODB-00800.svg?logo=mongodb&style=flat&logoColor=fff"><img src="https://img.shields.io/badge/-Express-000000.svg?logo=express&style=flat&logoColor=FF0">
 <img src="https://img.shields.io/badge/-React-555.svg?logo=react&style=flat"><img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=flat&logoColor=ff0">
-
 <img src="https://img.shields.io/badge/-Redux-764ABC.svg?logo=redux&style=flat-square"><img src="https://img.shields.io/badge/-Paypal-00457C.svg?logo=paypal&style=flat-square"><img src="https://img.shields.io/badge/-Formik-4285F4.svg?logo=formik&style=flat-square"><img src="https://img.shields.io/badge/-Yup-E2B714.svg?logo=yup&style=flat-square"><img src="https://img.shields.io/badge/-Material_UI-000.svg?logo=mui&style=flat&logoColor=007FFF=flat-square"><img src="https://img.shields.io/badge/-Motion-0055ff.svg?logo=framer&style=flat-square"><img src="https://img.shields.io/badge/-AXIOS-5A29E4.svg?logo=axios&style=popout-square">
+<img src="https://img.shields.io/badge/-React-555.svg?logo=react&style=flat">
+<img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=flat&logoColor=ff0">
+<img src="https://img.shields.io/badge/-Redux-764ABC.svg?logo=redux&style=flat-square">
+<img src="https://img.shields.io/badge/-Paypal-00457C.svg?logo=paypal&style=flat-square">
+<img src="https://img.shields.io/badge/-Formik-4285F4.svg?logo=formik&style=flat-square">
+<img src="https://img.shields.io/badge/-Yup-E2B714.svg?logo=yup&style=flat-square">
+<img src="https://img.shields.io/badge/-Material_UI-000.svg?logo=mui&style=flat&logoColor=007FFF=flat-square">
+<img src="https://img.shields.io/badge/-Motion-0055ff.svg?logo=framer&style=flat-square">
+<img src="https://img.shields.io/badge/-AXIOS-5A29E4.svg?logo=axios&style=popout-square">
+
 <p>etc...</p>
 
 ### DEMO PC Version.
