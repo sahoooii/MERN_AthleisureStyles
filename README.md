@@ -14,6 +14,8 @@
 <img src="https://img.shields.io/badge/-AXIOS-5A29E4.svg?logo=axios&style=popout-square">
 <p>etc...</p>
 
+![pc](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/def87834-d35c-4f06-915e-770f436f0826)
+
 #### Describe
 
 This project is an eCommerce platform built with the MERN stack and Redux and using Material UI. This one is my first piece of the MERN stack original project. It's took almost half a year since I started it. <br />
