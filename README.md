@@ -14,7 +14,7 @@
 ![pc](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/def87834-d35c-4f06-915e-770f436f0826)
 
 ### PC Version. Menu
-![withMenu](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/45e2cfbb-01ba-436a-9689-9c821ee97460)
+![withMenu](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/3efe10f0-88ca-411c-968f-5a68f7366d81)
 
 ### Mobile Version.
 
