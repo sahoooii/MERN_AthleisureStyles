@@ -1,27 +1,25 @@
 # Athleisure Styles <br />MERN E-Commerce Platform
 
-<img src="https://img.shields.io/badge/-MONGODB-00800.svg?logo=mongodb&style=flat&logoColor=fff"><img src="https://img.shields.io/badge/-Express-000000.svg?logo=express&style=flat&logoColor=FF0">
-<img src="https://img.shields.io/badge/-React-555.svg?logo=react&style=flat"><img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=flat&logoColor=ff0">
+<img src="https://img.shields.io/badge/-MONGODB-00800.svg?logo=mongodb&style=flat&logoColor=fff"> <img src="https://img.shields.io/badge/-Express-000000.svg?logo=express&style=flat&logoColor=FF0"> <img src="https://img.shields.io/badge/-React-555.svg?logo=react&style=flat"> <img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=flat&logoColor=ff0">
 
-<img src="https://img.shields.io/badge/-Redux-764ABC.svg?logo=redux&style=flat-square"><img src="https://img.shields.io/badge/-Paypal-00457C.svg?logo=paypal&style=flat-square">
-<img src="https://img.shields.io/badge/-Formik-4285F4.svg?logo=formik&style=flat-square"><img src="https://img.shields.io/badge/-Yup-E2B714.svg?logo=yup&style=flat-square"><img src="https://img.shields.io/badge/-Material_UI-000.svg?logo=mui&style=flat&logoColor=007FFF=flat-square">
-<img src="https://img.shields.io/badge/-Motion-0055ff.svg?logo=framer&style=flat-square"><img src="https://img.shields.io/badge/-AXIOS-5A29E4.svg?logo=axios&style=popout-square">
+<img src="https://img.shields.io/badge/-Redux-764ABC.svg?logo=redux&style=flat-square"><img src="https://img.shields.io/badge/-Paypal-00457C.svg?logo=paypal&style=flat-square"> <img src="https://img.shields.io/badge/-Material_UI-000.svg?logo=mui&style=flat&logoColor=007FFF=flat-square"> <img src="https://img.shields.io/badge/-Motion-0055ff.svg?logo=framer&style=flat-square"> <img src="https://img.shields.io/badge/-AXIOS-5A29E4.svg?logo=axios&style=popout-square"> <img src="https://img.shields.io/badge/-Formik-4285F4.svg?logo=formik&style=flat-square"> <img src="https://img.shields.io/badge/-Yup-E2B714.svg?logo=yup&style=flat-square"> <p>etc...</p>
 
+## Link
+[Athleisure Styles](https://athleisurestyles.onrender.com)
 
-<p>etc...</p>
+## DEMO PC Version.
 
-### DEMO PC Version.
 ![pc](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/def87834-d35c-4f06-915e-770f436f0826)
 
 ### PC Version. Menu
+
 ![withMenu](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/3efe10f0-88ca-411c-968f-5a68f7366d81)
 
 ### Mobile Version.
 
-![mobile](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/c1761916-6f69-486d-94db-399ccb951a91)
+![mobile](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/4fbbb31a-85cd-4f8a-b34c-0709d3aa7b0e)
 
-
-#### Describe
+### Describe
 
 This project is an eCommerce platform built with the MERN stack and Redux and using Material UI. This one is my first piece of the MERN stack original project. It's took almost half a year since I started it. <br />
 At first time, I was not used to using Material UI, so this was one of the struggling parts. I put effort into the design. And fully responsive web design.<br />
@@ -29,7 +27,7 @@ I made the name Athleisure Styles. The concept is sports and Fashion mixed style
 
 このプロジェクトは、MERN スタックと Redux で構築されマテリアル UI を使用する e コマースプラットフォームです。MERN スタックプロジェクトの初めてのオリジナル作品です。始めてから半年近くかかりました。<br />
 また初めてマテリアル UI を使用したので、なかなか慣れずここが苦労した部分の一つでした。デザインにもかなりこだわり、レスポンシブデザイン対応です。<br />
-コンセプトはスポーツとファッションのミックススタイルがテーマで、Athleisure Stylesと名前をつけました。PayPal とクレジット/デビット支払いを備えたフル機能のショッピングサイトです。
+コンセプトはスポーツとファッションのミックススタイルがテーマで、Athleisure Styles と名前をつけました。PayPal とクレジット/デビット支払いを備えたフル機能のショッピングサイトです。
 
 ## Features
 
@@ -112,7 +110,7 @@ admin@email.com
 123456
 
 - Customer
-kanoa@email.com@email.com
+kanoa@email.com
 123456
 
 shohei@email.com
