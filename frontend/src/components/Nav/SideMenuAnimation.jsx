@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
 	Avatar,
@@ -28,15 +28,13 @@ import {
 import { useLogoutMutation } from '../../slices/usersApiSlice';
 import { logout } from '../../slices/authSlice';
 import { resetCart } from '../../slices/cartSlice';
+import UseDimensions from './UseDimensions';
 
 const SideMenuAnimation = ({ style, width, height }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const [open, setOpen] = useState(false);
-
 	const { userInfo } = useSelector((state) => state.auth);
-
 	const fullName = `${userInfo.firstName} ${userInfo.lastName}`;
 
 	const FlexBox = styled(Box)`
@@ -44,6 +42,11 @@ const SideMenuAnimation = ({ style, width, height }) => {
 		justify-content: space-between;
 		align-items: center;
 	`;
+
+	// SideMene Toggle
+	const [open, setOpen] = useState(false);
+	const containerRef = useRef(null);
+	const { height: dimensionsHeight } = UseDimensions(containerRef);
 
 	const [logoutApiCall] = useLogoutMutation();
 
@@ -62,20 +65,21 @@ const SideMenuAnimation = ({ style, width, height }) => {
 		}
 	};
 
-	const variants = {
-		open: {
-			clipPath: 'circle(1370px at  48px -15px)',
+	const sidebarVariants = {
+		open: (height = 1000) => ({
+			clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
 			transition: {
 				type: 'spring',
-				stiffness: 25,
+				stiffness: 20,
+				restDelta: 2,
 				duration: 0.5,
 			},
 			zIndex: 10,
-		},
+		}),
 		closed: {
 			clipPath: 'circle(10px at 48px -15px)',
 			transition: {
-				delay: 0.3,
+				delay: 0.5,
 				type: 'spring',
 				stiffness: 400,
 				damping: 40,
@@ -85,15 +89,10 @@ const SideMenuAnimation = ({ style, width, height }) => {
 
 	const linksVariants = {
 		open: {
-			transition: {
-				staggerChildren: 0.1,
-			},
+			transition: { staggerChildren: 0.07, delayChildren: 0.2 },
 		},
 		closed: {
-			transition: {
-				staggerChildren: 0.05,
-				staggerDirection: -1,
-			},
+			transition: { staggerChildren: 0.05, staggerDirection: -1 },
 		},
 	};
 
@@ -101,10 +100,16 @@ const SideMenuAnimation = ({ style, width, height }) => {
 		open: {
 			y: 0,
 			opacity: 1,
+			transition: {
+				y: { stiffness: 1000, velocity: -100 },
+			},
 		},
 		closed: {
 			y: 100,
 			opacity: 0,
+			transition: {
+				y: { stiffness: 1000 },
+			},
 		},
 	};
 
@@ -122,7 +127,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 				style={style}
 				onClick={() => setOpen(!open)}
 			/>
-
 			{/* Overlay */}
 			<Box
 				display={open ? 'block' : 'none'}
@@ -145,6 +149,8 @@ const SideMenuAnimation = ({ style, width, height }) => {
 				flexDirection='column'
 				alignItems='center'
 				justifyContent='center'
+				custom={dimensionsHeight}
+				ref={containerRef}
 			>
 				{/* bg */}
 				<Box
@@ -156,7 +162,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 					backgroundColor='white'
 					zIndex='10'
 					sx={{ width: { xs: 0.7, sm: 'max(350px, 25%)' } }}
-					variants={variants}
+					variants={sidebarVariants}
 				>
 					<Box position='relative' width='100%' height='100%'>
 						<Box
@@ -207,8 +213,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 											variants={itemVariants}
 											whileHover={{ scale: 1.1 }}
 											whileTap={{ scale: 0.7 }}
-											initial='hidden'
-											whileInView='visible'
 										>
 											<Link
 												to='/profile'
@@ -326,8 +330,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 														variants={itemVariants}
 														whileHover={{ scale: 1.1 }}
 														whileTap={{ scale: 0.7 }}
-														initial='hidden'
-														whileInView='visible'
 													>
 														<Link
 															to='/admin/userslist'
@@ -357,8 +359,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 														variants={itemVariants}
 														whileHover={{ scale: 1.1 }}
 														whileTap={{ scale: 0.7 }}
-														initial='hidden'
-														whileInView='visible'
 													>
 														<Link
 															to='/admin/orderlist'
@@ -388,8 +388,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 														variants={itemVariants}
 														whileHover={{ scale: 1.1 }}
 														whileTap={{ scale: 0.7 }}
-														initial='hidden'
-														whileInView='visible'
 													>
 														<Link
 															to='/admin/itemslist'
@@ -458,7 +456,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 								sx={{
 									bottom: {
 										xs: userInfo.isAdmin ? '80px' : '100px',
-										sm: userInfo.isAdmin ? '110px' : '140px',
+										sm: userInfo.isAdmin ? '90px' : '140px',
 									},
 								}}
 								style={{ transform: 'translateX(-50%)' }}
