@@ -77,7 +77,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 			zIndex: 10,
 		}),
 		closed: {
-			clipPath: 'circle(10px at 48px -15px)',
+			clipPath: 'circle(10px at 300px -15px)',
 			transition: {
 				delay: 0.5,
 				type: 'spring',
