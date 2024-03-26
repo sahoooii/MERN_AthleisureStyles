@@ -12,13 +12,6 @@ import {
 } from '@mui/material';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import {
-	MoodBad,
-	SentimentVeryDissatisfied,
-	SentimentNeutral,
-	SentimentSatisfiedAlt,
-	SentimentVerySatisfied,
-} from '@mui/icons-material';
 import { shades } from '../../theme';
 import {
 	useGetItemDetailsQuery,
@@ -31,6 +24,7 @@ import ButtonComponent from '../../components/Utils/ButtonComponent';
 import { Link, useParams } from 'react-router-dom';
 import Loader from '../Utils/Loader';
 import Message from '../Utils/Message';
+import ReviewMenu from './ReviewMenu';
 
 const ReviewForm = () => {
 	const { itemId, pageNumber } = useParams();
@@ -126,42 +120,13 @@ const ReviewForm = () => {
 													}
 													helperText={touched.rating && errors.rating}
 												>
-													<MenuItem value={1}>
-														<Box display='flex' alignItems='center'>
-															<MoodBad sx={{ marginRight: '5px' }} />1 -- Nop I
-															don't like it
-														</Box>
-													</MenuItem>
-													<MenuItem value={2}>
-														<Box display='flex' alignItems='center'>
-															<SentimentVeryDissatisfied
-																sx={{ marginRight: '5px' }}
-															/>
-															2 -- Maybe I give it to my sister
-														</Box>
-													</MenuItem>
-													<MenuItem value={3}>
-														<Box display='flex' alignItems='center'>
-															<SentimentNeutral sx={{ marginRight: '5px' }} />3
-															-- So far, So Good
-														</Box>
-													</MenuItem>
-													<MenuItem value={4}>
-														<Box display='flex' alignItems='center'>
-															<SentimentSatisfiedAlt
-																sx={{ marginRight: '5px' }}
-															/>
-															4 -- Like it!
-														</Box>
-													</MenuItem>
-													<MenuItem value={5}>
-														<Box display='flex' alignItems='center'>
-															<SentimentVerySatisfied
-																sx={{ marginRight: '5px' }}
-															/>
-															5 -- Yes!! Love it!
-														</Box>
-													</MenuItem>
+													{ReviewMenu.map((menu) => (
+														<MenuItem key={menu.value} value={menu.value}>
+															<Box display='flex' alignItems='center'>
+																{menu.icon} {menu.title}
+															</Box>
+														</MenuItem>
+													))}
 												</TextField>
 											</FormControl>
 											{/* Comment */}
