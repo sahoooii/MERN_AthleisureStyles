@@ -144,7 +144,6 @@ const Navbar = () => {
 							</Box>
 						</Box>
 					</Box>
-					{/* <Footer /> */}
 				</Box>
 			) : (
 				<>
