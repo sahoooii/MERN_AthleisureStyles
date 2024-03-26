@@ -14,21 +14,13 @@ import {
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-	CloseOutlined,
-	FavoriteBorderOutlined,
-	Logout,
-	ManageSearchOutlined,
-	PersonOutline,
-	ProductionQuantityLimitsOutlined,
-	ManageAccountsOutlined,
-	ListAltOutlined,
-	PostAddOutlined,
-} from '@mui/icons-material';
+import { CloseOutlined, Logout } from '@mui/icons-material';
 import { useLogoutMutation } from '../../slices/usersApiSlice';
 import { logout } from '../../slices/authSlice';
 import { resetCart } from '../../slices/cartSlice';
 import UseDimensions from './UseDimensions';
+import SideMenu from './SideMenu';
+import AdminSideMenu from './AdminSideMenu';
 
 const SideMenuAnimation = ({ style, width, height }) => {
 	const dispatch = useDispatch();
@@ -89,7 +81,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 
 	const linksVariants = {
 		open: {
-			transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+			transition: { staggerChildren: 0.08, delayChildren: 0.05 },
 		},
 		closed: {
 			transition: { staggerChildren: 0.05, staggerDirection: -1 },
@@ -100,9 +92,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 		open: {
 			y: 0,
 			opacity: 1,
-			transition: {
-				y: { stiffness: 1000, velocity: -100 },
-			},
 		},
 		closed: {
 			y: 100,
@@ -138,7 +127,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 				left='0'
 				top='0'
 				overflow='auto'
-				// add or delete
 				onClick={() => setOpen(!open)}
 			/>
 			{/* sideBar */}
@@ -202,221 +190,79 @@ const SideMenuAnimation = ({ style, width, height }) => {
 
 							{/* Menu Links */}
 							<Box display='flex' justifyContent='center' alignItems='center'>
-								<MenuList>
-									<Stack
-										spacing={{ xs: 1, sm: 2.5 }}
-										component={motion.div}
-										variants={linksVariants}
-									>
-										<FlexBox
-											component={motion.div}
-											variants={itemVariants}
-											whileHover={{ scale: 1.1 }}
-											whileTap={{ scale: 0.7 }}
-										>
-											<Link
-												to='/profile'
-												style={{ textDecoration: 'none' }}
-												onClick={() => setOpen(!open)}
+								<MenuList component={motion.ul} variants={linksVariants}>
+									<Stack spacing={{ xs: 1, sm: 2.5 }}>
+										{/* Regular Menu */}
+										{SideMenu.map((menu) => (
+											<FlexBox
+												key={menu.title ? menu.title : `${fullName}`}
+												component={motion.div}
+												variants={itemVariants}
+												whileHover={{ scale: 1.1 }}
+												whileTap={{ scale: 0.7 }}
 											>
-												<MenuItem style={{ alignItems: 'center' }}>
-													<ListItemIcon>
-														<PersonOutline
-															sx={{ marginRight: '8px', fontSize: '20px' }}
-														/>
-													</ListItemIcon>
-													<Typography
-														variant='h3'
-														sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
-													>
-														{fullName}
-													</Typography>
-												</MenuItem>
-											</Link>
-										</FlexBox>
-										<FlexBox
-											component={motion.div}
-											variants={itemVariants}
-											whileHover={{ scale: 1.1 }}
-											whileTap={{ scale: 0.7 }}
-										>
-											<Link
-												to='/orderhistory'
-												style={{ textDecoration: 'none' }}
-												onClick={() => setOpen(!open)}
-											>
-												<MenuItem sx={{ alignItems: 'center' }}>
-													<ListItemIcon>
-														<ManageSearchOutlined
-															sx={{ marginRight: '8px', fontSize: '20px' }}
-														/>
-													</ListItemIcon>
-													<Typography
-														variant='h3'
-														sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
-													>
-														Order History
-													</Typography>
-												</MenuItem>
-											</Link>
-										</FlexBox>
-										<FlexBox
-											component={motion.div}
-											variants={itemVariants}
-											whileHover={{ scale: 1.1 }}
-											whileTap={{ scale: 0.7 }}
-										>
-											<Link
-												to='/notpaidorders'
-												style={{ textDecoration: 'none' }}
-												onClick={() => setOpen(!open)}
-											>
-												<MenuItem sx={{ alignItems: 'center' }}>
-													<ListItemIcon>
-														<ProductionQuantityLimitsOutlined
-															sx={{ marginRight: '8px', fontSize: '20px' }}
-														/>
-													</ListItemIcon>
-													<Typography
-														variant='h3'
-														sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
-													>
-														Not Paid Order
-													</Typography>
-												</MenuItem>
-											</Link>
-										</FlexBox>
-										<FlexBox
-											component={motion.div}
-											variants={itemVariants}
-											whileHover={{ scale: 1.1 }}
-											whileTap={{ scale: 0.7 }}
-										>
-											<Link
-												to='/wishlist'
-												style={{ textDecoration: 'none' }}
-												onClick={() => setOpen(!open)}
-											>
-												<MenuItem
-													sx={{ display: 'flex', alignItems: 'center' }}
+												<Link
+													to={menu.link}
+													style={{ textDecoration: 'none' }}
+													onClick={() => setOpen(!open)}
 												>
-													<ListItemIcon>
-														<FavoriteBorderOutlined
-															sx={{ marginRight: '8px', fontSize: '20px' }}
-														/>
-													</ListItemIcon>
-													<Typography
-														variant='h3'
-														sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
-													>
-														Wish List
-													</Typography>
-												</MenuItem>
-											</Link>
-										</FlexBox>
+													<MenuItem sx={{ alignItems: 'center' }}>
+														<ListItemIcon>{menu.icon}</ListItemIcon>
+														<Typography
+															variant='h3'
+															sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+														>
+															{menu.link === '/profile' ? (
+																<>{fullName}</>
+															) : (
+																<>{menu.title}</>
+															)}
+														</Typography>
+													</MenuItem>
+												</Link>
+											</FlexBox>
+										))}
 
 										{/* Admin Menu */}
 										{userInfo && userInfo.isAdmin && (
 											<Box>
-												<Divider sx={{ mb: '10px' }} />
-
-												<Stack
-													spacing={2.5}
-													component={motion.div}
-													variants={linksVariants}
-												>
-													<FlexBox
-														component={motion.div}
-														variants={itemVariants}
-														whileHover={{ scale: 1.1 }}
-														whileTap={{ scale: 0.7 }}
-													>
-														<Link
-															to='/admin/userslist'
-															style={{ textDecoration: 'none' }}
-															onClick={() => setOpen(!open)}
+												<Divider
+													sx={{ mb: '10px' }}
+													component={motion.hr}
+													variants={itemVariants}
+												/>
+												<Stack spacing={2.5}>
+													{AdminSideMenu.map((adminMenu) => (
+														<FlexBox
+															key={adminMenu.title}
+															component={motion.div}
+															variants={itemVariants}
+															whileHover={{ scale: 1.1 }}
+															whileTap={{ scale: 0.7 }}
 														>
-															<MenuItem style={{ alignItems: 'center' }}>
-																<ListItemIcon>
-																	<ManageAccountsOutlined
-																		sx={{
-																			marginRight: '8px',
-																			fontSize: '20px',
-																		}}
-																	/>
-																</ListItemIcon>
-																<Typography
-																	variant='h3'
-																	sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
-																>
-																	Users
-																</Typography>
-															</MenuItem>
-														</Link>
-													</FlexBox>
-													<FlexBox
-														component={motion.div}
-														variants={itemVariants}
-														whileHover={{ scale: 1.1 }}
-														whileTap={{ scale: 0.7 }}
-													>
-														<Link
-															to='/admin/orderlist'
-															style={{ textDecoration: 'none' }}
-															onClick={() => setOpen(!open)}
-														>
-															<MenuItem style={{ alignItems: 'center' }}>
-																<ListItemIcon>
-																	<ListAltOutlined
-																		sx={{
-																			marginRight: '8px',
-																			fontSize: '20px',
-																		}}
-																	/>
-																</ListItemIcon>
-																<Typography
-																	variant='h3'
-																	sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
-																>
-																	Orders
-																</Typography>
-															</MenuItem>
-														</Link>
-													</FlexBox>
-													<FlexBox
-														component={motion.div}
-														variants={itemVariants}
-														whileHover={{ scale: 1.1 }}
-														whileTap={{ scale: 0.7 }}
-													>
-														<Link
-															to='/admin/itemslist'
-															style={{ textDecoration: 'none' }}
-															onClick={() => setOpen(!open)}
-														>
-															<MenuItem style={{ alignItems: 'center' }}>
-																<ListItemIcon>
-																	<PostAddOutlined
-																		sx={{
-																			marginRight: '8px',
-																			fontSize: '20px',
-																		}}
-																	/>
-																</ListItemIcon>
-																<Typography
-																	variant='h3'
-																	sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
-																>
-																	Items
-																</Typography>
-															</MenuItem>
-														</Link>
-													</FlexBox>
+															<Link
+																to={adminMenu.link}
+																style={{ textDecoration: 'none' }}
+																onClick={() => setOpen(!open)}
+															>
+																<MenuItem style={{ alignItems: 'center' }}>
+																	<ListItemIcon>{adminMenu.icon} </ListItemIcon>
+																	<Typography
+																		variant='h3'
+																		sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+																	>
+																		{adminMenu.title}
+																	</Typography>
+																</MenuItem>
+															</Link>
+														</FlexBox>
+													))}
 												</Stack>
 											</Box>
 										)}
 
-										<Divider />
+										{/* Logout */}
+										<Divider component={motion.hr} variants={itemVariants} />
 										<FlexBox
 											component={motion.div}
 											variants={itemVariants}
