@@ -11,7 +11,6 @@ import {
 	Stack,
 	Typography,
 } from '@mui/material';
-import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { CloseOutlined, Logout } from '@mui/icons-material';
@@ -28,12 +27,6 @@ const SideMenuAnimation = ({ style, width, height }) => {
 
 	const { userInfo } = useSelector((state) => state.auth);
 	const fullName = `${userInfo.firstName} ${userInfo.lastName}`;
-
-	const FlexBox = styled(Box)`
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	`;
 
 	// SideMene Toggle
 	const [open, setOpen] = useState(false);
@@ -81,7 +74,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 
 	const linksVariants = {
 		open: {
-			transition: { staggerChildren: 0.08, delayChildren: 0.05 },
+			transition: { staggerChildren: 0.1, delayChildren: 0.05 },
 		},
 		closed: {
 			transition: { staggerChildren: 0.05, staggerDirection: -1 },
@@ -167,6 +160,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							<IconButton
 								onClick={() => setOpen(!open)}
 								component={motion.button}
+								variants={sidebarVariants}
 								sx={{
 									position: 'absolute',
 									display: 'flex',
@@ -191,10 +185,19 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							{/* Menu Links */}
 							<Box display='flex' justifyContent='center' alignItems='center'>
 								<MenuList component={motion.ul} variants={linksVariants}>
-									<Stack spacing={{ xs: 1, sm: 2.5 }}>
+									<Stack
+										spacing={{ xs: 1, sm: 2.5 }}
+										sx={{
+											mt: {
+												xs: userInfo.isAdmin ? '55px' : '70px',
+												sm: userInfo.isAdmin && '10px',
+												md: userInfo.isAdmin ? '60px' : '70px',
+											},
+										}}
+									>
 										{/* Regular Menu */}
 										{SideMenu.map((menu) => (
-											<FlexBox
+											<Box
 												key={menu.title ? menu.title : `${fullName}`}
 												component={motion.div}
 												variants={itemVariants}
@@ -206,21 +209,31 @@ const SideMenuAnimation = ({ style, width, height }) => {
 													style={{ textDecoration: 'none' }}
 													onClick={() => setOpen(!open)}
 												>
-													<MenuItem sx={{ alignItems: 'center' }}>
-														<ListItemIcon>{menu.icon}</ListItemIcon>
-														<Typography
-															variant='h3'
-															sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
-														>
-															{menu.link === '/profile' ? (
-																<>{fullName}</>
-															) : (
-																<>{menu.title}</>
-															)}
-														</Typography>
+													<MenuItem
+														component={motion.li}
+														variants={itemVariants}
+													>
+														<ListItemIcon sx={{ pr: '20px' }}>
+															{menu.icon}
+														</ListItemIcon>
+														{menu.link === '/profile' ? (
+															<Typography
+																variant='h3'
+																sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+															>
+																{fullName}
+															</Typography>
+														) : (
+															<Typography
+																variant='h3'
+																sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+															>
+																{menu.title}
+															</Typography>
+														)}
 													</MenuItem>
 												</Link>
-											</FlexBox>
+											</Box>
 										))}
 
 										{/* Admin Menu */}
@@ -233,7 +246,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 												/>
 												<Stack spacing={2.5}>
 													{AdminSideMenu.map((adminMenu) => (
-														<FlexBox
+														<Box
 															key={adminMenu.title}
 															component={motion.div}
 															variants={itemVariants}
@@ -246,7 +259,9 @@ const SideMenuAnimation = ({ style, width, height }) => {
 																onClick={() => setOpen(!open)}
 															>
 																<MenuItem style={{ alignItems: 'center' }}>
-																	<ListItemIcon>{adminMenu.icon} </ListItemIcon>
+																	<ListItemIcon sx={{ pr: '20px' }}>
+																		{adminMenu.icon}
+																	</ListItemIcon>
 																	<Typography
 																		variant='h3'
 																		sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
@@ -255,7 +270,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 																	</Typography>
 																</MenuItem>
 															</Link>
-														</FlexBox>
+														</Box>
 													))}
 												</Stack>
 											</Box>
@@ -263,7 +278,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 
 										{/* Logout */}
 										<Divider component={motion.hr} variants={itemVariants} />
-										<FlexBox
+										<Box
 											component={motion.div}
 											variants={itemVariants}
 											whileHover={{ scale: 1.1 }}
@@ -277,10 +292,8 @@ const SideMenuAnimation = ({ style, width, height }) => {
 												}}
 												onClick={logoutHandler}
 											>
-												<ListItemIcon>
-													<Logout
-														sx={{ marginRight: '8px', fontSize: '20px' }}
-													/>
+												<ListItemIcon sx={{ pr: '20px' }}>
+													<Logout sx={{ fontSize: '20px' }} />
 												</ListItemIcon>
 												<Typography
 													variant='h3'
@@ -289,27 +302,22 @@ const SideMenuAnimation = ({ style, width, height }) => {
 													Logout
 												</Typography>
 											</MenuItem>
-										</FlexBox>
+										</Box>
 									</Stack>
+									<Box
+										display='flex'
+										alignItems='center'
+										justifyContent='center'
+										sx={{ mt: userInfo.isAdmin ? '40px' : '100px' }}
+										style={{ transform: 'translateX(-50%)' }}
+										component={motion.div}
+										variants={itemVariants}
+									>
+										<IconButton onClick={() => setOpen(!open)}>
+											<CloseOutlined />
+										</IconButton>
+									</Box>
 								</MenuList>
-							</Box>
-
-							<Box
-								position='absolute'
-								// bottom='100px'
-								left='50%'
-								m='0 auto'
-								sx={{
-									bottom: {
-										xs: userInfo.isAdmin ? '80px' : '100px',
-										sm: userInfo.isAdmin ? '90px' : '140px',
-									},
-								}}
-								style={{ transform: 'translateX(-50%)' }}
-							>
-								<IconButton onClick={() => setOpen(!open)}>
-									<CloseOutlined />
-								</IconButton>
 							</Box>
 						</Box>
 					</Box>
