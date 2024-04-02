@@ -9,30 +9,22 @@ import {
 const SideMenu = [
 	{
 		link: '/profile',
-		icon: <PersonOutline sx={{ marginRight: '8px', fontSize: '20px' }} />,
+		icon: <PersonOutline sx={{ fontSize: '20px' }} />,
 		title: '',
 	},
 	{
 		link: '/orderhistory',
-		icon: (
-			<ManageSearchOutlined sx={{ marginRight: '8px', fontSize: '20px' }} />
-		),
+		icon: <ManageSearchOutlined sx={{ fontSize: '20px' }} />,
 		title: 'Order History',
 	},
 	{
 		link: '/notpaidorders',
-		icon: (
-			<ProductionQuantityLimitsOutlined
-				sx={{ marginRight: '8px', fontSize: '20px' }}
-			/>
-		),
+		icon: <ProductionQuantityLimitsOutlined sx={{ fontSize: '20px' }} />,
 		title: 'Not Paid Order',
 	},
 	{
 		link: '/wishlist',
-		icon: (
-			<FavoriteBorderOutlined sx={{ marginRight: '8px', fontSize: '20px' }} />
-		),
+		icon: <FavoriteBorderOutlined sx={{ fontSize: '20px' }} />,
 		title: 'Wish List',
 	},
 ];

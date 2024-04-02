@@ -8,19 +8,17 @@ import {
 const AdminSideMenu = [
 	{
 		link: '/admin/userslist',
-		icon: (
-			<ManageAccountsOutlined sx={{ marginRight: '8px', fontSize: '20px' }} />
-		),
+		icon: <ManageAccountsOutlined sx={{ fontSize: '20px' }} />,
 		title: 'Users',
 	},
 	{
 		link: '/admin/orderlist',
-		icon: <ListAltOutlined sx={{ marginRight: '8px', fontSize: '20px' }} />,
+		icon: <ListAltOutlined sx={{ fontSize: '20px' }} />,
 		title: 'Orders',
 	},
 	{
 		link: '/admin/itemslist',
-		icon: <PostAddOutlined sx={{ marginRight: '8px', fontSize: '20px' }} />,
+		icon: <PostAddOutlined sx={{ fontSize: '20px' }} />,
 		title: 'Items',
 	},
 ];
