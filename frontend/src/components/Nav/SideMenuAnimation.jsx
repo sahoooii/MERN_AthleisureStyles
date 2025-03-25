@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
 	Avatar,
@@ -152,6 +152,14 @@ const SideMenuAnimation = ({ style, width, height }) => {
 		}
 	}, [isMobile]);
 
+	useEffect(() => {
+		if (open) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'auto';
+		}
+	}, [open]);
+
 	return (
 		<>
 			<Avatar
@@ -246,14 +254,23 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							</IconButton>
 
 							{/* Menu Links */}
-							<Box display='flex' justifyContent='center' alignItems='center'>
+							<Box
+								display='flex'
+								justifyContent='center'
+								alignItems='center'
+								sx={{
+									maxHeight: 'calc(100vh - 60px)',
+									overflowY: 'hidden',
+									overflowX: 'hidden',
+								}}
+							>
 								<MenuList component={motion.ul} variants={linksVariants}>
 									<Stack
 										spacing={{ xs: userInfo.isAdmin ? 1.5 : 2, sm: 2.5 }}
 										sx={{
 											mt: {
 												xs: userInfo.isAdmin ? '155px' : '130px',
-												sm: userInfo.isAdmin ? '45px' : '60px',
+												sm: userInfo.isAdmin ? '55px' : '60px',
 												md: userInfo.isAdmin ? '120px' : '100px',
 											},
 										}}
@@ -301,7 +318,12 @@ const SideMenuAnimation = ({ style, width, height }) => {
 
 										{/* Admin Menu */}
 										{userInfo && userInfo.isAdmin && (
-											<Box>
+											<Box
+												// sx={{
+												// 	maxHeight: 'calc(100vh - 60px)',
+												// 	overflowY: 'hidden',
+												// }}
+											>
 												<Divider
 													sx={{ mb: '10px' }}
 													component={motion.hr}
