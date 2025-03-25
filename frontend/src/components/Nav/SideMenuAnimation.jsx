@@ -252,8 +252,8 @@ const SideMenuAnimation = ({ style, width, height }) => {
 										spacing={{ xs: userInfo.isAdmin ? 1.5 : 2, sm: 2.5 }}
 										sx={{
 											mt: {
-												xs: userInfo.isAdmin ? '100px' : '90px',
-												sm: userInfo.isAdmin ? '10px' : '20px',
+												xs: userInfo.isAdmin ? '140px' : '120px',
+												sm: userInfo.isAdmin ? '25px' : '35px',
 												md: userInfo.isAdmin ? '120px' : '100px',
 											},
 										}}
