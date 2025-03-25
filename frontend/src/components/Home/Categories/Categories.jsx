@@ -75,7 +75,7 @@ const Categories = ({ data, isLoading, error, title, typography, menu }) => {
 
 					<Box mb='35px'>
 						<Typography
-							variant='h3'
+							variant='h2'
 							mb='10px'
 							sx={{
 								textAlign: !isNonMobile && 'center',

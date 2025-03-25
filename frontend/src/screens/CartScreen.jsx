@@ -51,7 +51,10 @@ const CartScreen = () => {
 	};
 
 	return (
-		<Box margin='0 auto' sx={{ width: { xs: '90%', sm: '90%' } }}>
+		<Box
+			margin='0 auto'
+			sx={{ width: { xs: '90%', sm: '90%' }, pt: { xs: '20px', sm: '50px' } }}
+		>
 			{cartItems.length === 0 ? (
 				<Message severity='error'>
 					Oh No! Your cart is empty
@@ -59,11 +62,11 @@ const CartScreen = () => {
 				</Message>
 			) : (
 				<Box sx={{ flexGrow: 1, alignItems: 'center' }}>
-					<Grid container spacing={2} mt='15px'>
+					<Grid container spacing={4}>
 						<Grid item md={8} xs={12}>
 							<Box>
-								<Box mb='30px'>
-									<Typography variant='h3'>Shopping Cart</Typography>
+								<Box mb='50px'>
+									<Typography variant='h2'>Shopping Cart</Typography>
 								</Box>
 
 								<Meta
@@ -95,7 +98,7 @@ const CartScreen = () => {
 													item
 													sm={7}
 													xs={5}
-													sx={{ mt: { sm: '12px', xs: '8px' }, mb: '10px' }}
+													// sx={{ mt: { sm: '12px', xs: '8px' }, mb: '10px' }}
 												>
 													<Stack spacing={2}>
 														<Link
@@ -103,14 +106,17 @@ const CartScreen = () => {
 															style={{ textDecoration: 'underline' }}
 														>
 															<Typography
-																sx={{ fontSize: { xs: '14px', sm: '18px' } }}
-																fontWeight='bold'
+																sx={{ fontSize: { xs: '18px', sm: '20px' } }}
+																// fontWeight='bold'
 																color='secondary'
 															>
 																{item.name}
 															</Typography>
 														</Link>
-														<Typography variant='h4' fontWeight='bold'>
+														<Typography
+															sx={{ fontSize: { xs: '18px', sm: '20px' } }}
+															// fontWeight='bold'
+														>
 															${item.price}
 														</Typography>
 														{/* Quantity */}
@@ -164,10 +170,10 @@ const CartScreen = () => {
 							item
 							md={4}
 							xs={12}
-							sx={{
-								mt: { xs: '25px', md: '35px' },
-								// mb: { xs: '80px', sm: '0' },
-							}}
+							// sx={{
+							// 	mt: { xs: '25px', md: '35px' },
+							// 	// mb: { xs: '80px', sm: '0' },
+							// }}
 						>
 							<Card>
 								<CardContent>
@@ -184,11 +190,11 @@ const CartScreen = () => {
 										<Typography variant='h3'>
 											Items: $ {cart.itemsPrice}
 										</Typography>
-										<Stack spacing={0}>
-											<Typography variant='subtitle1'>
+										<Stack spacing={1}>
+											<Typography variant='h4'>
 												Tax: <span>${cart.taxPrice}</span>
 											</Typography>
-											<Typography variant='subtitle1'>
+											<Typography variant='h4'>
 												Shipping: <span>${cart.shippingPrice}</span>
 											</Typography>
 										</Stack>
@@ -199,13 +205,15 @@ const CartScreen = () => {
 										</Typography>
 
 										<CardActions>
-											<ButtonComponent
-												type='button'
-												disabled={cartItems.length === 0}
-												onClick={checkoutHandler}
-											>
-												Proceed To Checkout
-											</ButtonComponent>
+											<Box my='30px'>
+												<ButtonComponent
+													type='button'
+													disabled={cartItems.length === 0}
+													onClick={checkoutHandler}
+												>
+													Proceed To Checkout
+												</ButtonComponent>
+											</Box>
 										</CardActions>
 									</Stack>
 								</CardContent>

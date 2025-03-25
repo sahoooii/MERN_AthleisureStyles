@@ -36,11 +36,12 @@ const Navbar = () => {
 
 	const StyledBadge = styled(Badge)(() => ({
 		'& .MuiBadge-badge': {
-			right: -5,
+			right: -1,
 			top: 1,
-			padding: '0 4px',
+			padding: '12px 10px',
 			color: 'white',
 			fontWeight: 'bold',
+			fontSize: '12px',
 		},
 	}));
 
@@ -60,7 +61,7 @@ const Navbar = () => {
 			display='flex'
 			alignItems='center'
 			width='100%'
-			height='90px'
+			height='150px'
 			backgroundColor={shades.babyBlue[500]}
 			color={shades.primary[300]}
 			position='fixed'
@@ -92,7 +93,7 @@ const Navbar = () => {
 						display='flex'
 						justifyContent='space-between'
 						alignItems='center'
-						columnGap='20px'
+						columnGap={{ sm: '18px', md: '25px' }}
 						zIndex='2'
 					>
 						{/* search function at TextField */}
@@ -105,7 +106,7 @@ const Navbar = () => {
 
 						<Link to='/'>
 							<IconButton>
-								<HomeOutlined />
+								<HomeOutlined sx={{ fontSize: '30px' }} />
 							</IconButton>
 						</Link>
 
@@ -113,12 +114,12 @@ const Navbar = () => {
 							{cartItems.length > 0 ? (
 								<IconButton aria-label='cart'>
 									<StyledBadge badgeContent={badgeContent} color='green'>
-										<ShoppingBagOutlined />
+										<ShoppingBagOutlined sx={{ fontSize: '30px' }} />
 									</StyledBadge>
 								</IconButton>
 							) : (
 								<IconButton>
-									<ShoppingBagOutlined />
+									<ShoppingBagOutlined sx={{ fontSize: '30px' }} />
 								</IconButton>
 							)}
 						</Link>
@@ -150,8 +151,8 @@ const Navbar = () => {
 					{/*  Mobile ver. Top NavBar */}
 					<Box
 						width='100%'
-						margin='0 8px'
-						pl='10px'
+						margin='0 20px'
+						// pl='10px'
 						display='flex'
 						justifyContent='space-between'
 						alignItems='center'
@@ -168,7 +169,7 @@ const Navbar = () => {
 
 						{userInfo && (
 							<>
-								<SearchInput label='Search' mr='30px' />
+								<SearchInput label='Search' />
 							</>
 						)}
 					</Box>
@@ -177,12 +178,12 @@ const Navbar = () => {
 					<AppBar
 						position='fixed'
 						color='babyBlue'
-						sx={{ top: 'auto', bottom: 0 }}
+						sx={{ top: 'auto', bottom: 0, p: '15px' }}
 					>
 						<Toolbar>
 							<Link to='/'>
 								<IconButton aria-label='home'>
-									<HomeOutlined fontSize='large' sx={{ color: 'white' }} />
+									<HomeOutlined sx={{ color: 'white', fontSize: '40px' }} />
 								</IconButton>
 							</Link>
 
@@ -191,8 +192,8 @@ const Navbar = () => {
 								<>
 									<SideMenuAnimation
 										style={avatarStyle}
-										width={60}
-										height={60}
+										width={80}
+										height={80}
 									/>
 								</>
 							) : (
@@ -219,14 +220,13 @@ const Navbar = () => {
 										<StyledBadge badgeContent={badgeContent} color='green'>
 											<ShoppingBagOutlined
 												fontSize='large'
-												sx={{ color: 'white' }}
+												sx={{ color: 'white', fontSize: '40px' }}
 											/>
 										</StyledBadge>
 									</IconButton>
 								) : (
 									<ShoppingBagOutlined
-										fontSize='large'
-										sx={{ color: 'white' }}
+										sx={{ color: 'white', fontSize: '40px' }}
 									/>
 								)}
 							</Link>
