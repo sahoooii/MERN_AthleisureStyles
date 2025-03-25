@@ -79,10 +79,10 @@ const SideMenuAnimation = ({ style, width, height }) => {
 					transition: {
 						type: 'spring',
 						stiffness: 180,
-						damping: 30, // 閉じるときはゆっくり滑らかに
-						staggerChildren: 0.15, // ゆっくり閉じる
+						damping: 30,
+						staggerChildren: 0.15,
 						staggerDirection: -1,
-						delayChildren: 0.08, // 少し遅めに閉じ始める
+						delayChildren: 0.08,
 					},
 				},
 			};
@@ -116,7 +116,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 						staggerDirection: -1,
 						delayChildren: 0.08,
 					},
-				}, // 閉じるのをゆっくり
+				},
 			};
 		} else {
 			return {
@@ -140,7 +140,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 					transition: {
 						type: 'spring',
 						stiffness: 120,
-						damping: 25, // ゆっくり消える
+						damping: 25,
 					},
 				},
 			};
@@ -229,9 +229,9 @@ const SideMenuAnimation = ({ style, width, height }) => {
 									display: 'flex',
 									justifyContent: 'center',
 									top: {
-										xs: userInfo.isAdmin ? '65px' : '100px',
-										sm: userInfo.isAdmin ? '90px' : '120px',
-										md: userInfo.isAdmin ? '40px' : '100px',
+										xs: userInfo.isAdmin ? '50px' : '90px',
+										sm: userInfo.isAdmin ? '80px' : '100px',
+										md: userInfo.isAdmin ? '40px' : '75px',
 									},
 								}}
 							>
@@ -252,8 +252,8 @@ const SideMenuAnimation = ({ style, width, height }) => {
 										spacing={{ xs: userInfo.isAdmin ? 1.5 : 2, sm: 2.5 }}
 										sx={{
 											mt: {
-												xs: userInfo.isAdmin ? '140px' : '120px',
-												sm: userInfo.isAdmin ? '25px' : '35px',
+												xs: userInfo.isAdmin ? '155px' : '130px',
+												sm: userInfo.isAdmin ? '35px' : '50px',
 												md: userInfo.isAdmin ? '120px' : '100px',
 											},
 										}}
