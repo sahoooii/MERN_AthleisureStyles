@@ -6,12 +6,12 @@ const ShopNowButton = () => {
 	return (
 		<Button
 			sx={{
-				px: '14px',
-				py: '8px',
+				px: '16px',
+				py: '12px',
 				backgroundColor: shades.neutral[700],
 				color: 'white',
 				fontWeight: 600,
-				fontSize: '14px',
+				fontSize: '16px',
 				'&:hover': { backgroundColor: shades.neutral[500] },
 			}}
 		>
