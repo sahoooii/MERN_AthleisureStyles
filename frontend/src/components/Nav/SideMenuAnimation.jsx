@@ -230,7 +230,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 									justifyContent: 'center',
 									top: {
 										xs: userInfo.isAdmin ? '50px' : '90px',
-										sm: userInfo.isAdmin ? '80px' : '100px',
+										sm: userInfo.isAdmin ? '75px' : '85px',
 										md: userInfo.isAdmin ? '40px' : '75px',
 									},
 								}}
@@ -253,7 +253,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 										sx={{
 											mt: {
 												xs: userInfo.isAdmin ? '155px' : '130px',
-												sm: userInfo.isAdmin ? '35px' : '50px',
+												sm: userInfo.isAdmin ? '45px' : '60px',
 												md: userInfo.isAdmin ? '120px' : '100px',
 											},
 										}}
@@ -356,7 +356,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 												onClick={logoutHandler}
 											>
 												<ListItemIcon sx={{ pr: '20px' }}>
-													<Logout sx={{ fontSize: '20px' }} />
+													<Logout sx={{ fontSize: '30px' }} />
 												</ListItemIcon>
 												<Typography
 													variant='h3'
