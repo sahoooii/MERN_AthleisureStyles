@@ -393,7 +393,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 										display='flex'
 										alignItems='center'
 										justifyContent='center'
-										sx={{ mt: userInfo.isAdmin ? '40px' : '100px' }}
+										sx={{ mt: userInfo.isAdmin ? '10px' : '80px' }}
 										style={{ transform: 'translateX(-50%)' }}
 										component={motion.div}
 										variants={itemVariants}
