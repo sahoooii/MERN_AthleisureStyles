@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Button, Typography, useMediaQuery } from '@mui/material';
-import { shades } from '../../../theme';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
+import ShopNowButton from './ShopNowButton';
 
 const CategoryItemTop = ({ item }) => {
 	const isMdScreen = useMediaQuery('(min-width:900px)');
@@ -69,19 +69,7 @@ const CategoryItemTop = ({ item }) => {
 								{item.title}
 							</Typography>
 						)}
-
-						<Button
-							sx={{
-								p: '10px',
-								backgroundColor: shades.neutral[700],
-								color: 'white',
-								fontWeight: 600,
-								fontSize: '12px',
-								'&:hover': { backgroundColor: shades.neutral[500] },
-							}}
-						>
-							SHOP NOW
-						</Button>
+						<ShopNowButton />
 					</Box>
 				</Link>
 			</Box>

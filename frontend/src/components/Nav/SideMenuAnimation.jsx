@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
 	Avatar,
@@ -10,6 +10,7 @@ import {
 	MenuList,
 	Stack,
 	Typography,
+	useMediaQuery,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -20,8 +21,12 @@ import { resetCart } from '../../slices/cartSlice';
 import UseDimensions from './UseDimensions';
 import SideMenu from './SideMenu';
 import AdminSideMenu from './AdminSideMenu';
+import { useTheme } from '@emotion/react';
 
 const SideMenuAnimation = ({ style, width, height }) => {
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // モバイル判定
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -30,10 +35,15 @@ const SideMenuAnimation = ({ style, width, height }) => {
 
 	// SideMene Toggle
 	const [open, setOpen] = useState(false);
+
 	const containerRef = useRef(null);
 	const { height: dimensionsHeight } = UseDimensions(containerRef);
 
 	const [logoutApiCall] = useLogoutMutation();
+
+	const toggleDrawer = (state) => () => {
+		setOpen(state);
+	};
 
 	const logoutHandler = async () => {
 		try {
@@ -50,50 +60,97 @@ const SideMenuAnimation = ({ style, width, height }) => {
 		}
 	};
 
-	const sidebarVariants = {
-		open: (height = 1000) => ({
-			clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
-			transition: {
-				type: 'spring',
-				stiffness: 20,
-				restDelta: 2,
-				duration: 0.5,
-			},
-			zIndex: 10,
-		}),
-		closed: {
-			clipPath: 'circle(10px at 300px -15px)',
-			transition: {
-				delay: 0.5,
-				type: 'spring',
-				stiffness: 400,
-				damping: 40,
-			},
-		},
-	};
+	const sidebarVariants = useMemo(() => {
+		if (isMobile) {
+			return {
+				open: {
+					y: 0,
+					opacity: 1,
+					transition: {
+						type: 'spring',
+						stiffness: 120,
+						damping: 15,
+					},
+					zIndex: 10,
+				},
+				closed: {
+					y: '100%',
+					opacity: 0,
+					transition: {
+						type: 'spring',
+						stiffness: 180,
+						damping: 30, // 閉じるときはゆっくり滑らかに
+						staggerChildren: 0.15, // ゆっくり閉じる
+						staggerDirection: -1,
+						delayChildren: 0.08, // 少し遅めに閉じ始める
+					},
+				},
+			};
+		} else {
+			return {
+				open: (height = 1000) => ({
+					clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
+					transition: { type: 'spring', stiffness: 100, damping: 15 },
+					zIndex: 10,
+				}),
+				closed: {
+					clipPath: 'circle(10px at 300px -15px)',
+					transition: {
+						delay: 0.3,
+						type: 'spring',
+						stiffness: 400,
+						damping: 50,
+					},
+				},
+			};
+		}
+	}, [isMobile]);
 
-	const linksVariants = {
-		open: {
-			transition: { staggerChildren: 0.1, delayChildren: 0.05 },
-		},
-		closed: {
-			transition: { staggerChildren: 0.05, staggerDirection: -1 },
-		},
-	};
+	const linksVariants = useMemo(() => {
+		if (isMobile) {
+			return {
+				open: { transition: { staggerChildren: 0.07, delayChildren: 0.03 } }, // 開くのを少し早く
+				closed: {
+					transition: {
+						staggerChildren: 0.15,
+						staggerDirection: -1,
+						delayChildren: 0.08,
+					},
+				}, // 閉じるのをゆっくり
+			};
+		} else {
+			return {
+				open: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+				closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+			};
+		}
+	}, [isMobile]);
 
-	const itemVariants = {
-		open: {
-			y: 0,
-			opacity: 1,
-		},
-		closed: {
-			y: 100,
-			opacity: 0,
-			transition: {
-				y: { stiffness: 1000 },
-			},
-		},
-	};
+	const itemVariants = useMemo(() => {
+		if (isMobile) {
+			return {
+				open: {
+					y: 0,
+					opacity: 1,
+					transition: { type: 'spring', stiffness: 130 },
+				},
+				closed: {
+					y: 50,
+					opacity: 0,
+					transition: {
+						type: 'spring',
+						stiffness: 120,
+						damping: 25, // ゆっくり消える
+					},
+				},
+			};
+		} else {
+			return {
+				open: { y: 0, opacity: 1 },
+				closed: { y: 100, opacity: 0, transition: { y: { stiffness: 1000 } } },
+			};
+		}
+	}, [isMobile]);
 
 	return (
 		<>
@@ -103,11 +160,11 @@ const SideMenuAnimation = ({ style, width, height }) => {
 				sx={{
 					width: { width },
 					height: { height },
-					p: 0,
+					// p: 0,
 					cursor: 'pointer',
 				}}
 				style={style}
-				onClick={() => setOpen(!open)}
+				onClick={toggleDrawer(true)}
 			/>
 			{/* Overlay */}
 			<Box
@@ -117,10 +174,10 @@ const SideMenuAnimation = ({ style, width, height }) => {
 				zIndex={10}
 				width='100%'
 				height='100%'
+				// maxHeight={open ? '500px' : '100%'}
 				left='0'
 				top='0'
 				overflow='auto'
-				onClick={() => setOpen(!open)}
 			/>
 			{/* sideBar */}
 			<Box
@@ -145,7 +202,12 @@ const SideMenuAnimation = ({ style, width, height }) => {
 					sx={{ width: { xs: 0.7, sm: 'max(350px, 25%)' } }}
 					variants={sidebarVariants}
 				>
-					<Box position='relative' width='100%' height='100%'>
+					<Box
+						position='relative'
+						width='100%'
+						height='100%'
+						sx={{ overflow: 'hidden' }}
+					>
 						<Box
 							position='absolute'
 							width='100%'
@@ -155,6 +217,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							flexDirection='column'
 							justifyContent='center'
 							alignItems='center'
+							onClick={() => setOpen(!open)}
 						>
 							{/* Icon Profile */}
 							<IconButton
@@ -166,8 +229,8 @@ const SideMenuAnimation = ({ style, width, height }) => {
 									display: 'flex',
 									justifyContent: 'center',
 									top: {
-										xs: userInfo.isAdmin ? '40px' : '80px',
-										sm: userInfo.isAdmin ? '80px' : '120px',
+										xs: userInfo.isAdmin ? '65px' : '100px',
+										sm: userInfo.isAdmin ? '90px' : '120px',
 										md: userInfo.isAdmin ? '40px' : '100px',
 									},
 								}}
@@ -186,12 +249,12 @@ const SideMenuAnimation = ({ style, width, height }) => {
 							<Box display='flex' justifyContent='center' alignItems='center'>
 								<MenuList component={motion.ul} variants={linksVariants}>
 									<Stack
-										spacing={{ xs: 1, sm: 2.5 }}
+										spacing={{ xs: userInfo.isAdmin ? 1.5 : 2, sm: 2.5 }}
 										sx={{
 											mt: {
-												xs: userInfo.isAdmin ? '55px' : '70px',
-												sm: userInfo.isAdmin && '10px',
-												md: userInfo.isAdmin ? '60px' : '70px',
+												xs: userInfo.isAdmin ? '100px' : '90px',
+												sm: userInfo.isAdmin ? '10px' : '20px',
+												md: userInfo.isAdmin ? '120px' : '100px',
 											},
 										}}
 									>

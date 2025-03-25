@@ -30,16 +30,23 @@ const Footer = () => {
 			>
 				<Box display='flex'>
 					{/* Left */}
-					<Box flex={1} display='flex' flexDirection='column' p='20px'>
+					<Box
+						flex={1}
+						display='flex'
+						flexDirection='column'
+						pt='50px'
+						px='40px'
+					>
 						<img
 							src={storeLogo}
 							alt='storeLogo'
 							style={{ width: '110px', height: 'auto' }}
 						/>
-						<Typography variant='h4' m='20px 0'>
-							We sell Sports and Fashion mixed styles, which we call Athleisure
-							Styles. We effort to your life makes better and happier. And
-							always inspires you!
+						<Typography variant='h4' sx={{ mt: '25px', lineHeight: 2 }}>
+							Athleisure Styles blends sportswear with fashion, creating
+							versatile looks that seamlessly transition from workouts to
+							everyday life. We strive to elevate your lifestyle, keeping you
+							inspired with fresh ideas every day.{' '}
 						</Typography>
 						{/* sns container */}
 						<Box
@@ -47,6 +54,7 @@ const Footer = () => {
 								display: 'flex',
 								alignItems: 'center',
 								gap: 4,
+								mt: '20px',
 							}}
 						>
 							<IconButton
@@ -59,7 +67,7 @@ const Footer = () => {
 									},
 								}}
 							>
-								<Instagram />
+								<Instagram sx={{ fontSize: '30px' }} />
 							</IconButton>
 							<IconButton
 								sx={{
@@ -71,7 +79,7 @@ const Footer = () => {
 									},
 								}}
 							>
-								<Facebook />
+								<Facebook sx={{ fontSize: '30px' }} />
 							</IconButton>
 							<IconButton
 								sx={{
@@ -83,16 +91,14 @@ const Footer = () => {
 									},
 								}}
 							>
-								<Twitter />
+								<Twitter sx={{ fontSize: '30px' }} />
 							</IconButton>
 						</Box>
 					</Box>
 					{/* Center Address */}
-					<Box flex={1} p='20px'>
-						<Typography variant='h3' m='20px 0'>
-							Contact US
-						</Typography>
-						<Box mb='20px' display='flex' alignItems='center'>
+					<Box flex={1} pt='50px' px='40px'>
+						<Typography variant='h3'>Contact US</Typography>
+						<Box my='20px' display='flex' alignItems='center'>
 							<LocationOnOutlined />
 							<Typography variant='h4' sx={{ ml: '5px' }}>
 								364 Seaside Ave 321, Honolulu HI 98815 USA
@@ -113,7 +119,7 @@ const Footer = () => {
 						{/* Payment */}
 					</Box>
 					{/* Right NewsLetter */}
-					<Box flex={1} p='20px'>
+					<Box flex={1} pt='50px' px='40px'>
 						<HomeNewsLetter />
 					</Box>
 				</Box>

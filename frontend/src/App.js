@@ -16,7 +16,7 @@ function App() {
 		>
 			<Navbar />
 			<Box pt='120px' sx={{ pb: { sm: '350px' } }}>
-				<Container sx={{ mb: { xs: '120px', sm: '100px' } }}>
+				<Container sx={{ mb: { xs: '180px', sm: '300px' }, pt: '70px' }}>
 					<Outlet />
 				</Container>
 			</Box>

@@ -101,7 +101,7 @@ export const theme = createTheme({
 	},
 	typography: {
 		fontFamily: ['Ubuntu', 'sans-serif'].join(','),
-		fontSize: 11,
+		fontSize: 14,
 		h1: {
 			fontFamily: ['Play', 'sans-serif'].join(','),
 			fontSize: 48,
@@ -112,15 +112,15 @@ export const theme = createTheme({
 		},
 		h3: {
 			fontFamily: ['Play', 'sans-serif'].join(','),
-			fontSize: 20,
+			fontSize: 24,
 		},
 		h4: {
 			fontFamily: ['Play', 'sans-serif'].join(','),
-			fontSize: 14,
+			fontSize: 18,
 		},
 		body2: {
 			fontFamily: ['Play', 'sans-serif'].join(','),
-			fontSize: 11,
+			fontSize: 12,
 		},
 	},
 });

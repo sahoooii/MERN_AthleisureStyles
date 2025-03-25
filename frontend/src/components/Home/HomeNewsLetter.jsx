@@ -11,7 +11,7 @@ const HomeNewsLetter = () => {
 
 	return (
 		isNonMobile && (
-			<Box display='flex' flexDirection='column' m='20px 0'>
+			<Box display='flex' flexDirection='column'>
 				<Box mb='20px' display='flex' alignItems='center'>
 					<ContactMailOutlined sx={{ mr: '10px' }} />
 					<Typography variant='h3' fontWeight={300}>

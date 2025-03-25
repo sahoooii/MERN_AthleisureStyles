@@ -40,9 +40,21 @@ const HomeTabs = () => {
 							},
 						}}
 					>
-						<Tab label='ALL' value='all' />
-						<Tab label='MOST REVIEWED' value='mostReviewed' />
-						<Tab label='TOP RATED' value='topRated' />
+						<Tab
+							label='ALL'
+							value='all'
+							sx={{ fontSize: { xs: '12px', sm: '18px' } }}
+						/>
+						<Tab
+							label='MOST REVIEWED'
+							value='mostReviewed'
+							sx={{ fontSize: { xs: '12px', sm: '18px' } }}
+						/>
+						<Tab
+							label='TOP RATED'
+							value='topRated'
+							sx={{ fontSize: { xs: '12px', sm: '18px' } }}
+						/>
 					</Tabs>
 				</Box>
 			)}
