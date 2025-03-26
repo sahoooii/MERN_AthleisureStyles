@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@mui/material';
 import { shades } from '../../../theme';
 
-const ShopNowButton = () => {
+const ShopNowButton = ({ isImageLoaded }) => {
 	return (
 		<Button
 			sx={{
@@ -13,6 +13,10 @@ const ShopNowButton = () => {
 				fontWeight: 600,
 				fontSize: '16px',
 				'&:hover': { backgroundColor: shades.neutral[500] },
+			}}
+			style={{
+				opacity: isImageLoaded ? '1' : '0',
+				transition: 'opacity 1s ease-in-out',
 			}}
 		>
 			SHOP NOW

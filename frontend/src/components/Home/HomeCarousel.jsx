@@ -10,8 +10,9 @@ const HomeCarousel = () => {
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	const { keyword, pageNumber } = useParams();
-
 	const [getKeyword, setGetKeyword] = useState(keyword || '');
+
+	const [isImageLoaded, setIsImageLoaded] = useState(false); // For loading images
 
 	// Get keyword result
 	useEffect(() => {
@@ -89,6 +90,7 @@ const HomeCarousel = () => {
 								<img
 									src={texture}
 									alt={`carousel-${index}`}
+									onLoad={() => setIsImageLoaded(true)} // When loaded images, them true
 									style={{
 										width: '100%',
 										height: '550px',
@@ -100,6 +102,7 @@ const HomeCarousel = () => {
 								<img
 									src={texture}
 									alt={`carousel-${index}`}
+									onLoad={() => setIsImageLoaded(true)}
 									style={{
 										width: '100%',
 										height: '480px',
@@ -118,11 +121,14 @@ const HomeCarousel = () => {
 								position='absolute'
 								bottom={isNonMobile ? '20%' : '10%'}
 								right='4%'
-								style={{ opacity: '0.7' }}
+								style={{
+									opacity: isImageLoaded ? '1' : '0', // After loaded images, then show up
+									transition: 'opacity 1s ease-in-out',
+								}}
 							>
 								<Box>
 									<Typography variant='h3' textAlign='center' mb='10px'>
-										- Just Like This Taste of Styles -
+										- This is My Kind of Style -
 									</Typography>
 									<Typography
 										variant='h4'
