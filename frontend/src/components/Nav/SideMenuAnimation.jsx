@@ -197,6 +197,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 				justifyContent='center'
 				custom={dimensionsHeight}
 				ref={containerRef}
+				initial='closed'
 			>
 				{/* bg */}
 				<Box
@@ -319,10 +320,10 @@ const SideMenuAnimation = ({ style, width, height }) => {
 										{/* Admin Menu */}
 										{userInfo && userInfo.isAdmin && (
 											<Box
-												// sx={{
-												// 	maxHeight: 'calc(100vh - 60px)',
-												// 	overflowY: 'hidden',
-												// }}
+											// sx={{
+											// 	maxHeight: 'calc(100vh - 60px)',
+											// 	overflowY: 'hidden',
+											// }}
 											>
 												<Divider
 													sx={{ mb: '10px' }}
@@ -393,7 +394,7 @@ const SideMenuAnimation = ({ style, width, height }) => {
 										display='flex'
 										alignItems='center'
 										justifyContent='center'
-										sx={{ mt: userInfo.isAdmin ? '10px' : '80px' }}
+										sx={{ mt: userInfo.isAdmin ? 0 : '80px' }}
 										style={{ transform: 'translateX(-50%)' }}
 										component={motion.div}
 										variants={itemVariants}
