@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ShopNowButton from './ShopNowButton';
 
 const CategoryItemBottom = ({ item }) => {
 	const isMdScreen = useMediaQuery('(min-width:900px)');
+
+	const [isImageLoaded, setIsImageLoaded] = useState(false); // For loading images
 
 	return (
 		<>
@@ -29,6 +31,7 @@ const CategoryItemBottom = ({ item }) => {
 						alt={item.title}
 						width='100%'
 						height='357px'
+						onLoad={() => setIsImageLoaded(true)} // When loaded images, them true
 						style={{ objectFit: 'cover' }}
 					/>
 					<Box
@@ -43,7 +46,15 @@ const CategoryItemBottom = ({ item }) => {
 						justifyContent='center'
 					>
 						{isMdScreen ? (
-							<Typography variant='h2' color='white' mb='20px'>
+							<Typography
+								variant='h2'
+								color='white'
+								mb='20px'
+								style={{
+									opacity: isImageLoaded ? '1' : '0',
+									transition: 'opacity 1s ease-in-out',
+								}}
+							>
 								{item.title}
 							</Typography>
 						) : (
@@ -52,11 +63,15 @@ const CategoryItemBottom = ({ item }) => {
 								fontFamily='Play'
 								color='white'
 								mb='20px'
+								style={{
+									opacity: isImageLoaded ? '1' : '0',
+									transition: 'opacity 1s ease-in-out',
+								}}
 							>
 								{item.title}
 							</Typography>
 						)}
-						<ShopNowButton />
+						<ShopNowButton isImageLoaded={isImageLoaded} />
 					</Box>
 				</Link>
 			</Box>
