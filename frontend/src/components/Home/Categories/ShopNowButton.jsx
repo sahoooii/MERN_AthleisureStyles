@@ -16,7 +16,7 @@ const ShopNowButton = ({ isImageLoaded }) => {
 			}}
 			style={{
 				opacity: isImageLoaded ? '1' : '0',
-				transition: 'opacity 1s ease-in-out',
+				transition: 'opacity 0.8s ease-in-out',
 			}}
 		>
 			SHOP NOW

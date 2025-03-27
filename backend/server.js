@@ -2,6 +2,7 @@ import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import connectDB from './config/db.js';
 import itemRoutes from './routes/itemRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -15,6 +16,18 @@ connectDB(); // Connect to Mongo DB
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+
+app.use(
+	cors({
+		origin: [
+			'http://localhost:3000', // Front-end(for local)
+			'http://127.0.0.1:3000', // local other ver.
+			'https://athleisurestyles.onrender.com', // deploy
+		],
+		methods: ['GET', 'POST', 'PUT', 'DELETE'], // ✅ 許可するメソッドAllow method
+		credentials: true, // Auth（Cookie, JWT など）
+	})
+);
 
 // Body parser middleware
 app.use(express.json());
