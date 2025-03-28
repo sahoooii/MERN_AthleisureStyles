@@ -117,6 +117,7 @@ const getUserWishlist = asyncHandler(async (req, res) => {
 			$match: { _id: user._id },
 		},
 		{ $unwind: '$wishlist' },
+		{ $sort: { 'wishlist.createdAt': -1 } },
 		{ $skip: pageSize * (page - 1) },
 		{ $limit: pageSize },
 	]);
@@ -214,8 +215,10 @@ const getUsers = asyncHandler(async (req, res) => {
 	const totalUsersCount = await User.countDocuments();
 
 	const users = await User.find({})
+		.sort({ createdAt: -1 })
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
+
 	res
 		.status(200)
 		.json({ users, page, pages: Math.ceil(totalUsersCount / pageSize) });

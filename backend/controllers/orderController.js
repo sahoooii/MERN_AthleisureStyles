@@ -84,9 +84,9 @@ const getMyOrders = asyncHandler(async (req, res) => {
 
 	// look for logged in user orders
 	const orders = await Order.find({ user: req.user._id, isPaid: true })
+		.sort({ createdAt: -1 })
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
-
 	res
 		.status(200)
 		.json({ orders, page, pages: Math.ceil(totalOrdersCount / pageSize) });
@@ -105,9 +105,9 @@ const getNotPaidOrders = asyncHandler(async (req, res) => {
 
 	// look for logged in user orders
 	const orders = await Order.find({ user: req.user._id, isPaid: false })
+		.sort({ createdAt: -1 })
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
-
 	res
 		.status(200)
 		.json({ orders, page, pages: Math.ceil(totalOrdersCount / pageSize) });
@@ -212,6 +212,7 @@ const getOrders = asyncHandler(async (req, res) => {
 	// Get all orders and get id and user name from user collection
 	const orders = await Order.find({})
 		.populate('user', 'id firstName lastName')
+		.sort({ createdAt: -1 })
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
 
