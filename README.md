@@ -1,76 +1,206 @@
 # Athleisure Styles <br />MERN E-Commerce Platform
 
-<img src="https://img.shields.io/badge/-MONGODB-00800.svg?logo=mongodb&style=flat&logoColor=fff"> <img src="https://img.shields.io/badge/-Express-000000.svg?logo=express&style=flat&logoColor=FF0"> <img src="https://img.shields.io/badge/-React-555.svg?logo=react&style=flat"> <img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=flat&logoColor=ff0">
+![Mongo DB](https://img.shields.io/badge/mongodb-00800?style=for-the-badge&logo=mongodb&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000?style=for-the-badge&logo=express&logoColor=ff0)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=node.js&logoColor=ff0)
+<br />
+![Redux](https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+![PayPal](https://img.shields.io/badge/paypal-00457C?style=for-the-badge&logo=paypal&logoColor=white)
+![Material UI](https://img.shields.io/badge/material_ui-000?style=for-the-badge&logo=mui&logoColor=007FFF)
+![Motion](https://img.shields.io/badge/Motion-0055ff?style=for-the-badge&logo=framer&logoColor=white)
+![Axios](https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
+![Formik](https://img.shields.io/badge/formik-4285F4?style=for-the-badge&logo=formik&logoColor=white)
+![Yup](https://img.shields.io/badge/yup-E2B714?style=for-the-badge&logo=yup&logoColor=white)
 
-<img src="https://img.shields.io/badge/-Redux-764ABC.svg?logo=redux&style=flat-square"><img src="https://img.shields.io/badge/-Paypal-00457C.svg?logo=paypal&style=flat-square"> <img src="https://img.shields.io/badge/-Material_UI-000.svg?logo=mui&style=flat&logoColor=007FFF=flat-square"> <img src="https://img.shields.io/badge/-Motion-0055ff.svg?logo=framer&style=flat-square"> <img src="https://img.shields.io/badge/-AXIOS-5A29E4.svg?logo=axios&style=popout-square"> <img src="https://img.shields.io/badge/-Formik-4285F4.svg?logo=formik&style=flat-square"> <img src="https://img.shields.io/badge/-Yup-E2B714.svg?logo=yup&style=flat-square"> <p>etc...</p>
+<p>etc...</p>
 
 ## Link
+
 [Athleisure Styles](https://athleisurestyles.onrender.com)
 
-## DEMO PC Version.
+### Mobile Version. Shopping Process
+
+![mobile](https://github.com/user-attachments/assets/706f0f3f-4bae-4beb-b313-2d7838e461fa)
+
+
+## DEMO PC Ver. Shopping Process
 
 ![pc](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/def87834-d35c-4f06-915e-770f436f0826)
 
-### PC Version. Menu
+### PC Version. Menu (User, Order History, Wishlist...)
 
 ![withMenu](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/3efe10f0-88ca-411c-968f-5a68f7366d81)
 
-### Mobile Version.
 
-![mobile](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/4fbbb31a-85cd-4f8a-b34c-0709d3aa7b0e)
+## What is this project?
 
-### Describe
+**(EN)**
 
-This project is an eCommerce platform built with the MERN stack and Redux and using Material UI. This one is my first piece of the MERN stack original project. It's took almost half a year since I started it. <br />
-At first time, I was not used to using Material UI, so this was one of the struggling parts. I put effort into the design. And fully responsive web design.<br />
-I made the name Athleisure Styles. The concept is sports and Fashion mixed styles. It is a full-featured shopping cart with PayPal and credit/debit payments.
+This project is a full-stack eCommerce platform built with the MERN stack, Redux, and Material UI. It is my first original MERN stack project, and I spent nearly six months developing it.
 
-このプロジェクトは、MERN スタックと Redux で構築されマテリアル UI を使用する e コマースプラットフォームです。MERN スタックプロジェクトの初めてのオリジナル作品です。始めてから半年近くかかりました。<br />
-また初めてマテリアル UI を使用したので、なかなか慣れずここが苦労した部分の一つでした。デザインにもかなりこだわり、レスポンシブデザイン対応です。<br />
-コンセプトはスポーツとファッションのミックススタイルがテーマで、Athleisure Styles と名前をつけました。PayPal とクレジット/デビット支払いを備えたフル機能のショッピングサイトです。
+When I started, I wasn't familiar with Material UI, which made the design process quite challenging. However, I put a lot of effort into refining the UI/UX and ensuring a fully responsive design.
+
+The store is called Athleisure Styles, inspired by the fusion of sportswear and fashion. This platform includes full CRUD functionality for features like product reviews, a wishlist, and order history. Additionally, it supports PayPal and credit/debit card payments for a complete shopping experience.
+<br />
+<br />
+
+**(JP)**
+
+MERN スタック、Redux、Material UI を使用して構築した e コマースプラットフォームです。MERN スタックを使った初めてのオリジナル作品であり、Material UI を初めて採用したプロジェクトでもあったため、設計プロセスには多くの試行錯誤がありました。しかし、約半年かけて構想から完成まで作り上げました。
+
+コンセプトは、スポーツウェアとファッションを融合させ、日常でもおしゃれに着こなせるスタイルを提案すること。
+<br />
+そのテーマに基づき、「Athleisure Styles」という名前をつけました。
+
+このプラットフォームには、商品レビュー、ウィッシュリスト、注文履歴の管理などの完全な CRUD 機能を搭載。さらに、PayPal やクレジット/デビットカード決済にも対応し、実際のオンラインショッピングのような体験ができます。
 
 ## Features
 
-- Home Carousel
-- Home Tab Most Reviewed and Top Rated
-- Home categories
-- Create Item reviews ratings, and delete reviews
-- Items search feature
-- Full featured shopping cart
-- Pagination
-- Checkout Steps (shipping, payment method, etc)
-- PayPal / credit card integration
-- Database seeder (items & users)
-- User
-  - Register profile with profile image
-  - User profile Edit and Delete
-  - Order History, Order details page
-  - Add Wishlist and Remove
-- Admin Management
-  - User management
-  - Create new items and delete items
-  - Manage reviews
-  - Admin Order details page
-  - Mark orders as delivered option
+**(EN)**
 
-## Usage
+✅ Home Page
 
-- Create a MongoDB database and obtain your MongoDB URI &nbsp; -[ MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register)
-- Create a PayPal account and obtain your Client ID &nbsp; -[ PayPal Developer](https://developer.paypal.com/home)
+- Interactive carousel
+- Tab sections: "Most Reviewed" & "Top Rated"
+- Category-based item filtering
 
-### Env Variables
+✅ Shopping & Reviews
 
-Rename the `example.env` file to `.env` and add the following
+- Search items by keyword
+- Leave, and delete item reviews & ratings
+- Full-featured shopping cart with quantity control
+- Pagination for item lists
+
+✅ Checkout & Payments
+
+- Step-by-step checkout process (Billing, Shipping, Payment, etc...)
+- PayPal / Credit Card payment integration
+
+✅ User Features
+
+- Register & edit profile (with profile image upload)
+- View order history & order details
+- Add & remove items from Wishlist
+
+✅ Admin Management
+
+- User management (create, edit, delete users)
+- Items management (create, edit, delete items)
+- Manage item reviews
+- View order details & mark orders as delivered
+
+✅ Database & Backend
+
+- Database seeder for initial items & users
+
+**(JP)**
+
+✅ ホームページ
+
+- インタラクティブなカルーセル
+- タブ切り替え：「レビュー数が多い商品」「高評価の商品」
+- カテゴリ別の商品フィルタリング表示
+
+✅ ショッピング & レビュー
+
+- キーワード検索機能
+- 商品のレビュー・評価の投稿、削除
+- 商品の数量調整が可能なショッピングカート
+- 商品リストのページネーション
+
+✅ チェックアウト & 決済
+
+- ステップごとのチェックアウト（支払い情報、配送情報、支払い方法など）
+- PayPal / クレジットカード決済対応
+
+✅ ユーザー機能
+
+- プロフィール登録 & 編集（プロフィール画像アップロード対応）
+- 注文履歴 & 注文詳細ページの閲覧
+
+✅ 管理者機能(Admin)
+
+- ユーザー管理（登録・編集・削除）
+- 商品の管理（登録・編集・削除）
+- レビューの管理
+- 注文詳細の閲覧 & 配送完了ステータス管理
+
+✅ データベース & バックエンド
+
+- 初期データ（商品 & ユーザー）のシード機能
+
+## What's Improved? 🧐
+
+**(EN)**
+
+After the initial development, I made several improvements to enhance security, performance, and design:
+
+- **🔒 Security Enhancements**
+
+  - Added **CORS settings** enhance security
+  - Implemented proper error handling with **try-catch** blocks in missing areas
+
+- **🎨 UI/UX Improvements**
+
+  - Adjusted font sizes and icons for better readability, especially on mobile
+  - Enhanced animations:
+    - Fixed and refined the search input close animation
+    - Improved sidebar animations for a smoother and lighter experience
+    - Optimized animations based on device type (mobile vs. non-mobile)
+
+- **⚡ Performance Optimization**
+  - **Order history & wishlist** sorting: Changed from ascending to descending order so that the latest items appear first
+  - Improved button consistency & accessibility:
+    - Enlarged icons and buttons for better usability, especially on mobile
+    - Adjusted the "Shop Now" button to be more accessible
+
+**(JP)**
+
+最初の開発後、セキュリティ、パフォーマンス、デザインを向上させるために以下の改善を行いました：
+
+- **🔒 セキュリティの強化**
+
+  - セキュリティ向上のため CORS 設定を追加
+  - try-catch を追加し、適切なエラーハンドリングを実装
+
+- **🎨 UI/UX Improvements**
+
+  - フォントサイズやアイコンを調整し、特にモバイルでの視認性を向上
+  - アニメーションの強化
+    - サーチインプットの閉じる際のアニメーションを修正・改善
+    - サイドバーのアニメーションをスムーズ＆軽量化
+    - **端末に応じたアニメーション最適化**（モバイルと PC で異なる種類のアニメーションを適用）
+
+- **⚡ パフォーマンスの最適化**
+  - リストの並び順を改善
+    - **注文履歴**や**ウィッシュリスト**を降順に変更（最新のものが先に表示されるように）
+  - ボタンの一貫性と操作性の向上
+    - アイコンやボタンを大きくし、押しやすく調整(特にモバイル)
+    - 「Shop Now」ボタンのサイズを調整し、よりアクセスしやすく
+
+## Usage 🚀
+
+### 1. Setup
+
+#### 📌 Required Accounts
+
+- **MongoDB Atlas**: Create a database and obtain your MongoDB URI →&nbsp; [ Sign up](https://www.mongodb.com/cloud/atlas/register)
+- **PayPal Developer**: Create an account and obtain your Client ID → &nbsp; [ Sign up](https://developer.paypal.com/home)
+
+### 🔧 Environment Variables
+
+Rename `example.env` to `.env` and add your credentials:
 
 ```
 NODE_ENV = development
 PORT = 5000
-MONGO_URI = Your mongodb URI
-JWT_SECRET = Your secret Key
-PAYPAL_CLIENT_ID = Your paypal client id
+MONGO_URI = your_mongodb_uri
+JWT_SECRET = your_secret_key
+PAYPAL_CLIENT_ID = your_paypal_sandbox_client_id
 ```
 
-### Run
+### 2. Run the ApplicationSetup
 
 ```
 # Run frontend (:3000) & backend (:5000)
@@ -80,39 +210,44 @@ npm run dev
 npm run server
 ```
 
-### Build & Deploy
+### 3. Build & Deploy
 
 ```
-# Create frontend prod build
+# Create frontend production build
 cd frontend
 npm run build
 ```
 
-### Seed Database
+### 4. Seed Database
 
-You can use the following commands to seed the database with some sample users and items as well as destroy all data
-
-<h6>You can create your account too</h6>
+You can pre-populate the database with sample users and items.
 
 ```
-# Import data
+# Import sample data
 npm run data:import
 
-# Destroy data
+# Delete all data
 npm run data:destroy
 ```
 
-```
-Sample User Logins
+### ➡️ You can also create your own account manually.
 
-- Admin
-admin@email.com
-123456
+#### 📌 Sample Logins
 
-- Customer
-kanoa@email.com
-123456
+| Role  | Email            | Password |
+| ----- | ---------------- | -------- |
+| Admin | admin@email.com  | 123456   |
+| User1 | kanoa@email.com  | 123456   |
+| User2 | shohei@email.com | 123456   |
 
-shohei@email.com
-123456
-```
+### 5. PayPal Test Payments 💳
+
+To test the checkout process, follow these steps:
+
+#### 1. Log in to [ PayPal Developer ](https://developer.paypal.com/home) with your account
+
+#### 2. Go to Testing Tools → Sandbox Accounts
+
+#### 3. Use the Personal (buyer) sandbox email & password for checkout
+
+➡️ This allows you to simulate payments without real transactions.
