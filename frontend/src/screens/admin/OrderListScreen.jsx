@@ -69,6 +69,7 @@ const OrderListScreen = () => {
 			sx={{
 				m: { md: '30px auto', xs: '10px auto' },
 				width: '95%',
+				minHeight: '600px',
 			}}
 		>
 			<Typography variant='h3' sx={{ mb: '20px' }}>
@@ -77,6 +78,11 @@ const OrderListScreen = () => {
 
 			{isLoading ? (
 				<Loader />
+			) : data && data.orders.length === 0 ? (
+				<Message severity='error'>
+					Oh No! No one shopping yet!
+					<Link to='/'>- Go Back</Link>
+				</Message>
 			) : error ? (
 				<Message severity='error'>
 					{error?.data?.message || error.error}
@@ -99,9 +105,9 @@ const OrderListScreen = () => {
 								>
 									<TableHead>
 										<TableRow>
-											{columns.map((column) => (
+											{columns.map((column, index) => (
 												<StyledTableCell
-													key={column.id}
+													key={`${column._id}-${index}`}
 													align={column.align}
 													style={{ minWidth: column.minWidth }}
 													sx={{ fontWeight: 'bold' }}
@@ -141,14 +147,18 @@ const OrderListScreen = () => {
 												<StyledTableCell align='right'>
 													$ {order.totalPrice}
 												</StyledTableCell>
-												<StyledTableCell align='right'>
+												<StyledTableCell
+													align={`${order.isPaid ? 'right' : 'center'}`}
+												>
 													{order.isPaid ? (
 														order.paidAt.substring(0, 10)
 													) : (
 														<CloseOutlinedIcon sx={{ color: '#FF0000' }} />
 													)}
 												</StyledTableCell>
-												<StyledTableCell align='right'>
+												<StyledTableCell
+													align={`${order.isDelivered ? 'right' : 'center'}`}
+												>
 													{order.isDelivered ? (
 														order.deliveredAt.substring(0, 10)
 													) : (

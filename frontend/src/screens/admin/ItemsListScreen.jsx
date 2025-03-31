@@ -28,7 +28,10 @@ const ItemsListScreen = () => {
 	const { palette } = useTheme();
 	const { pageNumber } = useParams();
 
-	const { data, isLoading, error } = useGetItemsByAdminQuery({ pageNumber });
+	const { data, isLoading, error } = useGetItemsByAdminQuery(
+		{ pageNumber },
+		{ keepPreviousData: true }
+	);
 	// console.log(data && data.items);
 
 	const { data: userProfile, isLoading: loadingProfile } =
@@ -39,7 +42,6 @@ const ItemsListScreen = () => {
 		{ id: 'item_name', label: 'ITEM NAME', minWidth: 140 },
 		{ id: 'brand', label: 'BRAND', minWidth: 130 },
 		{ id: 'category', label: 'CATEGORY', minWidth: 120 },
-		{ id: 'code', label: 'CODE', minWidth: 100, align: 'right' },
 		{ id: 'price', label: '$ PRICE', minWidth: 110, align: 'right' },
 		{ id: 'reviews', label: 'REVIEWS', minWidth: 110, align: 'right' },
 	];
@@ -70,6 +72,7 @@ const ItemsListScreen = () => {
 			sx={{
 				m: { md: '10px auto', xs: '10px auto' },
 				width: '95%',
+				minHeight: '600px',
 			}}
 		>
 			{isLoading ? (
@@ -116,9 +119,9 @@ const ItemsListScreen = () => {
 							>
 								<TableHead>
 									<TableRow>
-										{columns.map((column) => (
+										{columns.map((column, index) => (
 											<StyledTableCell
-												key={column.id}
+												key={`${column._id}-${index}`}
 												align={column.align}
 												style={{ minWidth: column.minWidth }}
 												sx={{ fontWeight: 'bold' }}
@@ -162,9 +165,6 @@ const ItemsListScreen = () => {
 											<StyledTableCell>{item.name}</StyledTableCell>
 											<StyledTableCell>{item.brand}</StyledTableCell>
 											<StyledTableCell>{item.category}</StyledTableCell>
-											<StyledTableCell align='right'>
-												{item.code}
-											</StyledTableCell>
 											<StyledTableCell
 												align='right'
 												// style={{ paddingRight: '20px' }}
