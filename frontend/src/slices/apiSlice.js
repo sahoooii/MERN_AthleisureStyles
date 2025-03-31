@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL } from '../constants';
+import { API_URL } from '../constants';
 import { logout } from './authSlice';
 
-const baseQuery = fetchBaseQuery({ baseUrl: BASE_URL });
+const baseQuery = fetchBaseQuery({ baseUrl: API_URL });
 
 // need to customize the baseQuery to be able to intercept any 401 responses
 async function baseQueryWithAuth(args, api, extra) {
