@@ -1,5 +1,6 @@
 // export const BASE_URL =
 // 	process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : '';
+export const API_URL = process.env.REACT_APP_BACKEND_URL;
 export const BASE_URL = '';
 export const ITEMS_URL = '/api/items';
 export const USERS_URL = '/api/users';
