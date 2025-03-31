@@ -25,7 +25,10 @@ const UsersListScreen = () => {
 	const { palette } = useTheme();
 	const { pageNumber } = useParams();
 
-	const { data, isLoading, error } = useGetUsersQuery({ pageNumber });
+	const { data, isLoading, error } = useGetUsersQuery(
+		{ pageNumber },
+		{ keepPreviousData: true }
+	);
 	// console.log(data && data);
 
 	const columns = [
@@ -33,7 +36,7 @@ const UsersListScreen = () => {
 		{ id: 'user_name', label: 'USER NAME', minWidth: 140 },
 		{ id: 'email', label: 'E-MAIL', minWidth: 140 },
 		{ id: 'status', label: 'STATUS', minWidth: 130 },
-		{ id: 'create_at', label: 'CREATE AT', minWidth: 120, align: 'right' },
+		{ id: 'create_at', label: 'CREATE AT', minWidth: 120, align: 'left' },
 	];
 
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -62,6 +65,7 @@ const UsersListScreen = () => {
 			sx={{
 				m: { md: '30px auto', xs: '10px auto' },
 				width: '95%',
+				minHeight: '600px',
 			}}
 		>
 			{isLoading ? (
@@ -87,9 +91,9 @@ const UsersListScreen = () => {
 							>
 								<TableHead>
 									<TableRow>
-										{columns.map((column) => (
+										{columns.map((column, index) => (
 											<StyledTableCell
-												key={column.id}
+												key={`${column._id}-${index}`}
 												align={column.align}
 												style={{ minWidth: column.minWidth }}
 												sx={{ fontWeight: 'bold' }}
@@ -149,7 +153,7 @@ const UsersListScreen = () => {
 												)}
 											</StyledTableCell>
 											<StyledTableCell
-												align='right'
+												align='left'
 												// style={{ paddingRight: '20px' }}
 											>
 												{user.createdAt.substring(0, 10)}

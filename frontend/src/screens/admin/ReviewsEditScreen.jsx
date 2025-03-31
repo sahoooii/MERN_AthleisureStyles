@@ -36,10 +36,13 @@ const ReviewsEditScreen = () => {
 
 	const { data: user } = useGetProfileDetailsQuery();
 	// console.log(user);
-	const { data, isLoading, error, refetch } = useGetReviewsByAdminQuery({
-		itemId,
-		pageNumber,
-	});
+	const { data, isLoading, error, refetch } = useGetReviewsByAdminQuery(
+		{
+			itemId,
+			pageNumber,
+		},
+		{ keepPreviousData: true }
+	);
 	// console.log(data && data);
 
 	const [updateReviewsByAdmin] = useUpdateReviewByAdminMutation();
@@ -131,6 +134,7 @@ const ReviewsEditScreen = () => {
 			sx={{
 				m: { md: '30px auto', xs: '10px auto' },
 				width: '95%',
+				minHeight: '600px',
 			}}
 		>
 			{isLoading ? (
@@ -150,9 +154,9 @@ const ReviewsEditScreen = () => {
 							<Table sx={{ minWidth: 654 }}>
 								<TableHead>
 									<TableRow>
-										{itemColumns.map((column) => (
+										{itemColumns.map((column, index) => (
 											<StyledTableCellItem
-												key={column.id}
+												key={`${column._id}-${index}`}
 												align={column.align}
 												style={{ minWidth: column.minWidth }}
 												sx={{ fontWeight: 'bold' }}
@@ -240,9 +244,9 @@ const ReviewsEditScreen = () => {
 									>
 										<TableHead>
 											<TableRow>
-												{columns.map((column) => (
+												{columns.map((column, index) => (
 													<StyledTableCell
-														key={column.id}
+														key={`${column._id}-${index}`}
 														align={column.align}
 														style={{ minWidth: column.minWidth }}
 														sx={{ fontWeight: 'bold' }}

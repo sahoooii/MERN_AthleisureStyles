@@ -105,6 +105,7 @@ const ItemDetailsScreen = () => {
 									alt={data.item.name}
 									width='100%'
 									height='100%'
+									loading='lazy'
 									style={{ objectFit: 'cover' }}
 								/>
 							) : (
@@ -113,6 +114,7 @@ const ItemDetailsScreen = () => {
 									alt={data.item.name}
 									height='400px'
 									width='100%'
+									loading='lazy'
 									style={{ objectFit: 'cover' }}
 								/>
 							)}
