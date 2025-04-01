@@ -20,15 +20,21 @@ const app = express();
 app.use(
 	cors({
 		origin: [
-			'http://localhost:3000', // Front-end(for local)
-			'http://127.0.0.1:3000', // local other ver.
-			'https://athleisurestyles.onrender.com', // render
-			'https://mern-athleisure-styles.vercel.app', //vercel
+			// 'http://localhost:3000', // Front-end(for local)
+			// 'http://127.0.0.1:3000', // local other ver.
+			// 'https://athleisurestyles.onrender.com', // render
+			// 'https://mern-athleisure-styles.vercel.app', //vercel
+			'*',
 		],
-		methods: ['GET', 'POST', 'PUT', 'DELETE'], // ✅ 許可するメソッドAllow method
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // ✅ 許可するメソッドAllow method
 		credentials: true, // Auth（Cookie, JWT など）
 	})
 );
+
+app.use((req, res, next) => {
+	console.log('CORS Headers:', res.getHeaders());
+	next();
+});
 
 // Body parser middleware
 app.use(express.json());
