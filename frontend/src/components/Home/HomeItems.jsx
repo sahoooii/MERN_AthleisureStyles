@@ -48,7 +48,11 @@ const HomeItems = () => {
 
 	const { userInfo } = useSelector((state) => state.auth);
 
-	const { data, isLoading, error } = useGetItemsQuery({ keyword, pageNumber });
+	const {
+		data = { items: [], pages: 1, page: 1 },
+		isLoading,
+		error,
+	} = useGetItemsQuery({ keyword, pageNumber });
 
 	const { data: user, refetch } = useGetProfileDetailsQuery();
 
@@ -274,12 +278,14 @@ const HomeItems = () => {
 						)}
 					</Box>
 
-					<Paginate
-						menu='/page'
-						pages={data.pages}
-						page={data.page}
-						keyword={keyword ? keyword : ''}
-					/>
+					{!isLoading && (
+						<Paginate
+							menu='/page'
+							pages={data.pages}
+							page={data.page}
+							keyword={keyword ? keyword : ''}
+						/>
+					)}
 				</>
 			)}
 		</>

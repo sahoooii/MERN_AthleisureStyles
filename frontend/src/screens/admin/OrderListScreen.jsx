@@ -173,12 +173,14 @@ const OrderListScreen = () => {
 						</Paper>
 					)}
 
-					<Paginate
-						pages={data.pages}
-						page={data.page}
-						menu='orderlist'
-						isAdmin={true}
-					/>
+					{!isLoading && data?.pages && (
+						<Paginate
+							pages={data.pages}
+							page={data.page}
+							menu='orderlist'
+							isAdmin={true}
+						/>
+					)}
 
 					<Box mt='20px'>
 						<Link to='/'>

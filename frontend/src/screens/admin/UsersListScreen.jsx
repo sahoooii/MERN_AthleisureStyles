@@ -165,12 +165,14 @@ const UsersListScreen = () => {
 						</TableContainer>
 					</Paper>
 
-					<Paginate
-						pages={data.pages}
-						page={data.page}
-						menu='userslist'
-						isAdmin={true}
-					/>
+					{!isLoading && data?.pages && (
+						<Paginate
+							pages={data.pages}
+							page={data.page}
+							menu='userslist'
+							isAdmin={true}
+						/>
+					)}
 
 					<Box mt='20px'>
 						<Link to='/'>

@@ -188,11 +188,13 @@ const NotPaidOrderHistoryScreen = () => {
 									</Box>
 								))}
 
-								<Paginate
-									menu='/notpaidorders'
-									pages={data.pages}
-									page={data.page}
-								/>
+								{!isLoading && data?.pages && (
+									<Paginate
+										menu='/notpaidorders'
+										pages={data.pages}
+										page={data.page}
+									/>
+								)}
 							</>
 						) : (
 							// Mobile ver.

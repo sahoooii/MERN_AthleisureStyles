@@ -200,11 +200,14 @@ const WishlistScreen = () => {
 										</Box>
 									))}
 								</Box>
-								<Paginate
-									menu='/wishlist'
-									pages={data.pages}
-									page={data.page}
-								/>
+								
+								{!isLoading && data?.pages && (
+									<Paginate
+										menu='/wishlist'
+										pages={data.pages}
+										page={data.page}
+									/>
+								)}
 
 								<Box mt='20px'>
 									<Link to='/'>

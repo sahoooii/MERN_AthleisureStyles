@@ -46,7 +46,7 @@ const ItemDetailsTabs = () => {
 		pageNumber,
 	});
 
-	// console.log(data && data);
+	console.log(data);
 
 	const [deleteReview] = useDeleteReviewMutation();
 
@@ -153,11 +153,13 @@ const ItemDetailsTabs = () => {
 												</Box>
 											))}
 
-											<Paginate
-												menu={`/item/${itemId}`}
-												pages={data.pages}
-												page={data.page}
-											/>
+											{!isLoading && data?.pages && (
+												<Paginate
+													menu={`/item/${itemId}`}
+													pages={data.pages}
+													page={data.page}
+												/>
+											)}
 										</>
 									) : (
 										<Box mt='10px'>
@@ -236,11 +238,13 @@ const ItemDetailsTabs = () => {
 															</Stack>
 														</Grid>
 													))}
-													<Paginate
-														menu={`/item/${itemId}`}
-														pages={data.pages}
-														page={data.page}
-													/>
+													{!isLoading && data?.pages && (
+														<Paginate
+															menu={`/item/${itemId}`}
+															pages={data.pages}
+															page={data.page}
+														/>
+													)}
 												</AccordionDetails>
 											</Accordion>
 										</Box>
