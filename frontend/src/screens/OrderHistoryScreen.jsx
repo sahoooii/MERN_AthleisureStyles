@@ -213,11 +213,13 @@ const OrderHistoryScreen = () => {
 									</Box>
 								))}
 
-								<Paginate
-									menu='/orderhistory'
-									pages={data.pages}
-									page={data.page}
-								/>
+								{!isLoading && data?.pages && (
+									<Paginate
+										menu='/orderhistory'
+										pages={data.pages}
+										page={data.page}
+									/>
+								)}
 							</>
 						) : (
 							// Mobile ver.
@@ -326,11 +328,13 @@ const OrderHistoryScreen = () => {
 									</Box>
 								))}
 
-								<Paginate
-									menu='/orderhistory'
-									pages={data.pages}
-									page={data.page}
-								/>
+								{!isLoading && data?.pages && (
+									<Paginate
+										menu='/orderhistory'
+										pages={data.pages}
+										page={data.page}
+									/>
+								)}
 							</>
 						)}
 					</>

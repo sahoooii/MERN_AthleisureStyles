@@ -238,10 +238,8 @@ const Categories = ({ data, isLoading, error, title, typography, menu }) => {
 				</>
 			)}
 
-			{!isLoading && (
-				<>
-					<Paginate menu={menu} pages={data.pages} page={data.page} />
-				</>
+			{!isLoading && data?.pages && (
+				<Paginate menu={menu} pages={data.pages} page={data.page} />
 			)}
 		</>
 	);

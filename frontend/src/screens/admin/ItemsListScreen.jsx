@@ -193,12 +193,14 @@ const ItemsListScreen = () => {
 						</TableContainer>
 					</Paper>
 
-					<Paginate
-						pages={data.pages}
-						page={data.page}
-						menu='itemslist'
-						isAdmin={true}
-					/>
+					{!isLoading && data?.pages && (
+						<Paginate
+							pages={data.pages}
+							page={data.page}
+							menu='itemslist'
+							isAdmin={true}
+						/>
+					)}
 
 					<Box mt='20px'>
 						<Link to='/'>

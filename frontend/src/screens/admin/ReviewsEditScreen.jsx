@@ -332,12 +332,14 @@ const ReviewsEditScreen = () => {
 								</TableContainer>
 							</Paper>
 
-							<Paginate
-								pages={data.pages}
-								page={data.page}
-								menu={`item/${itemId}/reviews`}
-								isAdmin={true}
-							/>
+							{!isLoading && data?.pages && (
+								<Paginate
+									pages={data.pages}
+									page={data.page}
+									menu={`item/${itemId}/reviews`}
+									isAdmin={true}
+								/>
+							)}
 						</>
 					)}
 
