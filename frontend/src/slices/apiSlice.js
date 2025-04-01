@@ -8,8 +8,6 @@ const BASE_URL =
 		? 'http://localhost:5000' // 開発環境ではローカルサーバーを使用
 		: API_URL; // 本番環境ではデプロイ済みのバックエンドを使用
 
-console.log('API URL:', BASE_URL);
-
 const baseQuery = fetchBaseQuery({
 	baseUrl: BASE_URL,
 	credentials: 'include',

@@ -17,6 +17,23 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
+app.use((req, res, next) => {
+	res.on('finish', () => {
+		console.log('CORS Headers:', res.getHeaders());
+	});
+	next();
+});
+
+app.options('*', (req, res) => {
+	res.header(
+		'Access-Control-Allow-Origin',
+		'https://mern-athleisure-styles.vercel.app'
+	);
+	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+	res.header('Access-Control-Allow-Credentials', 'true');
+	res.sendStatus(200);
+});
+
 app.use(
 	cors({
 		origin: [
@@ -25,7 +42,7 @@ app.use(
 			'https://athleisurestyles.onrender.com', // render
 			'https://mern-athleisure-styles.vercel.app', //vercel
 		],
-		methods: ['GET', 'POST', 'PUT', 'DELETE'], // ✅ 許可するメソッドAllow method
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // ✅ 許可するメソッドAllow method
 		credentials: true, // Auth（Cookie, JWT など）
 	})
 );
