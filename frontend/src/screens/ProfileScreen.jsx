@@ -19,7 +19,7 @@ import {
 	useGetProfileDetailsQuery,
 	useDeleteUserMutation,
 } from '../slices/usersApiSlice';
-import { logout, setCredentials } from '../slices/authSlice';
+import { logout, loginSuccess } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import FormComponent from '../components/FormUi/FormComponent';
 import ButtonComponent from '../components/Utils/ButtonComponent';
@@ -134,7 +134,7 @@ const ProfileScreen = () => {
 					picturePath: userInfo.picturePath,
 				}).unwrap();
 
-				dispatch(setCredentials({ ...response }));
+				dispatch(loginSuccess({ ...response }));
 				toast.success('Profile updated successfully');
 
 				refetch();
@@ -162,7 +162,7 @@ const ProfileScreen = () => {
 					picturePath: imageData.picturePath,
 				}).unwrap();
 
-				dispatch(setCredentials({ ...response }));
+				dispatch(loginSuccess({ ...response }));
 				toast.success('Profile updated successfully');
 
 				refetch();

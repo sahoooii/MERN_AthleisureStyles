@@ -13,7 +13,7 @@ import {
 	InputAdornment,
 } from '@mui/material';
 import { useLoginMutation } from '../../slices/usersApiSlice';
-import { setCredentials } from '../../slices/authSlice';
+import { loginSuccess } from '../../slices/authSlice';
 import FormComponent from '../../components/FormUi/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
@@ -69,7 +69,7 @@ const LoginFormScreen = () => {
 		try {
 			const { email, password } = values;
 			const response = await login({ email, password }).unwrap();
-			dispatch(setCredentials({ ...response }));
+			dispatch(loginSuccess({ ...response }));
 
 			navigate(redirect);
 		} catch (err) {
