@@ -16,7 +16,7 @@ import {
 	useRegisterMutation,
 	useUploadProfileImageMutation,
 } from '../../slices/usersApiSlice';
-import { setCredentials } from '../../slices/authSlice';
+import { loginSuccess } from '../../slices/authSlice';
 import { toast } from 'react-toastify';
 import FormComponent from '../../components/FormUi/FormComponent';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
@@ -134,7 +134,7 @@ const RegisterFormScreen = () => {
 				picturePath: imageData.picturePath,
 			}).unwrap();
 
-			dispatch(setCredentials({ ...response }));
+			dispatch(loginSuccess({ ...response }));
 
 			navigate(redirect);
 		} catch (err) {

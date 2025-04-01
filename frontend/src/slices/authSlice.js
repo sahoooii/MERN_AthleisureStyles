@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 
 const initialState = {
-	userInfo: localStorage.getItem('userInfo')
-		? JSON.parse(localStorage.getItem('userInfo'))
+	userInfo: Cookies.get('userInfo')
+		? JSON.parse(Cookies.get('userInfo'))
 		: null,
 };
 
@@ -11,17 +12,20 @@ const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		setCredentials: (state, action) => {
+		loginSuccess: (state, action) => {
 			state.userInfo = action.payload;
-			localStorage.setItem('userInfo', JSON.stringify(action.payload));
+			Cookies.set('userInfo', JSON.stringify(action.payload), {
+				secure: true,
+				sameSite: 'Strict',
+			});
 		},
-		logout: (state, action) => {
+		logout: (state) => {
 			state.userInfo = null;
-			localStorage.clear();
+			Cookies.remove('userInfo');
 		},
 	},
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { loginSuccess, logout } = authSlice.actions;
 
 export default authSlice.reducer;
