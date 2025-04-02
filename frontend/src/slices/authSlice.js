@@ -16,7 +16,7 @@ const authSlice = createSlice({
 			state.userInfo = action.payload;
 			Cookies.set('userInfo', JSON.stringify(action.payload), {
 				secure: true,
-				sameSite: 'Strict',
+				sameSite: 'None',
 			});
 		},
 		logout: (state) => {
