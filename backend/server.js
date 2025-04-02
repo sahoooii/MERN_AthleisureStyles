@@ -25,10 +25,16 @@ const allowedOrigins = [
 
 app.use(
 	cors({
-		origin: allowedOrigins, // ここを修正
-		credentials: true, // Cookie をフロントに送るために true
+		origin: (origin, callback) => {
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error('Not allowed by CORS'));
+			}
+		},
+		credentials: true, // Cookie を送受信できるようにする
 		methods: ['GET', 'POST', 'PUT', 'DELETE'],
-		allowedHeaders: ['Content-Type', 'Authorization'],
+		allowedHeaders: ['Content-Type', 'Authorization'], // 必要なヘッダーを許可
 	})
 );
 
