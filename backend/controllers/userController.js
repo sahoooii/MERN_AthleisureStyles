@@ -13,7 +13,7 @@ const loginUser = asyncHandler(async (req, res) => {
 	// user exist check
 	if (user && (await user.matchPassword(password))) {
 		// Create token
-		generateToken(res, user._id);
+		const token = generateToken(res, user._id);
 
 		res.status(200).json({
 			_id: user._id,
@@ -22,6 +22,7 @@ const loginUser = asyncHandler(async (req, res) => {
 			email: user.email,
 			picturePath: user.picturePath,
 			isAdmin: user.isAdmin,
+			token,
 		});
 	} else {
 		res.status(401);

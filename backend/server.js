@@ -17,33 +17,23 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-app.use((req, res, next) => {
-	res.on('finish', () => {
-		console.log('CORS Headers:', res.getHeaders());
-	});
-	next();
-});
-
-app.options('*', (req, res) => {
-	res.header(
-		'Access-Control-Allow-Origin',
-		'https://mern-athleisure-styles.vercel.app'
-	);
-	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-	res.header('Access-Control-Allow-Credentials', 'true');
-	res.sendStatus(200);
-});
+const allowedOrigins = [
+	'http://localhost:3000',
+	'https://athleisurestyles.onrender.com',
+	'https://mern-athleisure-styles.vercel.app',
+];
 
 app.use(
 	cors({
-		origin: [
-			'http://localhost:3000', // Front-end(for local)
-			'http://127.0.0.1:3000', // local other ver.
-			'https://athleisurestyles.onrender.com', // render
-			'https://mern-athleisure-styles.vercel.app', //vercel
-		],
-		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // ✅ 許可するメソッドAllow method
-		credentials: true, // Auth（Cookie, JWT など）
+		origin: (origin, callback) => {
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error('Not allowed by CORS'));
+			}
+		},
+		credentials: true, // Cookie送信を許可
+		methods: ['GET', 'POST', 'PUT', 'DELETE'],
 	})
 );
 
