@@ -46,8 +46,6 @@ const ItemDetailsTabs = () => {
 		pageNumber,
 	});
 
-	console.log(data);
-
 	const [deleteReview] = useDeleteReviewMutation();
 
 	const deleteHandler = async (id) => {

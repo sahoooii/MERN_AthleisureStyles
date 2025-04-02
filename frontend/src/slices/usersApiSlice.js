@@ -24,6 +24,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				url: `${PROFILE_UPLOAD_URL}`,
 				method: 'POST',
 				body: data,
+				credentials: 'include',
 			}),
 		}),
 		getProfileDetails: builder.query({
