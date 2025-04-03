@@ -7,6 +7,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 			query: (order) => ({
 				url: ORDERS_URL,
 				method: 'POST',
+				credentials: 'include',
 				body: { ...order },
 			}),
 		}),
@@ -14,6 +15,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 			query: (orderId) => ({
 				url: `${ORDERS_URL}/${orderId}`,
 				method: 'GET',
+				credentials: 'include',
 			}),
 			keepUnusedDataFor: 5,
 		}),
@@ -21,12 +23,14 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 			query: (orderId) => ({
 				url: `${ORDERS_URL}/${orderId}`,
 				method: 'DELETE',
+				credentials: 'include',
 			}),
 		}),
 		payOrder: builder.mutation({
 			query: ({ orderId, details }) => ({
 				url: `${ORDERS_URL}/${orderId}/pay`,
 				method: 'PUT',
+				credentials: 'include',
 				body: { ...details },
 			}),
 		}),
@@ -34,6 +38,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 			query: () => ({
 				url: PAYPAL_URL,
 				method: 'GET',
+				credentials: 'include',
 			}),
 			keepUnusedDataFor: 5,
 		}),
@@ -41,6 +46,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 			query: ({ pageNumber }) => ({
 				url: `${ORDERS_URL}/orderhistory`,
 				method: 'GET',
+				credentials: 'include',
 				params: {
 					pageNumber,
 				},
@@ -51,6 +57,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 			query: ({ pageNumber }) => ({
 				url: `${ORDERS_URL}/notpaidorders`,
 				method: 'GET',
+				credentials: 'include',
 				params: {
 					pageNumber,
 				},
@@ -61,6 +68,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 			query: ({ pageNumber }) => ({
 				url: ORDERS_URL,
 				method: 'GET',
+				credentials: 'include',
 				params: {
 					pageNumber,
 				},
@@ -71,6 +79,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 			query: (orderId) => ({
 				url: `${ORDERS_URL}/${orderId}/deliver`,
 				method: 'PUT',
+				credentials: 'include',
 			}),
 		}),
 	}),

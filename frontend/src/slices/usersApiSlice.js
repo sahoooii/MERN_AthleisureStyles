@@ -46,6 +46,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 			query: () => ({
 				url: `${USERS_URL}/profile`,
 				method: 'GET',
+				credentials: 'include',
 			}),
 			providesTags: ['Users'],
 			keepUnusedDataFor: 5,
@@ -54,6 +55,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 			query: ({ pageNumber }) => ({
 				url: `${USERS_URL}/wishlist`,
 				method: 'GET',
+				credentials: 'include',
 				params: {
 					pageNumber,
 				},
@@ -66,6 +68,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				url: `${USERS_URL}/profile`,
 				method: 'PUT',
 				body: data,
+				credentials: 'include',
 			}),
 		}),
 		logout: builder.mutation({
@@ -78,6 +81,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 			query: (userId) => ({
 				url: `${USERS_URL}/${userId}`,
 				method: 'DELETE',
+				credentials: 'include',
 			}),
 		}),
 		// Admin
@@ -85,6 +89,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 			query: ({ pageNumber }) => ({
 				url: USERS_URL,
 				method: 'GET',
+				credentials: 'include',
 				params: {
 					pageNumber,
 				},
@@ -96,12 +101,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 			query: (userId) => ({
 				url: `${USERS_URL}/${userId}`,
 				method: 'DELETE',
+				credentials: 'include',
 			}),
 		}),
 		getUserDetails: builder.query({
 			query: (userId) => ({
 				url: `${USERS_URL}/${userId}`,
 				method: 'GET',
+				credentials: 'include',
 			}),
 			keepUnusedDataFor: 5,
 		}),
@@ -110,6 +117,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				url: `${USERS_URL}/${data.userId}`,
 				method: 'PUT',
 				body: data,
+				credentials: 'include',
 			}),
 			invalidatesTags: ['Users'],
 		}),
