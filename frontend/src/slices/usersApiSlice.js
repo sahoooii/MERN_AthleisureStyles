@@ -21,6 +21,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 						expires: 7, // For seven days
 						secure: true,
 						sameSite: 'None',
+						domain: '',
 					});
 				} catch (err) {
 					console.error('Login failed:', err);

@@ -10,6 +10,7 @@ const generateToken = (res, userId) => {
 		httpOnly: true,
 		secure: process.env.NODE_ENV !== 'development',
 		sameSite: 'None',
+		domain: 'mern-athleisure-styles.vercel.app',
 		maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
 	});
 	return token;
