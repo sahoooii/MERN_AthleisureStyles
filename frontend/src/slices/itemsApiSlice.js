@@ -29,6 +29,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 		getItemsByAdmin: builder.query({
 			query: ({ pageNumber }) => ({
 				url: `${ITEMS_URL}/itemslist`,
+				credentials: 'include',
 				params: {
 					pageNumber,
 				},
@@ -40,6 +41,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			query: (itemId) => ({
 				url: `${ITEMS_URL}/${itemId}/admin`,
 				method: 'GET',
+				credentials: 'include',
 			}),
 			providesTags: ['Items'],
 			keepUnusedDataFor: 5,
@@ -49,6 +51,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				url: `${ITEMS_URL}`,
 				method: 'POST',
 				body: data,
+				credentials: 'include',
 			}),
 			invalidatesTags: ['Items'],
 		}),
@@ -57,6 +60,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				url: `${ITEMS_URL}/${data._id}`,
 				method: 'PUT',
 				body: data,
+				credentials: 'include',
 			}),
 			invalidatesTags: ['Items'],
 		}),
@@ -65,12 +69,14 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				url: ITEM_UPLOAD_URL,
 				method: 'POST',
 				body: data,
+				credentials: 'include',
 			}),
 		}),
 		deleteItem: builder.mutation({
 			query: (itemId) => ({
 				url: `${ITEMS_URL}/${itemId}`,
 				method: 'DELETE',
+				credentials: 'include',
 			}),
 			// invalidatesTags: ['Items'],
 		}),
@@ -79,6 +85,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				url: `${ITEMS_URL}/${data.itemId}/wishlist`,
 				method: 'PUT',
 				body: data,
+				credentials: 'include',
 			}),
 			invalidatesTags: ['Users'],
 		}),
@@ -87,6 +94,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 				url: `${ITEMS_URL}/${data.itemId}/reviews`,
 				method: 'POST',
 				body: data,
+				credentials: 'include',
 			}),
 			invalidatesTags: ['Items'],
 		}),
@@ -94,6 +102,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			query: (itemId) => ({
 				url: `${ITEMS_URL}/${itemId}/reviews`,
 				method: 'DELETE',
+				credentials: 'include',
 			}),
 			invalidatesTags: ['Items'],
 		}),
@@ -101,6 +110,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			query: ({ itemId, pageNumber }) => ({
 				url: `${ITEMS_URL}/${itemId}/admin/reviews`,
 				method: 'GET',
+				credentials: 'include',
 				params: {
 					pageNumber,
 				},
@@ -112,6 +122,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			query: (data) => ({
 				url: `${ITEMS_URL}/${data.itemId}/admin/reviews`,
 				method: 'PUT',
+				credentials: 'include',
 				body: data,
 			}),
 			invalidatesTags: ['Items'],
