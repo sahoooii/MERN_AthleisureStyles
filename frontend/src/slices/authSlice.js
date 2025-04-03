@@ -5,9 +5,10 @@ const initialState = {
 	userInfo: Cookies.get('userInfo')
 		? JSON.parse(Cookies.get('userInfo'))
 		: null,
+	token: Cookies.get('jwt') || null, // Get JWT from Cookie
 };
 
-// For localsStorage functionality
+// For Cookies functionality
 const authSlice = createSlice({
 	name: 'auth',
 	initialState,
@@ -21,7 +22,9 @@ const authSlice = createSlice({
 		},
 		logout: (state) => {
 			state.userInfo = null;
+			state.token = null;
 			Cookies.remove('userInfo');
+			Cookies.remove('jwt'); // JWT も削除
 		},
 	},
 });

@@ -17,6 +17,10 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
+// Cookie parser middleware
+// To allow to access cookie.request
+app.use(cookieParser());
+
 const allowedOrigins = [
 	'http://localhost:3000',
 	'https://athleisurestyles.onrender.com',
@@ -41,10 +45,6 @@ app.use(
 // Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Cookie parser middleware
-// To allow to access cookie.request
-app.use(cookieParser());
 
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
