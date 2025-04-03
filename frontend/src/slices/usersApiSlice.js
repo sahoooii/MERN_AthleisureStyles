@@ -33,6 +33,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				url: `${USERS_URL}`,
 				method: 'POST',
 				body: data,
+				credentials: 'include',
 			}),
 		}),
 		uploadProfileImage: builder.mutation({

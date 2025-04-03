@@ -12,7 +12,6 @@ const protect = asyncHandler(async (req, res, next) => {
 	token =
 		req.cookies.jwt ||
 		(req.headers.authorization && req.headers.authorization.split(' ')[1]);
-	console.log('cookies:', req.cookies.jwt);
 
 	if (token) {
 		try {
