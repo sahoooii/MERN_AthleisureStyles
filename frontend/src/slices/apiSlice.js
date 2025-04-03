@@ -12,11 +12,15 @@ const baseQuery = fetchBaseQuery({
 	baseUrl: BASE_URL,
 	credentials: 'include',
 	prepareHeaders: (headers) => {
-		const userInfo = Cookies.get('userInfo')
-			? JSON.parse(Cookies.get('userInfo'))
-			: null;
-		if (userInfo?.token) {
-			headers.set('Authorization', `Bearer ${userInfo.token}`);
+		// const userInfo = Cookies.get('userInfo')
+		// 	? JSON.parse(Cookies.get('userInfo'))
+		// 	: null;
+		// if (userInfo?.token) {
+		// 	headers.set('Authorization', `Bearer ${userInfo.token}`);
+		// }
+		const token = Cookies.get('jwt'); // クッキーから JWT を取得
+		if (token) {
+			headers.set('Authorization', `Bearer ${token}`);
 		}
 		return headers;
 	},

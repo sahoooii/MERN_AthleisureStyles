@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import asyncHandler from './asyncHandler.js';
 import User from '../models/userModel.js';
@@ -5,7 +6,6 @@ import User from '../models/userModel.js';
 // Make sure you have a cookie or not
 // Protect Routes
 const protect = asyncHandler(async (req, res, next) => {
-	console.log('Cookies received:', req.cookies);
 	let token;
 
 	// Read JWT from the cookie the name is 'jwt'
@@ -17,7 +17,14 @@ const protect = asyncHandler(async (req, res, next) => {
 			const decoded = jwt.verify(token, process.env.JWT_SECRET);
 			// Add request object to access all of routes and data easily
 			// Get userId from DB except password
-			req.user = await User.findById(decoded.userId).select('-password');
+			const userId = new mongoose.Types.ObjectId(decoded.userId);
+			// req.user = await User.findById(decoded.userId).select('-password');
+			req.user = await User.findById(userId).select('-password');
+
+			if (!req.user) {
+				res.status(401);
+				throw new Error('Not authorized, user not found');
+			}
 
 			next();
 		} catch (error) {

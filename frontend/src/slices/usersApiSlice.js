@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { USERS_URL, PROFILE_UPLOAD_URL } from '../constants';
 import { apiSlice } from './apiSlice';
 
@@ -11,6 +12,20 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				method: 'POST',
 				body: data,
 			}),
+			async onQueryStarted(args, { queryFulfilled, dispatch }) {
+				try {
+					const { data } = await queryFulfilled;
+
+					// JWT を Cookies に保存 (secure & sameSite 設定を適切に)
+					Cookies.set('jwt', data.token, {
+						expires: 7, // For seven days
+						secure: true,
+						sameSite: 'None',
+					});
+				} catch (err) {
+					console.error('Login failed:', err);
+				}
+			},
 		}),
 		register: builder.mutation({
 			query: (data) => ({
