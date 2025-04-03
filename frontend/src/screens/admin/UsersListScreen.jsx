@@ -29,7 +29,6 @@ const UsersListScreen = () => {
 		{ pageNumber },
 		{ keepPreviousData: true }
 	);
-	// console.log(data && data);
 
 	const columns = [
 		{ id: 'user', label: 'USER', minWidth: 160 },
