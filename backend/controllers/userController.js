@@ -52,7 +52,9 @@ const registerUser = asyncHandler(async (req, res) => {
 	});
 
 	if (user) {
-		generateToken(res, user._id);
+		const token = generateToken(res, user._id);
+
+		console.log('Cookies after register:', req.cookies);
 
 		res.status(201).json({
 			_id: user._id,
@@ -61,6 +63,7 @@ const registerUser = asyncHandler(async (req, res) => {
 			email: user.email,
 			picturePath: user.picturePath,
 			isAdmin: user.isAdmin,
+			token
 		});
 	} else {
 		res.status(400);

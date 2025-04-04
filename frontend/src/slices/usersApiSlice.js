@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { USERS_URL, PROFILE_UPLOAD_URL } from '../constants';
 import { apiSlice } from './apiSlice';
+import { loginSuccess } from './authSlice';
 
 // injectEndpoints = for separate each endpoints
 // For server functionality
@@ -11,6 +12,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				url: `${USERS_URL}/login`,
 				method: 'POST',
 				body: data,
+				credentials: 'include',
 			}),
 			async onQueryStarted(args, { queryFulfilled, dispatch }) {
 				try {
@@ -35,6 +37,27 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				body: data,
 				credentials: 'include',
 			}),
+			async onQueryStarted(args, { queryFulfilled, dispatch }) {
+				try {
+					const { data } = await queryFulfilled;
+
+					Cookies.set('jwt', data.token, {
+						expires: 7,
+						secure: true,
+						sameSite: 'None',
+					});
+
+					Cookies.set('userInfo', JSON.stringify(data), {
+						secure: true,
+						sameSite: 'None',
+					});
+
+					// Reduxにも保存
+					dispatch(loginSuccess(data));
+				} catch (err) {
+					console.error('Register failed:', err);
+				}
+			},
 		}),
 		uploadProfileImage: builder.mutation({
 			query: (data) => ({
