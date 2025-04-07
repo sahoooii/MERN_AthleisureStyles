@@ -6,10 +6,9 @@ import cors from 'cors';
 import connectDB from './config/db.js';
 import itemRoutes from './routes/itemRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import profileImageUploadRoutes from './routes/profileImageUploadRoutes.js';
-import itemImageUploadRoutes from './routes/itemImageUploadRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import { createCloudinaryUploadRoute } from './routes/cloudinaryUploadRoute.js';
 
 dotenv.config();
 connectDB(); // Connect to Mongo DB
@@ -42,14 +41,18 @@ app.use(
 	})
 );
 
+app.use(
+	'/api/profileupload',
+	createCloudinaryUploadRoute('profileImage', 'picturePath')
+);
+app.use('/api/itemupload', createCloudinaryUploadRoute('itemImage', 'image'));
+
 // Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/profileupload', profileImageUploadRoutes);
-app.use('/api/itemupload', itemImageUploadRoutes);
 app.use('/api/orders', orderRoutes);
 
 // For PayPal
