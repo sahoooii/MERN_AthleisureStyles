@@ -121,6 +121,7 @@ const RegisterFormScreen = () => {
 
 		for (let value in values) {
 			formData.append(value, values[value]);
+			console.log(values);
 		}
 		// picture path
 		// console.log('picturePath', values);
