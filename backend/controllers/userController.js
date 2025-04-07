@@ -43,6 +43,9 @@ const registerUser = asyncHandler(async (req, res) => {
 		throw new Error('You have already registered');
 	}
 
+	console.log('picturePath:', picturePath);
+	//  picturePath: undefined
+	
 	const user = await User.create({
 		firstName,
 		lastName,
@@ -54,8 +57,6 @@ const registerUser = asyncHandler(async (req, res) => {
 	if (user) {
 		const token = generateToken(res, user._id);
 
-		console.log('Cookies after register:', req.cookies);
-
 		res.status(201).json({
 			_id: user._id,
 			firstName: user.firstName,
@@ -63,7 +64,7 @@ const registerUser = asyncHandler(async (req, res) => {
 			email: user.email,
 			picturePath: user.picturePath,
 			isAdmin: user.isAdmin,
-			token
+			token,
 		});
 	} else {
 		res.status(400);

@@ -98,7 +98,8 @@ const ItemEditScreen = () => {
 			formData.append(value, values[value]);
 		}
 		// item image
-		formData.append('image', values.image.name);
+		formData.append('image', 'itemImage');
+		// formData.append('image', values.image.name);
 
 		try {
 			const imageData = await uploadItemImag(formData).unwrap();
