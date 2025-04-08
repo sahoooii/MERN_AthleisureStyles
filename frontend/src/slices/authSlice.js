@@ -23,6 +23,7 @@ const authSlice = createSlice({
 		logout: (state) => {
 			state.userInfo = null;
 			state.token = null;
+			localStorage.clear();
 			Cookies.remove('userInfo');
 			Cookies.remove('jwt'); // JWT も削除
 		},
