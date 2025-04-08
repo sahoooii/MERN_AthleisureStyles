@@ -28,6 +28,7 @@ import { shades } from '../../theme';
 import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 import { useSelector } from 'react-redux';
 import Paginate from '../Utils/Paginate';
+import formatQuantity from '../../utils/formatQuantity';
 
 const HomeItems = () => {
 	const { palette } = useTheme();
@@ -189,7 +190,7 @@ const HomeItems = () => {
 										{item.rating > 0 && <RatingLogic rating={item.rating} />}
 										{item.numReviews > 0 && (
 											<Typography variant='subtitle2' ml='8px'>
-												{item.numReviews} Reviews
+												{formatQuantity(item.numReviews, 'Review')}
 											</Typography>
 										)}
 									</Box>

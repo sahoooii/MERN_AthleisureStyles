@@ -159,7 +159,7 @@ const ProfileScreen = () => {
 					lastName,
 					email,
 					password,
-					picturePath: imageData.picturePath,
+					picturePath: imageData.image,
 				}).unwrap();
 
 				dispatch(loginSuccess({ ...response }));

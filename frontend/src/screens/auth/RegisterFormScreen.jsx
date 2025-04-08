@@ -114,30 +114,24 @@ const RegisterFormScreen = () => {
 
 	// Profile image upload and register
 	const submitHandler = async (values) => {
-		console.log('submitHandler called 🚀', values); // ← 追加！
-		const { firstName, lastName, email, password, picturePath } = values;
+		const { firstName, lastName, email, password } = values;
 
 		const formData = new FormData();
 
 		for (let value in values) {
 			formData.append(value, values[value]);
-			console.log(values);
 		}
 		// picture path
-		// console.log('picturePath', values);
-		// formData.append('picturePath', values.picturePath.name);
-		formData.append('picturePath', picturePath); // ← Fileオブジェクトを渡す
-		console.log('📦 Uploading file:', picturePath);
+		formData.append('picturePath', values.picturePath.name);
 		try {
 			const imageData = await uploadProfileImage(formData).unwrap();
-			console.log('Cloudinary imageData 🖼️:', imageData);
 
 			const response = await register({
 				firstName,
 				lastName,
 				email,
 				password,
-				picturePath: imageData.picturePath,
+				picturePath: imageData.image,
 			}).unwrap();
 
 			dispatch(loginSuccess({ ...response }));

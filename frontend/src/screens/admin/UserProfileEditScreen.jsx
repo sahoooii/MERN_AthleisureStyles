@@ -167,7 +167,7 @@ const UserProfileEditScreen = () => {
 					email,
 					password,
 					isAdmin,
-					picturePath: imageData.picturePath,
+					picturePath: imageData.image,
 				}).unwrap();
 
 				refetch();

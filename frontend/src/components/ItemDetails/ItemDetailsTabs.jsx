@@ -27,6 +27,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Loader from '../Utils/Loader';
 import Paginate from '../Utils/Paginate';
+import formatQuantity from '../../utils/formatQuantity';
 
 const ItemDetailsTabs = () => {
 	const { itemId, pageNumber } = useParams();
@@ -102,7 +103,7 @@ const ItemDetailsTabs = () => {
 												</Box>
 											) : (
 												<Typography variant='h4' mb='15px'>
-													{data.item.numReviews} Reviews
+													{formatQuantity(data.item.reviews.length, 'Review')}
 												</Typography>
 											)}
 
@@ -151,7 +152,7 @@ const ItemDetailsTabs = () => {
 												</Box>
 											))}
 
-											{!isLoading && data?.pages && (
+											{!isLoading && data?.pages !== 0 && (
 												<Paginate
 													menu={`/item/${itemId}`}
 													pages={data.pages}
@@ -171,7 +172,10 @@ const ItemDetailsTabs = () => {
 														<Typography variant='h4'>No Reviews Yet</Typography>
 													) : (
 														<Typography variant='h4'>
-															{data.item.numReviews} Reviews
+															{formatQuantity(
+																data.item.reviews.length,
+																'Review'
+															)}
 														</Typography>
 													)}
 												</AccordionSummary>
@@ -236,7 +240,7 @@ const ItemDetailsTabs = () => {
 															</Stack>
 														</Grid>
 													))}
-													{!isLoading && data?.pages && (
+													{!isLoading && data?.pages !== 0 && (
 														<Paginate
 															menu={`/item/${itemId}`}
 															pages={data.pages}

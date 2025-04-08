@@ -6,6 +6,7 @@ import {
 	useTheme,
 	TextField,
 	Input,
+	MenuItem,
 } from '@mui/material';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
@@ -26,6 +27,7 @@ import { shades } from '../../theme';
 import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import Meta from '../../components/Utils/Meta';
+import ItemCategoryMenu from '../../components/items/ItemCategoryMenu';
 
 const ItemEditScreen = () => {
 	const { palette } = useTheme();
@@ -345,6 +347,7 @@ const ItemEditScreen = () => {
 										// inputProps={{ style: { textAlign: 'right' } }}
 									/>
 									<TextField
+										select
 										label='Item Category'
 										onBlur={handleBlur}
 										onChange={handleChange}
@@ -355,7 +358,16 @@ const ItemEditScreen = () => {
 										}
 										helperText={touched.category && errors.category}
 										sx={{ gridColumn: 'span 2' }}
-									/>
+									>
+										{ItemCategoryMenu.map((menu) => (
+											<MenuItem
+												key={`${menu.value}-${menu.name}`}
+												value={menu.name}
+											>
+												{menu.name}
+											</MenuItem>
+										))}
+									</TextField>
 									<TextField
 										label='Item Code'
 										onBlur={handleBlur}
@@ -367,7 +379,9 @@ const ItemEditScreen = () => {
 										sx={{ gridColumn: 'span 2' }}
 									/>
 									<TextField
-										label={values.countInStock === '' ? 'Out of Stock' : 'Item Stock'}
+										label={
+											values.countInStock === '' ? 'Out of Stock' : 'Item Stock'
+										}
 										onBlur={handleBlur}
 										onChange={handleChange}
 										value={values.countInStock}

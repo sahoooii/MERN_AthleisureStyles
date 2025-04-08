@@ -24,6 +24,7 @@ import Loader from '../components/Utils/Loader';
 import Message from '../components/Utils/Message';
 import { useGetProfileDetailsQuery } from '../slices/usersApiSlice';
 import Meta from '../components/Utils/Meta';
+import formatQuantity from '../utils/formatQuantity';
 
 const ItemDetailsScreen = () => {
 	const dispatch = useDispatch();
@@ -143,14 +144,14 @@ const ItemDetailsScreen = () => {
 
 								{/* Reviews */}
 								<Box mb='6px'>
-									{data.item.numReviews > 0 ? (
-										<Typography variant='span'>
-											{data.item.numReviews} Reviews
-										</Typography>
-									) : (
+									{data.item.reviews.length === 0 ? (
 										<Box sx={{ width: { xs: '90%', sm: '70%', md: '50%' } }}>
 											<Message severity='info'>No Reviews Yet</Message>
 										</Box>
+									) : (
+										<Typography variant='span'>
+											{formatQuantity(data.item.reviews.length, 'Review')}
+										</Typography>
 									)}
 								</Box>
 
