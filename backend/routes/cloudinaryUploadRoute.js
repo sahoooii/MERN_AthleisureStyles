@@ -52,9 +52,6 @@ export function createCloudinaryUploadRoute(folderName, fieldName) {
 			return res.status(400).json({ message: 'No file uploaded' });
 		}
 
-		// console.log('uploaded image path:', req.file?.path);
-		console.log('req.file:', req.file);
-
 		res.status(200).send({
 			message: 'Image uploaded successfully',
 			image: req.file?.path,

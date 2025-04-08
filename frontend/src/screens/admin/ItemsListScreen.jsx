@@ -23,6 +23,7 @@ import ButtonComponent from '../../components/Utils/ButtonComponent';
 import { useGetProfileDetailsQuery } from '../../slices/usersApiSlice';
 import Paginate from '../../components/Utils/Paginate';
 import Meta from '../../components/Utils/Meta';
+import formatQuantity from '../../utils/formatQuantity';
 
 const ItemsListScreen = () => {
 	const { palette } = useTheme();
@@ -175,15 +176,13 @@ const ItemsListScreen = () => {
 												align='right'
 												// style={{ paddingRight: '20px' }}
 											>
-												{item.reviews.length > 0 ? (
+												{item.reviews.length > 0 && (
 													<Link
 														to={`/admin/item/${item._id}/reviews`}
 														style={{ textDecoration: 'underline' }}
 													>
-														{item.reviews.length} Reviews
+														{formatQuantity(item.reviews.length, 'Review')}
 													</Link>
-												) : (
-													<>{item.reviews.length} Reviews</>
 												)}
 											</StyledTableCell>
 										</StyledTableRow>

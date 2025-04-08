@@ -43,9 +43,6 @@ const registerUser = asyncHandler(async (req, res) => {
 		throw new Error('You have already registered');
 	}
 
-	console.log('picturePath:', picturePath);
-	//  picturePath: undefined
-	
 	const user = await User.create({
 		firstName,
 		lastName,

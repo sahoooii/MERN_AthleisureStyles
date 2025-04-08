@@ -6,6 +6,7 @@ import {
 	useTheme,
 	TextField,
 	Input,
+	MenuItem,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
@@ -21,6 +22,7 @@ import FormComponentTop from '../../components/FormUi/FormComponentTop';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 import Meta from '../../components/Utils/Meta';
+import ItemCategoryMenu from '../../components/items/ItemCategoryMenu';
 
 const ItemEditScreen = () => {
 	const initialItemsValues = {
@@ -66,7 +68,7 @@ const ItemEditScreen = () => {
 			),
 		brand: yup.string().required('Please enter item brand name'),
 		category: yup.string().required('Please enter item category'),
-		code: yup.number().required('Please enter item code'),
+		code: yup.number().required('Please enter priority code'),
 		countInStock: yup
 			.number()
 			.required('Please enter item stock')
@@ -193,6 +195,7 @@ const ItemEditScreen = () => {
 									sx={{ gridColumn: 'span 2' }}
 								/>
 								<TextField
+									select
 									label='Item Category'
 									onBlur={handleBlur}
 									onChange={handleChange}
@@ -201,9 +204,18 @@ const ItemEditScreen = () => {
 									error={Boolean(touched.category) && Boolean(errors.category)}
 									helperText={touched.category && errors.category}
 									sx={{ gridColumn: 'span 2' }}
-								/>
+								>
+									{ItemCategoryMenu.map((menu) => (
+										<MenuItem
+											key={`${menu.value}-${menu.name}`}
+											value={menu.name}
+										>
+											{menu.name}
+										</MenuItem>
+									))}
+								</TextField>
 								<TextField
-									label='Code No.'
+									label='Priority Order (Start from 1)'
 									onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.code}
