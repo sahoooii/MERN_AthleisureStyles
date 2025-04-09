@@ -51,8 +51,9 @@ const WishlistScreen = () => {
 					alreadyAdded: alreadyAdded,
 				}).unwrap();
 
-				refetch();
+				toast.success('Remove from your wishlist');
 
+				refetch();
 				navigate('/wishlist');
 			}
 		} catch (error) {
@@ -200,7 +201,7 @@ const WishlistScreen = () => {
 										</Box>
 									))}
 								</Box>
-								
+
 								{!isLoading && data?.pages && (
 									<Paginate
 										menu='/wishlist'
