@@ -47,21 +47,32 @@ const ItemDetailsScreen = () => {
 	const { data: user, refetch } = useGetProfileDetailsQuery();
 	// console.log('user:', user);
 
+	// Manage to wishlist
+	const [userData, setUserData] = useState(null);
+
+	useEffect(() => {
+		if (user) {
+			setUserData(user);
+		}
+	}, [user]);
+
 	const [addToWishList] = useAddToWishListMutation();
 
 	const alreadyAdded =
-		user && user.wishlist.find((list) => list._id.toString() === itemId);
+		userData &&
+		userData.wishlist.find((list) => list._id.toString() === itemId);
 	// console.log('alreadyAdded:', alreadyAdded);
 
 	const addToWishListHandler = async (itemId) => {
 		try {
 			await addToWishList({
-				userId: user._id,
+				userId: userData._id,
 				itemId: itemId,
 				alreadyAdded: alreadyAdded,
 			}).unwrap();
 
-			refetch();
+			const updatedUser = await refetch();
+			setUserData(updatedUser.data);
 		} catch (error) {
 			toast.error(error?.data?.message || error.error);
 		}

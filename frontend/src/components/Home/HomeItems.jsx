@@ -57,20 +57,31 @@ const HomeItems = () => {
 
 	const { data: user, refetch } = useGetProfileDetailsQuery();
 
+	// Manage to wishlist
+	const [userData, setUserData] = useState(null);
+
+	useEffect(() => {
+		if (user) {
+			setUserData(user);
+		}
+	}, [user]);
+
 	const [addToWishList] = useAddToWishListMutation();
 
 	const addToWishListHandler = async (itemId) => {
 		try {
 			const alreadyAdded =
-				user && user.wishlist.find((list) => list._id.toString() === itemId);
+				userData &&
+				userData.wishlist.find((list) => list._id.toString() === itemId);
 
 			await addToWishList({
-				userId: user._id,
+				userId: userData._id,
 				itemId: itemId,
 				alreadyAdded: alreadyAdded,
 			}).unwrap();
 
-			refetch();
+			const updatedUser = await refetch();
+			setUserData(updatedUser.data);
 		} catch (error) {
 			toast.error(error?.data?.message || error.error);
 		}
