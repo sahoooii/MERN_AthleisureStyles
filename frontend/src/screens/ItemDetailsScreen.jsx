@@ -31,6 +31,7 @@ const ItemDetailsScreen = () => {
 	const navigate = useNavigate();
 
 	const isNonMobile = useMediaQuery('(min-width:600px)');
+	const isNonMediumScreen = useMediaQuery('(min-width:900px)');
 
 	const { itemId, pageNumber } = useParams();
 
@@ -281,8 +282,9 @@ const ItemDetailsScreen = () => {
 										sx={{
 											alignItems: 'center',
 											marginLeft: '8px',
-											'&:hover': { color: '#FF0461' },
+											'&:hover': { color: isNonMediumScreen && '#FF0461' },
 											color: alreadyAdded && '#FF0461',
+											padding: '12px',
 										}}
 										onClick={() => addToWishListHandler(itemId)}
 									>

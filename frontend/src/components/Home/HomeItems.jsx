@@ -35,6 +35,7 @@ const HomeItems = () => {
 	const navigate = useNavigate();
 
 	const isNonMobile = useMediaQuery('(min-width:600px)');
+	const isNonMediumScreen = useMediaQuery('(min-width:900px)');
 
 	const { pageNumber, keyword } = useParams();
 
@@ -221,8 +222,9 @@ const HomeItems = () => {
 											<IconButton
 												aria-label='add to favorites'
 												sx={{
-													'&:hover': { color: '#FF0461' },
+													'&:hover': { color: isNonMediumScreen && '#FF0461' },
 													color: '#FF0461',
+													padding: '12px',
 												}}
 												onClick={() => addToWishListHandler(item._id)}
 											>
@@ -233,8 +235,10 @@ const HomeItems = () => {
 												disabled={!userInfo}
 												aria-label='add to favorites'
 												sx={{
-													'&:hover': { color: '#FF0461' },
+													'&:hover': { color: isNonMediumScreen && '#FF0461' },
+													padding: '12px',
 												}}
+												onTouchStart={() => addToWishListHandler(item._id)}
 												onClick={() => addToWishListHandler(item._id)}
 											>
 												<Favorite />
