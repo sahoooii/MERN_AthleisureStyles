@@ -80,6 +80,7 @@ const HomeItems = () => {
 				itemId: itemId,
 				alreadyAdded: alreadyAdded,
 			}).unwrap();
+			toast.success('Change your wishlist');
 
 			const updatedUser = await refetch();
 			setUserData(updatedUser.data);
@@ -238,7 +239,6 @@ const HomeItems = () => {
 													'&:hover': { color: isNonMediumScreen && '#FF0461' },
 													padding: '12px',
 												}}
-												onTouchStart={() => addToWishListHandler(item._id)}
 												onClick={() => addToWishListHandler(item._id)}
 											>
 												<Favorite />
