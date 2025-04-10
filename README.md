@@ -339,3 +339,37 @@ To test the checkout process, follow these steps:
 #### 3. Use the Personal (buyer) sandbox email & password for checkout
 
 ➡️ This allows you to simulate payments without real transactions.
+
+<br />
+
+## 📘 Development Notes
+
+**(EN)**
+
+This project went through several iterations of improvement and troubleshooting over the course of about a month.<br />
+Along the way, I focused on enhancing performance, scalability, and cross-device compatibility.
+
+**Key areas of improvement included:**
+
+- Refactoring the backend/frontend to be deployed separately (Render + Vercel) to reduce cold start issues.
+- Replacing localStorage with cookie-based authentication to ensure secure, cross-origin login between domains.
+- Switching from local image storage to **Cloudinary** to support image uploads in production environments.
+- Improving mobile user experience by fixing touch feedback issues on wishlist buttons.
+- Minor UI/UX improvements such as pluralization fixes for the review count (1 Review vs 2 Reviews).
+
+These refinements were not just technical upgrades—they were also valuable learning moments that strengthened my full-stack development skills. 🚀
+
+**(JP)**
+
+このプロジェクトは約 1 ヶ月間にわたってリファクタリングや不具合対応を重ね、
+**パフォーマンス・拡張性・デバイス対応**の改善に取り組みました。
+
+**主な改善点：**
+
+- **Render × Vercel** による分離デプロイで、コールドスタート問題を解消
+- **localStorage**から**Cookie**ベースの認証に変更し、クロスドメインでも安定したログイン処理を実現
+- ローカル保存していた画像管理を**Cloudinary**に移行し、デプロイ環境でも画像アップロードに対応
+- Wishlist ボタンの挙動を改善し、モバイルでのタッチ操作でもスムーズに動作するように修正し、toast 通知を表示することで、フィードバックを明確化
+- 「1 reviews」などの不自然な表示を「1 review」「2 reviews」に切り替える細かい UI 調整し、コンポーネント化
+
+技術的な成長だけでなく、多くの実践的な学びが詰まったリファクタリング期間でした。💪
