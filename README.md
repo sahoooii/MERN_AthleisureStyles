@@ -7,6 +7,7 @@
 <br />
 ![Redux](https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
 ![PayPal](https://img.shields.io/badge/paypal-00457C?style=for-the-badge&logo=paypal&logoColor=white)
+![Cloudinary](https://img.shields.io/badge/cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=fff)
 ![Material UI](https://img.shields.io/badge/material_ui-000?style=for-the-badge&logo=mui&logoColor=007FFF)
 ![Motion](https://img.shields.io/badge/Motion-0055ff?style=for-the-badge&logo=framer&logoColor=white)
 ![Axios](https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
@@ -39,17 +40,17 @@
 
 **(EN)**
 
-This project is a full-stack eCommerce platform built with the MERN stack, Redux, and Material UI. It is my first original MERN stack project, and I spent nearly six months developing it.
+This project is a full-stack eCommerce platform built with the **MERN stack, Redux, and Material UI**. It is my first original MERN stack project, and I spent nearly six months developing it.
 
 When I started, I wasn't familiar with Material UI, which made the design process quite challenging. However, I put a lot of effort into refining the UI/UX and ensuring a fully responsive design.
 
-The store is called Athleisure Styles, inspired by the fusion of sportswear and fashion. This platform includes full CRUD functionality for features like product reviews, a wishlist, and order history. Additionally, it supports PayPal and credit/debit card payments for a complete shopping experience.
+The store is called **Athleisure Styles**, inspired by the fusion of sportswear and fashion. This platform includes full CRUD functionality for features like product reviews, a wishlist, and order history. Additionally, it supports PayPal and credit/debit card payments for a complete shopping experience.
 <br />
 <br />
 
 **(JP)**
 
-MERN スタック、Redux、Material UI を使用して構築した e コマースプラットフォームです。MERN スタックを使った初めてのオリジナル作品であり、Material UI を初めて採用したプロジェクトでもあったため、設計プロセスには多くの試行錯誤がありました。しかし、約半年かけて構想から完成まで作り上げました。
+**MERN スタック、Redux、Material UI** を使用して構築した e コマースプラットフォームです。MERN スタックを使った初めてのオリジナル作品であり、Material UI を初めて採用したプロジェクトでもあったため、設計プロセスには多くの試行錯誤がありました。しかし、約半年かけて構想から完成まで作り上げました。
 
 コンセプトは、スポーツウェアとファッションを融合させ、日常でもおしゃれに着こなせるスタイルを提案すること。
 <br />
@@ -61,25 +62,25 @@ MERN スタック、Redux、Material UI を使用して構築した e コマー�
 
 **(EN)**
 
-✅ Home Page
+✅ **Home Page**
 
 - Interactive carousel
 - Tab sections: "Most Reviewed" & "Top Rated"
 - Category-based item filtering
 
-✅ Shopping & Reviews
+✅ **Shopping & Reviews**
 
 - Search items by keyword
 - Leave, and delete item reviews & ratings
 - Full-featured shopping cart with quantity control
 - Pagination for item lists
 
-✅ Checkout & Payments
+✅ **Checkout & Payments**
 
 - Step-by-step checkout process (Billing, Shipping, Payment, etc...)
 - PayPal / Credit Card payment integration
 
-✅ User Features (🆕 additions)
+✅ **User Features (🆕 additions)**
 
 - Register & edit profile (with profile image upload)
 - View order history & order details
@@ -87,14 +88,14 @@ MERN スタック、Redux、Material UI を使用して構築した e コマー�
   - 🆕 Mobile-friendly wishlist interaction with toast feedback
   - 🆕 Profile image and item image uploads via Cloudinary
 
-✅ Admin Management
+✅ **Admin Management**
 
 - User management (create, edit, delete users)
 - Items management (create, edit, delete items)
 - Manage item reviews
 - View order details & mark orders as delivered
 
-✅ Database & Backend (🆕 additions)
+✅ **Database & Backend (🆕 additions)**
 
 - Database seeder for initial items & users
 - 🆕 Improved performance through split deployment (Vercel + Render)
@@ -102,14 +103,14 @@ MERN スタック、Redux、Material UI を使用して構築した e コマー�
 
 **(JP)**
 
-✅ ホームページ
+✅ **ホームページ**
 
 - インタラクティブなカルーセル
 - タブ切り替え：「レビュー数が多い商品」「高評価の商品」
 - カテゴリ別の商品フィルタリング表示
 - 🆕 Cloudinary による画像アップロード機能（プロフィール・商品画像）
 
-✅ ショッピング & レビュー
+✅ **ショッピング & レビュー**
 
 - キーワード検索機能
 - 商品のレビュー・評価の投稿、削除
@@ -117,26 +118,26 @@ MERN スタック、Redux、Material UI を使用して構築した e コマー�
 - 商品リストのページネーション
 - 🆕 レビュー件数の単数・複数に応じた表示調整（Review/Reviews）
 
-✅ チェックアウト & 決済
+✅ **チェックアウト & 決済**
 
 - ステップごとのチェックアウト（支払い情報、配送情報、支払い方法など）
 - PayPal / クレジットカード決済対応
 
-✅ ユーザー機能
+✅ **ユーザー機能**
 
 - プロフィール登録 & 編集（プロフィール画像アップロード対応）
 - 注文履歴 & 注文詳細ページの閲覧
 - 🆕 モバイル端末での Wishlist 操作の UI 改善（hover 制限 + toast 表示対応）
 - 🆕 認証方式を localStorage から Cookies に変更（セキュアなログイン保持）
 
-✅ 管理者機能(Admin)
+✅ **管理者機能(Admin)**
 
 - ユーザー管理（登録・編集・削除）
 - 商品の管理（登録・編集・削除）
 - レビューの管理
 - 注文詳細の閲覧 & 配送完了ステータス管理
 
-✅ データベース & バックエンド
+✅ **データベース & バックエンド**
 
 - 初期データ（商品 & ユーザー）のシード機能
 - 🆕 Cloudinary と Multer を用いた画像アップロードの統合
@@ -146,7 +147,7 @@ MERN スタック、Redux、Material UI を使用して構築した e コマー�
 
 **(EN)**
 
-After the initial development, I made several improvements to enhance security, performance, and design:
+After the initial development, I made several improvements to enhance **security, performance, and design**:
 
 - **🔒 Security Enhancements**
 
@@ -169,7 +170,7 @@ After the initial development, I made several improvements to enhance security, 
 
 **(JP)**
 
-最初の開発後、セキュリティ、パフォーマンス、デザインを向上させるために以下の改善を行いました：
+最初の開発後、**セキュリティ、パフォーマンス、デザイン**を向上させるために以下の改善を行いました：
 
 - **🔒 セキュリティの強化**
 
@@ -195,57 +196,57 @@ After the initial development, I made several improvements to enhance security, 
 
 **(EN)**
 
-- ✅ Split Deployment: Frontend (Vercel) / Backend (Render)
+- ✅ **Split Deployment: Frontend (Vercel) / Backend (Render)**
 
   - To reduce cold start time and improve performance, the app was redeployed with the frontend hosted on Vercel and the backend on Render.
   - Compare:
     - [▶️ Render only version (slower)](https://athleisurestyles.onrender.com)
     - [✅ Vercel + Render version (optimized)](https://mern-athleisure-styles.vercel.app)
 
-- ✅ Authentication now handled via Cookies instead of localStorage
+- ✅ **Authentication now handled via Cookies instead of localStorage**
 
   - Switching to cookies resolved cross-domain issues in a split-deploy environment.
   - Secure and SameSite attributes are dynamically adjusted depending on environment to ensure stable login/registration.
 
-- ✅ Image storage migrated to Cloudinary
+- ✅ **Image storage migrated to Cloudinary**
 
   - Profile and item images are now uploaded to Cloudinary instead of being saved locally.
   - This ensures image persistence even after deployment.
 
-- ✅ Improved Wishlist behavior on mobile devices
+- ✅ **Improved Wishlist behavior on mobile devices**
 
   - Fixed an issue where wishlist removal didn’t reflect immediately on mobile devices due to missing re-render triggers.
   - Added toast notifications for clear visual feedback after adding/removing items.
 
-- ✅ Dynamic review count labels
+- ✅ **Dynamic review count labels**
   - Previously, “1 reviews” was incorrectly shown for singular values.
   - A new utility now dynamically switches between “review” and “reviews” for correct grammar.
 
 **(JP)**
 
-- ✅ Frontend (Vercel) / Backend (Render) の分離デプロイ
+- ✅ **Frontend (Vercel) / Backend (Render) の分離デプロイ**
 
   - Render のみでホスティングしていた場合に発生していた初回読み込みの遅延（コールドスタート）を改善、パフォーマンスと安定性を両立
 
     - [▶️ Render のみのデプロイ版](https://athleisurestyles.onrender.com)
     - [✅ Vercel + Render 分離デプロイ版（推奨）](https://mern-athleisure-styles.vercel.app)
 
-- ✅ 認証情報の保存を LocalStorage から Cookie に変更
+- ✅ **認証情報の保存を LocalStorage から Cookie に変更**
 
   - フロントエンドとバックエンドを別ドメインでデプロイしたことにより、Cookie が渡らず認証が通らない問題が発生
   - Secure / SameSite の設定を動的に切り替えることで、デバイスや環境に関係なく安定したログイン/登録フローを実現
 
-- ✅ 画像管理をローカルから Cloudinary に移行
+- ✅ **画像管理をローカルから Cloudinary に移行**
 
   - Cloudinary を導入し、ローカル保存からクラウド保存へ変更
   - デプロイ後の環境でもプロフィール画像や商品画像のアップロードが可能に
 
-- ✅ Wishlist 操作のモバイル対応強化
+- ✅ **Wishlist 操作のモバイル対応強化**
 
   - モバイルデバイスでは Wishlist の削除操作が即時反映されない不具合を修正
   - タッチ操作後に toast 通知を表示することで、追加/削除のフィードバックを明確に
 
-- ✅ レビュー数の表示ロジックを改善
+- ✅ **レビュー数の表示ロジックを改善**
 
   - 「1 reviews」のような不自然な表示を回避
   - レビュー数を単数/複数で出し分けるユーティリティを共通化して実装
@@ -258,6 +259,7 @@ After the initial development, I made several improvements to enhance security, 
 
 - **MongoDB Atlas**: Create a database and obtain your MongoDB URI →&nbsp; [ Sign up](https://www.mongodb.com/cloud/atlas/register)
 - **PayPal Developer**: Create an account and obtain your Client ID → &nbsp; [ Sign up](https://developer.paypal.com/home)
+- **Cloudinary**: For image uploads → &nbsp; [ Sign up](https://cloudinary.com/)
 
 <br />
 
@@ -288,7 +290,7 @@ Rename `example.env` on frontend directory to `.env` and add your credentials:
 REACT_APP_BACKEND_URL=ADD_YOUR_RENDER_BACKEND_URL
 ```
 
-### 2. Run the ApplicationSetup
+### 2. Run the Application Setup
 
 ```
 # Run frontend (:3000) & backend (:5000)
