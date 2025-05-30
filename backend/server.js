@@ -9,6 +9,7 @@ import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import { createCloudinaryUploadRoute } from './routes/cloudinaryUploadRoute.js';
+import { deleteCloudinaryRoute } from './routes/deleteImage.js';
 
 dotenv.config();
 connectDB(); // Connect to Mongo DB
@@ -41,15 +42,20 @@ app.use(
 	})
 );
 
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Add profile image for cloudinary
 app.use(
 	'/api/profileupload',
 	createCloudinaryUploadRoute('profileImage', 'picturePath')
 );
-app.use('/api/itemupload', createCloudinaryUploadRoute('itemImage', 'image'));
 
-// Body parser middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Delete image from cloudinary when register failed
+app.use('/api/delete-image', deleteCloudinaryRoute());
+
+app.use('/api/itemupload', createCloudinaryUploadRoute('itemImage', 'image'));
 
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);

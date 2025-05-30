@@ -64,7 +64,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Items'],
 		}),
-		uploadItemImag: builder.mutation({
+		uploadItemImage: builder.mutation({
 			query: (data) => ({
 				url: ITEM_UPLOAD_URL,
 				method: 'POST',
@@ -203,7 +203,7 @@ export const {
 	useGetItemDetailsByAdminQuery,
 	useCreateItemMutation,
 	useUpdateItemMutation,
-	useUploadItemImagMutation,
+	useUploadItemImageMutation,
 	useDeleteItemMutation,
 	useAddToWishListMutation,
 	useCreateReviewMutation,

@@ -1,7 +1,5 @@
-import React from 'react';
 import { Box } from '@mui/material';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckoutSteps from '../components/Utils/CheckoutSteps';
@@ -10,6 +8,7 @@ import ButtonComponent from '../components/Utils/ButtonComponent';
 import { saveBillingAddress, saveShippingAddress } from '../slices/cartSlice';
 import { shades } from '../theme';
 import Meta from '../components/Utils/Meta';
+import { orderUserInfoSchema } from '../features/orders/orderUserInfoSchema';
 
 const ShippingBillingScreen = () => {
 	const navigate = useNavigate();
@@ -43,49 +42,6 @@ const ShippingBillingScreen = () => {
 			country: shippingAddress.country ? shippingAddress.country : '',
 		},
 	};
-
-	const formSchema = yup.object().shape({
-		billingAddress: yup.object().shape({
-			firstName: yup.string().required('Please enter first name'),
-			lastName: yup.string().required('Please enter last name'),
-			address: yup.string().required('Please enter address'),
-			city: yup.string().required('Please enter city'),
-			state: yup.string().required('Please enter State'),
-			postalCode: yup.string().required('Please enter postal code'),
-			country: yup.string().required('Please enter country'),
-		}),
-		shippingAddress: yup.object().shape({
-			isSameAddress: yup.boolean(),
-			firstName: yup.string().when('isSameAddress', {
-				is: false,
-				then: () => yup.string().required('Please enter first name'),
-			}),
-			lastName: yup.string().when('isSameAddress', {
-				is: false,
-				then: () => yup.string().required('Please enter last name'),
-			}),
-			address: yup.string().when('isSameAddress', {
-				is: false,
-				then: () => yup.string().required('Please enter address'),
-			}),
-			city: yup.string().when('isSameAddress', {
-				is: false,
-				then: () => yup.string().required('Please enter city'),
-			}),
-			state: yup.string().when('isSameAddress', {
-				is: false,
-				then: () => yup.string().required('Please enter state'),
-			}),
-			postalCode: yup.string().when('isSameAddress', {
-				is: false,
-				then: () => yup.string().required('Please enter postal code'),
-			}),
-			country: yup.string().when('isSameAddress', {
-				is: false,
-				then: () => yup.string().required('Please enter country'),
-			}),
-		}),
-	});
 
 	const submitHandler = (values, actions) => {
 		const { firstName, lastName, address, city, state, postalCode, country } =
@@ -128,7 +84,6 @@ const ShippingBillingScreen = () => {
 				})
 			);
 		}
-
 		navigate('/payment');
 	};
 
@@ -145,7 +100,7 @@ const ShippingBillingScreen = () => {
 			<Box sx={{ mb: { md: '100px' } }}>
 				<Formik
 					initialValues={initialFormValues}
-					validationSchema={formSchema}
+					validationSchema={orderUserInfoSchema}
 					onSubmit={submitHandler}
 				>
 					{({
