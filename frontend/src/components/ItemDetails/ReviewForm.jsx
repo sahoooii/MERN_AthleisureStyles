@@ -1,4 +1,3 @@
-import React from 'react';
 import {
 	Accordion,
 	AccordionDetails,
@@ -11,7 +10,6 @@ import {
 	Typography,
 } from '@mui/material';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import { shades } from '../../theme';
 import {
 	useGetItemDetailsQuery,
@@ -25,6 +23,8 @@ import { Link, useParams } from 'react-router-dom';
 import Loader from '../Utils/Loader';
 import Message from '../Utils/Message';
 import ReviewMenu from './ReviewMenu';
+import { initialReviewValues } from '../../features/items/reviews/reviewInitialValues';
+import { reviewSchema } from '../../features/items/reviews/reviewSchema';
 
 const ReviewForm = () => {
 	const { itemId, pageNumber } = useParams();
@@ -38,21 +38,6 @@ const ReviewForm = () => {
 		useCreateReviewMutation();
 
 	const { userInfo } = useSelector((state) => state.auth);
-
-	// For Review form
-	const initialReviewValue = {
-		rating: '',
-		comment: '',
-	};
-
-	// For Validation
-	const reviewValidationSchema = yup.object().shape({
-		rating: yup.number().required('Please rating this item'),
-		comment: yup
-			.string()
-			.required('Let us know, something your comment')
-			.max(300, 'Comment has a maximum limit of 300 characters.'),
-	});
 
 	const submitHandler = async (values, onSubmitProps) => {
 		const { rating, comment } = values;
@@ -90,8 +75,8 @@ const ReviewForm = () => {
 					{/* Review Form */}
 					<AccordionDetails>
 						<Formik
-							initialValues={initialReviewValue}
-							validationSchema={reviewValidationSchema}
+							initialValues={initialReviewValues}
+							validationSchema={reviewSchema}
 							onSubmit={submitHandler}
 						>
 							{({

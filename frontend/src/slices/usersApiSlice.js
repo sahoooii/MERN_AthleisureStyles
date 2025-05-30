@@ -67,6 +67,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				credentials: 'include',
 			}),
 		}),
+		deleteImage: builder.mutation({
+			query: (data) => ({
+				url: '/api/delete-image',
+				method: 'POST',
+				body: data,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include',
+			}),
+		}),
 		getProfileDetails: builder.query({
 			query: () => ({
 				url: `${USERS_URL}/profile`,
@@ -153,6 +164,7 @@ export const {
 	useLoginMutation,
 	useRegisterMutation,
 	useUploadProfileImageMutation,
+	useDeleteImageMutation,
 	useGetProfileDetailsQuery,
 	useGetUserWishlistQuery,
 	useUpdateProfileMutation,

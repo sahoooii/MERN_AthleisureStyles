@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -25,57 +24,9 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Visibility, VisibilityOff, EditOutlined } from '@mui/icons-material';
 import { shades } from '../../theme';
 import Meta from '../../components/Utils/Meta';
-
-const initialRegisterValues = {
-	firstName: '',
-	lastName: '',
-	email: '',
-	password: '',
-	confirmPassword: '',
-	picturePath: '',
-};
-
-// For profile image validation
-const MAX_FILE_SIZE = 3145728; //3MB
-const validFileExtensions = {
-	image: ['jpg', 'png', 'jpeg', 'webp'],
-};
-
-function isValidFileType(fileName, fileType) {
-	return (
-		fileName &&
-		validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1
-	);
-}
-
-const registerSchema = yup.object().shape({
-	firstName: yup.string().required('Please enter your first name'),
-	lastName: yup.string().required('Please enter your last name'),
-	// notOneOf('emailList', 'Email already taken)
-	email: yup
-		.string()
-		.email('Invalid email.')
-		.required('Please enter your email'),
-	password: yup
-		.string()
-		.min(6, 'Password must contain at least 6 characters')
-		.required('Please enter your password'),
-	confirmPassword: yup
-		.string()
-		.oneOf([yup.ref('password')], 'Password does not match')
-		.required('Please enter your confirm password'),
-	picturePath: yup
-		.mixed()
-		.required('Please upload your profile picture')
-		.test('is-valid-type', 'Not a valid image type', (value) =>
-			isValidFileType(value && value.name.toLowerCase(), 'image')
-		)
-		.test(
-			'is-valid-size',
-			'Max allowed size is 3MB',
-			(value) => value && value.size <= MAX_FILE_SIZE
-		),
-});
+import { useImageSubmitHandler } from '../../hooks/useImageSubmitHandler';
+import { userProfileSchema } from '../../features/users/forms/userProfileSchema';
+import { userProfileInitialValues } from '../../features/users/forms/userProfileInitialValues';
 
 const RegisterFormScreen = () => {
 	const { palette } = useTheme();
@@ -112,35 +63,33 @@ const RegisterFormScreen = () => {
 		}
 	}, [userInfo, redirect, navigate]);
 
-	// Profile image upload and register
-	const submitHandler = async (values) => {
-		const { firstName, lastName, email, password } = values;
-
-		const formData = new FormData();
-
-		for (let value in values) {
-			formData.append(value, values[value]);
-		}
-		// picture path
-		formData.append('picturePath', values.picturePath.name);
-		try {
-			const imageData = await uploadProfileImage(formData).unwrap();
-
-			const response = await register({
-				firstName,
-				lastName,
-				email,
-				password,
-				picturePath: imageData.image,
-			}).unwrap();
-
+	// Profile image upload and user register
+	const { submitHandler } = useImageSubmitHandler({
+		mutationFn: register,
+		uploadMutationFn: uploadProfileImage,
+		extractFormData: (values) => ({
+			file: values.picturePath,
+			fieldName: 'picturePath',
+		}),
+		buildPayload: (values, imageData) => ({
+			firstName: values.firstName,
+			lastName: values.lastName,
+			email: values.email,
+			password: values.password,
+			picturePath: imageData?.image,
+		}),
+		onSuccess: (response) => {
 			dispatch(loginSuccess({ ...response }));
+			toast.success('Welcome to Athleisure Styes!');
 
 			navigate(redirect);
-		} catch (err) {
-			toast.error(err?.data?.message || err.error);
-		}
-	};
+		},
+		onError: (error) => {
+			const message =
+				error?.data?.message || error.error || 'Something went wrong';
+			toast.error(message);
+		},
+	});
 
 	return (
 		<FormComponent title='Welcome to Athleisure Styles, For All SHOPAHOLICS!'>
@@ -155,15 +104,15 @@ const RegisterFormScreen = () => {
 					textAlign='center'
 					sx={{ fontSize: { sm: '32px', xs: '24px' } }}
 				>
-					Create Account
+					Create Profile Image
 				</Typography>
 				<Divider />
 
 				{isLoading && <Loader />}
 
 				<Formik
-					initialValues={initialRegisterValues}
-					validationSchema={registerSchema}
+					initialValues={userProfileInitialValues}
+					validationSchema={userProfileSchema(false)}
 					onSubmit={submitHandler}
 				>
 					{({

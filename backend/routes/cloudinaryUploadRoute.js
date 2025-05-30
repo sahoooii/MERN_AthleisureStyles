@@ -55,6 +55,7 @@ export function createCloudinaryUploadRoute(folderName, fieldName) {
 		res.status(200).send({
 			message: 'Image uploaded successfully',
 			image: req.file?.path,
+			public_id: req.file?.filename,
 		});
 	});
 

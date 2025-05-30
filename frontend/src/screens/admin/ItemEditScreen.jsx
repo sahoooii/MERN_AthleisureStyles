@@ -10,13 +10,12 @@ import {
 } from '@mui/material';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { DeleteSweepOutlined, EditOutlined } from '@mui/icons-material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
 	useUpdateItemMutation,
-	useUploadItemImagMutation,
+	useUploadItemImageMutation,
 	useDeleteItemMutation,
 	useGetItemsQuery,
 	useGetItemDetailsByAdminQuery,
@@ -28,17 +27,17 @@ import Loader from '../../components/Utils/Loader';
 import Message from '../../components/Utils/Message';
 import Meta from '../../components/Utils/Meta';
 import ItemCategoryMenu from '../../components/items/ItemCategoryMenu';
+import { useImageSubmitHandler } from '../../hooks/useImageSubmitHandler';
+import { itemSchema } from '../../features/items/forms/itemSchema';
 
 const ItemEditScreen = () => {
 	const { palette } = useTheme();
 	const { id: itemId } = useParams();
 	const navigate = useNavigate();
 
-	// console.log(itemId);
-
 	const isNonMobileScreen = useMediaQuery('(min-width:600px)');
 
-	// Get each item detail
+	// Get each item details
 	const {
 		data: items,
 		isLoading,
@@ -49,13 +48,13 @@ const ItemEditScreen = () => {
 	const [updateItem, { isLoading: loadingUpdate }] = useUpdateItemMutation();
 
 	// For item Image Upload
-	const [uploadItemImag, { isLoading: loadingUpload }] =
-		useUploadItemImagMutation();
+	const [uploadItemImage, { isLoading: loadingUpload }] =
+		useUploadItemImageMutation();
 
 	// Fo delete Item
 	const [deleteItem] = useDeleteItemMutation();
 
-	// After delete item, back to itemsList need refetch
+	// After delete item, back to itemsList page, need to refetch
 	const { refetch: itemListRefetch } = useGetItemsQuery(itemId);
 
 	const [itemImage, setItemImage] = useState(items && items.image);
@@ -71,57 +70,50 @@ const ItemEditScreen = () => {
 		description: items.description ? items.description : '',
 	};
 
-	const itemUpdateSchema = yup.object().shape({
-		name: yup.string().required('Please enter item name'),
-		price: yup
-			.number()
-			.required('Please enter item price')
-			.min(1, 'Please enter positive number or 1'),
-		image: yup.string().notRequired(),
-		brand: yup.string().required('Please enter item brand name'),
-		category: yup.string().required('Please enter item category'),
-		code: yup.number().required('Please enter item code'),
-		countInStock: yup
-			.number()
-			.required('Please enter item stock')
-			.integer()
-			.min(0, 'Please enter positive number or 0'),
-		// .test('is-valid-num', 'Not Valid Number', (value) => value >= 0),
-		description: yup
-			.string()
-			.min(50, 'Description must contain at least 50 characters')
-			.required('Please enter item description'),
-	});
-
 	useEffect(() => {
 		if (items) {
 			setItemImage(items.image);
 		}
 	}, [items]);
 
-	const deleteHandler = async (id) => {
-		if (window.confirm('Would you like to delete this item ?')) {
-			try {
-				await deleteItem(id);
+	const { submitHandler } = useImageSubmitHandler({
+		mutationFn: updateItem,
+		uploadMutationFn: uploadItemImage,
+		extractFormData: (values) => ({
+			file: values.image,
+			fieldName: 'image',
+		}),
+		buildPayload: (values, imageData) => ({
+			_id: itemId,
+			name: values.name,
+			price: values.price,
+			brand: values.brand,
+			category: values.category,
+			code: values.code,
+			countInStock: values.countInStock,
+			description: values.description,
+			image: imageData.image,
+		}),
+		onSuccess: (response) => {
+			toast.success('Item updated successfully');
+			refetch();
+			navigate('/admin/itemslist');
+		},
+		onError: (error) => {
+			const message =
+				error?.data?.message || error.error || 'Something went wrong';
+			toast.error(message);
+		},
+	});
 
-				toast.success('Item deleted successfully');
-
-				itemListRefetch();
-				navigate('/admin/itemslist');
-			} catch (err) {
-				toast.error(err?.data?.message || err.error);
-			}
-		}
-	};
-
-	const submitHandler = async (values, onSubmitProps) => {
+	const updateSubmitHandler = async (values, onSubmitProps) => {
 		// console.log('values:', values);
 		const { name, price, brand, category, code, countInStock, description } =
 			values;
 
 		// When not change itemImage
 		if (
-			values.image === '' &&
+			(typeof values.image === 'string' || values.image === '') &&
 			values.name &&
 			values.price &&
 			values.brand &&
@@ -151,34 +143,22 @@ const ItemEditScreen = () => {
 			}
 		} else {
 			// When changed itemImage
-			const formData = new FormData();
-			for (let value in values) {
-				formData.append(value, values[value]);
-			}
+			await submitHandler(values, onSubmitProps);
+		}
+	};
 
-			formData.append('image', values.image.name);
-
+	// Delete item
+	const deleteHandler = async (id) => {
+		if (window.confirm('Would you like to delete this item ?')) {
 			try {
-				const imageData = await uploadItemImag(formData).unwrap();
+				await deleteItem(id);
 
-				await updateItem({
-					_id: itemId,
-					name,
-					price,
-					image: imageData.image,
-					brand,
-					category,
-					code,
-					countInStock,
-					description,
-				}).unwrap();
+				toast.success('Item deleted successfully');
 
-				toast.success('Item updated successfully');
-
-				refetch();
+				itemListRefetch();
 				navigate('/admin/itemslist');
-			} catch (error) {
-				toast.error(error?.data?.message || error.error);
+			} catch (err) {
+				toast.error(err?.data?.message || err.error);
 			}
 		}
 	};
@@ -197,9 +177,9 @@ const ItemEditScreen = () => {
 				) : (
 					<Formik
 						initialValues={initialItemsValues}
-						validationSchema={itemUpdateSchema}
+						validationSchema={itemSchema(true)}
 						enableReinitialize={true}
-						onSubmit={submitHandler}
+						onSubmit={updateSubmitHandler}
 					>
 						{({
 							values,
@@ -323,6 +303,17 @@ const ItemEditScreen = () => {
 												</>
 											)}
 										</Box>
+										{errors.image && Boolean(touched.image) && (
+											<p
+												style={{
+													color: '#d32f2f',
+													fontSize: '10px',
+													marginBottom: '0',
+												}}
+											>
+												{errors.image}
+											</p>
+										)}
 									</Box>
 									<TextField
 										label='Item Name'

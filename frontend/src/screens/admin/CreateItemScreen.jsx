@@ -1,4 +1,3 @@
-import React from 'react';
 import {
 	Box,
 	Typography,
@@ -10,76 +9,23 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
 	useCreateItemMutation,
-	useUploadItemImagMutation,
+	useUploadItemImageMutation,
 } from '../../slices/itemsApiSlice';
 import FormComponentTop from '../../components/FormUi/FormComponentTop';
 import ButtonComponent from '../../components/Utils/ButtonComponent';
 import Loader from '../../components/Utils/Loader';
 import Meta from '../../components/Utils/Meta';
 import ItemCategoryMenu from '../../components/items/ItemCategoryMenu';
+import { useImageSubmitHandler } from '../../hooks/useImageSubmitHandler';
+import { itemSchema } from '../../features/items/forms/itemSchema';
+import { itemInitialValues } from '../../features/items/forms/ itemInitialValues';
 
 const ItemEditScreen = () => {
-	const initialItemsValues = {
-		name: '',
-		price: '',
-		image: '',
-		brand: '',
-		category: '',
-		code: '',
-		countInStock: '',
-		description: '',
-	};
-
-	// For profile image validation
-	const MAX_FILE_SIZE = 3145728; //3MB
-	const validFileExtensions = {
-		image: ['jpg', 'png', 'jpeg', 'webp'],
-	};
-
-	function isValidFileType(fileName, fileType) {
-		return (
-			fileName &&
-			validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1
-		);
-	}
-
-	const itemRegisterSchema = yup.object().shape({
-		name: yup.string().required('Please enter item name'),
-		price: yup
-			.number()
-			.required('Please enter item price')
-			.min(1, 'Please enter positive number or 1'),
-		image: yup
-			.mixed()
-			.required('Please upload item image')
-			.test('is-valid-type', 'Not a valid image type', (value) =>
-				isValidFileType(value && value.name.toLowerCase(), 'image')
-			)
-			.test(
-				'is-valid-size',
-				'Max allowed size is 3MB',
-				(value) => value && value.size <= MAX_FILE_SIZE
-			),
-		brand: yup.string().required('Please enter item brand name'),
-		category: yup.string().required('Please enter item category'),
-		code: yup.number().required('Please enter priority code'),
-		countInStock: yup
-			.number()
-			.required('Please enter item stock')
-			.integer()
-			.min(0, 'Please enter positive number or 0'),
-		description: yup
-			.string()
-			.min(50, 'Description must contain at least 50 characters')
-			.required('Please enter item description'),
-	});
-
 	const { palette } = useTheme();
 	const navigate = useNavigate();
 
@@ -88,42 +34,36 @@ const ItemEditScreen = () => {
 	const [createItem, { isLoading }] = useCreateItemMutation();
 
 	// For item Image Upload
-	const [uploadItemImag] = useUploadItemImagMutation();
+	const [uploadItemImage] = useUploadItemImageMutation();
 
-	const submitHandler = async (values, onSubmitProps) => {
-		// console.log('values:', values);
-		const { name, price, brand, category, code, countInStock, description } =
-			values;
-
-		const formData = new FormData();
-		for (let value in values) {
-			formData.append(value, values[value]);
-		}
-		// item image
-		formData.append('image', 'itemImage');
-		// formData.append('image', values.image.name);
-
-		try {
-			const imageData = await uploadItemImag(formData).unwrap();
-
-			await createItem({
-				name,
-				price,
-				brand,
-				category,
-				code,
-				countInStock,
-				description,
-				image: imageData.image,
-			}).unwrap();
-
-			toast.success('Item updated successfully');
-
+	// Create item and upload item image
+	const { submitHandler } = useImageSubmitHandler({
+		mutationFn: createItem,
+		uploadMutationFn: uploadItemImage,
+		extractFormData: (values) => ({
+			file: values.image,
+			fieldName: 'image',
+		}),
+		buildPayload: (values, imageData) => ({
+			name: values.name,
+			price: values.price,
+			brand: values.brand,
+			category: values.category,
+			code: values.code,
+			countInStock: values.countInStock,
+			description: values.description,
+			image: imageData.image,
+		}),
+		onSuccess: (response) => {
+			toast.success('Created a new item Successfully');
 			navigate('/admin/itemslist');
-		} catch (error) {
-			toast.error(error?.data?.message || error.error);
-		}
-	};
+		},
+		onError: (error) => {
+			const message =
+				error?.data?.message || error.error || 'Something went wrong';
+			toast.error(message);
+		},
+	});
 
 	return (
 		<Box m='0 auto' sx={{ width: { sm: '80%', xs: '100%' } }}>
@@ -133,8 +73,8 @@ const ItemEditScreen = () => {
 				{isLoading && <Loader />}
 
 				<Formik
-					initialValues={initialItemsValues}
-					validationSchema={itemRegisterSchema}
+					initialValues={itemInitialValues}
+					validationSchema={itemSchema(false)}
 					enableReinitialize={true}
 					onSubmit={submitHandler}
 				>

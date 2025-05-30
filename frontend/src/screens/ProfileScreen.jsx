@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	Box,
@@ -20,7 +19,7 @@ import {
 	useDeleteUserMutation,
 } from '../slices/usersApiSlice';
 import { logout, loginSuccess } from '../slices/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import FormComponent from '../components/FormUi/FormComponent';
 import ButtonComponent from '../components/Utils/ButtonComponent';
 import Loader from '../components/Utils/Loader';
@@ -34,6 +33,8 @@ import {
 } from '@mui/icons-material';
 import { shades } from '../theme';
 import Meta from '../components/Utils/Meta';
+import { useImageSubmitHandler } from '../hooks/useImageSubmitHandler';
+import { userProfileSchema } from '../features/users/forms/userProfileSchema';
 
 const ProfileScreen = () => {
 	const { palette } = useTheme();
@@ -68,25 +69,6 @@ const ProfileScreen = () => {
 		picturePath: '',
 	};
 
-	const updateSchema = yup.object().shape({
-		firstName: yup.string().required('Please enter your first name'),
-		lastName: yup.string().required('Please enter your last name'),
-		// notOneOf('emailList', 'Email already taken)
-		email: yup
-			.string()
-			.email('Invalid email.')
-			.required('Please enter your email'),
-		password: yup
-			.string()
-			.min(6, 'Password must contain at least 6 characters')
-			.required('Please enter your password'),
-		confirmPassword: yup
-			.string()
-			.oneOf([yup.ref('password')], 'Password does not match')
-			.required('Please enter your confirm password'),
-		picturePath: yup.string().notRequired(),
-	});
-
 	// Get user profile details
 	const {
 		data: userProfile,
@@ -94,8 +76,6 @@ const ProfileScreen = () => {
 		refetch,
 		error,
 	} = useGetProfileDetailsQuery();
-
-	// console.log(userProfile);
 
 	const [updateProfile, { isLoading: loadingUpdateProfile }] =
 		useUpdateProfileMutation();
@@ -112,21 +92,48 @@ const ProfileScreen = () => {
 		}
 	}, [userProfile]);
 
-	const submitHandler = async (values, onSubmitProps) => {
-		// console.log(values);
+	// File upload & profile info update
+	const { submitHandler } = useImageSubmitHandler({
+		mutationFn: updateProfile,
+		uploadMutationFn: uploadProfileImage,
+		extractFormData: (values) => ({
+			file: values.picturePath,
+			fieldName: 'picturePath',
+		}),
+		buildPayload: (values, imageData) => ({
+			firstName: values.firstName,
+			lastName: values.lastName,
+			email: values.email,
+			password: values.password,
+			picturePath: imageData?.image,
+		}),
+		onSuccess: (response) => {
+			dispatch(loginSuccess({ ...response }));
+			toast.success('Profile updated successfully');
+			refetch();
+			navigate('/profile');
+		},
+		onError: (error) => {
+			const message =
+				error?.data?.message || error.error || 'Something went wrong';
+			toast.error(message);
+		},
+	});
+
+	const updateSubmitHandler = async (values, onSubmitProps) => {
 		const { firstName, lastName, email, password } = values;
 
 		// When not change profilePic
 		if (
-			values.picturePath === '' &&
+			(typeof values.picturePath === 'string' || values.picturePath === '') &&
 			values.firstName &&
 			values.lastName &&
 			values.email &&
 			values.password
 		) {
 			try {
+				console.log('fail!');
 				const response = await updateProfile({
-					// _id: userInfo._id,
 					firstName,
 					lastName,
 					email,
@@ -138,38 +145,12 @@ const ProfileScreen = () => {
 				toast.success('Profile updated successfully');
 
 				refetch();
-				navigate('/');
+				navigate('/profile');
 			} catch (error) {
 				toast.error(error?.data?.message || error.error);
 			}
 		} else {
-			// When changed profilePic
-			const formData = new FormData();
-			for (let value in values) {
-				formData.append(value, values[value]);
-			}
-			// picture path
-			formData.append('picturePath', values.picturePath.name);
-			try {
-				const imageData = await uploadProfileImage(formData).unwrap();
-
-				const response = await updateProfile({
-					_id: userInfo._id,
-					firstName,
-					lastName,
-					email,
-					password,
-					picturePath: imageData.image,
-				}).unwrap();
-
-				dispatch(loginSuccess({ ...response }));
-				toast.success('Profile updated successfully');
-
-				refetch();
-				navigate('/');
-			} catch (error) {
-				toast.error(error?.data?.message || error.error);
-			}
+			await submitHandler(values, onSubmitProps);
 		}
 	};
 
@@ -203,9 +184,9 @@ const ProfileScreen = () => {
 				) : (
 					<Formik
 						initialValues={initialRegisterValues}
-						validationSchema={updateSchema}
+						validationSchema={userProfileSchema(true)}
 						enableReinitialize={true}
-						onSubmit={submitHandler}
+						onSubmit={updateSubmitHandler}
 					>
 						{({
 							values,
@@ -335,6 +316,17 @@ const ProfileScreen = () => {
 												</>
 											)}
 										</Box>
+										{errors.picturePath && Boolean(touched.picturePath) && (
+											<p
+												style={{
+													color: '#d32f2f',
+													fontSize: '10px',
+													marginBottom: '0',
+												}}
+											>
+												{errors.picturePath}
+											</p>
+										)}
 									</Box>
 
 									<TextField
@@ -458,6 +450,25 @@ const ProfileScreen = () => {
 						)}
 					</Formik>
 				)}
+
+				<Box gridColumn='span 4' mt='25px'>
+					<Link to='/'>
+						<Typography
+							variant='h4'
+							sx={{
+								pb: '20px',
+								textDecoration: 'underline',
+								color: palette.blue.main,
+								'&:hover': {
+									cursor: 'pointer',
+									color: palette.blue.light,
+								},
+							}}
+						>
+							Back To Home ?
+						</Typography>
+					</Link>
+				</Box>
 			</Box>
 		</FormComponent>
 	);
