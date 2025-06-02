@@ -42,7 +42,7 @@ export function createCloudinaryUploadRoute(folderName, fieldName) {
 	const upload = multer({
 		storage,
 		fileFilter,
-		limits: { fileSize: 2000000 },
+		limits: { fileSize: 5 * 1024 * 1024 }, // = 5242880 (5MB)
 	});
 
 	const uploadSingleImage = upload.single(fieldName);
