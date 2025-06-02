@@ -251,6 +251,30 @@ After the initial development, I made several improvements to enhance **security
   - 「1 reviews」のような不自然な表示を回避
   - レビュー数を単数/複数で出し分けるユーティリティを共通化して実装
 
+<br />
+
+## 🆕 Recent Updates (2025/06)
+
+**(EN)**
+
+- ✅ **Refined image upload validation (Yup + Server-side multer)**
+
+  - Adjusted both front-end and back-end validations to allow up to 5MB file uploads.
+  - Previously, Cloudinary uploads occurred even when client-side validation failed — this is now prevented by adding more precise conditions.
+  - Created a reusable `validateFile` helper to streamline validation logic and avoid redundant uploads.
+  - Separated Yup validation schemas into their own folder, improving overall code readability and maintainability.
+  - This update came after several trials to align async image uploads with synchronous form validation, requiring a delicate balance of UX and code structure.
+
+**(JP)**
+
+- ✅ **画像アップロードのバリデーションを改善（Yup + サーバー側の multer）**
+
+  - フロントとバックエンドのバリデーションを調整し、最大 5MB までの画像アップロードに対応。
+  - 以前はクライアント側のバリデーションに失敗しても Cloudinary に画像がアップされてしまう問題があり、それを防ぐための条件分岐を細かく設計。
+  - ファイルアップロードに関する処理を共通化するため、再利用可能な `validateFile` ヘルパー関数を作成。
+  - Yup のバリデーションスキーマも別フォルダに分離し、コード全体の見通しと保守性が大幅に向上。
+  - フォームバリデーションと非同期の画像アップロードのタイミングをうまく同期させるために何度も試行錯誤し、UX と処理の整合性を両立。
+
 ## Usage 🚀
 
 ### 1. Setup
@@ -375,3 +399,31 @@ These refinements were not just technical upgrades—they were also valuable lea
 - 「1 reviews」などの不自然な表示を「1 review」「2 reviews」に切り替える細かい UI 調整し、コンポーネント化
 
 技術的な成長だけでなく、多くの実践的な学びが詰まったリファクタリング期間でした。💪
+<br />
+
+### 🆕 Image Upload Validation Refactor (2025/06)
+
+**(EN)**
+
+Fixed an issue where images were uploaded to Cloudinary even when form validation failed — particularly when duplicate emails were detected.
+Initially considered separating image and text data handling completely, but this proved too complex for the UI and backend flow.
+
+Inspired by logic from my own Next.js project, I refined the validation conditions using Yup and carefully synced it with async upload logic.
+
+Also created a reusable helper function for file uploads to streamline the logic across the app.
+Validation schema and initial values were also separated into their own files for **better readability and maintainability**.
+
+This update gave me a strong sense of progress, as it reflected both the lessons I've learned and the practical coding experience I've built.
+
+**(JP)**
+
+登録時にエラーが発生しても Cloudinary に画像が保存されてしまうという以前から気になっていた問題を修正しました。
+これは特に「email 重複時」に起きるもので、**BE 側でのチェックと処理フローの設計**が課題でした。
+
+当初は画像とテキストデータの保存処理を完全に分離する方法を検討しましたが、UI への影響も大きくなるため断念しました。
+そこで、自作の Next.js プロジェクトでの実装を参考に、**Yup によるバリデーションと非同期処理のタイミングを細かく調整**することで、意図した動作を実現できました。
+
+さらに、同様の画像アップロード処理が他の箇所でも再利用できるよう、**共通化されたヘルパー関数を作成**。
+あわせてバリデーションスキーマや初期値もファイルを分離し、**コードの可読性と保守性を大きく改善**しました。
+
+これまで自分が取り組んできたことが、しっかり成果につながったと実感できるアップデートになりました ✨
