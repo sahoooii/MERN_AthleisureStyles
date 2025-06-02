@@ -1,5 +1,5 @@
-// Limited（3MB）
-const MAX_FILE_SIZE = 3 * 1024 * 1024; // = 3145728
+// Limited（5MB）
+const MAX_FILE_SIZE = 5 * 1024 * 1024; //5242880
 
 // Whitelist for extension checking
 const validFileExtensions = {
@@ -23,7 +23,7 @@ export function validateFile(file, type = 'image') {
 	if (!file) return { isValid: false, error: 'File does not exist' };
 
 	if (file.size > MAX_FILE_SIZE) {
-		return { isValid: false, error: 'File size too large (up to 3MB)' };
+		return { isValid: false, error: 'File size too large (up to 5MB)' };
 	}
 
 	if (!isValidFileType(file.name, type)) {
