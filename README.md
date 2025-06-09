@@ -1,18 +1,23 @@
 # Athleisure Styles <br />MERN E-Commerce Platform
 
+## 🛠 Tech Stack
+
 ![Mongo DB](https://img.shields.io/badge/mongodb-00800?style=for-the-badge&logo=mongodb&logoColor=white)
-![Express](https://img.shields.io/badge/Express-000?style=for-the-badge&logo=express&logoColor=ff0)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Express](https://img.shields.io/badge/Express@4.18.2-000?style=for-the-badge&logo=express&logoColor=ff0)
+![React](https://img.shields.io/badge/React@18.2.0-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=node.js&logoColor=ff0)
 <br />
-![Redux](https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
-![PayPal](https://img.shields.io/badge/paypal-00457C?style=for-the-badge&logo=paypal&logoColor=white)
-![Cloudinary](https://img.shields.io/badge/cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=fff)
-![Material UI](https://img.shields.io/badge/material_ui-000?style=for-the-badge&logo=mui&logoColor=007FFF)
-![Motion](https://img.shields.io/badge/Motion-0055ff?style=for-the-badge&logo=framer&logoColor=white)
-![Axios](https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
-![Formik](https://img.shields.io/badge/formik-4285F4?style=for-the-badge&logo=formik&logoColor=white)
-![Yup](https://img.shields.io/badge/yup-E2B714?style=for-the-badge&logo=yup&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT@9.0.2-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+![Redux](https://img.shields.io/badge/redux@8.1.3-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+![PayPal](https://img.shields.io/badge/paypal@8.1.3-00457C?style=for-the-badge&logo=paypal&logoColor=white)
+![Cloudinary](https://img.shields.io/badge/cloudinary@4.0.0-3448C5?style=for-the-badge&logo=cloudinary&logoColor=fff)
+![Axios](https://img.shields.io/badge/axios@1.5.1-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
+<br />
+![Material UI](https://img.shields.io/badge/material_ui@5.14.10-000?style=for-the-badge&logo=mui&logoColor=007FFF)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion@10.16.16-0055ff?style=for-the-badge&logo=framer&logoColor=white)
+<br />
+![Formik](https://img.shields.io/badge/formik@2.4.5-4285F4?style=for-the-badge&logo=formik&logoColor=white)
+![Yup](https://img.shields.io/badge/yup@1.2.0-E2B714?style=for-the-badge&logo=yup&logoColor=white)
 
 <p>etc...</p>
 
