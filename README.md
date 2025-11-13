@@ -7,6 +7,7 @@
 ![React](https://img.shields.io/badge/React@18.2.0-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Node.js](https://img.shields.io/badge/node.js@20.11.1-339933?style=for-the-badge&logo=node.js&logoColor=ff0)
 <br />
+
 ![JWT](https://img.shields.io/badge/JWT@9.0.2-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
 ![Redux](https://img.shields.io/badge/redux@8.1.3-764ABC?style=for-the-badge&logo=redux&logoColor=white)
 ![PayPal](https://img.shields.io/badge/paypal@8.1.3-00457C?style=for-the-badge&logo=paypal&logoColor=white)
