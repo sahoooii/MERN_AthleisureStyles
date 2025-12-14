@@ -26,7 +26,7 @@
 
 ### Athleisure Styles
 
-[▶️ Render only version (slower)](https://athleisurestyles.onrender.com)
+[▶️ Render only version (slower)](https://athleisurestyles-render.onrender.com)
 
 [✅ Vercel + Render version (optimized)](https://mern-athleisure-styles.vercel.app)
 
@@ -206,7 +206,7 @@ After the initial development, I made several improvements to enhance **security
 
   - To reduce cold start time and improve performance, the app was redeployed with the frontend hosted on Vercel and the backend on Render.
   - Compare:
-    - [▶️ Render only version (slower)](https://athleisurestyles.onrender.com)
+    - [▶️ Render only version (slower)](https://athleisurestyles-render.onrender.com)
     - [✅ Vercel + Render version (optimized)](https://mern-athleisure-styles.vercel.app)
 
 - ✅ **Authentication now handled via Cookies instead of localStorage**
@@ -234,7 +234,7 @@ After the initial development, I made several improvements to enhance **security
 
   - Render のみでホスティングしていた場合に発生していた初回読み込みの遅延（コールドスタート）を改善、パフォーマンスと安定性を両立
 
-    - [▶️ Render のみのデプロイ版](https://athleisurestyles.onrender.com)
+    - [▶️ Render のみのデプロイ版](https://athleisurestyles-render.onrender.com)
     - [✅ Vercel + Render 分離デプロイ版（推奨）](https://mern-athleisure-styles.vercel.app)
 
 - ✅ **認証情報の保存を LocalStorage から Cookie に変更**
