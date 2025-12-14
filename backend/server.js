@@ -23,7 +23,7 @@ app.use(cookieParser());
 
 const allowedOrigins = [
 	'http://localhost:3000',
-	'https://athleisurestyles.onrender.com',
+	'https://athleisurestyles-render.onrender.com',
 	'https://mern-athleisure-styles.vercel.app',
 ];
 
