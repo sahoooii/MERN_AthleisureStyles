@@ -3,6 +3,7 @@ import Order from '../models/orderModel.js';
 import Item from '../models/itemModel.js';
 import { calcPrices } from '../utils/calcPrices.js';
 import { checkIfNewTransaction, verifyPayPalPayment } from '../utils/paypal.js';
+import mongoose from 'mongoose';
 
 // @desc Create New Order
 // @route POST /api/orders
@@ -23,7 +24,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
 		// map over the order items and use the price from DB
 		const dbOrderItems = orderItems.map((itemFromClient) => {
 			const matchingItemFromDb = itemsFromDB.find(
-				(itemFromDB) => itemFromDB._id.toString() === itemFromClient._id
+				(itemFromDB) => itemFromDB._id.toString() === itemFromClient._id,
 			);
 			return {
 				...itemFromClient,
@@ -55,7 +56,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
 	}
 });
 
-// @desc Delete orders when nor paid
+// @desc Delete orders when not paid
 // @route GET /api/orders/:id
 // @access Private
 const deleteMyOrder = asyncHandler(async (req, res) => {
@@ -122,44 +123,67 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 	const { verified, value } = await verifyPayPalPayment(req.body.id);
 	if (!verified) throw new Error('Payment not verified');
 
-	// check if this transaction has been used before
+	// Check if this transaction has been used before
 	const isNewTransaction = await checkIfNewTransaction(Order, req.body.id);
 	if (!isNewTransaction) throw new Error('Transaction has been used before');
 
 	const order = await Order.findById(req.params.id);
 
-	if (order) {
-		// check the correct amount was paid
-		const paidCorrectAmount = order.totalPrice.toString() === value;
-		if (!paidCorrectAmount) throw new Error('Incorrect amount paid');
+	if (!order) {
+		res.status(404);
+		throw new Error('Order not Found');
+	}
 
+	// Check the correct amount was paid
+	const paidCorrectAmount = order.totalPrice.toString() === value;
+	if (!paidCorrectAmount) throw new Error('Incorrect amount paid');
+
+	// Transaction
+	const session = await mongoose.startSession();
+	session.startTransaction();
+
+	try {
+		// Update count in stock
+		for (const item of order.orderItems) {
+			const updatedProduct = await Item.findOneAndUpdate(
+				{
+					_id: item.item,
+					countInStock: { $gte: item.quantity },
+				},
+				{
+					$inc: { countInStock: -item.quantity },
+				},
+				{ session },
+			);
+
+			if (!updatedProduct) {
+				throw new Error('Insufficient stock');
+			}
+		}
+
+		// If successful, update order
 		order.isPaid = true;
 		order.paidAt = Date.now();
 		order.paymentResult = {
 			id: req.body.id,
 			status: req.body.status,
 			update_time: req.body.update_time,
-			// comes from PayPal
+			// Comes from PayPal
 			email_address: req.body.payer.email_address,
 		};
 
-		const updatedOrder = await order.save();
+		await order.save({ session });
 
-		// Update countInStock
-		for (const index in updatedOrder.orderItems) {
-			const item = updatedOrder.orderItems[index];
-			// console.log('Item - ', item);
-			const product = await Item.findById(item.item);
-			// console.log('Product - ', product);
-			product.countInStock -= item.quantity;
-			// console.log('updatedQty - ', product.countInStock);
-			product.save();
-		}
+		// 全部成功したら確定
+		await session.commitTransaction();
+		session.endSession();
 
-		res.status(200).json(updatedOrder);
-	} else {
-		res.status(404);
-		throw new Error('Order not Found');
+		res.status(200).json(order);
+	} catch (error) {
+		// どれか失敗したら全部巻き戻し
+		await session.abortTransaction();
+		session.endSession();
+		throw error;
 	}
 });
 
@@ -189,7 +213,7 @@ const getOrderById = asyncHandler(async (req, res) => {
 	// get name and email from user collection
 	const order = await Order.findById(req.params.id).populate(
 		'user',
-		'firstName lastName email'
+		'firstName lastName email',
 	);
 
 	if (order) {
