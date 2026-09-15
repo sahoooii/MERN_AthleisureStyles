@@ -32,7 +32,7 @@
 		"yup": "1.2.0"
 	},
 	"overrides": {
-		"shell-quote": "^1.8.4"
+		"shell-quote": "^1.10.0"
 	},
 	"scripts": {
 		"start": "react-scripts start",
