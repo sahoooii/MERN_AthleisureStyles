@@ -30,17 +30,9 @@
 
 [✅ Vercel + Render version (optimized)](https://mern-athleisure-styles.vercel.app)
 
-### Mobile Version. Shopping Process
+## Demo
 
-![mobile](https://github.com/user-attachments/assets/706f0f3f-4bae-4beb-b313-2d7838e461fa)
-
-## DEMO PC Ver. Shopping Process
-
-![pc](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/def87834-d35c-4f06-915e-770f436f0826)
-
-### PC Version. Menu (User, Order History, Wishlist...)
-
-![withMenu](https://github.com/sahoooii/MERN_AthleisureStyles/assets/75118062/3efe10f0-88ca-411c-968f-5a68f7366d81)
+<img width="335" height="600" alt="Image" src="https://github.com/user-attachments/assets/a22ad0c8-9b5d-4157-995b-5f0e9d4ed4a7" />
 
 ## What is this project?
 
